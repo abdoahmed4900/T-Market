@@ -17,10 +17,8 @@ jobs:
       - name: Create environment.ts
         run: |
           mkdir -p src/environments
-          echo "export const environment = {
-          production: false,
-          firebase: ${{ secrets.FIREBASE_CONFIG }}
-          };" > src/environments/environment.ts
+          echo "export const environment = ${{ secrets.FIREBASE_CONFIG }}
+          ;" > src/environments/environment.ts
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
