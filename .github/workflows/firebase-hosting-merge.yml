@@ -14,6 +14,7 @@ jobs:
       - run: npm ci
       - name: Create environment.ts
         run: |
+          mkdir -p src/environments
           echo "export const environment = ${{ secrets.FIREBASE_CONFIG }}
           };" > src/environments/environment.ts
       - run: npm run build
