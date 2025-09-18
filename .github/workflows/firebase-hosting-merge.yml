@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '22'
+        
     - name: Create environment.ts
       run: |
         mkdir -p src/environments
@@ -31,8 +32,8 @@ jobs:
           appId: '${{ secrets.APPID }}',
           measurementId: '${{ secrets.MEASUREMENTID }}'
           }
-          };" > src/environments/environment.ts    
-
+          };" > src/environments/environment.ts      
+          
     - run: npm ci
     - run: npm run build -- --configuration production
 
@@ -40,6 +41,6 @@ jobs:
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
         repoToken: '${{ secrets.GITHUB_TOKEN }}'
-        firebaseServiceAccount: '${{ secrets.FIREBASE_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.SERVICE_ACCOUNT }}'
         channelId: live
         projectId: t-market-f99a1      
