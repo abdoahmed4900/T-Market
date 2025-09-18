@@ -33,7 +33,7 @@ jobs:
           measurementId: '${{ secrets.MEASUREMENTID }}'
           }
           };" > src/environments/environment.ts      
-          
+
     - run: npm ci
     - run: npm run build -- --configuration production
 
@@ -41,6 +41,6 @@ jobs:
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
         repoToken: '${{ secrets.GITHUB_TOKEN }}'
-        firebaseServiceAccount: '${{ secrets.SERVICE_ACCOUNT }}'
+        firebaseServiceAccount: '${{ secrets.SERVICE_ACCOUNT_T_MARKET_F99A1 }}'
         channelId: live
         projectId: t-market-f99a1      
