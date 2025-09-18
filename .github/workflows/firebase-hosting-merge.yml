@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '22'
+    - name: Create environment.ts
+      run: |
+        mkdir -p src/environments
+        echo "${{ secrets.FIREBASE_CONFIG_DEV }}" > src/environments/environment.ts    
 
     - run: npm ci
     - run: npm run build -- --configuration production
