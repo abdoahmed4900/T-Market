@@ -17,7 +17,18 @@ jobs:
       - name: Create environment.ts
         run: |
           mkdir -p src/environments
-          echo "${{ secrets.FIREBASE_CONFIG_DEV }}" > src/environments/environment.ts    
+          echo "export const environment = {
+          production: false,
+          firebase: {
+          apiKey: '${{ secrets.APIKEY }}',
+          authDomain: '${{ secrets.AUTHDOMAIN }}',
+          projectId: '${{ secrets.PROJECTID }}',
+          storageBucket: '${{ secrets.STORAGEBUCKET }}',
+          messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}',
+          appId: '${{ secrets.APPID }}',
+          measurementId: '${{ secrets.MEASUREMENTID }}'
+          }
+          };" > src/environments/environment.ts     
       - run: npm run build:ssr
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
