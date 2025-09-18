@@ -6,8 +6,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "site": "t-market-f99a1-c2cd6",
-    "public": "public/browser",
+    "source": ".",
     "ignore": [
       "firebase.json",
       "**/.*",
