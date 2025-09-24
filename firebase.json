@@ -6,7 +6,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "public": "dist/t-market/browser",
+    "public": "dist/T-Market/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -15,7 +15,7 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "ssr"
+        "destination": "/index.html"
       }
     ]
   }
