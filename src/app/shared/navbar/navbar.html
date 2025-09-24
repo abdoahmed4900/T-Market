@@ -1,0 +1,37 @@
+<nav class="bg-[var(--main-bg-color)] border-b-2 border-gray-200 py-3">
+    <div class="flex items-center pt-3 gap-10 max-w-[1500px] mx-auto px-20 justify-between">
+       <div class="title-and-nav flex items-center">
+        <app-website-title></app-website-title>
+          <ul class="gap-4 hidden lg:flex mx-7">
+          <li><a routerLink="/" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg">Shop</a></li>
+          <li><a routerLink="/products" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Brands</a></li>
+          <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Collection</a></li>
+          <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Support</a></li>
+        </ul>
+       </div>
+       <button class="lg:hidden text-2xl">
+        ☰
+       </button>
+      <!-- <div class="relative ms-2 hidden lg:block w-150 mx-2">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-300">
+        🔍
+        </span>
+        <input 
+        type="search" 
+        name="search" 
+        id="search" 
+        placeholder="Search laptops, audio, phones..." 
+        class="rounded-lg border border-gray-200 
+        focus:border-[var(--primary-color)] w-full
+        focus:outline-none pl-10 border-2 py-1 pr-0"
+        />
+      </div> -->
+      <div class="hidden lg:flex items-center gap-2">
+      <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] w-full">❤️</button>
+      <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">🛒</button>
+      <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">EN</button>
+      <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">AR</button>
+      <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200" (click)="changeTheme()">🌓</button>
+    </div>
+    </div>
+</nav>

@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+:root{
+    --primary-color: #895AF6; 
+    --button-hover-color: #1FD5F9;
+    --navbar-text-selected-color: #743DF5;
+}
+.light-theme{
+    --main-bg-color: #ffffff;
+    --primary-text-color: #1F283D;
+    --secondary-text-color: rgb(107, 114, 128);
+}
+.dark-theme{
+    --main-bg-color: #1F283D;
+    --primary-text-color: #FFFFFF;
+    --secondary-text-color: rgb(156, 163, 175);
+}
+
+input[type="search"],
+input[type="email"]{
+    background-color: var(--main-bg-color);
+    color: var(--primary-text-color);
+    transition: all 0.3s ease;
+}
+
+input[type="button"]{
+    background-color: var(--primary-color);
+    color: var(--main-text-color);
+    transition: all 0.3s ease;
+}
+
+::-webkit-input-placeholder {
+    color: var(--primary-text-color);
+    transition: all 0.3s ease;
+}
