@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
-import { defer, Observable } from 'rxjs';
+import { BehaviorSubject, defer, Observable } from 'rxjs';
+import { CacheService } from '../../core/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,19 @@ import { defer, Observable } from 'rxjs';
 export class AuthService {
    http = inject(HttpClient);
 
+   isLoginSubject: BehaviorSubject<string> = new BehaviorSubject<string>(this.getInitialAuthState());
+   isLoggedIn$ = this.isLoginSubject.asObservable();
+   cacheService = inject(CacheService);
+
    constructor(private auth: Auth) {}
 
    loginWithEmailAndPassword(email: string, password: string) : Observable<UserCredential> {
       let res = () => signInWithEmailAndPassword(this.auth,email,password);
       return defer(res);
+   }
+
+   getInitialAuthState() {
+      return localStorage.getItem('isLogin') ?? 'false';
    }
 
    register(email:string, password:string) {

@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { AuthService } from '../auth';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { User } from '../user';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,8 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validatio
 import { CommonModule } from '@angular/common';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { Loader } from '../../../shared/loader/loader';
 
 @Component({
   selector: 'app-register',
@@ -32,6 +34,10 @@ export class RegisterComponent {
   user = signal<User | null>(null);
 
   registerForm !: FormGroup;
+
+  matDialog = inject(MatDialog);
+
+  router = inject(Router);
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -57,9 +63,13 @@ export class RegisterComponent {
 
   register() {
     if (this.registerForm.valid) {
+      const dialogRef = this.matDialog.open(Loader,{
+      disableClose: true,
+      })
       this.auth.register(this.registerForm.get('email')?.value, this.registerForm.get('password')?.value).subscribe({
       next: (value) => {
           console.log(value.user);
+          dialogRef.close();
           let users = collection(this.fireStore, fireStoreCollections.users);
           addDoc(users, {
             uid: value.user.uid,
@@ -69,9 +79,11 @@ export class RegisterComponent {
           }).then(() => {
             alert('Registration successful!');
             this.registerForm.reset();
+            this.router.navigate(['/login'], { replaceUrl: true });
           });
       },
       error: (err) => {
+        dialogRef.close();
         let message = getFirebaseErrorMessage(err.code);
         alert(message);
       }

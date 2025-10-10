@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from "./shared/navbar/navbar";
 import { Footer } from "./shared/footer/footer";
 import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { CacheService } from './core/cache.service';
 
 
 @Component({
@@ -15,9 +16,22 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 })
 export class App {
   protected title = 'T-Market';
-  isLogin : boolean = false;
+  isLogin = signal<string>('');
   theme:string = 'light';
   themeIcon = faMoon;
+  cacheService = inject(CacheService);
+  router = inject(Router);
+
+
+
+  ngOnInit(): void {
+    this.isLogin.set(this.cacheService.get('isLogin') ?? 'false');
+    if(this.isLogin() == 'true'){
+      this.router.navigate(['/'], { replaceUrl: true });
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
 
 
   constructor(){

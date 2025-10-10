@@ -6,7 +6,7 @@
           <li><a routerLink="/" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg">Shop</a></li>
           <li><a routerLink="/products" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Brands</a></li>
           <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Collection</a></li>
-          @if (isLogin()) {
+          @if (isLogin == 'true') {
           <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Support</a></li>
           }
         </ul>
@@ -24,9 +24,9 @@
           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">EN</button>
           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">AR</button>
           <button 
-           class="rounded-lg border p-2 text-xl
+           class="rounded-lg border text-xl
             border-gray-300 hover:bg-[var(--primary-color)] 
-            hover:text-white transition"
+            transition"
             (click)="changeTheme()" >
             <fa-icon [icon]="themeIcon" ></fa-icon>
           </button>
@@ -48,9 +48,9 @@
         />
       </div> -->
       <div class="hidden lg:flex items-center gap-2">
-        @if (isLogin()) {
+        @if (isLogin == 'true') {
           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] w-full">❤️</button>
-        <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">🛒</button>
+          <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">🛒</button>
         }
         <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">EN</button>
         <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">AR</button>
@@ -60,7 +60,13 @@
             hover:text-white transition"
              (click)="changeTheme()">
             <fa-icon [icon]="themeIcon"></fa-icon>
-      </button>
+        </button>
+        @if (isLogin == 'true') {
+          <button 
+          class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]"
+          (click)="logout()"
+          >Logout</button>
+        }
     </div>
     </div>
 </nav>
