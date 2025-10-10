@@ -37,7 +37,7 @@ jobs:
             products: 'products',};" > src/environments/environment.ts      
 
     - run: npm ci
-    - run: npm run build -- --configuration production --output-path=dist/t-market
+    - run: npm run build -- --configuration production --output-path=dist/T-Market
 
     - name: Deploy to Firebase
       uses: FirebaseExtended/action-hosting-deploy@v0
