@@ -1,5 +1,6 @@
-<main class="flex flex-col min-h-screen bg-[var(--main-bg-color)]">
-    <app-navbar></app-navbar>
-    <router-outlet class="flex-grow"></router-outlet>
+<app-navbar
+    [isLogin]="isLogin"></app-navbar>
+<main class="flex flex-col min-h-screen bg-[var(--main-bg-color)]" [ngClass]="isLogin ? 'justify-between' : 'justify-center'">
+    <router-outlet></router-outlet>
     <app-footer></app-footer>
 </main>

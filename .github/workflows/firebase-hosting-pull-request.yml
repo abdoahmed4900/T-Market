@@ -28,7 +28,9 @@ jobs:
           appId: '${{ secrets.APPID }}',
           measurementId: '${{ secrets.MEASUREMENTID }}'
           }
-          };" > src/environments/environment.ts     
+          };export const fireStoreCollections = {
+            users: 'users',
+            products: 'products',};" > src/environments/environment.ts     
       - run: npm run build:ssr
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
