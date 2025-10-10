@@ -15,7 +15,7 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 })
 export class App {
   protected title = 'T-Market';
-  isLogin : boolean = true;
+  isLogin : boolean = false;
   theme:string = 'light';
   themeIcon = faMoon;
 
