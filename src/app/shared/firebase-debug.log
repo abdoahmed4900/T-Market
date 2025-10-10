@@ -1,0 +1,121 @@
+[debug] [2025-10-10T10:58:44.945Z] ----------------------------------------------------------------------
+[debug] [2025-10-10T10:58:44.955Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only hosting --debug
+[debug] [2025-10-10T10:58:44.956Z] CLI Version:   14.17.0
+[debug] [2025-10-10T10:58:44.956Z] Platform:      darwin
+[debug] [2025-10-10T10:58:44.956Z] Node Version:  v22.16.0
+[debug] [2025-10-10T10:58:44.956Z] Time:          Fri Oct 10 2025 13:58:44 GMT+0300 (Eastern European Summer Time)
+[debug] [2025-10-10T10:58:44.956Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-10T10:58:44.957Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-10-10T10:58:45.130Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-10T10:58:45.130Z] > authorizing via signed-in user (abdo.ahmed213579@gmail.com)
+[debug] [2025-10-10T10:58:45.130Z] [iam] checking project t-market-f99a1 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-10-10T10:58:45.131Z] Checked if tokens are valid: false, expires at: 1758724607288
+[debug] [2025-10-10T10:58:45.131Z] Checked if tokens are valid: false, expires at: 1758724607288
+[debug] [2025-10-10T10:58:45.131Z] > refreshing access token with scopes: []
+[debug] [2025-10-10T10:58:45.132Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-10-10T10:58:45.132Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-10T10:58:45.384Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-10-10T10:58:45.384Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-10T10:58:45.399Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/t-market-f99a1:testIamPermissions [none]
+[debug] [2025-10-10T10:58:45.399Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/t-market-f99a1:testIamPermissions x-goog-quota-user=projects/t-market-f99a1
+[debug] [2025-10-10T10:58:45.399Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/t-market-f99a1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-10-10T10:58:45.535Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-10-10T10:58:45.536Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-10-10T10:58:46.362Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/t-market-f99a1:testIamPermissions 200
+[debug] [2025-10-10T10:58:46.362Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/t-market-f99a1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-10-10T10:58:46.364Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:46.364Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:46.364Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/t-market-f99a1 [none]
+[debug] [2025-10-10T10:58:46.867Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/t-market-f99a1 200
+[debug] [2025-10-10T10:58:46.867Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/t-market-f99a1 {"projectId":"t-market-f99a1","projectNumber":"306871862177","displayName":"T-Market","name":"projects/t-market-f99a1","resources":{"hostingSite":"t-market-f99a1"},"state":"ACTIVE","etag":"1_031af690-2724-4dd7-9f8c-11a3284c6275"}
+[info] 
+[info] === Deploying to 't-market-f99a1'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2025-10-10T10:58:46.875Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:46.875Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:46.875Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions [none]
+[debug] [2025-10-10T10:58:46.875Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2025-10-10T10:58:47.638Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions 200
+[debug] [2025-10-10T10:58:47.640Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions {"name":"projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[t-market-f99a1]: beginning deploy... 
+[info] i  hosting[t-market-f99a1]: found 3 files in dist/T-Market/browser 
+[debug] [2025-10-10T10:58:47.667Z] [hosting] uploading with 200 concurrency
+[debug] [2025-10-10T10:58:47.673Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:47.675Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:47.676Z] [hosting] hash cache [ZGlzdC9ULU1hcmtldC9icm93c2Vy] stored for 3 files
+[debug] [2025-10-10T10:58:47.676Z] [hosting][hash queue][FINAL] {"max":1,"min":0,"avg":0,"active":0,"complete":3,"success":3,"errored":0,"retried":0,"total":3,"elapsed":8}
+[debug] [2025-10-10T10:58:47.677Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b:populateFiles [none]
+[debug] [2025-10-10T10:58:47.677Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b:populateFiles {"files":{"/styles-ACOXOQFY.css":"f9f348df3bfd6196fb5ef06a404f7cd855817c69d0639efea6249a8e3acccf8a","/main-NRFC74ZO.js":"4b3aa116a4e641a87c8065d3605b92a71236b170efc87bc3f83cef843299adcb","/index.html":"b46c3db72be647660fa2107d838eb1ed7ea7b175d939ab2e2cd7ab1c912d8ff7"}}
+[debug] [2025-10-10T10:58:47.936Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b:populateFiles 200
+[debug] [2025-10-10T10:58:47.936Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b:populateFiles {"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/t-market-f99a1/versions/aaaaf90879365a7b/files"}
+[debug] [2025-10-10T10:58:47.936Z] [hosting][populate queue][FINAL] {"max":266,"min":266,"avg":266,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":266}
+[debug] [2025-10-10T10:58:47.937Z] [hosting] uploads queued: 0
+[debug] [2025-10-10T10:58:47.937Z] [hosting][upload queue][FINAL] {"max":0,"min":9999999999,"avg":0,"active":0,"complete":0,"success":0,"errored":0,"retried":0,"total":0,"elapsed":1760093927937}
+[info] i  hosting: upload complete 
+[info] ✔  hosting[t-market-f99a1]: file upload complete 
+[debug] [2025-10-10T10:58:47.938Z] [hosting] deploy completed after 290ms
+[debug] [2025-10-10T10:58:47.938Z] [
+  {
+    "config": {
+      "public": "dist/T-Market/browser",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "/index.html",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(js|css|png|jpg|jpeg|gif|svg|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=31536000, immutable"
+            }
+          ]
+        }
+      ],
+      "site": "t-market-f99a1"
+    },
+    "version": "projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b"
+  }
+]
+[info] i  hosting[t-market-f99a1]: finalizing version... 
+[debug] [2025-10-10T10:58:47.941Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:47.941Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:47.942Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions/aaaaf90879365a7b updateMask=status%2Cconfig
+[debug] [2025-10-10T10:58:47.942Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions/aaaaf90879365a7b {"status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}],"headers":[{"glob":"/index.html","headers":{"Cache-Control":"no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"}},{"glob":"**/*.@(js|css|png|jpg|jpeg|gif|svg|webp)","headers":{"Cache-Control":"public, max-age=31536000, immutable"}}]}}
+[debug] [2025-10-10T10:58:48.212Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions/aaaaf90879365a7b 200
+[debug] [2025-10-10T10:58:48.212Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/versions/aaaaf90879365a7b {"name":"projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b","status":"FINALIZED","config":{"headers":[{"headers":{"Cache-Control":"no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"},"glob":"/index.html"},{"headers":{"Cache-Control":"public, max-age=31536000, immutable"},"glob":"**/*.@(js|css|png|jpg|jpeg|gif|svg|webp)"}],"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2025-10-10T10:58:47.415725Z","createUser":{"email":"abdo.ahmed213579@gmail.com"},"finalizeTime":"2025-10-10T10:58:48.224982Z","finalizeUser":{"email":"abdo.ahmed213579@gmail.com"}}
+[debug] [2025-10-10T10:58:48.212Z] [hosting] finalized version for t-market-f99a1:[object Object]
+[info] ✔  hosting[t-market-f99a1]: version finalized 
+[info] i  hosting[t-market-f99a1]: releasing new version... 
+[debug] [2025-10-10T10:58:48.213Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:48.213Z] Checked if tokens are valid: true, expires at: 1760097524385
+[debug] [2025-10-10T10:58:48.213Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/channels/live/releases versionName=projects%2F306871862177%2Fsites%2Ft-market-f99a1%2Fversions%2Faaaaf90879365a7b
+[debug] [2025-10-10T10:58:48.213Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/channels/live/releases {}
+[debug] [2025-10-10T10:58:48.590Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/channels/live/releases 200
+[debug] [2025-10-10T10:58:48.591Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/t-market-f99a1/channels/live/releases {"name":"projects/306871862177/sites/t-market-f99a1/channels/live/releases/1760093927970000","version":{"name":"projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b","status":"FINALIZED","config":{"headers":[{"headers":{"Cache-Control":"no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"},"glob":"/index.html"},{"headers":{"Cache-Control":"public, max-age=31536000, immutable"},"glob":"**/*.@(js|css|png|jpg|jpeg|gif|svg|webp)"}],"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2025-10-10T10:58:47.415725Z","createUser":{"email":"abdo.ahmed213579@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJ5eRqnoXesKtxB9nMMsd3C26CLUDlvEqzaQLgjNZvgG5NGzw=mo"},"finalizeTime":"2025-10-10T10:58:48.224982Z","finalizeUser":{"email":"abdo.ahmed213579@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJ5eRqnoXesKtxB9nMMsd3C26CLUDlvEqzaQLgjNZvgG5NGzw=mo"}},"type":"DEPLOY","releaseTime":"2025-10-10T10:58:47.970Z","releaseUser":{"email":"abdo.ahmed213579@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJ5eRqnoXesKtxB9nMMsd3C26CLUDlvEqzaQLgjNZvgG5NGzw=mo"}}
+[debug] [2025-10-10T10:58:48.591Z] [hosting] release: {"name":"projects/306871862177/sites/t-market-f99a1/channels/live/releases/1760093927970000","version":{"name":"projects/306871862177/sites/t-market-f99a1/versions/aaaaf90879365a7b","status":"FINALIZED","config":{"headers":[{"headers":{"Cache-Control":"no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"},"glob":"/index.html"},{"headers":{"Cache-Control":"public, max-age=31536000, immutable"},"glob":"**/*.@(js|css|png|jpg|jpeg|gif|svg|webp)"}],"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2025-10-10T10:58:47.415725Z","createUser":{"email":"abdo.ahmed213579@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJ5eRqnoXesKtxB9nMMsd3C26CLUDlvEqzaQLgjNZvgG5NGzw=mo"},"finalizeTime":"2025-10-10T10:58:48.224982Z","finalizeUser":{"email":"abdo.ahmed213579@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJ5eRqnoXesKtxB9nMMsd3C26CLUDlvEqzaQLgjNZvgG5NGzw=mo"}},"type":"DEPLOY","releaseTime":"2025-10-10T10:58:47.970Z","releaseUser":{"email":"abdo.ahmed213579@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJ5eRqnoXesKtxB9nMMsd3C26CLUDlvEqzaQLgjNZvgG5NGzw=mo"}}
+[info] ✔  hosting[t-market-f99a1]: release complete 
+[info] 
+[info] ✔  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/t-market-f99a1/overview
+[info] Hosting URL: https://t-market-f99a1.web.app
