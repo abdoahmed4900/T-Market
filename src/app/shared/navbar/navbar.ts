@@ -72,7 +72,7 @@ export class Navbar {
       },
       error: (err) => {
         loader.close();
-        console.log(err);
+        // console.log(err);
       }
     });
   }

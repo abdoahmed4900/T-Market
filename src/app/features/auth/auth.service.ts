@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
 import { BehaviorSubject, defer, Observable } from 'rxjs';
 import { CacheService } from '../../core/cache.service';
 
@@ -29,6 +29,11 @@ export class AuthService {
       let res = () => createUserWithEmailAndPassword(this.auth,email,password);
       return defer(res);
    }
+
+   resetPassword(email: string) {
+    let res = () => sendPasswordResetEmail(this.auth, email);
+    return defer(res);
+  }
 
    logout() {
       let res = () => this.auth.signOut();

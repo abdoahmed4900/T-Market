@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
 
       error: (err) => {
         let message = getFirebaseErrorMessage(err.code);
-        console.log(message);
+        // console.log(message);
       }
     });
   }

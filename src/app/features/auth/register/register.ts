@@ -68,7 +68,7 @@ export class RegisterComponent {
       })
       this.auth.register(this.registerForm.get('email')?.value, this.registerForm.get('password')?.value).subscribe({
       next: (value) => {
-          console.log(value.user);
+          // console.log(value.user);
           dialogRef.close();
           let users = collection(this.fireStore, fireStoreCollections.users);
           addDoc(users, {
