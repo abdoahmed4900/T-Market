@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
 import { BehaviorSubject, defer, Observable } from 'rxjs';
 import { CacheService } from '../../core/cache.service';
 
@@ -13,6 +13,7 @@ export class AuthService {
    isLoginSubject: BehaviorSubject<string> = new BehaviorSubject<string>(this.getInitialAuthState());
    isLoggedIn$ = this.isLoginSubject.asObservable();
    cacheService = inject(CacheService);
+   firebaseAuth = inject(Auth);
 
    constructor(private auth: Auth) {}
 
@@ -33,7 +34,13 @@ export class AuthService {
    resetPassword(email: string) {
     let res = () => sendPasswordResetEmail(this.auth, email);
     return defer(res);
-  }
+   }
+
+   loginWithGoogle() {
+      const provider = new GoogleAuthProvider();
+      let res = () =>  signInWithPopup(this.firebaseAuth, provider);
+      return defer(res);
+    }
 
    logout() {
       let res = () => this.auth.signOut();

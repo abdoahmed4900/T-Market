@@ -43,6 +43,7 @@
         <input type="checkbox" (change)="toggleRememberMe()" name="remember" id="remember" class="w-4 h-4 accent-[var(--primary-color)]"/>
     </div>
     <input value="Sign In" type="submit" class="rounded-lg p-2 text-white bg-[var(--primary-color)] hover:opacity-90"/>
+    <button type="button" class="rounded-lg p-2 text-white bg-red-700 hover:bg-red-900" (click)="loginWithGoogle()">Log In With Google<div class="text-white inline-block bg-red-500 font-bold mx-2 rounded-4xl px-[5px] py-[3px]">G+</div></button>
     <a class="self-end text-[14px] text-[var(--primary-color)]" routerLink="/reset-password">Forgot Password?</a>
     <a routerLink="/register" class="mx-auto text-[14px]"><span class="text-[var(--secondary-text-color)]">Don't have an account? </span> <span class="text-[var(--primary-color)]">Create One</span></a>
    </div>

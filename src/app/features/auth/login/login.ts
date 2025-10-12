@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
 import { CacheService } from '../../../core/cache.service';
+import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { fireStoreCollections } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +32,9 @@ export class LoginComponent implements OnInit {
   loginForm !: FormGroup;
 
   cacheService = inject(CacheService);
+  
+  fireStore = inject(Firestore);
+
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email : ['', [Validators.required, Validators.email]],
@@ -79,6 +84,39 @@ export class LoginComponent implements OnInit {
       }
     });
     }
+  }
+  async loginWithGoogle() {
+    this.auth.loginWithGoogle().subscribe(
+      {
+        next: (value) => {
+          this.user.set(value.user);
+          this.auth.isLoginSubject.next('true');
+          this.cacheService.set('user', JSON.stringify(value.user));
+          localStorage.setItem('isLogin', 'true');
+          this.router.navigate(['/'], { replaceUrl: true });
+          let users = collection(this.fireStore, fireStoreCollections.users);
+          let q = collectionData(users);
+          q.subscribe(res => {
+            let user = res.find((u) => u['uid'] == value.user.uid);
+            if(!user){
+              addDoc(users,{
+                uid: value.user.uid,
+                email: value.user.email,
+                displayName: value.user.displayName,
+                createdAt: new Date(),
+                role: 'user',
+              }); 
+            }
+          });
+          
+        },
+
+        error: (err) => {
+          let message = getFirebaseErrorMessage(err.code);
+          console.log(message);
+        }
+      }
+    );
   }
   logout() {
     this.auth.logout().subscribe({

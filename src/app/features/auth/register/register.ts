@@ -27,6 +27,8 @@ export class RegisterComponent {
   
   passwordIcon = faEye;
 
+  selectedRole: string = 'Buyer';
+
   auth = inject(AuthService);
 
   fireStore = inject(Firestore);
@@ -39,6 +41,11 @@ export class RegisterComponent {
 
   router = inject(Router);
 
+  roles = [
+    'Buyer',
+    'Seller'
+  ];
+
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       name : ['', [Validators.required, Validators.minLength(3)]],
@@ -46,6 +53,11 @@ export class RegisterComponent {
       password : ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword : ['', [Validators.required, Validators.minLength(6)]]
     },{validators: this.passwordMatchValidator('password', 'confirmPassword')});
+  }
+
+  selectRole(event : Event) {
+    const element = event.target as HTMLSelectElement;
+    this.selectedRole = element.value;
   }
 
 
@@ -75,6 +87,7 @@ export class RegisterComponent {
             uid: value.user.uid,
             name: this.registerForm.get('name')?.value,
             email: this.registerForm.get('email')?.value,
+            role: this.selectedRole.toLowerCase(),
             createdAt: new Date()
           }).then(() => {
             alert('Registration successful!');
