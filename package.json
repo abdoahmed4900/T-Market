@@ -39,7 +39,8 @@
     "ng": "^0.0.0",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@angular/build": "^20.0.2",

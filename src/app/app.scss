@@ -2,3 +2,10 @@ main{
     transition: all 1s ease;
 }
 
+// animations 
+
+
+button:disabled{
+  background-color: grey;
+  opacity: 0.6;
+}

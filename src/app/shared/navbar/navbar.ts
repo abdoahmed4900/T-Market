@@ -1,17 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, Renderer2, ViewChild } from '@angular/core';
 import { WebsiteTitle } from "../website-title/website-title";
 import { CommonModule } from '@angular/common';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { AuthService } from '../../features/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../loader/loader';
 import { CacheService } from '../../core/cache.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [WebsiteTitle, CommonModule, FaIconComponent],
+  imports: [WebsiteTitle, CommonModule, FaIconComponent, RouterLinkActive,RouterLink],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })
@@ -26,8 +26,11 @@ export class Navbar {
 
   themeIcon : any;
 
-  matDialog = inject(MatDialog)
+  @ViewChild('box') box!: ElementRef;
 
+  matDialog = inject(MatDialog)
+  
+  constructor(private renderer: Renderer2){}
   getTheme(): string {
     return this.cacheService.get('theme') ?? 'light';
   }
@@ -57,6 +60,7 @@ export class Navbar {
     document.querySelector(".navbar-mobile")?.classList.toggle("navbar-mobile-hidden");
     document.querySelector(".navbar-mobile")?.classList.toggle("navbar-mobile-show");
   }
+
 
   logout() {
     let loader = this.matDialog.open(Loader,{

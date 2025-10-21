@@ -64,3 +64,23 @@ label{
     color: var(--primary-text-color);
     transition: all 0.3s ease;
 }
+
+@keyframes slideFromHorizon {
+    0%{
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0px)§;
+    }
+}
+
+button{
+  cursor: pointer;
+}
+
+button:disabled{
+  background-color: grey;
+  opacity: 0.6;
+}

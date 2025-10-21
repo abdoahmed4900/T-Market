@@ -1,0 +1,47 @@
+@if (product) {
+<main class="grid align md:grid-cols-2 gap-8 grid-cols-1 px-10 md:px-20 my-7 animate-slideFromTop">
+    <div class="img-slider relative h-[350px]">
+        <img class="rounded-xl w-full h-full animate-slideFromTop" [src]="product.imageUrls[currentImageIndex]">
+        <button class="absolute top-40 translate-y-[-50] left-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="prevImage()" [disabled]="currentImageIndex == 0" aria-roledescription="slide-to-previous-image"> ← </button>
+        <button class="absolute top-40 translate-y-[-50] right-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="nextImage()" [disabled]="currentImageIndex == product.imageUrls.length - 1" aria-roledescription="slide-to-next-image"> → </button>
+    </div>
+    <div class="product-detail flex flex-col items-start justify-start gap-4">
+        <h3 class="text-[24px] font-bold animate-slideFromHorizon leading-6">{{product.name}}</h3>
+        <h3 class="font-bold text-[18px] animate-slideFromHorizon">${{product.price}}</h3>
+        <p class="font-bold text-[16px] animate-slideFromHorizon">{{product.description}}</p>
+        <div class="cart-and-buy items-center flex gap-3 mt-2 animate-slideFromTop flex-row flex-wrap items-center">
+            <div class="input-container relative">
+                <input type="number" name="cart" id="cart" class="border-2 rounded-lg p-1 border-white text-[var(--primary-text-color)] text-center" placeholder="0" [(value)]="cartNumber"/>
+                <button class="absolute left-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="addToCart()" role="button">+</button>
+                <button class="absolute right-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="removeFromCart()" role="button">-</button>
+            </div>
+            <button class="text-white bg-[var(--primary-color)] rounded-xl p-2 text-[16px]"
+               >Add to cart</button>
+            <button class="bg-none border-1 p-2 rounded-xl text-[var(--primary-text-color)] text-[16px]">Buy now</button>
+        </div>
+        @if (product.reviews.length > 0) {
+            <section class="reviews flex flex-wrap flex-col gap-4">
+                @for (item of product.reviews; track $index) {
+                <div class="review flex flex-col gap-4">
+                    <h3 class="text-[15px] font-bold">{{item.user}}</h3>
+                    <div class="star-rating flex flex-row justify-between items-center">
+                         <div class="stars">
+                            @for (review of [1,2,3,4,5]; track $index) {
+                                @if (review > item.rating) {
+                                <span class="text-lg font-bold"><fa-icon [icon]="starIcon" style="color: grey;"></fa-icon></span>
+                                }@else {
+                                  <span class="text-lg font-bold"><fa-icon [icon]="starIcon" [ngStyle]="root.classList.contains('dark-theme') ? {'color':'yellow'} : {'color':'#ebeb4a'}"></fa-icon></span>
+                                }
+                            }
+                         </div>
+                    </div>
+                    <p class="text-[13px]">{{item.comment}}</p>
+                    </div>
+              }
+            </section>
+        }
+    </div>    
+</main>
+}@else {
+    <app-loader></app-loader>
+}
