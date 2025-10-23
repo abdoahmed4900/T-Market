@@ -43,8 +43,9 @@ export class Categories {
           this.filteredProducts = value;
           this.paginationService.allProducts = this.filteredProducts;
           this.paginationService.initializePagination();
-          this.showedProducts.set(this.paginationService.showedProducts);
-          this.showedPages.set(this.paginationService.showedPages);
+          this.showFilteration();
+          console.log(this.filteredProducts);
+          
       },
       error :(err) =>{
           this.isProductsLoaded.set(true);
@@ -60,11 +61,11 @@ export class Categories {
     this.isProductsLoaded.set(false);
     let minElement = document.getElementById('min') as HTMLInputElement;
     let maxElement = document.getElementById('max') as HTMLInputElement;
-    this.minPrice = Number(minElement.value);
-    this.maxPrice = Number(maxElement.value);
+    this.minPrice = Number(minElement.value) ?? 0;
+    this.maxPrice = Number(maxElement.value) ?? 10000;
     this.searchText = (document.getElementById('search') as HTMLInputElement).value;
     this.selectedCategory = (document.getElementById('categories') as HTMLInputElement).value;
-    this.rating = Number((document.getElementById('rating') as HTMLInputElement).value);
+    this.rating = Number((document.getElementById('rating') as HTMLInputElement).value) ?? 0;
     
     this.productsService.filterAllProducts(
         this.searchText,
@@ -78,10 +79,8 @@ export class Categories {
           this.filteredProducts = value ?? [];
           this.paginationService.allProducts = this.filteredProducts;
           this.paginationService.initializePagination();
-          this.showedProducts.set(this.paginationService.showedProducts);
-          this.showedPages.set(this.paginationService.showedPages);
-          this.allPages.set(this.paginationService.allPages);
-          this.currentPage.set(this.paginationService.currentPage);
+          this.showFilteration();
+          console.log(this.filteredProducts);
       },
       error : (err) =>{
           this.isProductsLoaded.set(true);
@@ -94,20 +93,19 @@ export class Categories {
 
    goNextPage(){
     this.paginationService.nextPage();
+    this.showFilteration();
+  }
+  goPreviousPage(){
+    this.paginationService.previousPage();
+    this.showFilteration();
+    console.log(this.showedProducts());
+  }
+
+  private showFilteration() {
     this.showedProducts.set(this.paginationService.showedProducts);
     this.allPages.set(this.paginationService.allPages);
     this.showedPages.set(this.paginationService.showedPages);
     this.currentPage.set(this.paginationService.currentPage);
-    console.log(this.showedPages());
-    console.log(this.allPages());
-  }
-  goPreviousPage(){
-    this.paginationService.previousPage();
-    this.showedProducts.set(this.paginationService.showedProducts) ;
-    this.allPages.set( this.paginationService.allPages);
-    this.showedPages.set(this.paginationService.showedPages);
-    this.currentPage.set(this.paginationService.currentPage);
-    console.log(this.showedProducts());
   }
 
   goToPage(page:number){

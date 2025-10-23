@@ -7,7 +7,7 @@
     <div class="rating-and-price flex items-center justify-between p-4">
         <span class="rating">
             @for (item of [1,2,3,4,5]; track $index) {
-                @if (item > rating) {
+                @if (item > product()?.rating!) {
                     <span class="text-lg font-bold"><fa-icon [icon]="starIcon" style="color: grey;"></fa-icon></span>
                 }@else {
                     <span class="text-lg font-bold"><fa-icon [icon]="starIcon" style="color:red" [ngStyle]="root.classList.contains('dark-theme') ? {'color':'yellow'} : {'color':'#ebeb4a'}"></fa-icon></span>

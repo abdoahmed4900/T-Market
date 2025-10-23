@@ -14,13 +14,7 @@ import { CommonModule } from '@angular/common';
 export class ProductCard {
   product = input<Product>();
 
-  rating!:number;
-
   starIcon = faStar;
 
   root = document.getElementsByTagName('html')[0];
-
-  ngOnInit(){
-    this.rating = Math.floor(this.product()!.rating);
-  }
 }

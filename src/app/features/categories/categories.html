@@ -1,5 +1,5 @@
-<main class="grid md:grid-cols-3 grid-cols-1 md:px-20 px-10 my-10 justify-start gap-5 max-w-[1500px] mx-auto">
-    <section class="search-section md:flex flex-col gap-10 col-span-1 hidden">
+<main class="grid md:grid-cols-3 grid-cols-1 md:px-20 px-10 my-10 justify-start gap-5 max-w-[1500px] mx-auto grow">
+    <section class="search-section flex flex-col gap-10 md:col-span-1 col-span-2">
         <input type="text" name="search" id="search" style="display: block !important;" class="border-1 p-2 rounded-xl" placeholder="Search" (input)="filterProducts()" value="">
         @if (categories) {
          <select name="categories" id="categories" class="text-[var(--primary-text-color)] font-bold text-[16px] border-1 p-2 rounded-xl" (change)="filterProducts()">
@@ -35,8 +35,8 @@
                 <app-product-card [product]="item"></app-product-card>
             }
         }@else {
-            <div class="no-products-found flex flex-col mx-auto">
-                <img src="https://cdn-icons-png.flaticon.com/512/1178/1178428.png" alt="no-products-image" class="w-[90%] h-[300px]">
+            <div class="no-products-found flex flex-col mx-auto col-span-3 md:col-span-2">
+                <img src="https://cdn-icons-png.flaticon.com/512/1178/1178428.png" alt="no-products-image" class="w-[90%] max-w-[260px]">
             </div>
         }
       }@else{
@@ -44,7 +44,7 @@
       }
     </section>
     @if (filteredProducts.length > 0) {
-        <section aria-roledescription="see-differenet-products" class="mx-auto col-span-3 flex items-center gap-3 mt-10 flex-wrap">
+        <section aria-roledescription="see-differenet-products" class="mx-auto col-span-3 flex items-center gap-3 mt-10 flex-wrap w-[100]">
                 <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goPreviousPage()" [disabled]="currentPage() == 1">Previous</button>
                 @for (item of showedPages(); track $index) {
                     <button class="text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goToPage(item)" [ngClass]="

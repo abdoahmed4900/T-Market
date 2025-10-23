@@ -1,7 +1,14 @@
 import { inject, Injectable } from "@angular/core";
 import { Product } from "../features/home/product";
 import { BehaviorSubject, map, Observable } from "rxjs";
-import { collection, collectionData, Firestore, Query, query, QueryFieldFilterConstraint, where } from "@angular/fire/firestore";
+import {
+    collection,
+    collectionData,
+    Firestore,
+    query,
+    QueryFieldFilterConstraint,
+    where,
+} from "@angular/fire/firestore";
 import { fireStoreCollections } from "../../environments/environment";
 
 @Injectable(
@@ -10,9 +17,6 @@ import { fireStoreCollections } from "../../environments/environment";
     }
 )
 export class ProductsService {
-    goToPage() {
-      throw new Error('Method not implemented.');
-    }
 
     productsSubject = new BehaviorSubject<Product[]>([]);
     products = this.productsSubject.asObservable();
@@ -51,40 +55,6 @@ export class ProductsService {
     return collectionData(q, { idField: 'id' }) as Observable<Product[]>;
     }
 
-    getProductsByCategory(category: string) {
-        return collectionData(
-            query(this.productsCollectionRef, 
-               where('category','==',category || category.toLowerCase())
-            )
-        ) as Observable<Product[]>;
-    }
-
-    getProductsByBrand(brand: string) {
-        return collectionData(
-           query(this.productsCollectionRef,where('brand','==',brand))
-        ) as Observable<Product[]>;
-    }
-
-    getProductByRating(rating: number){
-        return collectionData(query(this.productsCollectionRef,where('rating','<=',Math.floor(rating)))) as Observable<Product[]>
-    }
-
-    getProductsBySearchTerm(searchTerm: string) {
-        return new Observable<Product[]>(
-            (observer) => {
-                this.products.subscribe({
-                    next: (products) => {
-                        const filteredProducts = products.filter(product => 
-                            product.name.toLowerCase().includes(searchTerm.toLowerCase())
-                        );
-                        observer.next(filteredProducts);    
-                    },
-                    error: (error) => observer.error(error)
-                })
-            }
-        );
-    }
-
     getProductById(id:string){
         let product! : Product;
         this.productsSubject.value.forEach(element => {
@@ -98,29 +68,6 @@ export class ProductsService {
     readAllCategories(){
         return collectionData(query(this.categoriesCollectionRef));
     }
-
-    filterByPrice(minPrice?:number,maxPrice?:number){
-       let q : Query;
-
-       if(!minPrice && !maxPrice){
-          return this.getAllProducts();
-       }
-
-       if(minPrice){
-          q = query(
-          this.productsCollectionRef,
-          where('price', '>=', minPrice),
-          );
-       }
-       if(maxPrice){
-          q = query(
-          this.productsCollectionRef,
-          where('price', '<=', maxPrice),
-          );
-       }
-       return collectionData(q!,{idField: 'id'}) as Observable<Product[]>
-    }
-
 
     filterAllProducts(searchTerm:string,minPrice:number,maxPrice:number,category?:string,rating?:any) : Observable<Product[]>{
 
