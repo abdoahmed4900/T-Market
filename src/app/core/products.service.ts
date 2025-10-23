@@ -10,6 +10,9 @@ import { fireStoreCollections } from "../../environments/environment";
     }
 )
 export class ProductsService {
+    goToPage() {
+      throw new Error('Method not implemented.');
+    }
 
     productsSubject = new BehaviorSubject<Product[]>([]);
     products = this.productsSubject.asObservable();
@@ -143,5 +146,4 @@ export class ProductsService {
 
        return x;
     }
-    
 }

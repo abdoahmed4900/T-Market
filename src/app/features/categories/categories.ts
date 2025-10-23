@@ -5,20 +5,22 @@ import { Loader } from "../../shared/loader/loader";
 import { ProductCard } from "../../shared/product-card/product-card";
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
+import { PaginationService } from '../../core/pagination.service';
 
 
 @Component({
   selector: 'app-categories',
   imports: [Loader, ProductCard,MatSliderModule,CommonModule],
   templateUrl: './categories.html',
+  standalone: true,
+  providers: [
+    { provide: 'product', useValue: []}
+  ],
   styleUrl: './categories.scss'
 })
 export class Categories {
   productsService = inject(ProductsService);
   filteredProducts! : Product[];
-
-  
-
   categories!: string[];
   rating: any = 0;
   searchText = '';
@@ -27,7 +29,11 @@ export class Categories {
   maxPrice = 10000;
   productsNumber! : number;
   isProductsLoaded=signal<boolean>(false);
- 
+  paginationService = inject(PaginationService);
+  showedProducts =signal<Product[]>([]);
+  showedPages = signal<number[]>([]);
+  allPages =signal<number[]>([]);
+  currentPage=signal<number>(1);
 
   ngOnInit(): void {
     this.productsService.readAllCategories();
@@ -35,6 +41,10 @@ export class Categories {
       next:(value) =>{
           this.isProductsLoaded.set(true);
           this.filteredProducts = value;
+          this.paginationService.allProducts = this.filteredProducts;
+          this.paginationService.initializePagination();
+          this.showedProducts.set(this.paginationService.showedProducts);
+          this.showedPages.set(this.paginationService.showedPages);
       },
       error :(err) =>{
           this.isProductsLoaded.set(true);
@@ -47,7 +57,7 @@ export class Categories {
   }
 
   filterProducts(){
-          this.isProductsLoaded.set(false);
+    this.isProductsLoaded.set(false);
     let minElement = document.getElementById('min') as HTMLInputElement;
     let maxElement = document.getElementById('max') as HTMLInputElement;
     this.minPrice = Number(minElement.value);
@@ -66,18 +76,44 @@ export class Categories {
       next : (value) => {
           this.isProductsLoaded.set(true);
           this.filteredProducts = value ?? [];
+          this.paginationService.allProducts = this.filteredProducts;
+          this.paginationService.initializePagination();
+          this.showedProducts.set(this.paginationService.showedProducts);
+          this.showedPages.set(this.paginationService.showedPages);
+          this.allPages.set(this.paginationService.allPages);
+          this.currentPage.set(this.paginationService.currentPage);
       },
       error : (err) =>{
           this.isProductsLoaded.set(true);
           this.filteredProducts = [];
           console.log(err);
-          
       },
     });
     
   }
 
-  ngOnDestroy(): void {
-    this.filteredProducts = [];
+   goNextPage(){
+    this.paginationService.nextPage();
+    this.showedProducts.set(this.paginationService.showedProducts);
+    this.allPages.set(this.paginationService.allPages);
+    this.showedPages.set(this.paginationService.showedPages);
+    this.currentPage.set(this.paginationService.currentPage);
+    console.log(this.showedPages());
+    console.log(this.allPages());
+  }
+  goPreviousPage(){
+    this.paginationService.previousPage();
+    this.showedProducts.set(this.paginationService.showedProducts) ;
+    this.allPages.set( this.paginationService.allPages);
+    this.showedPages.set(this.paginationService.showedPages);
+    this.currentPage.set(this.paginationService.currentPage);
+    console.log(this.showedProducts());
+  }
+
+  goToPage(page:number){
+    this.paginationService.goToPage(page);
+    this.allPages.set(this.paginationService.allPages);
+    this.currentPage.set(page);
+    this.showedProducts.set(this.paginationService.showedProducts);
   }
 }
