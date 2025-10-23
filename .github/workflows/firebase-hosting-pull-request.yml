@@ -30,6 +30,7 @@ jobs:
           }
           };export const fireStoreCollections = {
             users: 'users',
+            categories: 'categories',
             products: 'products',};" > src/environments/environment.ts     
       - run: npm run build:ssr
       - uses: FirebaseExtended/action-hosting-deploy@v0

@@ -34,6 +34,7 @@ jobs:
           }
           };export const fireStoreCollections = {
             users: 'users',
+            categories: 'categories',
             products: 'products',};" > src/environments/environment.ts      
 
     - run: npm ci
