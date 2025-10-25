@@ -1,6 +1,7 @@
+import { Categories } from './../features/categories/categories';
 import { inject, Injectable } from "@angular/core";
 import { Product } from "../features/home/product";
-import { BehaviorSubject, map, Observable } from "rxjs";
+import { BehaviorSubject, map, Observable, take } from "rxjs";
 import {
     collection,
     collectionData,
@@ -9,7 +10,7 @@ import {
     QueryFieldFilterConstraint,
     where,
 } from "@angular/fire/firestore";
-import { fireStoreCollections } from "../../environments/environment";
+import { fireStoreCollections } from "../environments/environment.prod";
 
 @Injectable(
     {
@@ -18,37 +19,11 @@ import { fireStoreCollections } from "../../environments/environment";
 )
 export class ProductsService {
 
-    productsSubject = new BehaviorSubject<Product[]>([]);
-    products = this.productsSubject.asObservable();
+    products= new Observable<Product[]>();
     productsCollectionRef = collection(inject(Firestore),fireStoreCollections.products);
     categoriesCollectionRef = collection(inject(Firestore),fireStoreCollections.categories);
     productsData = collectionData(this.productsCollectionRef);
     categories!: string[];
-    constructor(){
-        this.getAllProducts().subscribe(
-            {
-                next : (value) => {
-                    this.productsSubject.next(value);
-                },
-                error: (err) => {
-                    this.productsSubject.next([]);
-                    console.log(err);
-                }
-            }
-        );
-        this.readAllCategories().subscribe(
-            {
-                next : (value) => {
-                    let l = value[0]['Categories'];
-                    this.categories = Object.values(l);
-                },
-                error : (err) => {
-                    console.log(err);
-                    this.categories = [];
-                },
-            }
-        );
-    }
 
     getAllProducts(): Observable<Product[]> {
     const q = query(this.productsCollectionRef);
@@ -57,16 +32,16 @@ export class ProductsService {
 
     getProductById(id:string){
         let product! : Product;
-        this.productsSubject.value.forEach(element => {
-             if(element.id == id){
-                product = element;
-             }
-        });
+
         return product;
     }
 
     readAllCategories(){
-        return collectionData(query(this.categoriesCollectionRef));
+        return collectionData(query(this.categoriesCollectionRef)).pipe(map(e => {
+          let cats :string[] = Object.values(e[0]['Categories']);
+          return cats;
+        })) as Observable<string[]>;
+
     }
 
     filterAllProducts(searchTerm:string,minPrice:number,maxPrice:number,category?:string,rating?:any) : Observable<Product[]>{
@@ -76,15 +51,15 @@ export class ProductsService {
         where('price','<=',maxPrice),
         where('rating','<=',rating == 0 || rating == 5 ? 5 : Math.floor(rating!))
        ];
-       
+
        if(category != 'All'){
         constraints.push(where('category','==',category))
        }
-    
+
        console.log(searchTerm);
-       
+
        let q = query(this.productsCollectionRef,...constraints);
-          
+
        let x = collectionData(q) as Observable<Product[]>;
 
        if(searchTerm != ''){

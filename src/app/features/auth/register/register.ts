@@ -8,9 +8,9 @@ import { getFirebaseErrorMessage } from '../../../core/methods';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
-import { fireStoreCollections } from '../../../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
+import { fireStoreCollections } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +24,7 @@ export class RegisterComponent {
   constructor(private fb : FormBuilder) { }
 
   isPasswordVisible: boolean = false;
-  
+
   passwordIcon = faEye;
 
   selectedRole: string = 'Buyer';

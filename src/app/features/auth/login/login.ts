@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
 import { CacheService } from '../../../core/cache.service';
 import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { fireStoreCollections } from '../../../../environments/environment';
+import { fireStoreCollections } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   loginForm !: FormGroup;
 
   cacheService = inject(CacheService);
-  
+
   fireStore = inject(Firestore);
 
   ngOnInit(): void {
@@ -70,9 +70,9 @@ export class LoginComponent implements OnInit {
         if(this.rememberMe){
           localStorage.setItem('isLogin', 'true');
         }
-        
+
         this.cacheService.set('user', JSON.stringify(value.user));
-        
+
         this.router.navigate(['/'], { replaceUrl: true });
       },
 
@@ -105,10 +105,10 @@ export class LoginComponent implements OnInit {
                 displayName: value.user.displayName,
                 createdAt: new Date(),
                 role: 'user',
-              }); 
+              });
             }
           });
-          
+
         },
 
         error: (err) => {

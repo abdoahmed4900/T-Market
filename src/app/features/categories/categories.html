@@ -1,37 +1,37 @@
 <main class="grid md:grid-cols-3 grid-cols-1 md:px-20 px-10 my-10 justify-start gap-5 max-w-[1500px] mx-auto grow">
     <section class="search-section flex flex-col gap-10 md:col-span-1 col-span-2">
-        <input type="text" name="search" id="search" style="display: block !important;" class="border-1 p-2 rounded-xl" placeholder="Search" (input)="filterProducts()" value="">
-        @if (categories) {
-         <select name="categories" id="categories" class="text-[var(--primary-text-color)] font-bold text-[16px] border-1 p-2 rounded-xl" (change)="filterProducts()">
-          <option value="All">All</option> 
-          @for (item of categories; track $index) {
-            <option [value]="item">{{item}}</option>
+        <input type="text" name="search" id="search" style="display: block !important;" class="border-1 p-2 rounded-xl" placeholder="Search" (input)="filterProducts()" [(ngModel)]="searchText">
+
+         <select name="categories" id="categories" class="text-[var(--primary-text-color)] font-bold text-[16px] border-1 p-2 rounded-xl" (change)="filterProducts()" [(ngModel)]="selectedCategory">
+          <option value="All" class="text-[var(--primary-text-color)] bg-[var(--main-bg-color)]">All</option>
+          @for (item of (categories | async); track $index) {
+            <option [value]="item" class="text-[var(--primary-text-color)] bg-[var(--main-bg-color)]">{{item}}</option>
           }
           </select>
-        }
+
        <label for="price" class="text-xl text-[var(--primary-text-color)] font-bold">Price</label>
        <section class="min-max-section flex gap-3">
          <mat-slider class="w-full!" min="0" max="10000" step="10">
-          <input matSliderStartThumb (input)="filterProducts()" id="min">
-          <input matSliderEndThumb (input)="filterProducts()" id="max">
+          <input matSliderStartThumb (input)="filterProducts()" id="min" [(ngModel)]="minPrice">
+          <input matSliderEndThumb (input)="filterProducts()" id="max" [(ngModel)]="maxPrice">
          </mat-slider>
        </section>
        <div class="slider-values flex justify-between items-center" aria-label="price-slider-values">
-            <label for="min" class="text-[16px]!">{{minPrice}}</label>
-            <label for="min" class="text-[16px]!">{{maxPrice}}</label>
+            <label for="min" class="text-[16px]!">{{minPrice()}}</label>
+            <label for="min" class="text-[16px]!">{{maxPrice()}}</label>
        </div>
-       <output class="text-xl text-[var(--primary-text-color)] font-bold">Star Rating</output>
-       <input type="range" name="rating" id="rating" min="0" max="5" (change)="filterProducts()" value="0">
-       @if (rating > 0 && rating < 5) {
-        <output class="text-lg text-[var(--primary-text-color)] font-bold">{{rating}} Stars Or Less Products</output>
-       }@else if(rating == 0 || rating == 5){
+       <output class="text-xl text-[var(--primary-text-color)] font-bold">Star rating</output>
+       <input type="range" name="rating" id="rating" min="0" max="5" (change)="filterProducts()" value="0" [(ngModel)]="rating">
+       @if (rating() > 0 && rating() < 5) {
+        <output class="text-lg text-[var(--primary-text-color)] font-bold">{{rating()}} Stars Or Less Products</output>
+       }@else if(rating() == 0 || rating() == 5){
         <output class="text-lg text-[var(--primary-text-color)] font-bold">All Products</output>
        }
     </section>
     <section class="search-results grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
       @if (isProductsLoaded()) {
-        @if (filteredProducts.length > 0) {
-            @for (item of showedProducts(); track $index) {
+        @if ((filteredProducts | async)!.length > 0) {
+            @for (item of (filteredProducts | async); track $index) {
                 <app-product-card [product]="item"></app-product-card>
             }
         }@else {
@@ -43,7 +43,7 @@
         <app-loader></app-loader>
       }
     </section>
-    @if (filteredProducts.length > 0) {
+    @if ((filteredProducts | async)!.length > 0) {
         <section aria-roledescription="see-differenet-products" class="mx-auto col-span-3 flex items-center gap-3 mt-10 flex-wrap w-[100]">
                 <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goPreviousPage()" [disabled]="currentPage() == 1">Previous</button>
                 @for (item of showedPages(); track $index) {
