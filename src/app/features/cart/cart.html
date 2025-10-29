@@ -1,0 +1,15 @@
+@let cartProducts = (products | async);
+<main class="md:px-20 px-10 my-10 max-w-[1500px] xl:mx-auto">
+  @if (cartProducts) {
+    <div class="products mt-5 grid grid-cols-1 gap-5 justify-between items-start">
+      @for (item of cartProducts; track $index) {
+        <app-cart-card [productId]="item.id!" [quantity]="item.quantity" [cartProduct]="item"></app-cart-card>
+      }
+    </div>
+    <section class="flex flex-row mt-8 slideFromLeftAnimation justify-end flex-wrap">
+        <h3 class="text-[var(--primary-text-color)] font-bold text-xl">Total Price : {{totalPrice | async | currency}}</h3>
+    </section>
+  }@else {
+    <app-loader></app-loader>
+  }
+</main>

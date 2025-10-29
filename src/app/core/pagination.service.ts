@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Product } from "../features/home/product";
+import { Product } from "./product";
 
 @Injectable(
     {providedIn : 'root'}
@@ -29,7 +29,11 @@ export class PaginationService{
         }
     }
     public nextPage(){
-        this.showedProducts = this.allProducts.slice(this.currentPage++ * this.productsPerPage,this.currentPage * this.productsPerPage);
+        this.currentPage++;
+        this.showedProducts = this.allProducts.slice(
+          (this.currentPage - 1) * this.productsPerPage,
+          this.currentPage * this.productsPerPage
+        );
         if((this.currentPage - 1) % 3 == 0){
             this.changeShowedPages(this.currentPage - 1,this.currentPage + 2);
         }

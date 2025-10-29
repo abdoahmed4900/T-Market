@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
 import { CacheService } from '../../../core/cache.service';
 import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { fireStoreCollections } from '../../../environments/environment.prod';
+import { fireStoreCollections } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -70,8 +70,9 @@ export class LoginComponent implements OnInit {
         if(this.rememberMe){
           localStorage.setItem('isLogin', 'true');
         }
-
-        this.cacheService.set('user', JSON.stringify(value.user));
+        let user = JSON.parse(JSON.stringify(value.user));
+        this.cacheService.set('token', user.uid);
+        this.cacheService.set('role', 'buyer');
 
         this.router.navigate(['/'], { replaceUrl: true });
       },

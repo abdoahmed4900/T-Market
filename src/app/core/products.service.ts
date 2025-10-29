@@ -1,16 +1,16 @@
-import { Categories } from './../features/categories/categories';
 import { inject, Injectable } from "@angular/core";
-import { Product } from "../features/home/product";
-import { BehaviorSubject, map, Observable, take } from "rxjs";
+import { from, map, Observable } from "rxjs";
 import {
     collection,
     collectionData,
     Firestore,
+    getDocs,
     query,
     QueryFieldFilterConstraint,
     where,
 } from "@angular/fire/firestore";
-import { fireStoreCollections } from "../environments/environment.prod";
+import { fireStoreCollections } from '../../environments/environment.prod';
+import { Product } from "./product";
 
 @Injectable(
     {
@@ -31,9 +31,13 @@ export class ProductsService {
     }
 
     getProductById(id:string){
-        let product! : Product;
-
-        return product;
+        const q = query(this.productsCollectionRef, where('id', '==', id));
+        return from(getDocs(q)).pipe<Product>(
+          map(snapshot => {
+          if (snapshot.empty) return null as any;
+            return snapshot.docs[0].data() as Product;
+          })
+        );
     }
 
     readAllCategories(){
@@ -49,7 +53,7 @@ export class ProductsService {
         let constraints : QueryFieldFilterConstraint[] = [
         where('price','>=',minPrice),
         where('price','<=',maxPrice),
-        where('rating','<=',rating == 0 || rating == 5 ? 5 : Math.floor(rating!))
+        where('rating','>=',rating == 0 || rating == 5 || rating == 'All' ? 0 : Math.floor(rating!))
        ];
 
        if(category != 'All'){

@@ -1,6 +1,6 @@
 <section class="product-card flex flex-col justify-between gap-3 border-2 rounded-lg shadow-md overflow-hidden transition hover:translate-y-[-5px] duration-300 ease-in-out animate-slideFromTop">
     <div class="product-content flex flex-col">
-        <img class="nav-image h-[250px] rounded-t-md transition hover:scale-105 hover:rotate-1 duration-300 ease-in-out" [src]="product()?.imageUrls![0]" alt="{{product()?.name}}" />
+        <img loading="lazy" class="nav-image h-[250px] rounded-t-md transition hover:scale-105 hover:rotate-1 duration-300 ease-in-out" [src]="product()?.imageUrls![0]" alt="{{product()?.name}}" />
         <h3 class="p-4 text-lg font-bold">{{product()?.name}}</h3>
         <p class="h-[75px] line-clamp-2 p-4 pe-1 text-lg font-bold">{{product()?.description}}</p>
     </div>
@@ -17,7 +17,7 @@
         <span class="price text-lg font-bold">${{product()?.price}}</span>
     </div>
     <div class="actions flex md:flex-row flex-col gap-y-3 gap-x-2 md:items-center items-start flex-wrap p-4">
-        <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-2/4 text-white hover:bg-purple-700 w-full">Add to Cart</button>
+        <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-2/4 text-white hover:bg-purple-700 w-full" (click)="addToCart(product()!.id!,product()!.price)">Add to Cart</button>
         <a [routerLink]="['/product',product()!.id]" class="view-details-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-1/4 w-full text-white hover:bg-purple-700 text-center">View</a>
         <button class="save-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-1/4 text-white w-full hover:bg-purple-700">Save</button>
     </div>

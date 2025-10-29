@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
-import { fireStoreCollections } from '../../../environments/environment.prod';
+import { fireStoreCollections } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-register',

@@ -1,14 +1,14 @@
-@if (product) {
+@if (product | async) {
 <main class="grid align md:grid-cols-2 gap-8 grid-cols-1 px-10 md:px-20 my-7 animate-slideFromTop max-w-[1500px] mx-auto">
-    <div class="img-slider relative h-[350px]">
-        <img class="rounded-xl w-full h-full animate-slideFromTop" [src]="product.imageUrls[currentImageIndex]">
-        <button class="absolute top-40 translate-y-[-50] left-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="prevImage()" [disabled]="currentImageIndex == 0" aria-roledescription="slide-to-previous-image"> ← </button>
-        <button class="absolute top-40 translate-y-[-50] right-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="nextImage()" [disabled]="currentImageIndex == product.imageUrls.length - 1" aria-roledescription="slide-to-next-image"> → </button>
+    <div class="img-slider relative h-[350px] md:h-full">
+        <img class="rounded-xl w-full h-full animate-slideFromTop" [src]="(product | async)!.imageUrls[currentImageIndex]">
+        <button class="absolute md:top-50 top-40 translate-y-[-50] left-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="prevImage()" [disabled]="currentImageIndex == 0" aria-roledescription="slide-to-previous-image"> ← </button>
+        <button class="absolute md:top-50 top-40 translate-y-[-50] right-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="nextImage()" [disabled]="currentImageIndex ==  imagesNumber - 1" aria-roledescription="slide-to-next-image"> → </button>
     </div>
-    <div class="product-detail flex flex-col items-start justify-start gap-4">
-        <h3 class="text-[24px] font-bold animate-slideFromHorizon leading-6">{{product.name}}</h3>
-        <h3 class="font-bold text-[18px] animate-slideFromHorizon">${{product.price}}</h3>
-        <p class="font-bold text-[16px] animate-slideFromHorizon">{{product.description}}</p>
+    <div class="product-detail flex flex-col items-start justify-between gap-4">
+        <h3 class="text-[24px] font-bold animate-slideFromHorizon leading-6">{{(product | async)!.name}}</h3>
+        <h3 class="font-bold text-[18px] animate-slideFromHorizon">${{(product | async)!.price}}</h3>
+        <p class="font-bold text-[16px] animate-slideFromHorizon">{{(product | async)!.description}}</p>
         <div class="cart-and-buy items-center flex gap-3 mt-2 animate-slideFromTop flex-row flex-wrap items-center">
             <div class="input-container relative">
                 <input type="number" name="cart" id="cart" class="border-2 rounded-lg p-1 border-white text-[var(--primary-text-color)] text-center" placeholder="0" [(value)]="cartNumber"/>
@@ -17,11 +17,10 @@
             </div>
             <button class="text-white bg-[var(--primary-color)] rounded-xl p-2 text-[16px]"
                >Add to cart</button>
-            <button class="bg-none border-1 p-2 rounded-xl text-[var(--primary-text-color)] text-[16px]">Buy now</button>
         </div>
-        @if (product.reviews.length > 0) {
+        @if ((product | async)!.reviews.length > 0) {
             <section class="reviews flex flex-wrap flex-col gap-4">
-                @for (item of product.reviews; track $index) {
+                @for (item of (product | async)!.reviews; track $index) {
                 <div class="review flex flex-col gap-4">
                     <h3 class="text-[15px] font-bold">{{item.user}}</h3>
                     <div class="star-rating flex flex-row justify-between items-center">

@@ -12,13 +12,13 @@
        <label for="price" class="text-xl text-[var(--primary-text-color)] font-bold">Price</label>
        <section class="min-max-section flex gap-3">
          <mat-slider class="w-full!" min="0" max="10000" step="10">
-          <input matSliderStartThumb (input)="filterProducts()" id="min" [(ngModel)]="minPrice">
-          <input matSliderEndThumb (input)="filterProducts()" id="max" [(ngModel)]="maxPrice">
+          <input matSliderStartThumb (input)="filterProducts()" id="min" [(ngModel)]="minPrice" (input)="changeMinPrice($event)">
+          <input matSliderEndThumb (input)="filterProducts()" id="max" [(ngModel)]="maxPrice" (input)="changeMaxPrice($event)">
          </mat-slider>
        </section>
        <div class="slider-values flex justify-between items-center" aria-label="price-slider-values">
-            <label for="min" class="text-[16px]!">{{minPrice()}}</label>
-            <label for="min" class="text-[16px]!">{{maxPrice()}}</label>
+            <label for="min" class="text-[16px]!">{{minPrice}}</label>
+            <label for="max" class="text-[16px]!">{{maxPrice}}</label>
        </div>
        <output class="text-xl text-[var(--primary-text-color)] font-bold">Star rating</output>
        <input type="range" name="rating" id="rating" min="0" max="5" (change)="filterProducts()" value="0" [(ngModel)]="rating">
@@ -28,30 +28,35 @@
         <output class="text-lg text-[var(--primary-text-color)] font-bold">All Products</output>
        }
     </section>
-    <section class="search-results grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
-      @if (isProductsLoaded()) {
-        @if ((filteredProducts | async)!.length > 0) {
-            @for (item of (filteredProducts | async); track $index) {
+    <section class="search-results grid grid-cols-[repeat(md:auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
+        @if ((filteredProducts | async) != null) {
+          @for (item of (filteredProducts | async); track $index) {
                 <app-product-card [product]="item"></app-product-card>
-            }
-        }@else {
-            <div class="no-products-found flex flex-col mx-auto col-span-3 md:col-span-2">
-                <img src="https://cdn-icons-png.flaticon.com/512/1178/1178428.png" alt="no-products-image" class="w-[90%] max-w-[260px]">
-            </div>
-        }
-      }@else{
+          }
+        }@else{
         <app-loader></app-loader>
-      }
+        }
+
+       @if(allPages().length == 0){
+        <div class="no-products-found flex flex-col mx-auto col-span-3">
+          <img src="https://cdn-icons-png.flaticon.com/512/1178/1178428.png" alt="no-products-image" class="w-[90%] max-w-[260px]">
+        </div>
+        }
+      
     </section>
-    @if ((filteredProducts | async)!.length > 0) {
-        <section aria-roledescription="see-differenet-products" class="mx-auto col-span-3 flex items-center gap-3 mt-10 flex-wrap w-[100]">
-                <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goPreviousPage()" [disabled]="currentPage() == 1">Previous</button>
+
+    <section aria-roledescription="see-differenet-products" class="mx-auto col-span-3 flex items-center gap-3 mt-10 flex-wrap w-[100]">
+                @if (allPages().length > 0) {
+                  <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goPreviousPage()" [disabled]="currentPage() == 1">Previous</button>
+                }
                 @for (item of showedPages(); track $index) {
                     <button class="text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goToPage(item)" [ngClass]="
                       item == currentPage() ? 'bg-purple-700' : 'bg-[var(----primary-color)]'
                     ">{{item}}</button>
                 }
-                <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goNextPage()" [disabled]="currentPage() == allPages().length">Next</button>
-        </section>
-    }
+                @if (allPages().length > 0) {
+                    <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goNextPage()" [disabled]="currentPage() == allPages().length">Next</button>
+                }
+      </section>
+    
 </main>

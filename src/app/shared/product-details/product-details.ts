@@ -1,12 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../core/products.service';
-import { Product } from '../../features/home/product';
 import { CommonModule } from '@angular/common';
 import { Loader } from "../loader/loader";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Product } from '../../core/product';
+import { map, Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -20,7 +21,7 @@ export class ProductDetails {
 
   productsService = inject(ProductsService);
 
-  product!: Product;
+  product!: Observable<Product>;
 
   cartNumber = 0;
 
@@ -31,10 +32,23 @@ export class ProductDetails {
   starIcon = faStar;
 
   currentImageIndex = 0;
+
+  imagesNumber = 0;
+
+  isProductLoaded = signal<boolean>(false);
+
   ngOnInit(){
     this.route.paramMap.subscribe({
       next : (value) =>{
-          this.product = this.productsService.getProductById(value.get('id')!);
+          this.isProductLoaded.set(false)
+          this.product = this.productsService.getProductById(value.get('id')!).pipe(
+            map((p) => { 
+              this.isProductLoaded.set(true); 
+              console.log(this.isProductLoaded());
+              return p;
+            }),
+            tap((p) => {this.imagesNumber = p.imageUrls.length})
+          );
       },
     });
   }
@@ -43,13 +57,15 @@ export class ProductDetails {
     this.cartNumber++;
   }
   removeFromCart(){
-    if(this.cartNumber > 0){
+    if(this.currentImageIndex > 0){
       this.cartNumber--;
+            console.log(this.currentImageIndex);
+
     }
   }
 
   nextImage(){
-    if(this.currentImageIndex != this.product.imageUrls.length - 1){
+    if(this.currentImageIndex != this.imagesNumber - 1){
       this.currentImageIndex++;
     }
   }
