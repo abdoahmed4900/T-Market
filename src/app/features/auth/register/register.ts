@@ -7,7 +7,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { getFirebaseErrorMessage } from '../../../core/methods';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
 import { fireStoreCollections } from '../../../../environments/environment.prod';
@@ -80,7 +80,6 @@ export class RegisterComponent {
       })
       this.auth.register(this.registerForm.get('email')?.value, this.registerForm.get('password')?.value).subscribe({
       next: (value) => {
-          // console.log(value.user);
           dialogRef.close();
           let users = collection(this.fireStore, fireStoreCollections.users);
           addDoc(users, {
@@ -89,7 +88,17 @@ export class RegisterComponent {
             email: this.registerForm.get('email')?.value,
             role: this.selectedRole.toLowerCase(),
             createdAt: new Date()
-          }).then(() => {
+          }).then(async (val) => {      
+            const userData : User ={
+              uid: value.user.uid,
+              displayName: this.registerForm.get('name')?.value,
+              email: this.registerForm.get('email')?.value,
+              role: this.selectedRole.toLowerCase(),
+              createdAt: new Date(),
+              cartProducts: [],
+            };
+            await setDoc(doc(this.fireStore, fireStoreCollections.users, value.user.uid), userData);
+            await deleteDoc(doc(this.fireStore, fireStoreCollections.users, val.id));
             alert('Registration successful!');
             this.registerForm.reset();
             this.router.navigate(['/login'], { replaceUrl: true });

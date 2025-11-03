@@ -8,6 +8,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Product } from '../../core/product';
 import { map, Observable, tap } from 'rxjs';
+import { CartService } from '../../core/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -20,10 +21,11 @@ export class ProductDetails {
   route = inject(ActivatedRoute);
 
   productsService = inject(ProductsService);
+  cartService = inject(CartService);
 
   product!: Observable<Product>;
 
-  cartNumber = 0;
+  cartNumber = 1;
 
   root = document.getElementsByTagName('html')[0];
 
@@ -34,6 +36,8 @@ export class ProductDetails {
   currentImageIndex = 0;
 
   imagesNumber = 0;
+
+  price!:number;
 
   isProductLoaded = signal<boolean>(false);
 
@@ -47,21 +51,21 @@ export class ProductDetails {
               console.log(this.isProductLoaded());
               return p;
             }),
-            tap((p) => {this.imagesNumber = p.imageUrls.length})
+            tap((p) => {this.imagesNumber = p.imageUrls.length;this.price = p.price; this.id = p.id!;})
           );
       },
     });
   }
 
   addToCart(){
+    this.cartService.addProductToCart(this.id,this.price,this.cartNumber); 
+  }
+
+  increaseCartNumber(){
     this.cartNumber++;
   }
-  removeFromCart(){
-    if(this.currentImageIndex > 0){
-      this.cartNumber--;
-            console.log(this.currentImageIndex);
-
-    }
+  decreaseCartNumber(){
+    this.cartNumber--;
   }
 
   nextImage(){

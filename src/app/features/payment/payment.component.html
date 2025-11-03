@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-5 border-1 justify-start items-start p-4 rounded-lg max-w-[1500px] xl:mx-auto bg-[var(--main-bg-color)] text-[var(--primary-text-color)] shadow-md">
+  <h3 class="text-[var(--primary-text-color)] text-lg font-bold slideFromRightAnimation">Payment Form</h3>
+
+  <!-- Cardholder name -->
+  <div class="w-full flex flex-col">
+    <label for="cardholder-name">Cardholder Name</label>
+    <input id="cardholder-name" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="text" #cardHolderName />
+  </div>
+
+  <!-- Card number -->
+  <div class="relative flex flex-col w-full">
+    <label>Card Number</label>
+    <div id="card-number-element" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"></div>
+     @if(brandIcon() != ''){
+        <img [src]="brandIcon()" alt="Card Brand" width="40" class="ms-2" style="display: inline-block;position: absolute;top: 37px;right:5px;transform: translateY(-38%);border-radius: 10px;height: 29px;width: 35px;"/>
+    }
+  </div>
+
+  <!-- Expiry date -->
+  <div class="flex flex-col w-full">
+    <label>Expiry Date</label>
+    <div id="card-expiry-element" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl" aria-placeholder="Expiry Date"></div>
+  </div>
+
+  <!-- CVC -->
+  <div class="flex flex-col w-full">
+    <label>CVC</label>
+    <div id="card-cvc-element"class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl" aria-placeholder="Cvc"></div>
+  </div>
+
+  <button class="p-4 bg-[var(--primary-color)] text-white rounded-xl self-end hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out" (click)="pay(cardHolderName.value)">Pay</button>
+</div>

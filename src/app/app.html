@@ -1,5 +1,7 @@
-<app-navbar></app-navbar>
-<main class="flex h-full flex-col mb-auto  bg-[var(--main-bg-color)]" [ngClass]="isLogin() ? 'justify-start' : 'justify-center'">
-    <router-outlet></router-outlet>
-    <app-footer class="mt-auto max-h-[300px]"></app-footer>
-</main>
+<div class="h-full flex flex-col">
+    <app-navbar></app-navbar>
+    <main class="bg-[var(--main-bg-color)] grow mt-auto" [ngClass]="isLogin() ? 'justify-start' : 'justify-center'">
+      <router-outlet class="justify-self-center flex flex-col items-center"></router-outlet>
+    </main>
+    <app-footer class="h-[300px]"></app-footer>
+</div>

@@ -28,7 +28,10 @@ jobs:
           appId: '${{ secrets.APPID }}',
           measurementId: '${{ secrets.MEASUREMENTID }}'
           }
-          };export const fireStoreCollections = {
+          };
+          export const stripePublicKey = '${{ secrets.STRIPE_PUBLIC_KEY }}';
+          export const stripeSecretKey = '${{ secrets.STRIPE_SECRET_KEY }}';
+          export const fireStoreCollections = {
             users: 'users',
             categories: 'categories',
             products: 'products',};" > src/environments/environment.ts     

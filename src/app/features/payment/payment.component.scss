@@ -1,0 +1,13 @@
+#card-element.StripeElement--focus {
+    border-color: #5a67d8;
+    background-color: #edf2f7;
+}
+
+#card-element.StripeElement--invalid {
+    border-color: #e53e3e;
+}
+
+#card-element.StripeElement--focus {
+    border-color: #5a67d8;
+    box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.25);
+}

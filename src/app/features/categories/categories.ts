@@ -46,13 +46,6 @@ export class Categories {
       products = this.paginationService.showedProducts;
       return products;
     }));
-    this.cartService.getAllCartProducts().subscribe(
-      {
-        next : (value:any) =>{
-            console.log(value);
-        },
-      }
-    )
   }
 
   changeMinPrice(event : Event){

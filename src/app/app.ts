@@ -6,6 +6,8 @@ import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { CacheService } from './core/cache.service';
+import { CartService } from './core/cart.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -20,8 +22,9 @@ export class App {
   theme:string = 'light';
   themeIcon = faMoon;
   cacheService = inject(CacheService);
+  cartService = inject(CartService);
   router = inject(Router);
-
+  cartProductsSub! : Subscription;
 
 
   ngOnInit(): void {
@@ -69,5 +72,9 @@ export class App {
        'auth/popup-closed-by-user': 'Login popup closed before completion.',
       };
       return messages[code] || 'An unknown error occurred.';
+  }
+
+  ngOnDestroy(): void {
+    this.cartProductsSub?.unsubscribe();
   }
 }

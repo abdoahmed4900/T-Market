@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { WebsiteTitle } from "../website-title/website-title";
 import { CommonModule } from '@angular/common';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,8 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../loader/loader';
 import { CacheService } from '../../core/cache.service';
+import { CartService } from '../../core/cart.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -28,9 +30,18 @@ export class Navbar {
 
   @ViewChild('box') box!: ElementRef;
 
-  matDialog = inject(MatDialog)
+  matDialog = inject(MatDialog);
+
+  cartService = inject(CartService);
+
+  totalCartProductsNumber$ = this.cartService.totalCartProductsNumber$;
+
+  cartSubscription!: Subscription;
+
+  isLoggedIn! : Subscription;
+
+  cartNumber = signal<number>(0);
   
-  constructor(private renderer: Renderer2){}
   getTheme(): string {
     return this.cacheService.get('theme') ?? 'light';
   }
@@ -43,8 +54,11 @@ export class Navbar {
     }
    });
    this.themeIcon = this.getTheme() == 'light' ? faMoon : faSun;
-   this.authService.isLoggedIn$.subscribe((status) => {
+   this.isLoggedIn = this.authService.isLoggedIn$.subscribe((status) => {
     this.isLogin = status;
+   });
+   this.cartSubscription = this.cartService.getAllCartProducts().subscribe({
+
    });
   }
 
@@ -79,5 +93,10 @@ export class Navbar {
         // console.log(err);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.isLoggedIn.unsubscribe();
+    this.cartSubscription.unsubscribe();
   }
 }

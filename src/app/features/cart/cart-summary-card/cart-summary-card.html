@@ -1,0 +1,16 @@
+<div class="summary-section border-1 col-span-1 h-full p-4 rounded-xl flex flex-col gap-5 slideFromRightAnimation">
+  <h2 class="text-lg font-bold slideFromRightAnimation">Total Summary</h2>
+  @for (item of cartProducts | async; track $index) {
+      <div class="summary-item flex flex-row justify-between items-center slideFromRightAnimation">
+      <p class="font-bold text-var[(--primary-text-color)] slideFromRightAnimation">{{item.name}}</p>
+          <p class="font-bold text-var[(--primary-text-color)] slideFromRightAnimation">{{(item.quantity! * item.price!) | currency}}</p>
+      </div>
+      <p>
+          {{item.quantity}} X {{item.price | currency}} 
+      </p>
+      } 
+      <hr>
+    <section class="slideFromRightAnimation flex flex-row mt-8 slideFromLeftAnimation justify-end flex-wrap">
+      <h3 class="text-[var(--primary-text-color)] font-bold text-xl slideFromRightAnimation">Total Price : {{totalPrice | async | currency}}</h3>
+    </section>
+</div>

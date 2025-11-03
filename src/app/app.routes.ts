@@ -6,6 +6,7 @@ import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { ProductDetails } from './shared/product-details/product-details';
 import { Categories } from './features/categories/categories';
 import { CartComponent } from './features/cart/cart';
+import { Checkout } from './features/checkout/checkout';
 
 export const routes: Routes = [
     {path: '',redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
     {path: 'reset-password',component: ResetPassword},
     {path: 'product/:id',component: ProductDetails},
     {path: 'cart',component: CartComponent},
+    {path: 'checkout',component: Checkout},
     // {path: 'dashboard',},
     // {path: 'profile',},
     // {path : 'product/:id',},

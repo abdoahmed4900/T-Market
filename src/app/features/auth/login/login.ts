@@ -1,8 +1,7 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { User } from '../user';
 import { getFirebaseErrorMessage } from '../../../core/methods';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -44,8 +43,6 @@ export class LoginComponent implements OnInit {
 
   auth = inject(AuthService);
 
-  user = signal<User | null>(null);
-
   router = inject(Router);
 
   toggleRememberMe(){
@@ -63,14 +60,14 @@ export class LoginComponent implements OnInit {
       disableClose: true,
     });
       this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).subscribe({
-      next: (value) => {
+      next: async (value) => {
         dialogRef.close();
-        this.user.set(value.user);
         this.auth.isLoginSubject.next('true');
         if(this.rememberMe){
           localStorage.setItem('isLogin', 'true');
         }
         let user = JSON.parse(JSON.stringify(value.user));
+        console.log(user.uid);
         this.cacheService.set('token', user.uid);
         this.cacheService.set('role', 'buyer');
 
@@ -90,7 +87,6 @@ export class LoginComponent implements OnInit {
     this.auth.loginWithGoogle().subscribe(
       {
         next: (value) => {
-          this.user.set(value.user);
           this.auth.isLoginSubject.next('true');
           this.cacheService.set('user', JSON.stringify(value.user));
           localStorage.setItem('isLogin', 'true');
@@ -122,10 +118,9 @@ export class LoginComponent implements OnInit {
   logout() {
     this.auth.logout().subscribe({
       next: () => {
-          this.user.set(null);
           this.auth.isLoginSubject.next('false');
           this.cacheService.remove('isLogin');
-          this.cacheService.remove('user');
+          this.cacheService.remove('token');
           this.router.navigate(['/login'], { replaceUrl: true });
       },
 

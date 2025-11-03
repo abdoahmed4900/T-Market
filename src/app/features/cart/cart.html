@@ -1,14 +1,27 @@
 @let cartProducts = (products | async);
-<main class="md:px-20 px-10 my-10 max-w-[1500px] xl:mx-auto">
+<main class="md:px-20 px-10 max-w-[1500px] xl:mx-auto flex flex-col w-full" [ngClass]="
+  (cartProducts!.length == 0) ? 'h-full' : 'h-auto'
+">
   @if (cartProducts) {
-    <div class="products mt-5 grid grid-cols-1 gap-5 justify-between items-start">
-      @for (item of cartProducts; track $index) {
-        <app-cart-card [productId]="item.id!" [quantity]="item.quantity" [cartProduct]="item"></app-cart-card>
-      }
+    <div class="products mt-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 flex flex-col gap-6">
+        @for (item of cartProducts; track item.id) {
+           <app-cart-card [productId]="item.id!" [quantity]="item.quantity" [cartProduct]="item"></app-cart-card>
+        }
+      </div>
+        @if((totalPrice | async) != 0){ 
+         <div class="cart-summary-section flex flex-col gap-4">
+           <app-cart-summary-card class="size-fit w-full"></app-cart-summary-card>
+           <button class="bg-[var(--primary-color)] text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromRightAnimation hover:bg-purple-700 self-end" routerLink="/checkout">Checkout</button>
+         </div>
+        }
     </div>
-    <section class="flex flex-row mt-8 slideFromLeftAnimation justify-end flex-wrap">
-        <h3 class="text-[var(--primary-text-color)] font-bold text-xl">Total Price : {{totalPrice | async | currency}}</h3>
-    </section>
+    @if((totalPrice | async) == 0){
+      <section class="flex flex-col h-full items-center justify-center slideFromLeftAnimation flex-wrap">
+        <img src="https://cdn-icons-png.flaticon.com/512/2762/2762885.png" alt="empty cart" class="w-40 h-40"/>
+         <h3 class="text-[var(--primary-text-color)] font-bold text-xl">Your Cart is Empty</h3>
+      </section>
+    }
   }@else {
     <app-loader></app-loader>
   }
