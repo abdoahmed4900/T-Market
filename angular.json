@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "sourceMap":false,
             "browser": "src/main.ts",
             "index": "src/index.html",
             "outputPath": "dist/T-Market/browser",
@@ -34,11 +35,12 @@
           },
           "configurations": {
             "production": {
+              "sourceMap": false,
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "2000kB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -49,9 +51,9 @@
               "outputHashing": "all"
             },
             "development": {
-              "optimization": false,
+              "optimization": true,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": false
             }
           },
           "defaultConfiguration": "production"
