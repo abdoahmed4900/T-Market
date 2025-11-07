@@ -22,6 +22,6 @@ export class ProductCard {
   cartService = inject(CartService);
 
   addToCart(productId:string,productPrice:number){
-    this.cartService.addProductToCart(productId,productPrice);
+    this.cartService.addProductToCart(productId,productPrice,this.product()!.name);
   }
 }

@@ -41,6 +41,8 @@ export class ProductDetails {
 
   isProductLoaded = signal<boolean>(false);
 
+  name!:string;
+
   ngOnInit(){
     this.route.paramMap.subscribe({
       next : (value) =>{
@@ -51,14 +53,14 @@ export class ProductDetails {
               console.log(this.isProductLoaded());
               return p;
             }),
-            tap((p) => {this.imagesNumber = p.imageUrls.length;this.price = p.price; this.id = p.id!;})
+            tap((p) => {this.imagesNumber = p.imageUrls.length;this.price = p.price; this.id = p.id!;this.name= p.name;})
           );
       },
     });
   }
 
   addToCart(){
-    this.cartService.addProductToCart(this.id,this.price,this.cartNumber); 
+    this.cartService.addProductToCart(this.id,this.price,this.name,this.cartNumber); 
   }
 
   increaseCartNumber(){

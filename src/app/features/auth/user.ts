@@ -1,3 +1,4 @@
+import { Order } from "../../core/order";
 import { Product } from "../../core/product";
 
 export interface User {
@@ -5,6 +6,7 @@ export interface User {
   role:string;
   createdAt: Date;
   email: string | null;
-  displayName: string | null;
+  name: string | null;
   cartProducts?: (Product & { quantity: number })[],
+  orders? : Order[],
 }

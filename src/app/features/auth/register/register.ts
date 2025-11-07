@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { addDoc, collection, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
-import { fireStoreCollections } from '../../../../environments/environment.prod';
+import { fireStoreCollections } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -91,7 +91,7 @@ export class RegisterComponent {
           }).then(async (val) => {      
             const userData : User ={
               uid: value.user.uid,
-              displayName: this.registerForm.get('name')?.value,
+              name: this.registerForm.get('name')?.value,
               email: this.registerForm.get('email')?.value,
               role: this.selectedRole.toLowerCase(),
               createdAt: new Date(),

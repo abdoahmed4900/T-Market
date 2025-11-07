@@ -1,15 +1,29 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, inject, signal } from '@angular/core';
-import { loadStripe, Stripe, StripeElements, StripeCardNumberElement, StripeCardExpiryElement, StripeCardCvcElement } from '@stripe/stripe-js';
+import { afterNextRender, Component, ElementRef, inject, Renderer2, signal } from '@angular/core';
+import {
+  loadStripe,
+  Stripe,
+  StripeElements,
+  StripeCardNumberElement,
+  StripeCardExpiryElement,
+  StripeCardCvcElement,
+} from '@stripe/stripe-js';
 import { Router } from '@angular/router';
 import { Loader } from '../../shared/loader/loader';
 import { StripeService } from './payment.service';
 import { CartService } from '../../core/cart.service';
-import { stripePublicKey } from '../../../environments/environment';
+import { fireStoreCollections, stripePublicKey } from '../../../environments/environment';
+import { addDoc, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Order } from '../../core/order';
+import { Product } from '../../core/product';
+import { Observable } from 'rxjs';
+import { User } from '../auth/user';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-stripe-payment',
   templateUrl: './payment.component.html',
+  imports: [ReactiveFormsModule],
   styleUrls: ['./payment.component.scss']
 })
 export class StripeComponent {
@@ -25,16 +39,51 @@ export class StripeComponent {
   dialog = inject(MatDialog);
   cartService = inject(CartService);
   stripeService = inject(StripeService);
+  render = inject(Renderer2);
   price!: number;
   cardBrand: string = 'unknown';
+  cartProducts! : (Product & {quantity:number})[];
+  cartSub!:Observable<(Product & {quantity:number})[]>;
+  private formBuilder = inject(FormBuilder);
+
+  paymentFormGroup = this.formBuilder.group(
+     {
+       name: ['',[Validators.required,Validators.minLength(3)]],
+       city: ['',[Validators.required,Validators.minLength(3)]],
+       street : ['',[Validators.required,Validators.minLength(3)]],
+       zipCode : ['',[Validators.required,this.numericLengthValidator(5)]],
+       cardNumber: ['',[Validators.required,Validators.minLength(18)]],
+       cardExpiry: ['',[Validators.required],],
+       cardCvc: ['',[Validators.required,Validators.minLength(3)]],
+     }
+    );
+
+    numericLengthValidator(minLength: number) {
+       return (control: AbstractControl) => {
+       const value = control.value?.toString() || '';
+       return value.length < minLength ? { minlength: true } : null;
+      };
+    }
+
+   constructor() {
+    const elementRef = inject(ElementRef);
+    afterNextRender(() => {
+      elementRef.nativeElement.querySelector('input')?.focus();
+    });
+   } 
+
  
   async ngOnInit() {
     this.stripe = await loadStripe(stripePublicKey) as Stripe;
     this.elements = this.stripe.elements();
     this.price = this.cartService.totalCartPrice$.value;
-
+    this.cartSub = this.cartService.getAllCartProducts();
     this.createStripeFields();
-
+    this.cartSub.subscribe({
+        next : (value) =>{
+            this.cartProducts = value;
+        },
+    })
     this.watchThemeChanges();
   }
   private watchThemeChanges() {
@@ -50,7 +99,7 @@ export class StripeComponent {
         this.cardCvc.update(style);
       }
     }
-  }, 300);
+  }, 1000);
 }
 
 baseStyle() {
@@ -84,14 +133,19 @@ baseStyle() {
       ...this.baseStyle(),
       placeholder: 'CVC',
     });
-
     // Mount them to the divs in your HTML
-    this.cardNumber.mount('#card-number-element');
+    this.cardNumber.mount('#card-number-element',);
     this.cardExpiry.mount('#card-expiry-element');
     this.cardCvc.mount('#card-cvc-element');
+    
     this.cardNumber.on('change', (event) => {
-      this.cardBrand = event.brand;
-      console.log(event.brand);
+      if (event.complete) {
+          this.paymentFormGroup.get('cardNumber')?.setValue('complete');
+          this.paymentFormGroup.get('cardNumber')?.setErrors(null);
+      } else {
+          this.paymentFormGroup.get('cardNumber')?.setValue('');
+          this.paymentFormGroup.get('cardNumber')?.setErrors({ invalid: true });
+      }
 
       switch (event.brand) {
         case 'visa':
@@ -110,11 +164,33 @@ baseStyle() {
           this.brandIcon.set('');
       }
     });
+
+
+    this.cardExpiry.on('change', (event) => {
+      if (event.complete) {
+          this.paymentFormGroup.get('cardExpiry')?.setValue('complete');
+          this.paymentFormGroup.get('cardExpiry')?.setErrors(null);
+      } else {
+          this.paymentFormGroup.get('cardExpiry')?.setValue('');
+          this.paymentFormGroup.get('cardExpiry')?.setErrors({ invalid: true });
+      }
+    });
+
+    this.cardCvc.on('change', (event) => {
+      if (event.complete) {
+          this.paymentFormGroup.get('cardCvc')?.setValue('complete');
+          this.paymentFormGroup.get('cardCvc')?.setErrors(null);
+      } else {
+          this.paymentFormGroup.get('cardCvc')?.setValue('');
+          this.paymentFormGroup.get('cardCvc')?.setErrors({ invalid: true });
+      }
+    });
   }
 
   async pay(name: string) {
-    const ref = this.dialog.open(Loader, { disableClose: true });
+  const ref = this.dialog.open(Loader, { disableClose: true });
 
+  try {
     const result = await this.stripeService.makePaymentWithCard(
       this.price,
       this.cardNumber,
@@ -122,29 +198,46 @@ baseStyle() {
       name
     );
 
-    if (result.paymentIntent?.status === 'succeeded') {
-      console.log('Payment succeeded!');
-      
-      // this.stripeService.confirmBookingPayment(this.bookingId, this.price).subscribe({
-      //   next: () => {
-      //     ref.close();
-      //     // this.toastService.success('Payment successful!', '✅ Success', {
-      //     //   toastClass: 'ngx-toastr custom-success'
-      //     // });
-      //     this.router.navigate(['/'], { replaceUrl: true });
-      //   },
-      //   error: () => {
-      //     ref.close();
-      //     // this.toastService.error('❌ Payment failed! Try Again Later', '❌ Error', {
-      //     //   toastClass: 'ngx-toastr custom-error'
-      //     // });
-      //   },
-      // });
-    } else {
-      ref.close();
-      // this.toastService.error('❌ Payment failed! Try Again Later', '❌ Error', {
-      //   toastClass: 'ngx-toastr custom-error'
-      // });
+    if (result.paymentIntent?.status !== 'succeeded') {
+      throw new Error('Payment failed');
     }
+
+    // Payment succeeded
+    const uid = localStorage.getItem('token');
+    const userRef = doc(this.cartService.fireStore, fireStoreCollections.users, uid!);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data() as User;
+
+    // Prepare new order
+    const newOrder: Order = {
+      id: result.paymentIntent!.id,
+      totalPrice: this.price,
+      totalQuantity: this.cartService.totalCartProductsNumber$.value,
+      items: userData.cartProducts?.map(p => ({
+        name: p.name,
+        price: p.price,
+        quantity: p.quantity,
+      })) ?? [],
+    };
+
+    // Update Firestore
+    const updatedOrders = [...(userData.orders ?? []), newOrder];
+    await updateDoc(userRef, { orders: updatedOrders, cartProducts: [] });
+
+    // Reset local cart state
+    this.cartService.totalCartPrice$.next(0);
+    this.cartService.totalCartProductsNumber$.next(0);
+
+    ref.close();
+    this.router.navigate(['/'], { replaceUrl: true });
+    console.log('✅ Payment success, order saved:', newOrder);
+    let orders = collection(this.cartService.fireStore,fireStoreCollections.orders)
+    await addDoc(orders,{...newOrder,userId: uid})
+
+  } catch (err) {
+    console.error('❌ Payment or Firestore update failed:', err);
+    ref.close();
+    // optionally: this.toastService.error('Payment failed, please try again.');
   }
+ } 
 }

@@ -2,9 +2,10 @@ import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, forkJoin, map, of, shareReplay, switchMap, tap } from "rxjs";
 import { Product } from "./product";
 import { collection, collectionData, doc, Firestore, getDoc, query, updateDoc, where } from "@angular/fire/firestore";
-import { fireStoreCollections } from "../../environments/environment.prod";
 import { User } from "../features/auth/user";
 import { ProductsService } from "./products.service";
+import { CartProduct } from "../features/cart/cart.product";
+import { fireStoreCollections } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -74,15 +75,15 @@ export class CartService{
     }
     
 
-    async addProductToCart(productId:string,price:number,numberOfItems?:number){   
+    async addProductToCart(productId:string,price:number,name:string,numberOfItems?:number){   
       const userRef = doc(this.fireStore, fireStoreCollections.users, localStorage.getItem('token')!);
       const snap = await getDoc(userRef);
-      const cartProducts : {quantity:number,id:string}[] = snap.data()!['cartProducts'] ?? [];
+      const cartProducts : CartProduct[] = snap.data()!['cartProducts'] ?? [];
       let item = cartProducts.find(item => item.id == productId);
       if(item){
         this.updateProductNumberInCart(productId,item.quantity + (numberOfItems ?? 1),price);
       }else{
-        cartProducts.push({id:productId,quantity: numberOfItems ?? 1});
+        cartProducts.push({id:productId,quantity: numberOfItems ?? 1,price:price,name : name});
         this.totalCartPrice$.next(this.totalCartPrice$.value + (price * (numberOfItems ?? 1)));
         this.totalCartProductsNumber$.next(this.totalCartProductsNumber$.value + (numberOfItems ?? 1));
       }

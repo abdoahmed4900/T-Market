@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
 import { CacheService } from '../../../core/cache.service';
 import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { fireStoreCollections } from '../../../../environments/environment.prod';
+import { fireStoreCollections } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',

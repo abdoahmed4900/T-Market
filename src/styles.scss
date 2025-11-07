@@ -48,8 +48,9 @@ input[type="button"]{
     transition: all 0.3s ease;
 }
 
+input::placeholder,
 ::-webkit-input-placeholder {
-    color: var(--primary-text-color);
+    color: var(--secondary-text-color);
     transition: all 0.3s ease;
 }
 html, body { height: 100%; }
