@@ -20,7 +20,7 @@
             "sourceMap":false,
             "browser": "src/main.ts",
             "index": "src/index.html",
-            "outputPath": "dist/T-Market/browser",
+            "outputPath": "dist/T-Market",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
