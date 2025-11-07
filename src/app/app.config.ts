@@ -10,8 +10,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideNgxStripe } from 'ngx-stripe';
-import { environment, stripePublicKey } from '../environments/environment';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +22,5 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideHttpClient(withFetch()),
-    provideNgxStripe(stripePublicKey)
   ]
 };
