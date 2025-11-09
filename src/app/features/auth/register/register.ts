@@ -96,6 +96,7 @@ export class RegisterComponent {
               role: this.selectedRole.toLowerCase(),
               createdAt: new Date(),
               cartProducts: [],
+              orders : [],
             };
             await setDoc(doc(this.fireStore, fireStoreCollections.users, value.user.uid), userData);
             await deleteDoc(doc(this.fireStore, fireStoreCollections.users, val.id));

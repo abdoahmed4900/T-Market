@@ -19,6 +19,7 @@ import { Product } from '../../core/product';
 import { Observable } from 'rxjs';
 import { User } from '../auth/user';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { EmailService } from '../../core/email.service';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -45,6 +46,7 @@ export class StripeComponent {
   cartProducts! : (Product & {quantity:number})[];
   cartSub!:Observable<(Product & {quantity:number})[]>;
   private formBuilder = inject(FormBuilder);
+  emailService = inject(EmailService);
 
   paymentFormGroup = this.formBuilder.group(
      {
@@ -233,6 +235,18 @@ baseStyle() {
     console.log('✅ Payment success, order saved:', newOrder);
     let orders = collection(this.cartService.fireStore,fireStoreCollections.orders)
     await addDoc(orders,{...newOrder,userId: uid})
+    this.emailService.sendEmail(`Order ${newOrder.id}`,`
+           List Of Your Order Items : \n 
+           ${newOrder.items.map((e) => e.quantity + ' Items of ' + e.name + '=' + e.price + '$')}
+           
+           -----------------------------------------------
+           Total Items : ${newOrder.totalQuantity}
+           Total Price : $${newOrder.totalPrice}
+    `,userData.email!).then(
+      (val) => {
+        console.log('Email Sent');
+      }
+    )
 
   } catch (err) {
     console.error('❌ Payment or Firestore update failed:', err);

@@ -20,6 +20,7 @@
             "sourceMap":false,
             "browser": "src/main.ts",
             "index": "src/index.html",
+            "baseHref": "/",
             "outputPath": "dist/T-Market",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

@@ -28,6 +28,7 @@ export class CartService{
               if (!user || !user.cartProducts || user.cartProducts.length === 0) {
                 return of([]); 
               }
+              
               const productStreams = user.cartProducts.map(p => {
                 return this.productService.getProductById(p.id!).pipe(
                   map((product) => {
