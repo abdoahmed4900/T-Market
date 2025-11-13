@@ -5,9 +5,10 @@ import { Footer } from "./shared/footer/footer";
 import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { CacheService } from './core/cache.service';
-import { CartService } from './core/cart.service';
+import { CacheService } from './core/services/cache.service';
+import { CartService } from './core/services/cart.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from './features/auth/auth.service';
 
 
 @Component({
@@ -23,15 +24,20 @@ export class App {
   themeIcon = faMoon;
   cacheService = inject(CacheService);
   cartService = inject(CartService);
+  authService = inject(AuthService);
   router = inject(Router);
   cartProductsSub! : Subscription;
 
 
   ngOnInit(): void {
     this.isLogin.set(this.cacheService.get('isLogin') ?? 'false');
-    if(this.isLogin() == 'true'){
+    let isRemembered = this.cacheService.get('isRemembered') ?? 'false';
+    if(this.isLogin() == 'true' && isRemembered == 'true'){
+      this.authService.userRole.set(localStorage.getItem('role')!);
       this.router.navigate(['/'], { replaceUrl: true });
     } else {
+      localStorage.removeItem('isLogin');
+      localStorage.removeItem('isRemembered');
       this.router.navigate(['/login']);
     }
   }

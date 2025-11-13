@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductsService } from '../../core/products.service';
+import { ProductsService } from '../../core/services/products.service';
 import { CommonModule } from '@angular/common';
 import { Loader } from "../loader/loader";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Product } from '../../core/product';
 import { map, Observable, tap } from 'rxjs';
-import { CartService } from '../../core/cart.service';
+import { CartService } from '../../core/services/cart.service';
+import { Product } from '../../core/interfaces/product';
 
 @Component({
   selector: 'app-product-details',

@@ -1,10 +1,10 @@
 import { Component, inject, input, model } from '@angular/core';
-import { Product } from '../../../core/product';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { ProductsService } from '../../../core/products.service';
-import { CartService } from '../../../core/cart.service';
+import { ProductsService } from '../../../core/services/products.service';
+import { CartService } from '../../../core/services/cart.service';
 import { RouterLink } from "@angular/router";
+import { Product } from '../../../core/interfaces/product';
 
 @Component({
   selector: 'app-cart-card',

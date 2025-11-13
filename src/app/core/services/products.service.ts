@@ -9,8 +9,8 @@ import {
     QueryFieldFilterConstraint,
     where,
 } from "@angular/fire/firestore";
-import { fireStoreCollections } from '../../environments/environment';
-import { Product } from "./product";
+import { fireStoreCollections } from '../../../environments/environment';
+import { Product } from "../interfaces/product";
 
 @Injectable(
     {

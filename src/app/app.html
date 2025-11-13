@@ -1,7 +1,7 @@
-<div class="h-full flex flex-col">
+<main class="h-full flex flex-col">
     <app-navbar></app-navbar>
     <main class="bg-[var(--main-bg-color)] grow mt-auto" [ngClass]="isLogin() ? 'justify-start' : 'justify-center'">
       <router-outlet class="justify-self-center flex flex-col items-center"></router-outlet>
     </main>
     <app-footer class="h-[300px]"></app-footer>
-</div>
+  </main>

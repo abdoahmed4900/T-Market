@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { User } from '../user';
+import { Buyer, Seller, User } from '../user';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { getFirebaseErrorMessage } from '../../../core/methods';
@@ -88,16 +88,32 @@ export class RegisterComponent {
             email: this.registerForm.get('email')?.value,
             role: this.selectedRole.toLowerCase(),
             createdAt: new Date()
-          }).then(async (val) => {      
-            const userData : User ={
-              uid: value.user.uid,
-              name: this.registerForm.get('name')?.value,
-              email: this.registerForm.get('email')?.value,
-              role: this.selectedRole.toLowerCase(),
-              createdAt: new Date(),
-              cartProducts: [],
-              orders : [],
-            };
+          }).then(async (val) => { 
+            let userData;
+            if(this.selectedRole.toLowerCase() == 'buyer'){
+                userData  ={
+                uid: value.user.uid,
+                name: this.registerForm.get('name')?.value,
+                email: this.registerForm.get('email')?.value,
+                role: 'buyer',
+                createdAt: new Date(),
+                cartProducts: [],
+                orders : [],
+              } as Buyer;
+            }else{
+              userData  = {
+                uid: value.user.uid,
+                name: this.registerForm.get('name')?.value,
+                email: this.registerForm.get('email')?.value,
+                role: 'seller',
+                createdAt: new Date(),
+                orders : [],
+                productsIds : [],
+                totalProductsSold: 0,
+                totalRevenue: 0,
+              } as Seller;
+            }    
+            
             await setDoc(doc(this.fireStore, fireStoreCollections.users, value.user.uid), userData);
             await deleteDoc(doc(this.fireStore, fireStoreCollections.users, val.id));
             alert('Registration successful!');

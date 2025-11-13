@@ -8,9 +8,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
-import { CacheService } from '../../../core/cache.service';
-import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { CacheService } from '../../../core/services/cache.service';
+import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, query, setDoc, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';
+import { CartProduct } from '../../cart/cart.product';
+import { Order } from '../../../core/interfaces/order';
 
 @Component({
   selector: 'app-login',
@@ -62,16 +64,29 @@ export class LoginComponent implements OnInit {
       this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).subscribe({
       next: async (value) => {
         dialogRef.close();
-        this.auth.isLoginSubject.next('true');
-        if(this.rememberMe){
-          localStorage.setItem('isLogin', 'true');
-        }
+        this.auth.isLoginSubject.next(true);
+        localStorage.setItem('isLogin', this.auth.isLoginSubject.value ? 'true' : 'false');
+        localStorage.setItem('isRemembered', this.rememberMe ? 'true' : 'false');
         let user = JSON.parse(JSON.stringify(value.user));
         console.log(user.uid);
-        this.cacheService.set('token', user.uid);
-        this.cacheService.set('role', 'buyer');
-
-        this.router.navigate(['/'], { replaceUrl: true });
+        let userRef = collection(this.fireStore,fireStoreCollections.users)
+        let x = collectionData(query(userRef,where('email','==',value.user.email))).subscribe(
+          {
+            next : (value : any) => {
+                console.log(value);
+                
+                console.log('value ' + value[0].uid);
+                console.log('value ' + value[0].role);
+                
+                localStorage.setItem('token', value[0].uid);
+                localStorage.setItem('role', value[0].role);
+                this.auth.userRole.set(value[0].role)
+                this.router.navigate(['/'], { replaceUrl: true });
+                x.unsubscribe();
+                
+            },
+          }
+        );
       },
 
 
@@ -84,26 +99,46 @@ export class LoginComponent implements OnInit {
     }
   }
   async loginWithGoogle() {
-    this.auth.loginWithGoogle().subscribe(
+    let login = this.auth.loginWithGoogle().subscribe(
       {
         next: (value) => {
-          this.auth.isLoginSubject.next('true');
-          this.cacheService.set('user', JSON.stringify(value.user));
-          localStorage.setItem('isLogin', 'true');
+          this.auth.isLoginSubject.next(true);
+          localStorage.setItem('isLogin',this.auth.isLoginSubject.value ? 'true' : 'false');
+          localStorage.setItem('isRemembered',this.rememberMe ? 'true' : 'false');
           this.router.navigate(['/'], { replaceUrl: true });
           let users = collection(this.fireStore, fireStoreCollections.users);
           let q = collectionData(users);
           q.subscribe(res => {
-            let user = res.find((u) => u['uid'] == value.user.uid);
+            let user = res.find((u) => u['email'] == value.user.email);
+            console.log(user);
             if(!user){
-              addDoc(users,{
+              console.log('not found');
+              let newDoc = {
                 uid: value.user.uid,
                 email: value.user.email,
                 displayName: value.user.displayName,
                 createdAt: new Date(),
-                role: 'user',
+                cartProducts : [] as CartProduct[],
+                orders: [] as Order[],
+                role: 'buyer',
+              };
+              addDoc(users,newDoc).then(async (val) => {
+                login.unsubscribe();
+                await setDoc(
+                  doc(this.fireStore,fireStoreCollections.users,value.user.uid),
+                  newDoc,
+                )
+                await deleteDoc(val);
               });
+            }else{
+              console.log('found');
+              console.log(user);
+              
+              localStorage.setItem('token', user['uid']);
+              localStorage.setItem('role', user['role']);
+              login.unsubscribe();
             }
+            this.auth.userRole.set(user!['role'])            
           });
 
         },
@@ -118,9 +153,12 @@ export class LoginComponent implements OnInit {
   logout() {
     this.auth.logout().subscribe({
       next: () => {
-          this.auth.isLoginSubject.next('false');
+          this.auth.isLoginSubject.next(false);
           this.cacheService.remove('isLogin');
+          this.cacheService.remove('isRemembered');
           this.cacheService.remove('token');
+          this.cacheService.remove('role');
+          this.auth.userRole.set('');
           this.router.navigate(['/login'], { replaceUrl: true });
       },
 

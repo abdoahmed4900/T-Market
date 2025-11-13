@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home';
-import { Categories } from './features/categories/categories';
 
 export const routes: Routes = [
-     { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'shop', component: Categories },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { 
+    path: 'home', loadComponent: () => import('./features/home-component/home-component').then((m) => m.HomeComponent),
+  },
+  { path: 'shop', loadComponent : () => import('./features/categories/categories').then((m) => m.Categories) },
 
   {
     path: 'login',
@@ -36,6 +36,16 @@ export const routes: Routes = [
     path: 'checkout',
     loadComponent: () => import('./features/checkout/checkout')
       .then(m => m.Checkout)
+  },
+  {
+    path: 'orders',
+    loadComponent: () => import('./features/orders/orders')
+      .then(m => m.Orders)
+  },
+  {
+    path: 'order/:id',
+    loadComponent: () => import('./features/orders/order-details/order-details')
+      .then(m => m.OrderDetails)
   },
 
     // {path: 'dashboard',},

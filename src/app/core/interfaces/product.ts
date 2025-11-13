@@ -10,5 +10,6 @@ export interface Product {
     stock: number;
     brand: string;
     rating: number;
+    sellerId?: string;
     reviews: Review[];
 }

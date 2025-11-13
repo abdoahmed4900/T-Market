@@ -1,0 +1,21 @@
+<main class="md:px-20 px-10 max-w-[1500px]! xl:mx-auto flex flex-col gap-5 w-full mt-7">
+    <header>
+        <h1 class="text-[20px] font-bold">Orders List</h1>
+    </header>
+    <section class="mt-1">
+        <div class="order-status-categories flex flex-row flex-wrap gap-4 my-4">
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'All'}" (click)="changeStatus('All')">All</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Pending'}" (click)="changeStatus('Pending')">Pending</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Cancelled'}" (click)="changeStatus('Cancelled')">Cancelled</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Shipped'}" (click)="changeStatus('Shipped')">Shipped</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Delivered'}" (click)="changeStatus('Delivered')">Delivered</button>
+        </div>
+        @if ((orders | async)!.length > 0) {
+            @for (item of orders | async; track item.id) {
+               <app-order-item [order]="item" class="slideFromTopAnimation"></app-order-item>
+            }
+        }@else{
+            <img src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-orders"/>
+        }
+    </section>
+</main>

@@ -3,10 +3,12 @@
        <div class="title-and-nav flex items-center">
         <app-website-title></app-website-title>
           <ul class="gap-3 hidden lg:flex mx-7">
-          <li><a routerLink="/shop" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg" routerLinkActive="active">Shop</a></li>
-          <li><a routerLink="/products" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Brands</a></li>
-          <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Collection</a></li>
-          @if (isLogin == 'true') {
+          @if (isBuyer()) {
+            <li><a routerLink="/shop" class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg" routerLinkActive="active">Shop</a></li>
+            <li><a class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg">Brands</a></li>
+            <li><a class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg">Collection</a></li>
+          }
+          @if (isBuyer() || isSeller()) {
           <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Support</a></li>
           }
         </ul>
@@ -17,10 +19,14 @@
        </button>
          <div #box class="lg:hidden navbar-mobile-hidden z-0 transition duration-300 ease navbar-mobile space-y-2 px-10 md:px-20 pb-3 absolute top-13 left-0 w-full bg-[var(--main-bg-color)] transition-all duration-300 ease-in-out pt-5 text-md">
           <section class="border-1 border-t-0 border-[var(--primary-text-color)] rounded-lg rounded-t-none p-4">
-            <a routerLink="/shop" class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]" routerLinkActive="active">Shop</a>
-            <a class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]">Brands</a>
-            <a class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]">Collections</a>
-            <a class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]">Support</a>
+            @if(isBuyer()){
+              <a routerLink="/shop" class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]" routerLinkActive="active">Shop</a>
+              <a class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]">Brands</a>
+              <a class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]">Collections</a>
+            }
+            @if(isBuyer() || isSeller()){
+                <a class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]">Support</a>
+            }
             <div class="navbar-shortcuts flex flex-wrap items-center gap-2 mt-3 mx-2">
              <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4">EN</button>
              <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4">AR</button>
@@ -31,28 +37,35 @@
                (click)="changeTheme()" >
                <fa-icon [icon]="themeIcon" ></fa-icon>
              </button>
-             @if (isLogin == 'true') {
+             @if ((isLoggedIn | async)) {
              <button 
              class="rounded-xl p-4 bg-[var(--primary-color)] border hover:bg-purple-700 focus:bg-purple-800 border-1 border-gray-200 text-white"
              (click)="logout()"
              >Logout</button>
-             <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">♡ WishList</button>
-             <div class="cart-section relative" routerLink="/cart">
-               <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
+             @if(isBuyer()){
+              <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">♡ WishList</button>
+              <div class="cart-section relative" routerLink="/cart">
+                <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
                 <span class="inline-block text-[20px] me-1">🛒</span> Cart
-               </button>
-               @if ((totalCartProductsNumber$ | async)! > 0) {
+                </button>
+                @if ((totalCartProductsNumber$ | async)! > 0) {
                   <div class="absolute top-2 left-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
                    <p class="text-[10px]">{{totalCartProductsNumber$ | async}}</p>
                   </div>
-               }
-             </div>
+                }
+              </div>
+              <div class="orders-section relative" routerLink="/orders">
+                <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
+                <img src="https://cdn-icons-png.flaticon.com/512/1356/1356594.png" alt="order" class="inline-block w-[20px]! h-[20px]! me-1" /> Orders
+                </button>
+              </div>
+              }
              }
             </div>
           </section>
       </div>
       <div class="hidden lg:flex items-center gap-1">
-        @if (isLogin == 'true') {
+        @if (isBuyer()) {
           <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]">♡ WishList</button>
           <div class="cart-section relative" routerLink="/cart">
                <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
@@ -63,7 +76,12 @@
                    <p class="text-[10px]">{{totalCartProductsNumber$ | async}}</p>
                   </div>
                }
-            </div>
+          </div>
+          <div class="orders-section relative" routerLink="/orders">
+               <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
+                <img src="https://cdn-icons-png.flaticon.com/512/1356/1356594.png" alt="order" class="inline-block w-[20px]! h-[20px]! me-1" /> Orders
+               </button>
+          </div>
         }
         <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4 px-3">EN</button>
         <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4 px-3">AR</button>
@@ -74,7 +92,7 @@
              (click)="changeTheme()">
             <fa-icon class="text-lg" [icon]="themeIcon"></fa-icon>
         </button>
-        @if (isLogin == 'true') {
+        @if ((isLoggedIn | async)) {
           <button 
           class="rounded-xl p-4 bg-[var(--primary-color)] border hover:bg-purple-700 focus:bg-purple-800 border-1 border-gray-200 hover:text-white text-white"
           (click)="logout()"

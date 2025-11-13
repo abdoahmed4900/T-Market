@@ -1,8 +1,8 @@
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Product } from '../../../core/product';
 import { Observable } from 'rxjs';
-import { CartService } from '../../../core/cart.service';
+import { CartService } from '../../../core/services/cart.service';
+import { Product } from '../../../core/interfaces/product';
 
 @Component({
   selector: 'app-cart-summary-card',

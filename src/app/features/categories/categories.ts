@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
-import { ProductsService } from '../../core/products.service';
+import { ProductsService } from '../../core/services/products.service';
 import { Loader } from "../../shared/loader/loader";
 import { ProductCard } from "../../shared/product-card/product-card";
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
-import { PaginationService } from '../../core/pagination.service';
+import { PaginationService } from '../../core/services/pagination.service';
 import { FormsModule } from "@angular/forms";
 import { map, Observable } from 'rxjs';
-import { Product } from '../../core/product';
-import { CartService } from '../../core/cart.service';
+import { CartService } from '../../core/services/cart.service';
+import { Product } from '../../core/interfaces/product';
 
 
 @Component({

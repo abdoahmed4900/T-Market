@@ -1,0 +1,17 @@
+<a [routerLink]="['/product',(product | async)!.id]">
+    <section id="order-card" class="order-card flex items-start rounded-xl border-1 gap-4 flex-col lg:flex-row justify-between transition hover:translate-y-[-5px] duration-300 ease-in-out slideFromTopAnimation">
+     <img loading="lazy" [src]="(product | async)!.imageUrls![0]" alt="product-image" class="rounded-4xl p-4 md:h-[250px] h-70 lg:w-70 w-full">
+     <div class="details flex flex-col justify-between w-full flex-wrap gap-4 p-4 items-start">
+        <section class="card-text flex flex-col items-start gap-4">
+          <h2 class="text-xl font-bold">{{(product | async)!.name}}</h2>
+          <p class="text-lg font-bold line-clamp-2 h-[55px] w-full">{{(product | async)!.description}}</p>
+        </section>
+        <div class="cart-actions flex items-center flex-row gap-3 flex-wrap w-full">
+          <div class="price-section flex flex-row flex-wrap items-center">
+            <p class="font-bold text-lg">{{(product | async)!.price | currency}} X {{orderItem()?.quantity}} =  </p>
+            <p class="font-bold text-lg"> {{(orderItem()!.price) * (orderItem()!.quantity)  | currency}}</p>
+          </div>
+        </div>
+     </div>
+ </section>
+</a>

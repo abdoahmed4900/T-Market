@@ -11,15 +11,16 @@ import {
 import { Router } from '@angular/router';
 import { Loader } from '../../shared/loader/loader';
 import { StripeService } from './payment.service';
-import { CartService } from '../../core/cart.service';
+import { CartService } from '../../core/services/cart.service';
 import { fireStoreCollections, stripePublicKey } from '../../../environments/environment';
 import { addDoc, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
-import { Order } from '../../core/order';
-import { Product } from '../../core/product';
+
 import { Observable } from 'rxjs';
-import { User } from '../auth/user';
+import { Buyer } from '../auth/user';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { EmailService } from '../../core/email.service';
+import { EmailService } from '../../core/services/email.service';
+import { Product } from '../../core/interfaces/product';
+import { Order } from '../../core/interfaces/order';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -208,16 +209,20 @@ baseStyle() {
     const uid = localStorage.getItem('token');
     const userRef = doc(this.cartService.fireStore, fireStoreCollections.users, uid!);
     const userSnap = await getDoc(userRef);
-    const userData = userSnap.data() as User;
+    const userData = userSnap.data() as Buyer;
 
     // Prepare new order
     const newOrder: Order = {
       id: result.paymentIntent!.id,
       totalPrice: this.price,
+      address: `${this.paymentFormGroup.get('zipCode')?.value},${this.paymentFormGroup.get('street')?.value},${this.paymentFormGroup.get('city')?.value}`,
+      status : 'Pending',
+      orderDate : new Date().toDateString(),
       totalQuantity: this.cartService.totalCartProductsNumber$.value,
       items: userData.cartProducts?.map(p => ({
         name: p.name,
         price: p.price,
+        id: p.id,
         quantity: p.quantity,
       })) ?? [],
     };
@@ -242,16 +247,11 @@ baseStyle() {
            -----------------------------------------------
            Total Items : ${newOrder.totalQuantity}
            Total Price : $${newOrder.totalPrice}
-    `,userData.email!).then(
-      (val) => {
-        console.log('Email Sent');
-      }
-    )
+    `,userData.email!);
 
   } catch (err) {
     console.error('❌ Payment or Firestore update failed:', err);
     ref.close();
-    // optionally: this.toastService.error('Payment failed, please try again.');
   }
  } 
 }

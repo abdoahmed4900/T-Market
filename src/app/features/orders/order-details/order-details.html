@@ -1,0 +1,17 @@
+@let orderDetails = order | async;
+@defer (when order) {
+    <main class="md:px-20 px-10 max-w-[1500px] xl:mx-auto flex flex-col w-full mt-10 gap-5" id="order-details">
+    <header class="mb-5 mt-0">
+        <h2 class="text-[20px] font-bold">Order Items : </h2>
+    </header>
+    <section class="flex flex-col gap-5 flex-wrap">
+        @for (item of orderDetails!.items; track $index) {
+            <app-order-item-card [orderItem]="item"></app-order-item-card>
+        }
+    </section>
+    <button (click)="generatePDF(orderDetails!)" class="rounded-xl bg-[var(--primary-color)] border-0 w-fit p-4 mx-auto">Download Receipt</button>
+    </main>
+}
+@loading(minimum 2s) {
+    <app-loader></app-loader>
+}
