@@ -23,6 +23,7 @@ export class StripeService {
             },
         });
 
+
         return result;
     }
 }

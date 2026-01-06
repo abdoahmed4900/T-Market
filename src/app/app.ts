@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from "./shared/navbar/navbar";
 import { Footer } from "./shared/footer/footer";
@@ -27,7 +27,8 @@ export class App {
   authService = inject(AuthService);
   router = inject(Router);
   cartProductsSub! : Subscription;
-
+  isMobile = computed(() => window.innerWidth < 1024)
+  isBuyer = signal<boolean>(false);
 
   ngOnInit(): void {
     this.isLogin.set(this.cacheService.get('isLogin') ?? 'false');
@@ -35,6 +36,7 @@ export class App {
     if(this.isLogin() == 'true' && isRemembered == 'true'){
       this.authService.userRole.set(localStorage.getItem('role')!);
       this.router.navigate(['/'], { replaceUrl: true });
+      this.isBuyer.set(this.authService.userRole() == 'buyer');
     } else {
       localStorage.removeItem('isLogin');
       localStorage.removeItem('isRemembered');

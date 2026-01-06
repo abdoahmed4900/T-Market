@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { collection, collectionData, Firestore, query, where } from "@angular/fire/firestore";
 import { fireStoreCollections } from "../../../environments/environment";
-import { map } from "rxjs";
+import { map, shareReplay } from "rxjs";
 import { Seller } from "../auth/user";
 
 @Injectable(
@@ -18,7 +18,8 @@ export class HomeService{
         return usersData.pipe(
             map((users) => {
                 return users[0] as Seller;
-            })
+            }),
+            shareReplay(1)
         )
     }
 }

@@ -72,18 +72,14 @@ export class LoginComponent implements OnInit {
         let userRef = collection(this.fireStore,fireStoreCollections.users)
         let x = collectionData(query(userRef,where('email','==',value.user.email))).subscribe(
           {
-            next : (value : any) => {
-                console.log(value);
-                
-                console.log('value ' + value[0].uid);
-                console.log('value ' + value[0].role);
+            next : async (value : any) => {
                 
                 localStorage.setItem('token', value[0].uid);
                 localStorage.setItem('role', value[0].role);
                 this.auth.userRole.set(value[0].role)
-                this.router.navigate(['/'], { replaceUrl: true });
-                x.unsubscribe();
-                
+                this.router.navigate(['/'], { replaceUrl: true }).then(async () =>{
+                  
+                });
             },
           }
         );
@@ -108,7 +104,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/'], { replaceUrl: true });
           let users = collection(this.fireStore, fireStoreCollections.users);
           let q = collectionData(users);
-          q.subscribe(res => {
+          q.subscribe(async res => {
             let user = res.find((u) => u['email'] == value.user.email);
             console.log(user);
             if(!user){
@@ -123,7 +119,6 @@ export class LoginComponent implements OnInit {
                 role: 'buyer',
               };
               addDoc(users,newDoc).then(async (val) => {
-                login.unsubscribe();
                 await setDoc(
                   doc(this.fireStore,fireStoreCollections.users,value.user.uid),
                   newDoc,
@@ -131,14 +126,10 @@ export class LoginComponent implements OnInit {
                 await deleteDoc(val);
               });
             }else{
-              console.log('found');
-              console.log(user);
-              
               localStorage.setItem('token', user['uid']);
               localStorage.setItem('role', user['role']);
-              login.unsubscribe();
-            }
-            this.auth.userRole.set(user!['role'])            
+            } 
+            login.unsubscribe();        
           });
 
         },

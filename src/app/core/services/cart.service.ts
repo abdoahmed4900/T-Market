@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, forkJoin, map, of, shareReplay, switchMap, tap } from "rxjs";
+import { BehaviorSubject, debounceTime, forkJoin, from, map, of, shareReplay, switchMap, tap } from "rxjs";
 import { collection, collectionData, doc, Firestore, getDoc, query, updateDoc, where } from "@angular/fire/firestore";
 import { ProductsService } from "./products.service";
 import { CartProduct } from "../../features/cart/cart.product";
@@ -90,7 +90,17 @@ export class CartService{
         this.totalCartPrice$.next(this.totalCartPrice$.value + (price * (numberOfItems ?? 1)));
         this.totalCartProductsNumber$.next(this.totalCartProductsNumber$.value + (numberOfItems ?? 1));
       }
-      await updateDoc(userRef, { cartProducts: cartProducts });
+      let update = from(
+        updateDoc(userRef, { cartProducts: cartProducts })
+      ).pipe(
+        debounceTime(300)
+      ).subscribe(
+        {
+          next : (value) =>{
+              update.unsubscribe();
+          },
+        }
+      );
     }
     async updateProductNumberInCart(id:string,newQuantity:number,itemPrice:number){
       const userRef = doc(this.fireStore, fireStoreCollections.users, localStorage.getItem('token')!);

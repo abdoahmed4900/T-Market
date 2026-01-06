@@ -15,12 +15,13 @@ import { CartService } from '../../core/services/cart.service';
 import { fireStoreCollections, stripePublicKey } from '../../../environments/environment';
 import { addDoc, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { Buyer } from '../auth/user';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmailService } from '../../core/services/email.service';
 import { Product } from '../../core/interfaces/product';
 import { Order } from '../../core/interfaces/order';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -42,6 +43,7 @@ export class StripeComponent {
   cartService = inject(CartService);
   stripeService = inject(StripeService);
   render = inject(Renderer2);
+  http = inject(HttpClient);
   price!: number;
   cardBrand: string = 'unknown';
   cartProducts! : (Product & {quantity:number})[];
@@ -238,6 +240,10 @@ baseStyle() {
     ref.close();
     this.router.navigate(['/'], { replaceUrl: true });
     console.log('✅ Payment success, order saved:', newOrder);
+    await firstValueFrom(await this.http.post('http://localhost:4242/api/send-notification',{
+      message: 'Your order has been placed successfully!',
+      userId: uid,
+    }))
     let orders = collection(this.cartService.fireStore,fireStoreCollections.orders)
     await addDoc(orders,{...newOrder,userId: uid})
     this.emailService.sendEmail(`Order ${newOrder.id}`,`

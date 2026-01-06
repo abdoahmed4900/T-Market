@@ -1,7 +1,18 @@
 <main class="h-full flex flex-col">
-    <app-navbar></app-navbar>
-    <main class="bg-[var(--main-bg-color)] grow mt-auto" [ngClass]="isLogin() ? 'justify-start' : 'justify-center'">
-      <router-outlet class="justify-self-center flex flex-col items-center"></router-outlet>
-    </main>
+    @if(isMobile() || isBuyer()){
+      <app-navbar></app-navbar>
+    }
+    @if(isMobile()){
+     <main class="bg-[var(--main-bg-color)] md:px-20 px-10 max-w-[1500px] grid gap-5 w-full xl:mx-auto gap-5 grow mt-auto" [ngClass]="isLogin() ? 'justify-start' : 'justify-center'">
+       <router-outlet class="justify-self-center grow flex flex-col items-center"></router-outlet>
+     </main>
+    }@else{
+      <main class="bg-[var(--main-bg-color)] grid-cols-2 max-w-[1500px] grid w-full xl:mx-auto gap-5 grow mt-auto" [ngClass]="isLogin() ? 'justify-start' : 'justify-center'">
+       <section class="w-[200px] bg-red-500 h-screen">
+          iuss
+       </section> 
+       <!-- <router-outlet class="justify-self-center grow flex  md:px-20 px-10 flex-col items-center"></router-outlet> -->
+      </main>
+    }
     <app-footer class="h-[300px]"></app-footer>
   </main>

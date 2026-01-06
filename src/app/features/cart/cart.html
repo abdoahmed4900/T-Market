@@ -1,5 +1,5 @@
 @let cartProducts = (products | async);
-<main class="md:px-20 px-10 max-w-[1500px] xl:mx-auto flex flex-col w-full" [ngClass]="
+<main class="flex flex-col w-full" [ngClass]="
   (cartProducts!.length == 0) ? 'h-full' : 'h-auto'
 ">
   @if (cartProducts) {
