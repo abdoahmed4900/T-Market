@@ -1,12 +1,12 @@
 import { MatDialog } from '@angular/material/dialog';
 import { afterNextRender, Component, ElementRef, inject, Renderer2, signal } from '@angular/core';
 import {
-  loadStripe,
-  Stripe,
-  StripeElements,
-  StripeCardNumberElement,
-  StripeCardExpiryElement,
-  StripeCardCvcElement,
+    loadStripe,
+    Stripe,
+    StripeElements,
+    StripeCardNumberElement,
+    StripeCardExpiryElement,
+    StripeCardCvcElement,
 } from '@stripe/stripe-js';
 import { Router } from '@angular/router';
 import { Loader } from '../../shared/loader/loader';
@@ -230,7 +230,7 @@ baseStyle() {
     };
 
     // Update Firestore
-    const updatedOrders = [...(userData.orders ?? []), newOrder];
+    const updatedOrders = [...(userData.ordersIds ?? []), newOrder];
     await updateDoc(userRef, { orders: updatedOrders, cartProducts: [] });
 
     // Reset local cart state

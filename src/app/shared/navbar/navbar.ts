@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, linkedSignal, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, linkedSignal, OnInit, signal, ViewChild } from '@angular/core';
 import { WebsiteTitle } from "../website-title/website-title";
 import { CommonModule } from '@angular/common';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
@@ -7,9 +7,8 @@ import { AuthService } from '../../features/auth/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../loader/loader';
-import { CacheService } from '../../core/services/cache.service';
 import { CartService } from '../../core/services/cart.service';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -19,11 +18,12 @@ import { Subscription } from 'rxjs';
 })
 export class Navbar implements OnInit{
   authService = inject(AuthService);
-  cacheService = inject(CacheService);
 
   router = inject(Router);
 
-  themeIcon : any;
+  themeIcon = linkedSignal(() => {
+    return this.getTheme() == 'light' ? faMoon : faSun;
+  });
 
   @ViewChild('box') box!: ElementRef;
 
@@ -36,29 +36,38 @@ export class Navbar implements OnInit{
   cartSubscription!: Subscription;
 
   isLoggedIn = this.authService.isLoggedIn$;
+  role = this.authService.userRole;
 
   cartNumber = signal<number>(0);
 
-  userRole = linkedSignal(() => this.authService.userRole());
+  menu! : Record<string,string>;
 
-  isBuyer = computed(() => this.userRole() == 'buyer')
-  isSeller = computed(() => this.userRole() == 'seller')
-  isAdmin = computed(() => this.userRole() == 'admin')
-  
+  menuDecider = combineLatest(
+    [
+      this.authService.role$
+    ]
+  ).subscribe(
+    ([role]) => {
+      if(role == 'buyer'){
+        this.isBuyer.set(true);
+      }
+    }
+  )
+
+  isBuyer = linkedSignal(() => this.role.value  == 'buyer');
+
   getTheme(): string {
-    return this.cacheService.get('theme') ?? 'light';
+    return localStorage.getItem('theme') ?? 'light';
   }
 
   ngOnInit() {
-   console.log(this.isLoggedIn);
-   
    window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024) { 
       document.querySelector(".navbar-mobile")?.classList.add("navbar-mobile-hidden");
       document.querySelector(".navbar-mobile")?.classList.remove("navbar-mobile-show");
     }
    });
-   this.themeIcon = this.getTheme() == 'light' ? faMoon : faSun;
+   this.themeIcon.set(this.getTheme() == 'light' ? faMoon : faSun);
    this.cartSubscription = this.cartService.getAllCartProducts().subscribe({});
   }
 
@@ -66,8 +75,8 @@ export class Navbar implements OnInit{
     let root = document.documentElement;
     root.classList.toggle('light-theme');
     root.classList.toggle('dark-theme');
-    this.themeIcon = root.classList.contains('light-theme') ? faMoon : faSun;
-    this.cacheService.set('theme', root.classList.contains('light-theme') ? 'light' : 'dark');
+    this.themeIcon.set(root.classList.contains('light-theme') ? faMoon : faSun);
+    localStorage.setItem('theme', root.classList.contains('light-theme') ? 'light' : 'dark');
   }
   toggleNavbar(){
     document.querySelector(".navbar-mobile")?.classList.toggle("navbar-mobile-hidden");
@@ -75,33 +84,34 @@ export class Navbar implements OnInit{
   }
 
   logout() {
-    let loader = this.matDialog.open(Loader,{
+    const loader = this.matDialog.open(Loader, {
       disableClose: true,
     });
+
     this.authService.logout().subscribe({
-      next: (value) => {
-        this.clearCache();
-        loader.close();
-        this.router.navigate(['/login'], { replaceUrl: true });
+      next: () => {
+        this.clearCache(); 
+        this.router.navigate(['/login']);
       },
-      error: (err) => {
+
+      error: () => {
         loader.close();
-        // console.log(err);
+      },
+      complete: () => {
+        loader.close();
       }
     });
   }
 
 
   private clearCache() {
-    this.cacheService.remove('isLogin');
-    this.cacheService.remove('isRemembered');
-    this.cacheService.remove('role');
-    this.cacheService.remove('token');
+    localStorage.clear();
     this.authService.isLoginSubject.next(false);
-    this.authService.userRole.set('');
+    this.authService.userRole.next(null);
   }
 
   ngOnDestroy(): void {
     this.cartSubscription.unsubscribe();
+    this.menuDecider.unsubscribe();
   }
 }

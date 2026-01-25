@@ -8,6 +8,7 @@ export interface Product {
     imageUrls : string[];
     category : string;
     stock: number;
+    soldItemsNumber? : number;
     brand: string;
     rating: number;
     sellerId?: string;

@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
 import { BehaviorSubject, defer, Observable } from 'rxjs';
-import { CacheService } from '../../core/services/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +11,9 @@ export class AuthService {
 
    isLoginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.getInitialAuthState());
    isLoggedIn$ = this.isLoginSubject.asObservable();
-   cacheService = inject(CacheService);
    firebaseAuth = inject(Auth);
-   userRole = signal<string>('');
+   userRole = new BehaviorSubject<string | null>(localStorage.getItem('role'));
+   role$ = this.userRole.asObservable();
 
    constructor(private auth: Auth) {}
 

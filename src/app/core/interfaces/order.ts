@@ -6,4 +6,5 @@ export class Order{
     status?: 'Pending' | 'Shipped' | 'Cancelled' | 'Delivered'
     orderDate?: string;
     address?:string;
+    sellerId?:string;
 }

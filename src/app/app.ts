@@ -1,47 +1,47 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from "./shared/navbar/navbar";
 import { Footer } from "./shared/footer/footer";
-import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { CacheService } from './core/services/cache.service';
 import { CartService } from './core/services/cart.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, combineLatest } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { AuthService } from './features/auth/auth.service';
+import { Sidebar } from "./shared/sidebar/sidebar";
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Footer, NgClass,FontAwesomeModule],
+  imports: [RouterOutlet, Footer, FontAwesomeModule, Sidebar, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected title = 'T-Market';
-  isLogin = signal<string>('');
   theme:string = 'light';
   themeIcon = faMoon;
-  cacheService = inject(CacheService);
   cartService = inject(CartService);
   authService = inject(AuthService);
   router = inject(Router);
   cartProductsSub! : Subscription;
-  isMobile = computed(() => window.innerWidth < 1024)
-  isBuyer = signal<boolean>(false);
+  breakpoints = inject(BreakpointObserver);
+  showNavbar = signal(false);
+  showSidebar = signal(false);
+  sideBarRef = inject(ViewContainerRef);
+  sideBar = ViewChild('sideBar',{read: this.sideBarRef});
+  private destroy$ = new Subject<void>();
+
 
   ngOnInit(): void {
-    this.isLogin.set(this.cacheService.get('isLogin') ?? 'false');
-    let isRemembered = this.cacheService.get('isRemembered') ?? 'false';
-    if(this.isLogin() == 'true' && isRemembered == 'true'){
-      this.authService.userRole.set(localStorage.getItem('role')!);
-      this.router.navigate(['/'], { replaceUrl: true });
-      this.isBuyer.set(this.authService.userRole() == 'buyer');
-    } else {
-      localStorage.removeItem('isLogin');
-      localStorage.removeItem('isRemembered');
+    let isRemembered = localStorage.getItem('isRemembered');
+    if(isRemembered == 'true'){
+      this.router.navigate(['/']);
+    } else{
+      this.authService.userRole.next(null);
       this.router.navigate(['/login']);
     }
+    this.loadLayout();
   }
 
 
@@ -62,6 +62,25 @@ export class App {
       }
     }
   }
+
+  private loadLayout() {
+    combineLatest([
+      this.authService.role$,
+      this.breakpoints.observe(['(max-width: 1024px)']).pipe(
+        startWith({ matches: window.innerWidth <= 1024 } as BreakpointState) 
+      )
+    ])
+    .pipe(
+      takeUntil(this.destroy$),
+    )
+    .subscribe(([role, screen]) => {
+      const isMobile = screen.matches;
+      const isBuyerOrGuest = role == 'buyer' || role == null;
+      this.showNavbar.set(isMobile || isBuyerOrGuest);
+      this.showSidebar.set(!isMobile && !isBuyerOrGuest);
+    });
+  }
+
 
   public static getFirebaseErrorMessage(code: string): string {
     const messages: Record<string, string> = {
@@ -84,5 +103,7 @@ export class App {
 
   ngOnDestroy(): void {
     this.cartProductsSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

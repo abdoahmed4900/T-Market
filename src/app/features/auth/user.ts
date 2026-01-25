@@ -1,4 +1,3 @@
-import { Order } from "../../core/interfaces/order";
 import { Product } from "../../core/interfaces/product";
 
 export interface User {
@@ -7,19 +6,19 @@ export interface User {
   createdAt: Date;
   email: string | null;
   name: string | null;
-  orders? : Order[],
 }
 
 export interface Seller extends User{
-  productsIds: string[];
-  totalProductsSold:number;
-  totalRevenue:number;
+  productsIds?: string[];
+  totalProductsSold?:number;
+  totalRevenue?:number;
 }
 export interface Buyer extends User{
   cartProducts?: (Product & { quantity: number })[];
-  orders? : Order[];
+  ordersIds : string[];
 }
 export interface Admin extends User{
-    totalRevenue?:number;
+    totalRevenue:number;
     totalOrders?:number;
+    totalProductsSold:number;
 }

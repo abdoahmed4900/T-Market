@@ -5,22 +5,24 @@
             <p class="text-[var(--secondary-text-color)]">{{order()!.orderDate }}</p>
         </div>
         <div class="order-item-actions flex flex-row flex-wrap gap-5">
-            <p class="p-2 border-0 rounded-xl text-white" [ngClass]="{
-                'bg-red-700': order()?.status == 'Cancelled',
-                'bg-yellow-500': order()?.status == 'Pending',
-                'bg-green-500': order()?.status == 'Shipped',
-                'bg-green-700': order()?.status == 'Delivered',
-                }">{{order()!.status}}</p>
+            <p class="p-2 border-0 rounded-xl text-white"
+                [class.bg-red-700] = "order()?.status == 'Cancelled'"
+                [class.bg-yellow-500] = "order()?.status == 'Pending'"
+                [class.bg-green-500] = "order()?.status == 'Shipped'"
+                [class.bg-green-700] = "order()?.status == 'Delivered'"
+                >{{order()!.status}}</p>
             <a class="border-1 rounded-xl p-2" [routerLink]="['/order/',order()?.id]">Details</a>
-            <div class="order-status-actions flex flex-row flex-wrap gap-5">
-                @if (order()!.status == 'Pending') {
-                    <button class="border-0 rounded-xl text-white p-2 bg-green-500" (click)="changeOrderStatus('Shipped')">Ship Order</button>
-                    <button class="border-0 rounded-xl text-white p-2 bg-red-700" (click)="changeOrderStatus('Cancelled')">Cancel Order</button>
-                }
-                @if (order()?.status == 'Shipped') {
-                    <button class="border-0 text-white rounded-xl p-2 bg-green-700" (click)="changeOrderStatus('Delivered')">Deliver Order</button>
-                }
-            </div>
+            @if (isAdmin()) {
+                <div class="order-status-actions flex flex-row flex-wrap gap-5">
+                    @if (order()!.status == 'Pending') {
+                        <button class="border-0 rounded-xl text-white p-2 bg-green-500" (click)="changeOrderStatus('Shipped')">Ship Order</button>
+                        <button class="border-0 rounded-xl text-white p-2 bg-red-700" (click)="changeOrderStatus('Cancelled')">Cancel Order</button>
+                    }
+                    @if (order()?.status == 'Shipped') {
+                        <button class="border-0 text-white rounded-xl p-2 bg-green-700" (click)="changeOrderStatus('Delivered')">Deliver Order</button>
+                    }
+                </div>
+            }
         </div>
     </section>
     <p>{{order()?.address}}</p>

@@ -45,6 +45,8 @@ sendNotification = async (req, res) => {
     const { message,userId } = req.body;
     const userSnap = await db.collection("users").doc(userId).get();
     let allSubs = userSnap.data().subscriptions || []
+    console.log(allSubs);
+    
 
     const notificationPayload = {
         "notification": {
@@ -71,19 +73,23 @@ sendNotification = async (req, res) => {
         }
     };
 
+    let x = 0;
+    let newSubs = [];
+
     allSubs.map(async sub => {
         try {
           await webpush.sendNotification(sub, JSON.stringify(notificationPayload));
+          x++;
+          newSubs.push(sub);
+          console.log(`Notification sent to subscription ${x}`);
         } catch(err) {
           console.log(err);
-          if (err.statusCode === 410 || err.statusCode === 404) {
-            return null;
-          }
-          return sub;
+          
+          console.log(`when i caught error notifcation sent are ${x}`);
         }
       }
     )
-    allSubs = allSubs.filter(Boolean);
+    console.log('newSubs : ' + newSubs);
 
     await db.collection("users").doc(userId).update({subscriptions : allSubs});
     console.log('notifcation is sent');

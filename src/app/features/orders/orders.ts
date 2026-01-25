@@ -1,14 +1,15 @@
-import { Component, effect, inject, model, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { OrderService } from '../../core/services/order.service';
 import { map, Observable } from 'rxjs';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { OrderItem } from "./order-item/order-item";
 import { Order } from '../../core/interfaces/order';
 import { FormsModule } from '@angular/forms';
+import { Loader } from "../../shared/loader/loader";
 
 @Component({
   selector: 'app-orders',
-  imports: [AsyncPipe, OrderItem, NgClass,FormsModule],
+  imports: [AsyncPipe, OrderItem, FormsModule, Loader],
   templateUrl: './orders.html',
   styleUrl: './orders.scss'
 })
@@ -18,56 +19,70 @@ export class Orders {
   orders!: Observable<Order[]>;
 
   selectedStatus = signal<string>('All');
+  ordersList!: Order[];
 
-  isSeller= model<boolean>(false);
+  isAdmin= model<boolean>(false);
+  isFiltered = signal(false);
 
   startDate= signal<string>('');
   endDate= signal<string>('');
-
-  constructor() {
-    effect(() => {
-      this.updateOrders();
-    });
-
-    this.updateOrders();
-  }
+  role = signal<string>(localStorage.getItem('role') || '');
 
   ngOnInit(): void {
-    this.orders = this.orderService.getAllOrders();
-    this.updateOrders();
+    this.applyFilters();
   }
 
-  private updateOrders(): void {
-    const base$ = this.selectedStatus() === 'All'
-      ? this.orderService.getAllOrders()
-      : this.orderService.getOrdersByStatus(this.selectedStatus());
-
-    this.orders = base$.pipe(
-      map(orders => this.applyDateFilter(orders))
-    );
-  }
-
-  private applyDateFilter(orders: Order[]): Order[] {
-    if (!this.startDate() || !this.endDate()) {
-      return orders;
+  applyFilters() {
+    this.isFiltered.set(false);
+    if (this.selectedStatus() != 'All') {
+        this.orders = this.orders.pipe(
+          map((o) => {
+            o = o.filter(
+                order => order.status == this.selectedStatus()
+            );
+            return o;
+          })
+        )
+    }else{
+      this.orders = this.orderService.getMyOrders();
     }
 
-    const start = this.normalizeDate(new Date(this.startDate()));
-    const end = this.normalizeDate(new Date(this.endDate()));
+    if (this.startDate()) {
+        this.orders = this.orders.pipe(
+          map((o) => {
+            o = o.filter(
+                order => this.normalizeDate(new Date(order.orderDate!)) >= this.normalizeDate(new Date(this.startDate()))
+            );
+            return o;
+          })
+        )
+    }
 
-    return orders.filter(order => {
-      const orderDate = this.normalizeDate(new Date(order.orderDate!));
-      return orderDate >= start && orderDate <= end;
-    });
+    if(this.endDate()){
+      this.orders = this.orders.pipe(
+          map((o) => {
+            o = o.filter(
+                order => this.normalizeDate(new Date(order.orderDate!)) <= this.normalizeDate(new Date(this.endDate()))
+            );
+            return o;
+          })
+        )
+    }
+    this.isFiltered.set(true);
   }
 
-  filterWithStatus(newStatus : string){
+  setStatus(newStatus : string){
     this.selectedStatus.set(newStatus);
-    this.updateOrders();
+    this.applyFilters();
   }
 
-  filterByDate(){
-    this.updateOrders();
+  setStartDate(val:string){
+    this.startDate.set(val);
+    this.applyFilters();
+  }
+  setEndDate(val:string){
+    this.endDate.set(val);
+    this.applyFilters();
   }
 
   normalizeDate(date: Date): Date {

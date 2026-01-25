@@ -98,7 +98,7 @@ export class RegisterComponent {
                 role: 'buyer',
                 createdAt: new Date(),
                 cartProducts: [],
-                orders : [],
+                ordersIds : [],
               } as Buyer;
             }else{
               userData  = {
@@ -107,7 +107,7 @@ export class RegisterComponent {
                 email: this.registerForm.get('email')?.value,
                 role: 'seller',
                 createdAt: new Date(),
-                orders : [],
+                ordersIds : [],
                 productsIds : [],
                 totalProductsSold: 0,
                 totalRevenue: 0,

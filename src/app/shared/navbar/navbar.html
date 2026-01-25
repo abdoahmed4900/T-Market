@@ -1,5 +1,5 @@
-<nav class="bg-[var(--main-bg-color)] border-b-2 border-gray-200 py-3 relative">
-    <div class="flex items-center pt-3 gap-10 max-w-[1500px] mx-auto md:px-20 px-10 justify-between">
+<nav class="bg-[var(--main-bg-color)] border-b-2 border-gray-200 py-3 relative animate-[slideFromTop]">
+    <div class="flex items-center pt-3 gap-10 max-w-[1400px] mx-auto md:px-20 px-10 justify-between">
        <div class="title-and-nav flex items-center">
         <section>
            <app-website-title></app-website-title>
@@ -8,9 +8,7 @@
               <li><a routerLink="/shop" class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg" routerLinkActive="active">Shop</a></li>
               <li><a class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg">Brands</a></li>
               <li><a class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg">Collection</a></li>
-            }
-            @if (isBuyer()) {
-            <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Support</a></li>
+              <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">Support</a></li>
             }
            </ul>
         </section>
@@ -36,13 +34,13 @@
                border-gray-300 hover:bg-[var(--primary-color)] 
                transition p-4"
                (click)="changeTheme()" >
-               <fa-icon [icon]="themeIcon" ></fa-icon>
+               <fa-icon [icon]="themeIcon()" ></fa-icon>
              </button>
              @if ((isLoggedIn | async)) {
              <button 
              class="rounded-xl p-4 bg-[var(--primary-color)] border hover:bg-purple-700 focus:bg-purple-800 border-1 border-gray-200 text-white"
              (click)="logout()"
-             >Logout</button>
+             >Sign Out</button>
              @if(isBuyer()){
               <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">♡ WishList</button>
               <div class="cart-section relative" routerLink="/cart">
@@ -91,13 +89,13 @@
             border-gray-300 hover:bg-[var(--primary-color)] 
             hover:text-white transition text-[12px] py-3 px-3"
              (click)="changeTheme()">
-            <fa-icon class="text-lg" [icon]="themeIcon"></fa-icon>
+            <fa-icon class="text-lg" [icon]="themeIcon()"></fa-icon>
         </button>
         @if ((isLoggedIn | async)) {
           <button 
           class="rounded-xl p-4 bg-[var(--primary-color)] border hover:bg-purple-700 focus:bg-purple-800 border-1 border-gray-200 hover:text-white text-white"
           (click)="logout()"
-          >Logout</button>
+          >Sign Out</button>
         }
     </div>
     </div>

@@ -11,8 +11,8 @@ import {
    where,
 } from "@angular/fire/firestore";
 import { fireStoreCollections } from "../../../environments/environment";
-import { BehaviorSubject, from, map, switchMap, tap } from "rxjs";
-import { Seller, User } from "../../features/auth/user";
+import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
+import { Buyer, Seller } from "../../features/auth/user";
 import { ProductsService } from "./products.service";
 import { Order } from "../interfaces/order";
 import { Product } from "../interfaces/product";
@@ -26,50 +26,70 @@ export class OrderService {
    numberOfOrders = new BehaviorSubject<number>(0);
    productService = inject(ProductsService);
 
-   getAllOrders() {
+   getAllOrders(){
+      let ordersCollection  = collectionData(query(this.ordersCollectionRef));
+      return ordersCollection.pipe(
+         map((orders) => {
+            let o = orders as Order[];
+            return o ?? [];
+         })
+      );
+   }
+
+   getMyOrders() {
+     console.log('your irders methods');
+     
      this.numberOfOrders.next(0)
      let user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
      return user.pipe(
-        map((users) => {
-            let user = users[0] as User;
-            this.numberOfOrders.next(user.orders!.length);
-            return user.orders ?? [];
-        })
+        switchMap((users) => {
+            let ordersObs! : Observable<Order[]>;
+            let user = users[0] as Buyer; 
+            this.numberOfOrders.next(user.ordersIds.length);
+            if (!user.ordersIds?.length) {
+              return of([]);
+            }
+            let orderReqs : Observable<Order>[] = user.ordersIds.map((id) => this.getOrderById(id));
+            ordersObs = forkJoin(
+              orderReqs
+            ) 
+            return ordersObs.pipe(
+               map((orders) => {
+                  console.log(`orders are : ${orders}`);
+                  orders.map((o) => {
+                     console.log(`o is ${JSON.stringify(o)}`);
+                     
+                  })
+                 return orders; 
+               })
+            )
+        }),
      )
    }
 
    getOrdersByStatus(status:string){
-      let user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
-      return user.pipe(
-         map((users) => {
-            let user = users[0] as User;
-            return user.orders?.filter((order) => order.status == status) ?? [];
+      let ordersCollection = collectionData(query(this.ordersCollectionRef));
+      return ordersCollection.pipe(
+         map((orders) => {
+            let x = orders as Order[]
+            return x?.filter((order) => order.status == status) ?? [];
          })
       )
    }
 
    changeStatusOrder(orderId:string,newStatus:"Pending" | "Shipped" | "Cancelled" | "Delivered"){
-      let user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
+      let ordersCollection = collectionData(query(this.ordersCollectionRef,where('id','==',orderId)));
       let order :Order;
-      return user.pipe(
-         switchMap((users) => {
-            const user = users[0] as User;
-            user.orders!.filter((o) => {
-               if(o.id == orderId){
-                  order = o;
-                  o.status = newStatus;
-               }
-            }) 
-            let userRef = doc(this.fireStore,fireStoreCollections.users,user.uid)
-            console.log(userRef.id);
-            
+      return ordersCollection.pipe(
+         switchMap(async (orders) => {
+            order = orders[0] as Order;
+            order.status = newStatus;
             return from(getDocs(query(this.ordersCollectionRef,where('id','==',order.id),))).pipe(
                switchMap(orders => {
                   let orderRef = orders.docs[0].ref;
                   return Promise.all(
                      [
                         updateDoc(orderRef,{status: newStatus}),
-                        updateDoc(userRef,{orders:user.orders})
                      ]
                   )
                })
@@ -83,9 +103,9 @@ export class OrderService {
       )
    }
 
-   private async updateProducts(order: Order, newStatus: string) {
-       await Promise.all(
-    order.items.map(async (product) => {
+   private updateProducts(order: Order, newStatus: string) {
+        return from(
+          order.items.map(async (product) => {
       const productSnap = await getDocs(
         query(this.productCollectionRef, where('id', '==', product.id))
       );
@@ -112,11 +132,6 @@ export class OrderService {
 
       const seller = sellerDoc.data() as Seller;
 
-      // avoid duplicate orders
-      if (!seller.orders?.some((o) => o.id === order.id)) {
-        seller.orders?.push(order);
-      }
-
       const sellerRef = doc(
         this.fireStore,
         fireStoreCollections.users,
@@ -131,7 +146,7 @@ export class OrderService {
         sellerRef
       );
     })
-  );
+       );
    }
 
    private async updateSeller(seller: Seller, totalProductsSold: number, newStatus: string, product: { price: number; name: string; quantity: number; id?: string; }, sellerRef:DocumentReference) {
@@ -139,19 +154,24 @@ export class OrderService {
       seller.totalRevenue = totalRevenue;
       seller.totalProductsSold = totalProductsSold;
       totalProductsSold = newStatus == 'Shipped' ? totalProductsSold + product.quantity : totalProductsSold - product.quantity;
-      totalRevenue = newStatus == 'Shipped' ? (totalRevenue + ((product.quantity * product.price) / 10)) : (totalRevenue - ((product.quantity * product.price) / 10));
+      totalRevenue = newStatus == 'Shipped' ? (totalRevenue + ((product.quantity * product.price) * 0.9)) : (totalRevenue - ((product.quantity * product.price) * 0.9));
       seller.totalRevenue = totalRevenue;
       seller.totalProductsSold = totalProductsSold;
-      await updateDoc(sellerRef, { orders: seller.orders, totalProductsSold: totalProductsSold, totalRevenue: totalRevenue });
+      await updateDoc(sellerRef, { totalProductsSold: totalProductsSold, totalRevenue: totalRevenue });
       return totalProductsSold;
    }
 
    getOrderById(id:string){
-      let user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
-      return user.pipe(
-         map((users) => {
-            let user = users[0] as User;
-            return user.orders?.filter((order) => order.id == id).at(0)!;
+      return from(
+         getDocs(
+            query(this.ordersCollectionRef,where('id','==',id))
+         )
+      ).pipe(
+         map((orders) => {
+            let order = orders.docs[0].data() as Order;
+            console.log(order);
+            
+            return order;
          })
       )
    }

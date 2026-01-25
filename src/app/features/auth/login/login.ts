@@ -8,18 +8,20 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
-import { CacheService } from '../../../core/services/cache.service';
 import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, query, setDoc, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';
 import { CartProduct } from '../../cart/cart.product';
 import { Order } from '../../../core/interfaces/order';
-
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { ToastService } from '../../../core/services/toast.service';
 @Component({
   selector: 'app-login',
-  imports: [FontAwesomeModule,ReactiveFormsModule,CommonModule,RouterLink],
+  imports: [FontAwesomeModule,ReactiveFormsModule,CommonModule,RouterLink,ButtonModule,ToastModule],
   standalone: true,
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
+  providers: [ToastService],
 })
 export class LoginComponent implements OnInit {
   isPasswordVisible: boolean = false;
@@ -32,9 +34,9 @@ export class LoginComponent implements OnInit {
 
   loginForm !: FormGroup;
 
-  cacheService = inject(CacheService);
-
   fireStore = inject(Firestore);
+
+  // toastService = inject(ToastService);
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -64,36 +66,34 @@ export class LoginComponent implements OnInit {
       this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).subscribe({
       next: async (value) => {
         dialogRef.close();
-        this.auth.isLoginSubject.next(true);
-        localStorage.setItem('isLogin', this.auth.isLoginSubject.value ? 'true' : 'false');
-        localStorage.setItem('isRemembered', this.rememberMe ? 'true' : 'false');
         let user = JSON.parse(JSON.stringify(value.user));
         console.log(user.uid);
         let userRef = collection(this.fireStore,fireStoreCollections.users)
         let x = collectionData(query(userRef,where('email','==',value.user.email))).subscribe(
           {
             next : async (value : any) => {
-                
-                localStorage.setItem('token', value[0].uid);
                 localStorage.setItem('role', value[0].role);
-                this.auth.userRole.set(value[0].role)
-                this.router.navigate(['/'], { replaceUrl: true }).then(async () =>{
-                  
-                });
+                localStorage.setItem('isRemembered', this.rememberMe ? 'true' : 'false');
+                localStorage.setItem('token', value[0].uid);
+                this.auth.isLoginSubject.next(true);
+                this.auth.userRole.next(value[0].role);
+                this.router.navigate(['/'], { replaceUrl: true });
             },
           }
         );
       },
 
 
+
       error: (err) => {
         dialogRef.close();
         let message = getFirebaseErrorMessage(err.code);
-        console.log(message);
+        // this.toastService.showErrorToast(message);
       }
     });
     }
   }
+
   async loginWithGoogle() {
     let login = this.auth.loginWithGoogle().subscribe(
       {
@@ -126,6 +126,7 @@ export class LoginComponent implements OnInit {
                 await deleteDoc(val);
               });
             }else{
+              this.auth.userRole.next(user['role']);
               localStorage.setItem('token', user['uid']);
               localStorage.setItem('role', user['role']);
             } 
@@ -136,27 +137,25 @@ export class LoginComponent implements OnInit {
 
         error: (err) => {
           let message = getFirebaseErrorMessage(err.code);
-          console.log(message);
+          // this.toastService.showErrorToast(message);
         }
       }
     );
   }
   logout() {
     this.auth.logout().subscribe({
-      next: () => {
-          this.auth.isLoginSubject.next(false);
-          this.cacheService.remove('isLogin');
-          this.cacheService.remove('isRemembered');
-          this.cacheService.remove('token');
-          this.cacheService.remove('role');
-          this.auth.userRole.set('');
-          this.router.navigate(['/login'], { replaceUrl: true });
-      },
+      next: async () => {
+        this.auth.isLoginSubject.next(false);
+        this.auth.userRole.next(null);
+        localStorage.clear();
 
-      error: (err) => {
+        await this.router.navigateByUrl('/login', { replaceUrl: true });
+      },
+      error : (err) => {
         let message = getFirebaseErrorMessage(err.code);
-        // console.log(message);
-      }
-    });
+        // this.toastService.showErrorToast(message);
+      },
+     }
+    );
   }
 }

@@ -1,0 +1,30 @@
+
+<aside class="sidebar">
+   <main class="sidebar-content fixed top-0 left-0  flex flex-col transition duration-600 fixed ease-in-out gap-5 min-h-full w-[280px] transition duration-300 ease-in-out bg-[var(--primary-color)]" [class.open]="sidebarOpen()">
+         <button class="menu-btn self-end p-4 text-[20px]" (click)="toggleSidebar()">
+            x
+         </button>
+         <nav class="flex px-10 flex-col items-center gap-7">
+         @for (item of menu(); track $index) {
+           <a [routerLink]="item.path">
+              {{ item.label }}
+            </a>
+         }
+        </nav>
+        <section class="flex px-10 flex-row gap-5 items-center justify-center">
+           <button 
+              class="rounded-lg border
+               border-gray-300 hover:bg-[var(--primary-color)] 
+               hover:text-white transition text-[12px] py-3 px-3"
+                (click)="changeTheme()">
+               <fa-icon class="text-lg" [icon]="themeIcon()"></fa-icon>
+           </button>
+           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4">EN</button>
+           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4">AR</button>
+        </section>
+        <button class="text-[18px] h-fit w-fit p-4 bg-red-500 hover:bg-red-700 rounded-xl self-center mx-auto" (click)="logout()">Sign Out</button>
+   </main>
+   @if(!sidebarOpen()){
+     <button class="menu-btn open p-8 pt-10 text-[20px]" (click)="toggleSidebar()">☰</button>
+   }
+</aside>

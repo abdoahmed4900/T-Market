@@ -1,37 +1,41 @@
-<main class="mt-7" [ngClass]="isSeller() ? '' : 'flex flex-col gap-5 w-full '">
+  <main class="mt-7" [class]="!isAdmin() ? 'flex flex-col gap-5 w-full' : ''">
     <header>
         <h1 class="text-[20px] font-bold">Orders List</h1>
     </header>
-    <section class="my-2 flex gap-5 size-fit">
+    <section class="my-2 flex gap-5 size-fit flex-wrap">
         <input type="date"
-        [(ngModel)]="startDate"
+        (input)="setStartDate($event.target.value)"
          class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
          focus:border-[var(--primary-color)] focus:ring-4 focus:ring-[var(--primary-color)]/20
          focus:outline-none transition-colors
          text-[var(--primary-text-color)]
          [&::-webkit-calendar-picker-indicator]:opacity-0
-         [&::-webkit-datetime-edit]:pr-8">
-        <input type="date" placeholder="to" [(ngModel)]="endDate"  class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
+         [&::-webkit-datetime-edit]:px-8">
+        <input type="date" placeholder="to" (input)="setEndDate($event.target.value)" class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
          focus:border-[var(--primary-color)] focus:ring-4 focus:ring-[var(--primary-color)]/20
          focus:outline-none transition-colors
          text-[var(--primary-text-color)]
          [&::-webkit-calendar-picker-indicator]:opacity-0
-         [&::-webkit-datetime-edit]:pr-8">
+         [&::-webkit-datetime-edit]:px-8">
     </section>
     <section class="mt-1">
         <div class="order-status-categories flex flex-row flex-wrap gap-4 my-4">
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'All'}" (click)="filterWithStatus('All')">All</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Pending'}" (click)="filterWithStatus('Pending')">Pending</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Cancelled'}" (click)="filterWithStatus('Cancelled')">Cancelled</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Shipped'}" (click)="filterWithStatus('Shipped')">Shipped</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [ngClass]="{'bg-[var(--primary-color)]' : selectedStatus() == 'Delivered'}" (click)="filterWithStatus('Delivered')">Delivered</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'All'" (click)="setStatus('All')">All</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Pending'" (click)="setStatus('Pending')">Pending</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Cancelled'" (click)="setStatus('Cancelled')">Cancelled</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Shipped'" (click)="setStatus('Shipped')">Shipped</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Delivered'" (click)="setStatus('Delivered')">Delivered</button>
         </div>
-        @if ((orders | async)!.length > 0) {
-            @for (item of orders | async; track item.id) {
+        @if(isFiltered()){
+          @if ((orders | async)!.length > 0) {
+            @for (item of (orders | async); track item.id) {
                <app-order-item [order]="item" class="slideFromTopAnimation"></app-order-item>
             }
+          }@else{
+              <img src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-orders"/>
+          }
         }@else{
-            <img src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-orders"/>
+            <app-loader></app-loader>
         }
     </section>
 </main>

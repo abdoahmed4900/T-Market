@@ -1,63 +1,73 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, ViewContainerRef, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, inject, PLATFORM_ID, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SwPush } from '@angular/service-worker';
 import { firstValueFrom } from 'rxjs';
-import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import { SellerHomeComponent } from "./seller-home-component/seller-home-component";
+import { BuyerHomeComponent } from "./buyer-home-component/home";
+import { AdminComponent } from "../admin/admin";
 
 @Component({
   selector: 'app-home-wrapper-component',
-  imports: [CommonModule],
+  imports: [CommonModule, SellerHomeComponent, BuyerHomeComponent, AdminComponent],
   standalone: true,
   templateUrl: './home-component.html',
-  styleUrl: './home-component.scss'
+  styleUrl: './home-component.scss',
 })
 export class HomeComponent implements OnInit {
-  private vcr = inject(ViewContainerRef);
   private platform = inject(PLATFORM_ID);
-  private askedForPush = false;
   swPush = inject(SwPush);
   http = inject(HttpClient);
   dialog = inject(MatDialog);
+  role = signal<string | null>(null);
 
 
   async ngOnInit() {
-    await this.createHomeComponent();
-    console.log('service of push : ' +  this.swPush.isEnabled);    ;
-    this.dialog.open(
-      ConfirmDialog,
-      {
-        data: {
-          confirmFunction: async () => {
-            return this.subscribeToNotifications();
-          },
-          dialogTitle: "Do you want to subscribe to notifications?"
-        }
-      }
-    )
+    if (isPlatformBrowser(this.platform)) {
+      this.role.set(localStorage.getItem('role'));
+    }
+    // console.log('service of push : ' +  this.swPush.isEnabled);    ;
+    // this.dialog.open(
+    //   ConfirmDialog,
+    //   {
+    //     data: {
+    //       confirmFunction: async () => {
+    //         return this.subscribeToNotifications();
+    //       },
+    //       dialogTitle: "Do you want to subscribe to notifications?"
+    //     }
+    //   }
+    // );
+
+    // this.swPush.messages.subscribe((message : {
+    //   actions?: {
+    //    action: string;
+    //    title: string;
+    //   }[],
+    //   title?: string,
+    //   body?: string,
+    //   icon?: string,
+    //   badge?: string,
+    //   vibrate?: number[],
+    //   data?: {
+    //     dateOfArrival: number;
+    //     url?: string;
+    //     primaryKey?: number;
+    //     [key: string]: any;
+    //   },
+    // }) => {
+    //   console.log('Received push message: ', message);
+    //   self.window.addEventListener('push', (event) => {
+    //     let e = event as PushEvent;
+    //     console.log('Push event received: ', e);
+    //     // e.waitUntil(
+    //     //   self.regi
+    //     // )
+    //   })
+    // });
   }
   
-
-  private async createHomeComponent() {
-    let role: string | null = null;
-    if (isPlatformBrowser(this.platform)) {
-      role = localStorage.getItem('role');
-    }
-
-    let cmp;
-    console.log(role);
-
-    if (role === 'buyer') {
-      cmp = (await import('./buyer-home-component/home')).BuyerHomeComponent;
-    } else if (role === 'seller') {
-      cmp = (await import('./seller-home-component/seller-home-component')).SellerHomeComponent;
-    } else {
-    cmp = (await import('../admin/admin')).Admin;
-    }
-
-    const ref = this.vcr.createComponent(cmp);
-  }
 
   async subscribeToNotifications() {
 
@@ -72,6 +82,7 @@ export class HomeComponent implements OnInit {
     );
     
     console.log('before ready promise');
+    console.log(publicKey);
     
 
     if(!this.swPush.isEnabled) {
