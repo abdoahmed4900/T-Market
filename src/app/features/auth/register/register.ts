@@ -91,7 +91,7 @@ export class RegisterComponent {
           }).then(async (val) => { 
             let userData;
             if(this.selectedRole.toLowerCase() == 'buyer'){
-                userData  ={
+                userData = {
                 uid: value.user.uid,
                 name: this.registerForm.get('name')?.value,
                 email: this.registerForm.get('email')?.value,
@@ -99,6 +99,7 @@ export class RegisterComponent {
                 createdAt: new Date(),
                 cartProducts: [],
                 ordersIds : [],
+                wishListIds: [],
               } as Buyer;
             }else{
               userData  = {

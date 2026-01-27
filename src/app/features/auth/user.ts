@@ -16,6 +16,7 @@ export interface Seller extends User{
 export interface Buyer extends User{
   cartProducts?: (Product & { quantity: number })[];
   ordersIds : string[];
+  wishListIds : string[];
 }
 export interface Admin extends User{
     totalRevenue:number;

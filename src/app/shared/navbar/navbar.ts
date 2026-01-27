@@ -110,6 +110,10 @@ export class Navbar implements OnInit{
     this.authService.userRole.next(null);
   }
 
+  goToWishList(){
+    this.router.navigateByUrl('/wishlist');
+  }
+
   ngOnDestroy(): void {
     this.cartSubscription.unsubscribe();
     this.menuDecider.unsubscribe();

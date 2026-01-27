@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../core/services/cart.service';
 import { Product } from '../../core/interfaces/product';
+import { WishlistService } from '../../features/wishlist/wishlist.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-card',
@@ -20,8 +22,14 @@ export class ProductCard {
   root = document.getElementsByTagName('html')[0];
 
   cartService = inject(CartService);
+  wishListService = inject(WishlistService);
+  wishListSub! : Subscription;
 
   addToCart(productId:string,productPrice:number){
     this.cartService.addProductToCart(productId,productPrice,this.product()!.name);
+  }
+
+  async addToWishList(productId:string){
+    await this.wishListService.addToWishList(productId);
   }
 }

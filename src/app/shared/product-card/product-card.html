@@ -18,7 +18,7 @@
     </div>
     <div class="actions flex md:flex-row flex-col gap-y-3 gap-x-2 md:items-center items-start flex-wrap p-4">
         <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-2/4 text-white hover:bg-purple-700 w-full" (click)="addToCart(product()!.id!,product()!.price)">Add to Cart</button>
+        <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-2/4 text-white hover:bg-purple-700 w-full" type="button" (click)="addToWishList(product()!.id!)">Add to WishList</button>
         <a [routerLink]="['/product',product()!.id]" class="view-details-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-1/4 w-full text-white hover:bg-purple-700 text-center">View</a>
-        <button class="save-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-1/4 text-white w-full hover:bg-purple-700">Save</button>
     </div>
 </section>
