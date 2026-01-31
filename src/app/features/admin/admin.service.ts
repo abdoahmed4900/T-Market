@@ -2,11 +2,9 @@ import { ProductsService } from './../../core/services/products.service';
 import { inject, Injectable } from "@angular/core";
 import { OrderService } from "../../core/services/order.service";
 import { map } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 import { collection, collectionData, Firestore, query, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../environments/environment';
 import { Admin } from '../auth/user';
-import { HomeService } from '../home-component/home.service';
 
 @Injectable(
     {
@@ -16,9 +14,8 @@ import { HomeService } from '../home-component/home.service';
 export class AdminService{
     ordersService = inject(OrderService);
     productsService = inject(ProductsService);
-    authService = inject(AuthService);
-    homeService = inject(HomeService);
     fireStore = inject(Firestore);
+    adminFirestore = inject(AdminFirestoreService);
     userCollectionRef = collection(this.fireStore,fireStoreCollections.users);
 
     getAllOrders(){
@@ -26,9 +23,11 @@ export class AdminService{
     }
 
     getAdmin(){
-        return this.homeService.getUser().pipe(
-            map((u) => {
-                return u as Admin;
+        const ref = collection(this.fireStore, fireStoreCollections.users);
+        const q = query(ref, where('uid', '==', localStorage.getItem('token')));
+        return collectionData(q).pipe(
+            map((q) => {
+                return q[0] as Admin;
             })
         );
     }
@@ -37,24 +36,21 @@ export class AdminService{
         return this.productsService.getAllProducts()
     }
 
-    getNumberOfSoldProducts(){
-        let usersCollection = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token'))))
-        return usersCollection.pipe(
-            map((u) => {
-                let user = u[0] as Admin;
-                return user.totalProductsSold;
-            })
-        )
-    }
-    getTotalRevenue(){
-        let usersCollection = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token'))))
-        return usersCollection.pipe(
-            map((u) => {
-                let user = u[0] as Admin;
-                return user.totalRevenue;
-            })
-        )
-    }
+    getNumberOfSoldProducts() {
+    return this.adminFirestore
+      .getAdminByUid(localStorage.getItem('token')!)
+      .pipe(
+        map((u) => (u[0] as Admin).totalProductsSold)
+      );
+  }
+
+  getTotalRevenue() {
+    return this.adminFirestore
+      .getAdminByUid(localStorage.getItem('token')!)
+      .pipe(
+        map((u) => (u[0] as Admin).totalRevenue)
+      );
+  }
 
     getOrdersNumber() {
         return this.ordersService.getAllOrders().pipe(
@@ -76,4 +72,15 @@ export class AdminService{
             })
         )
     }
+}
+
+@Injectable({ providedIn: 'root' })
+export class AdminFirestoreService {
+  constructor(private firestore: Firestore) {}
+
+  getAdminByUid(uid: string) {
+    const ref = collection(this.firestore, fireStoreCollections.users);
+    const q = query(ref, where('uid', '==', uid));
+    return collectionData(q);
+  }
 }

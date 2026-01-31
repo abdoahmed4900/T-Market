@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
                 this.auth.isLoginSubject.next(true);
                 this.auth.userRole.next(value[0].role);
                 this.router.navigate(['/'], { replaceUrl: true });
+                x.unsubscribe();
             },
           }
         );
@@ -116,6 +117,7 @@ export class LoginComponent implements OnInit {
                 createdAt: new Date(),
                 cartProducts : [] as CartProduct[],
                 orders: [] as Order[],
+                wishListIds: [] as string[],
                 role: 'buyer',
               };
               addDoc(users,newDoc).then(async (val) => {

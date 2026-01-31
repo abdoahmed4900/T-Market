@@ -7,31 +7,31 @@
     <section aria-describedby="(admin | async)-dashbard-number" class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 w-full">
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
             <h2 class="text-[20px] font-bold">Total Revenue</h2>
-            <p class="text-[16px]">{{(admin | async)?.totalRevenue | currency}} </p>
+            <p class="text-[16px] total-revenue">{{(admin | async)?.totalRevenue | currency}} </p>
         </section>
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
             <h2 class="text-[20px] font-bold">Total Sold Items</h2>
-            <p class="text-[16px]">{{(totalProductsSold | async)}}</p>
+            <p class="text-[16px] total-products-sold">{{(totalProductsSold | async)}}</p>
         </section>
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
             <h2 class="text-[20px] font-bold">Total Orders</h2>
-            <p class="text-[16px]">{{(totalOrdersNumber | async)}}</p>
+            <p class="text-[16px] total-orders-number">{{(totalOrdersNumber | async)}}</p>
         </section>
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
             <h2 class="text-[20px] font-bold">Shipped Orders</h2>
-            <p class="text-[16px]">{{shippedOrdersNumber}}</p>
+            <p class="text-[16px] total-shipped-orders-number">{{shippedOrdersNumber}}</p>
         </section>
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
             <h2 class="text-[20px] font-bold">Cancelled Orders</h2>
-            <p class="text-[16px]">{{cancelledOrdersNumber}}</p>
+            <p class="text-[16px] total-cancelled-orders-number">{{cancelledOrdersNumber}}</p>
         </section>
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
             <h2 class="text-[20px] font-bold">Delivered Orders</h2>
-            <p class="text-[16px]">{{deliveredOrdersNumber}}</p>
+            <p class="text-[16px] total-delivered-orders-number">{{deliveredOrdersNumber}}</p>
         </section>
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
             <h2 class="text-[20px] font-bold">Pending Orders</h2>
-            <p class="text-[16px]">{{pendingOrdersNumber}}</p>
+            <p class="text-[16px] total-pending-orders-number">{{pendingOrdersNumber}}</p>
         </section>
     </section>
     <section aria-describedby="(admin | async)-dashboard-sold-items" class="grid grid-cols-1 gap-5 w-full">
@@ -40,9 +40,9 @@
         </header>
         <main>
             @if((allProducts | async)!.length > 0){
-               <section class="grid gap-4 md:grid-cols-2">
+               <section class="grid gap-4 all-products md:grid-cols-2">
                    @for (item of (allProducts | async); track item.id;) {
-                      <div class="border-1 rounded-xl p-4 flex flex-col gap-3 seller-products">
+                      <div class="border-1 product-item rounded-xl p-4 flex flex-col gap-3 seller-products">
                                <h2 class="text-[16px]">Product Name : {{item.name}}</h2>
                                <h2 class="text-[16px]">Price : {{item.price | currency}}</h2>
                                <h2 class="text-[16px]">Sold : {{item.soldItemsNumber}} Pieces</h2>

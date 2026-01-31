@@ -8,6 +8,7 @@ import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Admin } from '../auth/user';
 import { Product } from '../../core/interfaces/product';
 import { pieChartOptions, statusChartOptions } from '../../core/utils';
+import { ChartFactory } from '../../core/chart.factory';
 Chart.register(...registerables);
 
 
@@ -32,6 +33,7 @@ export class AdminComponent {
   cancelledOrdersNumber!: Number;
 
   adminService = inject(AdminService);
+  chartFactory = inject(ChartFactory);
   
   admin!: Observable<Admin>;
 
@@ -120,17 +122,17 @@ export class AdminComponent {
     this.isChartInitialized = true;
   }
   private createPieInstance(pieCanvas: HTMLCanvasElement) {
-    this.pieChartInstance = new Chart(pieCanvas, pieChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
+    this.pieChartInstance = this.chartFactory.createChart(pieCanvas, pieChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
   }
   private createStatusChart(barCanvas: HTMLCanvasElement) {
 
-    this.chartInstance = new Chart(barCanvas, statusChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
+    this.chartInstance = this.chartFactory.createChart(barCanvas, statusChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
   }
 
   ngOnDestroy(): void {
-    this.cancelledOrdersNumSub.unsubscribe();
-    this.deliveredOrdersNumSub.unsubscribe();
-    this.pendingOrdersNumSub.unsubscribe();
-    this.shippedOrdersNumSub.unsubscribe();
+    this.cancelledOrdersNumSub?.unsubscribe();
+    this.deliveredOrdersNumSub?.unsubscribe();
+    this.pendingOrdersNumSub?.unsubscribe();
+    this.shippedOrdersNumSub?.unsubscribe();
   }
 }

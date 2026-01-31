@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { PaginationService } from '../../core/services/pagination.service';
 import { FormsModule } from "@angular/forms";
 import { map, Observable } from 'rxjs';
-import { CartService } from '../../core/services/cart.service';
 import { Product } from '../../core/interfaces/product';
 
 
@@ -32,7 +31,6 @@ export class Categories {
   currentPage=signal<number>(1);
   categories!: Observable<string[]>;
   filteredProducts! : Observable<Product[]>;
-  cartService = inject(CartService);
 
   ngOnInit(){
     this.categories = this.productsService.readAllCategories();

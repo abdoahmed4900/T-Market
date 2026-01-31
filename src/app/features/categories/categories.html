@@ -30,7 +30,7 @@
     </section>
     <section class="search-results grid grid-cols-[repeat(md:auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
         @if ((filteredProducts | async) != null) {
-          @for (item of (filteredProducts | async); track $index) {
+          @for (item of (filteredProducts | async); track item.id) {
                 <app-product-card [product]="item"></app-product-card>
           }
         }@else{
