@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Inject, inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
 import { BehaviorSubject, defer, Observable } from 'rxjs';
 
@@ -8,6 +8,7 @@ import { BehaviorSubject, defer, Observable } from 'rxjs';
 })
 export class AuthService {
    http = inject(HttpClient);
+   auth = inject(Auth);
 
    isLoginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.getInitialAuthState());
    isLoggedIn$ = this.isLoginSubject.asObservable();
@@ -15,7 +16,10 @@ export class AuthService {
    userRole = new BehaviorSubject<string | null>(localStorage.getItem('role'));
    role$ = this.userRole.asObservable();
 
-   constructor(private auth: Auth) {}
+    constructor(
+      @Inject('fetch')
+      fetch = window.fetch.bind(window)
+    ) {}
 
    loginWithEmailAndPassword(email: string, password: string) : Observable<UserCredential> {
       let res = () => signInWithEmailAndPassword(this.auth,email,password);
