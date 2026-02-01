@@ -1,17 +1,20 @@
 @let orderDetails = order | async;
-@defer (when order) {
+@if (orderDetails) {
     <main class="flex flex-col w-full mt-10" id="order-details">
     <header class="mb-5 mt-0">
         <h2 class="text-[20px] font-bold">Order Items : </h2>
     </header>
     <section class="flex flex-col gap-5 flex-wrap">
-        @for (item of orderDetails!.items; track $index) {
-            <app-order-item-card [orderItem]="item"></app-order-item-card>
+    <section class="flex flex-col gap-5 flex-wrap">
+        @for (item of orderDetails.items; track $index) {
+           <app-order-item-card [orderItem]="item"></app-order-item-card>
         }
     </section>
-    <button (click)="generatePDF(orderDetails!)" class="rounded-xl bg-[var(--primary-color)] border-0 w-fit p-4 mx-auto">Download Receipt</button>
+    
+    </section>
+        <button (click)="generatePDF(orderDetails!)" class="rounded-xl bg-[var(--primary-color)] border-0 w-fit p-4 mx-auto">Download Receipt</button>
     </main>
 }
-@loading(minimum 2s) {
+@else{
     <app-loader></app-loader>
 }

@@ -19,14 +19,11 @@ export class OrderDetails {
   order!: Observable<Order>;
 
   orderService = inject(OrderService);
+
+  id!: string;
   ngOnInit(): void {
-    this.route.paramMap.subscribe(
-      {
-        next : (value) => {
-            this.order = this.orderService.getOrderById(value.get('id')!);
-        },
-      }
-    )
+    this.id = this.route.snapshot.paramMap.get('id')!;
+    this.order =this.orderService.getOrderById(this.id);
   }
 
   async generatePDF(order : Order) {
@@ -52,4 +49,5 @@ export class OrderDetails {
   
     doc.save('order-receipt.pdf');
   }
+
 }

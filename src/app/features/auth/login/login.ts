@@ -12,16 +12,14 @@ import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, query, s
 import { fireStoreCollections } from '../../../../environments/environment';
 import { CartProduct } from '../../cart/cart.product';
 import { Order } from '../../../core/interfaces/order';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ToastService } from '../../../core/services/toast.service';
+
 @Component({
   selector: 'app-login',
-  imports: [FontAwesomeModule,ReactiveFormsModule,CommonModule,RouterLink,ButtonModule,ToastModule],
+  imports: [FontAwesomeModule,ReactiveFormsModule,CommonModule,RouterLink],
   standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.scss',
-  providers: [ToastService],
+  providers: [],
 })
 export class LoginComponent implements OnInit {
   isPasswordVisible: boolean = false;

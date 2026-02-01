@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
 import { BehaviorSubject, defer, Observable } from 'rxjs';
 
@@ -7,22 +6,14 @@ import { BehaviorSubject, defer, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-   http = inject(HttpClient);
-   auth = inject(Auth);
-
    isLoginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.getInitialAuthState());
    isLoggedIn$ = this.isLoginSubject.asObservable();
    firebaseAuth = inject(Auth);
    userRole = new BehaviorSubject<string | null>(localStorage.getItem('role'));
    role$ = this.userRole.asObservable();
 
-    constructor(
-      @Inject('fetch')
-      fetch = window.fetch.bind(window)
-    ) {}
-
    loginWithEmailAndPassword(email: string, password: string) : Observable<UserCredential> {
-      let res = () => signInWithEmailAndPassword(this.auth,email,password);
+      let res = () => signInWithEmailAndPassword(this.firebaseAuth,email,password);
       return defer(res);
    }
 
@@ -31,12 +22,12 @@ export class AuthService {
    }
 
    register(email:string, password:string) {
-      let res = () => createUserWithEmailAndPassword(this.auth,email,password);
+      let res = () => createUserWithEmailAndPassword(this.firebaseAuth,email,password);
       return defer(res);
    }
 
    resetPassword(email: string) {
-    let res = () => sendPasswordResetEmail(this.auth, email);
+    let res = () => sendPasswordResetEmail(this.firebaseAuth, email);
     return defer(res);
    }
 
@@ -47,7 +38,7 @@ export class AuthService {
     }
 
    logout() {
-      let res = () => this.auth.signOut();
+      let res = () => this.firebaseAuth.signOut();
       return defer(res);
    }
 }

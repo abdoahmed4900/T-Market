@@ -68,9 +68,9 @@
                <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
                 <span class="inline-block text-[20px] me-1">🛒</span> Cart
                </button>
-               @if ((totalCartProductsNumber$ | async)! > 0) {
+               @if (totalCartProductsNumber$.value > 0) {
                   <div class="absolute top-2 left-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
-                   <p class="text-[10px]">{{totalCartProductsNumber$ | async}}</p>
+                   <p class="text-[10px]">{{totalCartProductsNumber$.value}}</p>
                   </div>
                }
           </div>

@@ -13,7 +13,6 @@ import {
 import { fireStoreCollections } from "../../../environments/environment";
 import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
 import { Buyer, Seller } from "../../features/auth/user";
-import { ProductsService } from "./products.service";
 import { Order } from "../interfaces/order";
 import { Product } from "../interfaces/product";
 
@@ -24,7 +23,6 @@ export class OrderService {
    productCollectionRef = collection(this.fireStore,fireStoreCollections.products);
    ordersCollectionRef = collection(this.fireStore,fireStoreCollections.orders);
    numberOfOrders = new BehaviorSubject<number>(0);
-   productService = inject(ProductsService);
 
    getAllOrders(){
       let ordersCollection  = collectionData(query(this.ordersCollectionRef));

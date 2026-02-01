@@ -1,9 +1,6 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, PLATFORM_ID, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SwPush } from '@angular/service-worker';
-import { firstValueFrom } from 'rxjs';
 import { SellerHomeComponent } from "./seller-home-component/seller-home-component";
 import { BuyerHomeComponent } from "./buyer-home-component/home";
 import { AdminComponent } from "../admin/admin";
@@ -17,8 +14,7 @@ import { AdminComponent } from "../admin/admin";
 })
 export class HomeComponent implements OnInit {
   private platform = inject(PLATFORM_ID);
-  swPush = inject(SwPush);
-  http = inject(HttpClient);
+  // swPush = inject(SwPush);
   dialog = inject(MatDialog);
   role = signal<string | null>(null);
 
@@ -71,84 +67,84 @@ export class HomeComponent implements OnInit {
 
   async subscribeToNotifications() {
 
-    console.log('subscribeToNotifications STARTED');
+    // console.log('subscribeToNotifications STARTED');
 
-     const permission = await Notification.requestPermission();
-     if (permission !== 'granted') return;
+    //  const permission = await Notification.requestPermission();
+    //  if (permission !== 'granted') return;
 
 
-    const { publicKey } = await firstValueFrom(
-      this.http.get<{ publicKey: string }>('http://localhost:4242/api/get-notification-key')
-    );
+    // const { publicKey } = await firstValueFrom(
+    //   this.http.get<{ publicKey: string }>('http://localhost:4242/api/get-notification-key')
+    // );
     
-    console.log('before ready promise');
-    console.log(publicKey);
-    
-
-    if(!this.swPush.isEnabled) {
-      console.log('Service Worker is not enabled');
-      return;
-    }
-
-    
-     const sub = await this.swPush.requestSubscription({
-      serverPublicKey: publicKey
-    });
-
-    console.log(sub.toJSON());
+    // console.log('before ready promise');
+    // console.log(publicKey);
     
 
-    console.log('Subscribed successfully');
+    // if(!this.swPush.isEnabled) {
+    //   console.log('Service Worker is not enabled');
+    //   return;
+    // }
 
-    try {
-      await firstValueFrom(
-        this.http.post('http://localhost:4242/api/subscribe-to-notifications', {
-         userId: 'TSYHNQpBWDX8lsGyl2CwNOLPfC12',
-         deviceId: this.getDeviceId(),
-         endpoint: sub.endpoint,
-         keys: sub.toJSON().keys,
-         userAgent: navigator.userAgent,
-         deviceType: this.getDeviceType()
-        })
-      );
-      console.log('subscription saved');
-    } catch (e) {
-      console.error('subscription failed', e);
-    }
-
-    try {
-       await firstValueFrom(
-         this.http.post('http://localhost:4242/api/send-notification', {
-            message : 'Test Notification',
-            userId : 'TSYHNQpBWDX8lsGyl2CwNOLPfC12'
-         })
-       );
-       console.log('send notification called');
-    } catch (e) {    
-       console.error('send notification failed', e);
-    }
     
-     
-    // await firstValueFrom(
-    //    this.http.post('http://localhost:4242/api/subscribe-to-notifications', {
+    //  const sub = await this.swPush.requestSubscription({
+    //   serverPublicKey: publicKey
+    // });
+
+    // console.log(sub.toJSON());
+    
+
+    // console.log('Subscribed successfully');
+
+    // try {
+    //   await firstValueFrom(
+    //     this.http.post('http://localhost:4242/api/subscribe-to-notifications', {
     //      userId: 'TSYHNQpBWDX8lsGyl2CwNOLPfC12',
     //      deviceId: this.getDeviceId(),
     //      endpoint: sub.endpoint,
     //      keys: sub.toJSON().keys,
     //      userAgent: navigator.userAgent,
     //      deviceType: this.getDeviceType()
-    //    })
-    // );
+    //     })
+    //   );
+    //   console.log('subscription saved');
+    // } catch (e) {
+    //   console.error('subscription failed', e);
+    // }
 
-    // await firstValueFrom(
-    //   this.http.post('http://localhost:4242/api/send-notification',{
-    //     message : 'Test Notification',
-    //     userId : 'TSYHNQpBWDX8lsGyl2CwNOLPfC12'
-    //   })
-    // );
+    // try {
+    //    await firstValueFrom(
+    //      this.http.post('http://localhost:4242/api/send-notification', {
+    //         message : 'Test Notification',
+    //         userId : 'TSYHNQpBWDX8lsGyl2CwNOLPfC12'
+    //      })
+    //    );
+    //    console.log('send notification called');
+    // } catch (e) {    
+    //    console.error('send notification failed', e);
+    // }
+    
+     
+    // // await firstValueFrom(
+    // //    this.http.post('http://localhost:4242/api/subscribe-to-notifications', {
+    // //      userId: 'TSYHNQpBWDX8lsGyl2CwNOLPfC12',
+    // //      deviceId: this.getDeviceId(),
+    // //      endpoint: sub.endpoint,
+    // //      keys: sub.toJSON().keys,
+    // //      userAgent: navigator.userAgent,
+    // //      deviceType: this.getDeviceType()
+    // //    })
+    // // );
+
+    // // await firstValueFrom(
+    // //   this.http.post('http://localhost:4242/api/send-notification',{
+    // //     message : 'Test Notification',
+    // //     userId : 'TSYHNQpBWDX8lsGyl2CwNOLPfC12'
+    // //   })
+    // // );
     
 
-    console.log('end of method');
+    // console.log('end of method');
     
   }
 

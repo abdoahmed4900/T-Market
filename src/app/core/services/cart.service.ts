@@ -148,4 +148,11 @@ export class CartService{
          })
       )
     }
+
+    async clearCart(){
+      const userRef = doc(this.fireStore, fireStoreCollections.users, localStorage.getItem('token')!);
+      await updateDoc(userRef, { cartProducts: [] });
+      this.totalCartPrice$.next(0);
+      this.totalCartProductsNumber$.next(0);
+    }
 }

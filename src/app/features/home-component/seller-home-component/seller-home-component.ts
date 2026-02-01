@@ -4,7 +4,6 @@ import { HomeService } from '../home.service';
 import { map, Observable, tap } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Loader } from "../../../shared/loader/loader";
-import { OrderService } from '../../../core/services/order.service';
 import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
 import { ProductsService } from '../../../core/services/products.service';
@@ -20,7 +19,6 @@ export class SellerHomeComponent {
   user!: Observable<Seller>;
   sellerProducts!: Observable<Product[]>;
   homeSerivce = inject(HomeService);
-  orderSerivce = inject(OrderService);
   productSerivce = inject(ProductsService);
   cancelledOrdersNum = signal<number>(0);
   shippedOrdersNum = signal<number>(0);
