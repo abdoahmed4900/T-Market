@@ -5,10 +5,11 @@ import { ProductsService } from '../../../core/services/products.service';
 import { CartService } from '../../../core/services/cart.service';
 import { RouterLink } from "@angular/router";
 import { Product } from '../../../core/interfaces/product';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cart-card',
-  imports: [CurrencyPipe, AsyncPipe, RouterLink],
+  imports: [CurrencyPipe, AsyncPipe, RouterLink,TranslatePipe],
   templateUrl: './cart-card.html',
   styleUrl: './cart-card.scss'
 })

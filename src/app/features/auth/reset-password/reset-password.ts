@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule,TranslatePipe],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss'
 })

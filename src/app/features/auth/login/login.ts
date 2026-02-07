@@ -12,10 +12,12 @@ import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, query, s
 import { fireStoreCollections } from '../../../../environments/environment';
 import { CartProduct } from '../../cart/cart.product';
 import { Order } from '../../../core/interfaces/order';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LangDirective } from "../../../core/lang";
 
 @Component({
   selector: 'app-login',
-  imports: [FontAwesomeModule,ReactiveFormsModule,CommonModule,RouterLink],
+  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, RouterLink, TranslatePipe, LangDirective],
   standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.scss',

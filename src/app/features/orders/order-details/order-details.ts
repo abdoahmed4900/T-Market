@@ -7,9 +7,10 @@ import { OrderItemCard } from "../order-item-card/order-item-card";
 import { Loader } from "../../../shared/loader/loader";
 import { jsPDF } from 'jspdf';
 import { Order } from '../../../core/interfaces/order';
+import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-order-details',
-  imports: [AsyncPipe, OrderItemCard, Loader],
+  imports: [AsyncPipe, OrderItemCard, Loader,TranslatePipe],
   templateUrl: './order-details.html',
   styleUrl: './order-details.scss'
 })

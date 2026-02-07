@@ -1,21 +1,21 @@
 @if(user | async){
 <main class="mt-5 flex flex-col gap-5">
     <header>
-        <h1 class="text-[20px] font-bold">DashBoard</h1>
+        <h1 class="text-[20px] font-bold">{{'DASHBOARD' | translate}}</h1>
     </header>
     <section aria-describedby="(user | async)-dashbard-number" class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 w-full">
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[16px] font-bold">Total Revenue</h2>
+            <h2 class="text-[16px] font-bold">{{'ADMIN.REVENUE' | translate}}</h2>
             <p class="text-[16px]">{{(user | async)?.totalRevenue | currency}} </p>
         </section>
         <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[16px] font-bold">Total Sold Items</h2>
+            <h2 class="text-[16px] font-bold">{{'ADMIN.SOLD_ITEMS' | translate}}</h2>
             <p class="text-[16px]">{{(user | async)?.totalProductsSold}}</p>
         </section>
     </section>
     <section aria-describedby="(user | async)-dashboard-sold-items" class="grid grid-cols-1 gap-5 w-full">
         <header>
-            <h3 class="text-[20px] font-bold">Stock Items</h3>
+            <h3 class="text-[20px] font-bold">{{'ADMIN.STOCK_ITEMS' | translate}}</h3>
         </header>
         <main>
             <section>
@@ -25,10 +25,10 @@
                   <section class="grid gap-4 grid-cols-1">
                       @for (item of (sellerProducts | async); track item.id;) {
                          <div class="border-1 rounded-xl p-4 flex flex-col gap-3 seller-products">
-                            <h2 class="text-[16px]">Product Name : {{item.name}}</h2>
-                            <h2 class="text-[16px]">Price : {{item.price | currency}}</h2>
-                            <h2 class="text-[16px]">Sold : {{item.soldItemsNumber}} Pieces</h2>
-                            <h2 class="text-[16px]">In Stock : {{item.stock}} Pieces</h2>
+                            <h2 class="text-[16px]">{{'ADMIN.PRODUCT_NAME' | translate}} : {{item.name}}</h2>
+                            <h2 class="text-[16px]">{{'PRICE' | translate}} : {{item.price | currency}}</h2>
+                            <h2 class="text-[16px]">{{'ADMIN.SOLD_ITEMS' | translate}} : {{item.soldItemsNumber}} Pieces</h2>
+                            <h2 class="text-[16px]">{{'ADMIN.IN_STOCK' | translate}} : {{item.stock}} Pieces</h2>
                          </div>
                       }
                   </section>

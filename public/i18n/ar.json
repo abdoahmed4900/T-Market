@@ -1,0 +1,108 @@
+{
+   "DASHBOARD" : "لوحة التحكم",
+   "PRICE": "السعر",
+   "STAR_RATING": "التقييم",
+   "PREVIOUS": "السابق",
+   "NEXT": "التالي",
+   "ALL": "الكل",
+   "AUTH": {  
+      "LOGIN": {
+          "BUTTON": "تسجيل الدخول",
+          "GOOGLE_BUTTON": "تسجيل الدخول باستخدام جوجل",
+          "TITLE": "سجل الدخول لحسابك!",
+          "SUBTITLE": "سجل الدخول إلى حسابك باستخدام بريدك الإلكتروني وكلمة المرور",
+          "REMEMBER_ME": "تذكرني",
+          "FORGOT_PASSWORD": "هل نسيت كلمة المرور ؟",
+          "NO_ACCOUNT": "ليس لديك حساب ؟ ",
+          "CREATE_ONE": "انشأ حساباً جديداً "
+      },
+      "LOGOUT": "تسجيل الخروج",
+      "REGISTER": {
+        "TITLE": "انشأ حساب جديد!",
+        "SUBTITLE": "انشأ حساب جديد باستخدام بريدك الإلكتروني وكلمة المرور",
+        "BUTTON": "إنشاء حساب",
+        "HAVE_ACCOUNT": "هل لديك حساب ؟",
+        "LOGIN": "تسجيل الدخول"
+      },
+      "VALIDATIONS": {
+         "REQUIRED": "{{field}} مطلوب",
+         "INVALID": "يرجى إدخال {{field}} صالح",
+         "MIN_LENGTH": "يجب أن يكون طول {{field}} على الأقل {{length}} حرفًا",
+         "PASSWORDS_DO_NOT_MATCH": "كلمات المرور غير متطابقة"
+      },
+      "LABELS": {
+         "EMAIL": "البريد الإلكتروني",
+         "PASSWORD": "كلمة المرور",
+         "CONFIRM_PASSWORD": "تأكيد كلمة المرور",
+         "USERNAME": "اسم المستخدم",
+         "ROLE": "نوع المستخدم"
+      },
+      "PLACEHOLDERS": {
+         "EMAIL": "أدخل بريدك الإلكتروني",
+         "PASSWORD": "أدخل كلمة المرور",
+         "CONFIRM_PASSWORD": "أعد إدخال كلمة المرور",
+         "USERNAME": "أدخل اسم المستخدم",
+         "ROLE": "اختر نوع المستخدم"
+      },
+      "ROLES":{
+          "ADMIN": "مسؤول",
+          "BUYER": "مشتري",
+          "SELLER": "بائع"
+      },
+      "RESET_PASSWORD": {
+          "TITLE": "إعادة تعيين كلمة المرور",
+          "SUBTITLE": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+          "BUTTON": "إرسال رابط إعادة التعيين"
+      }
+   },
+   "ADMIN" : {
+      "PIECES": "قطعة",
+      "REVENUE": "اجمالي الربح",
+      "SOLD_ITEMS": "القطع المباعة",
+      "TOTAL_ORDERS":"عدد الطلبات",
+      "SHIPPED_ORDERS": "الطلبات المشحونة",
+      "CANCELLED_ORDERS": "الطلبات المرتجعة",
+      "PENDING_ORDERS": "الطلبات في قائمة الانتظار",
+      "DELIVERED_ORDERS": "الطلبات المستلمة",
+      "STOCK_ITEMS": "محتويات المخزن",
+      "PRODUCT_NAME": "اسم المنتج",
+      "SOLD": "المباع",
+      "IN_STOCK": "المتبقي",
+      "NO_PRODUCTS": "لم يتم إضافة منتجات!",
+      "STATISTICS": "الاحصائيات",
+      "NO_ORDERS": "لم يتم إضافة طلبات!",
+      "ORDERS_STATUS_COUNT": "الطلبات زمنيا حسب الحالة",
+      "ORDERS_PIE_COUNT": "توضيح الطلبات طبقا للحالة"
+   },
+   "CART": {
+      "EMPTY": "عربة التسوق الخاصة فارغة",
+      "DELETE":"مسح",
+      "TOTAL_PRICE": "الإجمالي",
+      "CHECKOUT": "الدفع"
+   },
+   "CATEGORIES": {
+      "STARS_RATING_OR_LESS": "نجوم أو أقل",
+      "STARS_RATING": "التقييم",
+      "SEARCH_PLACEHOLDER": "بحث"
+   },
+   "ORDERS": {
+      "ORDERS_LIST": "قائمة الطلبات",
+      "ORDER": "الطلب",
+      "DETAILS": "التفاصيل",
+      "SHIP_ORDER": "شحن الطلب",
+      "CANCEL_ORDER": "الغاء الطلب",
+      "DELIVER_ORDER": "وصول الطلب",
+      "ITEMS": "المنتجات",
+      "ORDER_ITEMS": "منتجات الطلب",
+      "DOWNLOAD_RECEIPT": "تحميل ايصال الطلب"
+   },
+   "STATUS": {
+      "PENDING": "ينتظر الشحن",
+      "CANCELLED": "ملغي",
+      "SHIPPED": "مشحون",
+      "DELIVERED": "تم التوصيل"
+   },
+    "WISHLIST": {
+      "ADD_ITEMS": "اضف لقائمة المنتجات المفضلة"
+   }
+}

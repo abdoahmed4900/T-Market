@@ -1,4 +1,4 @@
-import { Component, computed, inject, linkedSignal, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../features/auth/auth.service';
@@ -14,7 +14,6 @@ import { filter, Subscription } from 'rxjs';
 export class Sidebar {
 
   auth = inject(AuthService);
-  sideBarMain = viewChild<HTMLElement>('sideBarMain',{})
 
   router = inject(Router);
   sub!: Subscription;
@@ -49,8 +48,6 @@ export class Sidebar {
   }
   toggleSidebar() {
     this.sidebarOpen.update(v => !v);
-    let sideBarMain = document.getElementById('sideBarMain')
-    console.log(sideBarMain!.classList);
   }
 
   closeSidebar() {

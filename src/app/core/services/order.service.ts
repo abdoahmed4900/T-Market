@@ -75,7 +75,7 @@ export class OrderService {
       )
    }
 
-   changeStatusOrder(orderId:string,newStatus:"Pending" | "Shipped" | "Cancelled" | "Delivered"){
+   changeStatusOrder(orderId:string,newStatus:"PENDING" | "SHIPPED" | "CANCELLED" | "DELIVERED"){
       let ordersCollection = collectionData(query(this.ordersCollectionRef,where('id','==',orderId)));
       let order :Order;
       return ordersCollection.pipe(
@@ -94,7 +94,7 @@ export class OrderService {
             )
          }),
          tap(() => {
-            if (newStatus === 'Shipped' || newStatus === 'Cancelled') {
+            if (newStatus === 'SHIPPED' || newStatus === 'CANCELLED') {
             this.updateProducts(order, newStatus);
             }
          })

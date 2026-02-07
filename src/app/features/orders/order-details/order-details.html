@@ -2,7 +2,7 @@
 @if (orderDetails) {
     <main class="flex flex-col w-full mt-10" id="order-details">
     <header class="mb-5 mt-0">
-        <h2 class="text-[20px] font-bold">Order Items : </h2>
+        <h2 class="text-[20px] font-bold">{{'ORDERS.ORDER_ITEMS'}} : </h2>
     </header>
     <section class="flex flex-col gap-5 flex-wrap">
     <section class="flex flex-col gap-5 flex-wrap">
@@ -12,7 +12,7 @@
     </section>
     
     </section>
-        <button (click)="generatePDF(orderDetails!)" class="rounded-xl bg-[var(--primary-color)] border-0 w-fit p-4 mx-auto">Download Receipt</button>
+        <button (click)="generatePDF(orderDetails!)" class="rounded-xl bg-[var(--primary-color)] border-0 w-fit p-4 mx-auto">{{'ORDERS.DOWNLOAD_RECEIPT' | translate}}</button>
     </main>
 }
 @else{

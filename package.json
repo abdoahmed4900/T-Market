@@ -29,6 +29,8 @@
     "@fortawesome/angular-fontawesome": "^3.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.1",
     "@fortawesome/free-solid-svg-icons": "^7.0.1",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
     "@stripe/stripe-js": "^7.9.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@tailwindcss/vite": "^4.1.13",

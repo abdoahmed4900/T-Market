@@ -7,11 +7,12 @@ import { Loader } from "../../../shared/loader/loader";
 import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
 import { ProductsService } from '../../../core/services/products.service';
+import { TranslatePipe } from '@ngx-translate/core';
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-seller-home-component',
-  imports: [AsyncPipe, CurrencyPipe, Loader],
+  imports: [AsyncPipe, CurrencyPipe, Loader,TranslatePipe],
   templateUrl: './seller-home-component.html',
   styleUrl: './seller-home-component.scss'
 })

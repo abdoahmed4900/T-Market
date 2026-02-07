@@ -11,10 +11,11 @@ import { addDoc, collection, deleteDoc, doc, Firestore, setDoc } from '@angular/
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/loader/loader';
 import { fireStoreCollections } from '../../../../environments/environment';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, FontAwesomeModule, ReactiveFormsModule,CommonModule],
+  imports: [RouterLink, FontAwesomeModule, ReactiveFormsModule,CommonModule,TranslatePipe],
   standalone: true,
   templateUrl: './register.html',
   styleUrl: './register.scss'

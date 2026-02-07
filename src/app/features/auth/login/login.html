@@ -1,51 +1,51 @@
 <main class="my-auto">
    <form [formGroup]="loginForm" (ngSubmit)="loginWithEmailAndPassword()" novalidate>
     <div class="flex flex-col flex-wrap gap-5 max-w-[500px] w-full mx-auto my-auto mt-20 p-6 pb-4 border border-gray-500 rounded-lg shadow-lg">
-     <h1 class="text-2xl font-bold text-[var(--primary-text-color)]">Sign in to your account</h1>
-    <p class="text-[var(--secondary-text-color)] text-[14px]">Enter your credentials to access your account.</p>
+     <h1 class="text-2xl font-bold text-[var(--primary-text-color)]">{{'AUTH.LOGIN.TITLE' | translate}}</h1>
+    <p class="text-[var(--secondary-text-color)] text-[14px]">{{'AUTH.LOGIN.SUBTITLE' | translate}}</p>
     <div class="email-container flex flex-col gap-1">
-        <label for="email" class="text-[14px] font-bold">Email</label>
-        <input class="outline-none border-2 rounded-lg p-2" type="email" name="email" id="email" placeholder="Enter your email" formControlName="email" [ngClass]="{
+        <label for="email" class="text-[14px] font-bold">{{'AUTH.LABELS.EMAIL' | translate}}</label>
+        <input class="outline-none border-2 rounded-lg p-2" type="email" name="email" id="email" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" formControlName="email" [ngClass]="{
             'border-[var(--error-text-color)]': loginForm.get('email')?.invalid && loginForm.get('email')?.touched,
             'border-gray-300': loginForm.get('email')?.valid || !loginForm.get('email')?.touched,
             'focus:border-[var(--primary-color)]': (loginForm.get('email')?.valid && loginForm.get('email')?.touched),
             'focus:border-[var(--error-text-color)]': !(loginForm.get('email')?.invalid && loginForm.get('email')?.touched),
         }"/>
         @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
-            <span class="text-red-500 font-bold mt-2 text-[12px]">Email is Required.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.EMAIL' | translate } }}</span>
         }
         @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
-            <span class="text-red-500 font-bold mt-2 text-[12px]">Please enter a valid email.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.EMAIL' | translate} }}</span>
         }
     </div>
     <div class="password-container flex flex-col gap-1 relative">
-        <label for="password" class="text-[14px] font-bold">Password</label>
-        <input class="outline-none border-2 rounded-lg p-2 text-[var(--primary-text-color)]" [type]="isPasswordVisible ? 'text' : 'password'" name="password" id="password" placeholder="Enter your password" formControlName="password" [ngClass]="{
+        <label for="password" class="text-[14px] font-bold">{{'AUTH.LABELS.PASSWORD' | translate}}</label>
+        <input class="outline-none border-2 rounded-lg p-2 text-[var(--primary-text-color)]" [type]="isPasswordVisible ? 'text' : 'password'" name="password" id="password" placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}" formControlName="password" [ngClass]="{
             'border-[var(--error-text-color)]': loginForm.get('password')?.invalid && loginForm.get('password')?.touched,
             'border-gray-300': loginForm.get('password')?.valid || !loginForm.get('password')?.touched,
             'focus:border-[var(--primary-color)]': (loginForm.get('password')?.valid && loginForm.get('password')?.touched),
             'focus:border-[var(--error-text-color)]': !(loginForm.get('password')?.invalid && loginForm.get('password')?.touched),
         }"/>
-        <button class="paassword-icon absolute top-[38px] right-3 cursor-pointer text-[var(--primary-text-color)]" (click)="togglePasswordVisibility()" type="button">
+        <button class="paassword-icon absolute top-[38px] end-3 cursor-pointer text-[var(--primary-text-color)]" (click)="togglePasswordVisibility()" type="button">
             <fa-icon [icon]="passwordIcon" />
         </button>
         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
             @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-              <span class="text-red-500 font-bold mt-2 text-[12px]">Password is required.</span>
+              <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.PASSWORD' | translate} }}.</span>
             }
             @if (loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched) {
-              <span class="text-red-500 font-bold mt-2 text-[12px]">Password should be at least 6 Characters.</span>
+              <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 6, field: 'AUTH.LABELS.PASSWORD' | translate} }}</span>
             }
         }
     </div>
-    <div class="remember-me flex flex-row gap-2 items-center justify-end">
-        <label>Remember Me</label>
+    <div class="remember-me flex flex-row gap-2 items-center" appLangDirective>
+        <label>{{'AUTH.LOGIN.REMEMBER_ME' | translate}}</label>
         <input type="checkbox" (change)="toggleRememberMe()" name="remember" id="remember" class="w-4 h-4 accent-[var(--primary-color)]"/>
     </div>
-    <input value="Sign In" type="submit" class="rounded-lg p-2 text-white bg-[var(--primary-color)] hover:opacity-90"/>
-    <button type="button" class="rounded-lg p-2 text-white bg-red-700 hover:bg-red-900" (click)="loginWithGoogle()">Log In With Google<div class="text-white inline-block bg-red-500 font-bold mx-2 rounded-4xl px-[5px] py-[3px]">G+</div></button>
-    <a class="self-end text-[14px] text-[var(--primary-color)]" routerLink="/reset-password">Forgot Password?</a>
-    <a routerLink="/register" class="mx-auto text-[14px]"><span class="text-[var(--secondary-text-color)]">Don't have an account? </span> <span class="text-[var(--primary-color)]">Create One</span></a>
+    <input value="{{'AUTH.LOGIN.BUTTON' | translate}}" type="submit" class="rounded-lg p-2 text-white bg-[var(--primary-color)] hover:opacity-90"/>
+    <button type="button" class="rounded-lg p-2 text-white bg-red-700 hover:bg-red-900" (click)="loginWithGoogle()">{{'AUTH.LOGIN.GOOGLE_BUTTON' | translate}}<div class="text-white inline-block bg-red-500 font-bold mx-2 rounded-4xl px-[5px] py-[3px]">G+</div></button>
+    <a class="text-[14px] text-[var(--primary-color)]" routerLink="/reset-password">{{'AUTH.LOGIN.FORGOT_PASSWORD' | translate}}</a>
+    <a routerLink="/register" class="mx-auto text-[14px]"><span class="text-[var(--secondary-text-color)]">{{'AUTH.LOGIN.NO_ACCOUNT' | translate}}</span> <span class="text-[var(--primary-color)]"> {{'AUTH.LOGIN.CREATE_ONE' | translate}} </span></a>
    </div>
    </form>
 </main>

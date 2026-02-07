@@ -9,12 +9,13 @@ import { Admin } from '../auth/user';
 import { Product } from '../../core/interfaces/product';
 import { pieChartOptions, statusChartOptions } from '../../core/utils';
 import { ChartFactory } from '../../core/chart.factory';
+import { TranslatePipe } from '@ngx-translate/core';
 Chart.register(...registerables);
 
 
 @Component({
   selector: 'app-admin',
-  imports: [Loader,AsyncPipe,CurrencyPipe],
+  imports: [Loader,AsyncPipe,CurrencyPipe,TranslatePipe],
   templateUrl: './admin.html',
   styleUrl: './admin.scss'
 })
@@ -59,7 +60,7 @@ export class AdminComponent {
   }
 
   private getCancelledOrdersNumber() {
-    this.cancelledOrdersNumSub = this.adminService.getOrdersNumberByStatus('Cancelled').subscribe(
+    this.cancelledOrdersNumSub = this.adminService.getOrdersNumberByStatus('CANCELLED').subscribe(
       {
         next: (value) => {
           this.cancelledOrdersNumber = value;
@@ -69,7 +70,7 @@ export class AdminComponent {
   }
 
   private getPendingOrderNumber() {
-    this.pendingOrdersNumSub = this.adminService.getOrdersNumberByStatus('Pending').subscribe(
+    this.pendingOrdersNumSub = this.adminService.getOrdersNumberByStatus('PENDING').subscribe(
       {
         next: (value) => {
           this.pendingOrdersNumber = value;
@@ -79,7 +80,7 @@ export class AdminComponent {
   }
 
   private getShippedOrdersNumber() {
-    this.shippedOrdersNumSub = this.adminService.getOrdersNumberByStatus('Shipped').subscribe(
+    this.shippedOrdersNumSub = this.adminService.getOrdersNumberByStatus('SHIPPED').subscribe(
       {
         next: (value) => {
           this.shippedOrdersNumber = value;
@@ -89,7 +90,7 @@ export class AdminComponent {
   }
 
   private getDeliveredOrdersNumber() {
-    this.deliveredOrdersNumSub = this.adminService.getOrdersNumberByStatus('Delivered').subscribe(
+    this.deliveredOrdersNumSub = this.adminService.getOrdersNumberByStatus('DELIVERED').subscribe(
       {
         next: (value) => {
           this.deliveredOrdersNumber = value;

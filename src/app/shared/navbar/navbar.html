@@ -14,7 +14,7 @@
        <button class="lg:hidden text-2xl" (click)="toggleNavbar()">
         ☰
        </button>
-         <div #box class="lg:hidden navbar-mobile-hidden z-0 transition duration-300 ease navbar-mobile space-y-2 px-10 md:px-20 pb-3 absolute top-13 left-0 w-full bg-[var(--main-bg-color)] transition-all duration-300 ease-in-out pt-5 text-md">
+         <div #box class="lg:hidden navbar-mobile-hidden z-0 transition duration-300 ease navbar-mobile space-y-2 px-10 md:px-20 pb-3 absolute top-13 start-0 w-full bg-[var(--main-bg-color)] transition-all duration-300 ease-in-out pt-5 text-md">
           <section class="border-1 border-t-0 border-[var(--primary-text-color)] rounded-lg rounded-t-none p-4">
             @if(isBuyer()){
               <a routerLink="/shop" class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]" routerLinkActive="active">Shop</a>
@@ -46,7 +46,7 @@
                 <span class="inline-block text-[20px] me-1">🛒</span> Cart
                 </button>
                 @if ((totalCartProductsNumber$ | async)! > 0) {
-                  <div class="absolute top-2 left-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
+                  <div class="absolute top-2 start-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
                    <p class="text-[10px]">{{totalCartProductsNumber$ | async}}</p>
                   </div>
                 }
@@ -69,7 +69,7 @@
                 <span class="inline-block text-[20px] me-1">🛒</span> Cart
                </button>
                @if (totalCartProductsNumber$.value > 0) {
-                  <div class="absolute top-2 left-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
+                  <div class="absolute top-2 start-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
                    <p class="text-[10px]">{{totalCartProductsNumber$.value}}</p>
                   </div>
                }

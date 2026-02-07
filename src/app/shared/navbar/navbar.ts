@@ -9,10 +9,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../loader/loader';
 import { CartService } from '../../core/services/cart.service';
 import { combineLatest, Subscription } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
-  imports: [WebsiteTitle, CommonModule, FaIconComponent, RouterLinkActive,RouterLink],
+  imports: [WebsiteTitle, CommonModule, FaIconComponent, RouterLinkActive,RouterLink,TranslateModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })
@@ -39,6 +40,8 @@ export class Navbar implements OnInit{
   role = this.authService.userRole;
 
   cartNumber = signal<number>(0);
+
+  // translateService = inject(TranslateService);
 
   menu! : Record<string,string>;
 
@@ -112,6 +115,11 @@ export class Navbar implements OnInit{
 
   goToWishList(){
     this.router.navigateByUrl('/wishlist');
+  }
+
+  changeLanguage(language:string){
+    // this.translateService.use(language);
+    localStorage.setItem('language',language)
   }
 
   ngOnDestroy(): void {

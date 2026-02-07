@@ -6,10 +6,11 @@ import { OrderItem } from "./order-item/order-item";
 import { Order } from '../../core/interfaces/order';
 import { FormsModule } from '@angular/forms';
 import { Loader } from "../../shared/loader/loader";
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-orders',
-  imports: [AsyncPipe, OrderItem, FormsModule, Loader],
+  imports: [AsyncPipe, OrderItem, FormsModule, Loader,TranslatePipe],
   templateUrl: './orders.html',
   styleUrl: './orders.scss'
 })

@@ -1,0 +1,108 @@
+{
+   "DASHBOARD" : "DashBoard",
+   "PRICE":"Price",
+   "STAR_RATING": "Star rating",
+   "PREVIOUS": "Previous",
+   "NEXT": "Next",
+   "ALL": "All",
+   "AUTH": {
+      "LOGIN": {
+          "BUTTON": "Login",
+          "GOOGLE_BUTTON": "Log In With Google",
+          "TITLE": "Login to your account!",
+          "SUBTITLE": "Login to your account using your email and password",
+          "REMEMBER_ME": "Remember me",
+          "FORGOT_PASSWORD": "Forgot password ?",
+          "NO_ACCOUNT": "Don't have an account ?",
+          "CREATE_ONE": " Create a new account"
+      },
+      "LOGOUT": "Logout",
+      "REGISTER": {
+        "TITLE": "Create a new account!",
+        "SUBTITLE": "Create a new account using your email and password",
+        "BUTTON": "Create Account",
+        "HAVE_ACCOUNT": "Already have an account ?",
+        "LOGIN": "Login"
+      },
+      "VALIDATIONS": {
+         "REQUIRED": "{{field}} is required",
+         "INVALID": "Please enter a valid {{field}}",
+         "MIN_LENGTH": "{{field}} must be at least {{length}} characters long",
+         "PASSWORDS_DO_NOT_MATCH": "Passwords do not match"
+      },
+      "LABELS": {
+         "EMAIL": "Email",
+         "PASSWORD": "Password",
+         "CONFIRM_PASSWORD": "Confirm Password",
+         "USERNAME": "Username",
+         "ROLE": "Role"
+      },
+      "PLACEHOLDERS": {
+         "EMAIL": "Enter your email",
+         "PASSWORD": "Enter your password",
+         "CONFIRM_PASSWORD": "Re-enter your password",
+         "USERNAME": "Enter your username",
+         "ROLE": "Select user role"
+      },
+      "ROLES":{
+          "ADMIN": "Admin",
+          "BUYER": "Buyer",
+          "SELLER": "Seller"
+      },
+      "RESET_PASSWORD": {
+          "TITLE": "Reset Password",
+          "SUBTITLE": "Enter your email to reset your password",
+          "BUTTON": "Send Reset Link"
+      }
+   },
+   "ADMIN" : {
+      "PIECES": "Pieces",
+      "REVENUE": "Total Revenue",
+      "SOLD_ITEMS": "Total Sold Items",
+      "TOTAL_ORDERS": "Total Orders",
+      "SHIPPED_ORDERS": "Shipped Orders",
+      "CANCELLED_ORDERS": "Cancelled Orders",
+      "PENDING_ORDERS": "Pending Orders",
+      "DELIVERED_ORDERS": "Delivered Orders",
+      "STOCK_ITEMS": "Stock Items",
+      "PRODUCT_NAME": "Product Name",
+      "SOLD":"Sold",
+      "IN_STOCK": "In Stock",
+      "NO_PRODUCTS":"No Products Added Yet",
+      "STATISTICS": "Statistics",
+      "NO_ORDERS": "No Orders Added Yet!",
+      "ORDERS_STATUS_COUNT": "Order Status Count",
+      "ORDERS_PIE_COUNT": "Orders Pie Chart"
+   },
+    "CART": {
+      "EMPTY": "Your Cart is Empty",
+      "DELETE": "Delete",
+      "TOTAL_PRICE": "Total Price",
+      "CHECKOUT": "Checkout"
+   },
+   "CATEGORIES": {
+      "STARS_RATING_OR_LESS": "Stars Or Less Products",
+      "STARS_RATING": "Star rating",
+      "SEARCH_PLACEHOLDER": "Search"
+   },
+   "ORDERS": {
+      "ORDERS_LIST": "Orders List",
+      "ORDER": "Order",
+      "DETAILS": "Details",
+      "SHIP_ORDER": "Ship Order",
+      "CANCEL_ORDER": "Cancel Order",
+      "DELIVER_ORDER": "Deliver Order",
+      "ITEMS": "Items",
+      "ORDER_ITEMS": "Order Items",
+      "DOWNLOAD_RECEIPT": "Download Receipt"
+   },
+   "STATUS": {
+      "PENDING": "Pending",
+      "CANCELLED": "Cancelled",
+      "SHIPPED": "Shipped",
+      "DELIVERED": "Delivered"
+   },
+   "WISHLIST": {
+      "ADD_ITEMS": "Add Items To WishList"
+   }
+}

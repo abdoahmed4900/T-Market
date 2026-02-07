@@ -59,7 +59,7 @@ export class AdminService{
             })
         )
     }
-    getOrdersNumberByStatus(status: 'Pending' | 'Shipped' | 'Delivered' | 'Cancelled') {
+    getOrdersNumberByStatus(status: 'PENDING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED') {
         return this.ordersService.getAllOrders().pipe(
             map((orders) => {
                 let numberOfOrders = 0;

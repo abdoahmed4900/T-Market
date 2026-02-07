@@ -1,5 +1,3 @@
-import { Product } from "../../core/interfaces/product";
-
 export interface User {
   uid: string;
   role:string;
@@ -14,7 +12,7 @@ export interface Seller extends User{
   totalRevenue?:number;
 }
 export interface Buyer extends User{
-  cartProducts?: (Product & { quantity: number })[];
+  cartProducts?:  {quantity: number , id: string, name:string, price:number}[];
   ordersIds : string[];
   wishListIds : string[];
 }

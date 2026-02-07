@@ -6,10 +6,11 @@ import { CurrencyPipe } from '@angular/common';
 import { Loader } from "../../shared/loader/loader";
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-wishlist',
-  imports: [Loader, FaIconComponent,CurrencyPipe],
+  imports: [Loader, FaIconComponent,CurrencyPipe,TranslatePipe],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.scss'
 })

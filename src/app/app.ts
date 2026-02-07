@@ -10,6 +10,7 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { AuthService } from './features/auth/auth.service';
 import { Sidebar } from "./shared/sidebar/sidebar";
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+// import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class App {
   sideBarRef = inject(ViewContainerRef);
   sideBar = ViewChild('sideBar',{read: this.sideBarRef});
   private destroy$ = new Subject<void>();
+  // translateService = inject(TranslateService);
 
 
   ngOnInit(): void {
@@ -42,6 +44,12 @@ export class App {
       this.router.navigate(['/login']);
     }
     this.loadLayout();
+    this.getLocale();
+  }
+
+  getLocale(){
+    let language = localStorage.getItem('language') ?? 'en';
+    // this.translateService.use(language);
   }
 
 

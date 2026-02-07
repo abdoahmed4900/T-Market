@@ -8,11 +8,12 @@ import { PaginationService } from '../../core/services/pagination.service';
 import { FormsModule } from "@angular/forms";
 import { map, Observable } from 'rxjs';
 import { Product } from '../../core/interfaces/product';
+import { TranslatePipe } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-categories',
-  imports: [Loader, ProductCard, MatSliderModule, CommonModule, FormsModule],
+  imports: [Loader, ProductCard, MatSliderModule, CommonModule, FormsModule,TranslatePipe],
   templateUrl: './categories.html',
   standalone: true,
   styleUrl: './categories.scss'

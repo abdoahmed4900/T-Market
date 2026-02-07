@@ -68,7 +68,7 @@ export class StripeService {
             id: result.paymentIntent!.id,
             totalPrice: price,
             address: `${paymentFormGroup.get('zipCode')?.value},${paymentFormGroup.get('street')?.value},${paymentFormGroup.get('city')?.value}`,
-            status: 'Pending',
+            status: 'PENDING',
             orderDate: new Date().toDateString(),
             totalQuantity: this.cartService.totalCartProductsNumber$.value,
             items: userData.cartProducts?.map(p => ({

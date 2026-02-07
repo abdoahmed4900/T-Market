@@ -12,14 +12,14 @@
         @if((totalPrice | async) != 0){ 
          <div class="cart-summary-section flex flex-col gap-4">
            <app-cart-summary-card class="size-fit w-full"></app-cart-summary-card>
-           <button class="bg-[var(--primary-color)] text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromRightAnimation hover:bg-purple-700 self-end" routerLink="/checkout">Checkout</button>
+           <button class="bg-[var(--primary-color)] text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromRightAnimation hover:bg-purple-700 self-end" routerLink="/checkout">{{'CART.CHECKOUT' | translate}}</button>
          </div>
         }
     </div>
     @if((totalPrice | async) == 0){
       <section class="flex flex-col h-full items-center justify-center slideFromLeftAnimation flex-wrap">
         <img src="https://cdn-icons-png.flaticon.com/512/2762/2762885.png" alt="empty cart" class="w-40 h-40"/>
-         <h3 class="text-[var(--primary-text-color)] font-bold text-xl">Your Cart is Empty</h3>
+         <h3 class="text-[var(--primary-text-color)] font-bold text-xl">{{'CART.EMPTY' | translate}}</h3>
       </section>
     }
   }@else {

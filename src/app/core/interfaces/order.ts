@@ -3,7 +3,7 @@ export class Order{
     items!: {price:number,name:string,quantity:number,id?:string}[];
     totalPrice!:number;
     totalQuantity!:number;
-    status?: 'Pending' | 'Shipped' | 'Cancelled' | 'Delivered'
+    status?: 'PENDING' | 'SHIPPED' | 'CANCELLED' | 'DELIVERED'
     orderDate?: string;
     address?:string;
     sellerId?:string;

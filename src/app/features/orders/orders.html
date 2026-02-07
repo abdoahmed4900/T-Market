@@ -11,7 +11,7 @@
          text-[var(--primary-text-color)]
          [&::-webkit-calendar-picker-indicator]:opacity-0
          [&::-webkit-datetime-edit]:px-8">
-        <input type="date" placeholder="to" (input)="setEndDate($event.target.value)" class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
+        <input type="date" (input)="setEndDate($event.target.value)" class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
          focus:border-[var(--primary-color)] focus:ring-4 focus:ring-[var(--primary-color)]/20
          focus:outline-none transition-colors
          text-[var(--primary-text-color)]
@@ -20,11 +20,11 @@
     </section>
     <section class="mt-1">
         <div class="order-status-categories flex flex-row flex-wrap gap-4 my-4">
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'All'" (click)="setStatus('All')">All</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Pending'" (click)="setStatus('Pending')">Pending</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Cancelled'" (click)="setStatus('Cancelled')">Cancelled</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Shipped'" (click)="setStatus('Shipped')">Shipped</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Delivered'" (click)="setStatus('Delivered')">Delivered</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'All'" (click)="setStatus('All')">{{'All' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Pending'" (click)="setStatus('Pending')">{{'PENDING' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Cancelled'" (click)="setStatus('Cancelled')">{{'CANCELLED' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Shipped'" (click)="setStatus('Shipped')">{{'SHIPPED' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Delivered'" (click)="setStatus('Delivered')">{{'DELIVERED' | translate}}</button>
         </div>
         @if(isFiltered()){
           @if ((orders | async)!.length > 0) {

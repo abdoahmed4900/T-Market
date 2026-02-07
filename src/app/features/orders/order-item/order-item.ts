@@ -4,10 +4,11 @@ import { OrderService } from '../../../core/services/order.service';
 import { RouterLink } from "@angular/router";
 import { Order } from '../../../core/interfaces/order';
 import { Subscription } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order-item',
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, RouterLink,TranslatePipe],
   templateUrl: './order-item.html',
   styleUrl: './order-item.scss'
 })
@@ -18,7 +19,7 @@ export class OrderItem {
   role = signal<string>(localStorage.getItem('role') || '');
   isAdmin = computed(() => this.role() == 'admin');
 
-  changeOrderStatus(newStatus:"Pending" | "Shipped" | "Cancelled" | "Delivered"){
+  changeOrderStatus(newStatus:"PENDING" | "SHIPPED" | "CANCELLED" | "DELIVERED"){
      if (this.role() === 'admin') {
        this.ordersSub = this.orderService
         .changeStatusOrder(this.order()!.id, newStatus).subscribe();

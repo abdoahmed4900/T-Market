@@ -7,10 +7,11 @@ import { CartService } from '../../core/services/cart.service';
 import { CartSummaryCard } from "./cart-summary-card/cart-summary-card";
 import { RouterLink } from '@angular/router';
 import { Product } from '../../core/interfaces/product';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cart',
-  imports: [AsyncPipe, Loader, CartCard, NgClass, CartSummaryCard,RouterLink],
+  imports: [AsyncPipe, Loader, CartCard, NgClass, CartSummaryCard,RouterLink,TranslatePipe],
   templateUrl: './cart.html',
   styleUrl: './cart.scss'
 })

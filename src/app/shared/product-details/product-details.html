@@ -2,8 +2,8 @@
 <main class="grid align md:grid-cols-2 gap-8 grid-cols-1 my-7 animate-slideFromTop">
     <div class="img-slider relative h-[350px] md:h-full">
         <img class="rounded-xl w-full h-full animate-slideFromTop" [src]="(product | async)!.imageUrls[currentImageIndex]">
-        <button class="absolute md:top-50 top-40 translate-y-[-50] left-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="prevImage()" [disabled]="currentImageIndex == 0" aria-roledescription="slide-to-previous-image"> ← </button>
-        <button class="absolute md:top-50 top-40 translate-y-[-50] right-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="nextImage()" [disabled]="currentImageIndex ==  imagesNumber - 1" aria-roledescription="slide-to-next-image"> → </button>
+        <button class="absolute md:top-50 top-40 translate-y-[-50] start-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="prevImage()" [disabled]="currentImageIndex == 0" aria-roledescription="slide-to-previous-image"> ← </button>
+        <button class="absolute md:top-50 top-40 translate-y-[-50] end-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="nextImage()" [disabled]="currentImageIndex ==  imagesNumber - 1" aria-roledescription="slide-to-next-image"> → </button>
     </div>
     <div class="product-detail flex flex-col items-start justify-between gap-4">
         <h3 class="text-[24px] font-bold animate-slideFromHorizon leading-6">{{(product | async)!.name}}</h3>
@@ -12,8 +12,8 @@
         <div class="cart-and-buy items-center flex gap-3 mt-2 animate-slideFromTop flex-row flex-wrap items-center">
             <div class="input-container relative">
                 <input type="number" name="cart" id="cart" class="border-2 rounded-lg p-1 border-white text-[var(--primary-text-color)] text-center" placeholder="0" [(value)]="cartNumber"/>
-                <button class="absolute left-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="increaseCartNumber()" role="button">+</button>
-                <button class="absolute right-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="decreaseCartNumber()" role="button">-</button>
+                <button class="absolute start-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="increaseCartNumber()" role="button">+</button>
+                <button class="absolute end-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="decreaseCartNumber()" role="button">-</button>
             </div>
             <button class="text-white bg-[var(--primary-color)] rounded-xl p-2 text-[16px]" (click)="addToCart()"
                >Add to cart</button>
