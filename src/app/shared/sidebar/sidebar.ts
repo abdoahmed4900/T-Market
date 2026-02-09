@@ -1,9 +1,9 @@
-import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
+import { Component, inject, linkedSignal, signal } from '@angular/core';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../features/auth/auth.service';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { filter, map, Subscription } from 'rxjs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -23,7 +23,7 @@ export class Sidebar {
   });
   translateService = inject(TranslateService);
 
-  menu = computed(() => {
+  menu = linkedSignal(() => {
     return {
       admin: [
         { label: 'SIDEBAR.ADD_NEW_USER', path: '/new-user' },
@@ -77,6 +77,14 @@ export class Sidebar {
       next : (value) => {
         localStorage.clear();
         this.router.navigateByUrl('/login',{replaceUrl : true})
+        this.auth.userRole.next(null);
+        this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(
+          map((val) => {
+            val = false;
+            return val;
+          })
+        )
+        this.sidebarOpen.set(false);
         log.unsubscribe();
       },
     })

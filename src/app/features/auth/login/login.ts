@@ -14,6 +14,7 @@ import { CartProduct } from '../../cart/cart.product';
 import { Order } from '../../../core/interfaces/order';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LangDirective } from "../../../core/lang";
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -77,6 +78,10 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem('token', value[0].uid);
                 this.auth.isLoginSubject.next(true);
                 this.auth.userRole.next(value[0].role);
+                this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(map((val) => {
+                  val = true;
+                  return val;
+                }))
                 this.router.navigate(['/'], { replaceUrl: true });
                 x.unsubscribe();
             },
@@ -132,6 +137,10 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('token', user['uid']);
               localStorage.setItem('role', user['role']);
             } 
+            this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(map((val) => {
+                  val = true;
+                  return val;
+            }))
             login.unsubscribe();        
           });
 

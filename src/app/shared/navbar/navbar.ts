@@ -8,7 +8,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../loader/loader';
 import { CartService } from '../../core/services/cart.service';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, map, Subscription } from 'rxjs';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -95,6 +95,13 @@ export class Navbar implements OnInit{
       next: () => {
         this.clearCache(); 
         this.router.navigate(['/login']);
+        this.isBuyer.set(false);
+        this.isLoggedIn = this.isLoggedIn.pipe(
+          map((val) => {
+            val = false;
+            return val;
+          })
+        )
       },
 
       error: () => {
