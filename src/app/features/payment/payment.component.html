@@ -1,39 +1,68 @@
 <form [formGroup]="paymentFormGroup" (ngSubmit)="pay(cardHolderName.value)">
    <div class="flex flex-col gap-5 border-1 justify-start items-start p-4 rounded-lg max-w-[1500px] xl:mx-auto bg-[var(--main-bg-color)] text-[var(--primary-text-color)] shadow-md">
-   <h3 class="text-[var(--primary-text-color)] text-lg font-bold slideFromRightAnimation">Payment Form</h3>
+   <h3 class="text-[var(--primary-text-color)] text-lg font-bold slideFromRightAnimation">{{'PAYMENT.PAYMENT_FORM' | translate}}</h3>
 
    <div class="w-full flex flex-col">
-     <label for="cardholder-name">Cardholder Name</label>
-     <input id="cardholder-name" formControlName="name" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="text" placeholder="Name" #cardHolderName />
+     <label for="cardholder-name">{{'PAYMENT.CARDHOLDER_NAME_LABEL' | translate}}</label>
+     <input id="cardholder-name" formControlName="name" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="text" placeholder="{{'PAYMENT.NAME_PLACEHOLDER' | translate}}" #cardHolderName />
+     @if (paymentFormGroup.get('name')?.hasError('required') && paymentFormGroup.get('name')?.touched) {
+       <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.NAME_PLACEHOLDER' | translate } }}</span>
+     }@if (paymentFormGroup.get('name')?.hasError('minlength') && paymentFormGroup.get('name')?.touched) {
+       <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.NAME_PLACEHOLDER' | translate } }}</span>
+     }
    </div>
 
    <div class="address w-full">
-     <label for="cardholder-address">Cardholder Address</label>
+     <label for="cardholder-address">{{'PAYMENT.CARDHOLDER_ADDRESS_LABEL' | translate}}</label>
      <div class="address-fields mt-2 grid lg:grid-cols-[repeat(auto-fit,minmax(50px,1fr))] md:grid-cols-2 grid-cols-1 flex-wrap gap-2 items-center w-full">
-       <input id="cardholder-address-street" formControlName="street" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="text" #cardHolderStreet placeholder="Street"/>
-       <input id="cardholder-address-zip" formControlName="zipCode" class="h-10 p-3  border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="number" #cardHolderZipCode placeholder="Zip Code"/>
-       <input id="cardholder-address-city" formControlName="city" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="text" #cardHolderCity placeholder="City"/>
+       <input id="cardholder-address-street" formControlName="street" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="text" #cardHolderStreet placeholder="{{'PAYMENT.STREET_PLACEHOLDER' | translate}}"/>
+       <input id="cardholder-address-zip" formControlName="zipCode" class="h-10 p-3  border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="number" #cardHolderZipCode placeholder="{{'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate}}"/>
+       <input id="cardholder-address-city" formControlName="city" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!" type="text" #cardHolderCity placeholder="{{'PAYMENT.CITY_PLACEHOLDER' | translate}}"/>
      </div>
+      @if (paymentFormGroup.get('street')?.hasError('required') && paymentFormGroup.get('street')?.touched) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.STREET_PLACEHOLDER' | translate } }}</p>
+      }@if (paymentFormGroup.get('street')?.hasError('minlength') && paymentFormGroup.get('street')?.touched) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.STREET_PLACEHOLDER' | translate } }}</p>
+      }
+      @if (paymentFormGroup.get('zipCode')?.hasError('required') && paymentFormGroup.get('zipCode')?.touched) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate } }}</p>
+      }@if (paymentFormGroup.get('zipCode')?.hasError('minlength') && paymentFormGroup.get('zipCode')?.touched) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate } }}</p>
+      }
+      @if (paymentFormGroup.get('city')?.hasError('required') && paymentFormGroup.get('city')?.touched) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.CITY_PLACEHOLDER' | translate } }}</p>
+      }@if (paymentFormGroup.get('city')?.hasError('minlength') && paymentFormGroup.get('city')?.touched) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CITY_PLACEHOLDER' | translate } }}</p>
+      }
    </div>
 
   <div class="relative flex flex-col w-full">
-     <label>Card Number</label>
-     <div id="card-number-element" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"></div>
+     <label>{{'PAYMENT.CARD_NUMBER' | translate}}</label>
+     <div id="card-number-element" dir="ltr" class="h-10 p-3 ltr border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"></div>
       @if(brandIcon() != ''){
          <img [src]="brandIcon()" alt="Card Brand" width="40" class="ms-2" style="display: inline-block;position: absolute;top: 37px; inset-inline-start:5px;transform: translateY(-38%);border-radius: 10px;height: 29px;width: 35px;"/>
+      }
+      @if (isCardNumberValid() == false && isCardNumberTouched()) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CARD_NUMBER' | translate } }}</p>
       }
   </div>
 
    <div class="flex flex-col w-full">
-     <label>Expiry Date</label>
-     <div id="card-expiry-element" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl" aria-placeholder="Expiry Date"></div>
+     <label>{{'PAYMENT.CARD_EXPIRY_DATE' | translate}}</label>
+     <div id="card-expiry-element" dir="ltr" class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl" aria-placeholder="Expiry Date"></div>
+      @if (!isCardDateValid() && isCardDateTouched()) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CARD_EXPIRY_DATE' | translate } }}</p>
+      }
    </div>
 
    <div class="flex flex-col w-full">
-     <label>CVC</label>
-     <div id="card-cvc-element"class="h-10 p-3 border-1 border-solid focus:border-red-500 rounded-xl" aria-placeholder="Cvc"></div>
+     <label>{{'PAYMENT.CARD_CVC' | translate}}</label>
+     <div id="card-cvc-element" dir="ltr" class="h-10 p-3 ltr! border-1 border-solid focus:border-red-500 rounded-xl" aria-placeholder="Cvc"></div>
+      @if (!isCardCvcValid() && isCardCvcTouched()) {
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CARD_CVC' | translate } }}</p>
+      }
    </div>
 
-   <button type="submit" class="p-4 bg-[var(--primary-color)] text-white rounded-xl self-end hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out" [disabled]="paymentFormGroup.invalid">Pay</button>
+   <button type="submit" class="p-4 bg-[var(--primary-color)] text-white rounded-xl self-end hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out" [disabled]="paymentFormGroup.invalid">{{'PAYMENT.PAY' | translate}}</button>
  </div>
 </form>

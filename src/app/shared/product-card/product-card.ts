@@ -7,10 +7,11 @@ import { CartService } from '../../core/services/cart.service';
 import { Product } from '../../core/interfaces/product';
 import { WishlistService } from '../../features/wishlist/wishlist.service';
 import { Subscription } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product-card',
-  imports: [FaIconComponent, RouterLink,CommonModule],
+  imports: [FaIconComponent, RouterLink,CommonModule,TranslatePipe],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss'
 })

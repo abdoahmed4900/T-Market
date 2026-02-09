@@ -9,11 +9,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../loader/loader';
 import { CartService } from '../../core/services/cart.service';
 import { combineLatest, Subscription } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
-  imports: [WebsiteTitle, CommonModule, FaIconComponent, RouterLinkActive,RouterLink,TranslateModule],
+  imports: [WebsiteTitle, CommonModule, FaIconComponent, RouterLinkActive,RouterLink,TranslateModule,TranslatePipe],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })
@@ -41,7 +41,7 @@ export class Navbar implements OnInit{
 
   cartNumber = signal<number>(0);
 
-  // translateService = inject(TranslateService);
+  translateService = inject(TranslateService);
 
   menu! : Record<string,string>;
 
@@ -118,7 +118,8 @@ export class Navbar implements OnInit{
   }
 
   changeLanguage(language:string){
-    // this.translateService.use(language);
+    document.getElementsByTagName('html')[0].setAttribute('dir',language == 'en' ? 'ltr' : 'rtl')
+    this.translateService.use(language);
     localStorage.setItem('language',language)
   }
 

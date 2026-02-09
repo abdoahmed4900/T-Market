@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { afterNextRender, Component, ElementRef, inject, signal } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, NgZone, signal } from '@angular/core';
 import {
   loadStripe,
   Stripe,
@@ -20,17 +20,19 @@ import { EmailService } from '../../core/services/email.service';
 import { Product } from '../../core/interfaces/product';
 import { Order } from '../../core/interfaces/order';
 import { StripeService } from './payment.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stripe-payment',
   templateUrl: './payment.component.html',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,TranslatePipe],
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent {
   brandIcon = signal<string>('');
   stripe!: Stripe;
   private elements!: StripeElements;
+  translateService = inject(TranslateService);
 
   cardNumber!: StripeCardNumberElement;
   cardExpiry!: StripeCardExpiryElement;
@@ -46,8 +48,15 @@ export class PaymentComponent {
   cartProductsObservable!:Observable<(Product & {quantity:number})[]>;
   private formBuilder = inject(FormBuilder);
   emailService = inject(EmailService);
+  zone = inject(NgZone);
   themeInterval!: any;
   destroy$ = new Subject<void>();
+  isCardNumberValid = signal(false);
+  isCardDateValid = signal(false);
+  isCardCvcValid = signal(false);
+  isCardNumberTouched = signal(false);
+  isCardDateTouched = signal(false);
+  isCardCvcTouched = signal(false);
 
   paymentFormGroup = this.formBuilder.group(
      {
@@ -64,7 +73,9 @@ export class PaymentComponent {
     numericLengthValidator(minLength: number) {
        return (control: AbstractControl) => {
        const value = control.value?.toString() || '';
-       return value.length < minLength ? { minlength: true } : null;
+       console.log(`value.length < minLength : ${value.length < minLength}`);
+       
+       return value.length < minLength && value.length != 0 ? { minlength: true } : null;
       };
     }
 
@@ -90,6 +101,10 @@ export class PaymentComponent {
         },
     })
     this.watchThemeChanges();
+    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.destoryStripeElements();
+      this.createStripeElements();
+    });
   }
   private watchThemeChanges() {
   let lastTheme = localStorage.getItem('theme');
@@ -113,6 +128,7 @@ baseStyle() {
     style: {
       base: {
       color: isDark ? 'white' : 'black',
+      direction: 'ltr !important',
       fontFamily: 'Arial, sans-serif',
       fontSize: '16px',
       '::placeholder': { color: isDark ? '#b3b3b3' : 'gray' },
@@ -140,15 +156,15 @@ baseStyle() {
   private createStripeElements() {
     this.cardNumber = this.elements.create('cardNumber', {
       ...this.baseStyle(),
-      placeholder: 'Card Number'
+      placeholder: this.translateService.instant('PAYMENT.CARD_NUMBER')
     });
     this.cardExpiry = this.elements.create('cardExpiry', {
       ...this.baseStyle(),
-      placeholder: 'Expiry Date'
+      placeholder: this.translateService.instant('PAYMENT.CARD_EXPIRY_DATE')
     });
     this.cardCvc = this.elements.create('cardCvc', {
       ...this.baseStyle(),
-      placeholder: 'CVC',
+      placeholder: this.translateService.instant('PAYMENT.CARD_CVC'),
     });
   }
 
@@ -160,40 +176,42 @@ baseStyle() {
 
   private handleCardNumberChanges() {
     this.cardNumber.on('change', (event) => {
-      if (event.complete) {
-        this.paymentFormGroup.get('cardNumber')?.setValue(true);
-        this.paymentFormGroup.get('cardNumber')?.setErrors(null);
-      } else {
-        this.paymentFormGroup.get('cardNumber')?.setValue(false);
-        this.paymentFormGroup.get('cardNumber')?.setErrors({ invalid: true });
-      }
-
+      let control = this.paymentFormGroup.get('cardNumber');
+      control?.markAsTouched();
+      this.isCardNumberValid.set(event.complete);
+      this.isCardNumberTouched.set(control!.touched)
       this.showVisaBrandIcon(event);
-    });
+    })
+    
+    this.cardNumber.on('blur',() => {
+      this.isCardNumberTouched.set(true);
+    })
   }
 
   private handleCardDateChanges() {
+    let control = this.paymentFormGroup.get('cardExpiry');
     this.cardExpiry.on('change', (event) => {
-      if (event.complete) {
-        this.paymentFormGroup.get('cardExpiry')?.setValue(true);
-        this.paymentFormGroup.get('cardExpiry')?.setErrors(null);
-      } else {
-        this.paymentFormGroup.get('cardExpiry')?.setValue(false);
-        this.paymentFormGroup.get('cardExpiry')?.setErrors({ invalid: true });
-      }
+      control?.markAsTouched();
+      this.isCardDateValid.set(event.complete);
+      this.isCardDateTouched.set(control!.touched)
     });
+
+    this.cardExpiry.on('blur',() => {
+      this.isCardDateTouched.set(true);
+    })
   }
 
   private handleCvcFieldChanges() {
+    let control = this.paymentFormGroup.get('cardCvc');
     this.cardCvc.on('change', (event) => {
-      if (event.complete) {
-        this.paymentFormGroup.get('cardCvc')?.setValue(true);
-        this.paymentFormGroup.get('cardCvc')?.setErrors(null);
-      } else {
-        this.paymentFormGroup.get('cardCvc')?.setValue(false);
-        this.paymentFormGroup.get('cardCvc')?.setErrors({ invalid: true });
-      }
+      control?.markAsTouched();
+      this.isCardCvcValid.set(event.complete);
+      this.isCardCvcTouched.set(control!.touched)
     });
+
+    this.cardCvc.on('blur',() => {
+      this.isCardCvcTouched.set(true);
+    })
   }
 
   private showVisaBrandIcon(event:any) {
@@ -249,11 +267,18 @@ baseStyle() {
   }
 
   ngOnDestroy() {
-     this.cardNumber?.unmount();
-     this.cardExpiry?.unmount();
-     this.cardCvc?.unmount();
+     this.destoryStripeElements();
      clearInterval(this.themeInterval);
      this.destroy$.next();
      this.destroy$.complete();
+  }
+
+  private destoryStripeElements() {
+    this.cardNumber?.unmount();
+    this.cardExpiry?.unmount();
+    this.cardCvc?.unmount();
+    this.cardNumber?.destroy();
+    this.cardExpiry?.destroy();
+    this.cardCvc?.destroy();
   }
 }

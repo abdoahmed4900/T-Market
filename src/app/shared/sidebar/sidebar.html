@@ -8,7 +8,7 @@
          <nav class="flex px-10 flex-col items-center gap-7">
          @for (item of menu(); track $index) {
            <a [routerLink]="item.path">
-              {{ item.label }}
+              {{ item.label | translate}}
             </a>
          }
         </nav>
@@ -20,12 +20,12 @@
                 (click)="changeTheme()">
                <fa-icon class="text-lg" [icon]="themeIcon()"></fa-icon>
            </button>
-           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4">EN</button>
-           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4">AR</button>
+           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4" (click)="changeLanguage('en')">EN</button>
+           <button class="rounded-lg border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4" (click)="changeLanguage('ar')">AR</button>
         </section>
-        <button class="text-[18px] h-fit w-fit p-4 bg-red-500 hover:bg-red-700 rounded-xl self-center mx-auto" (click)="logout()">Sign Out</button>
+        <button class="text-[18px] h-fit w-fit p-4 bg-red-500 hover:bg-red-700 rounded-xl self-center mx-auto" (click)="logout()">{{'NAVBAR.SIGN_OUT' | translate}}</button>
    </main>
    @if(!sidebarOpen()){
-     <button class="menu-btn absolute start-[20px] pt-10 text-[20px]" (click)="toggleSidebar()">☰</button>
+     <button class="menu-btn absolute start-[20px] pt-5 text-[20px]" (click)="toggleSidebar()">☰</button>
    }
 </aside>

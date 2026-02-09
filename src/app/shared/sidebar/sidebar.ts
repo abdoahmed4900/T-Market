@@ -4,10 +4,11 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../features/auth/auth.service';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [FaIconComponent,RouterLink],
+  imports: [FaIconComponent,RouterLink,TranslatePipe],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss'
 })
@@ -20,17 +21,18 @@ export class Sidebar {
   themeIcon = linkedSignal(() => {
     return this.getTheme() == 'light' ? faMoon : faSun;
   });
+  translateService = inject(TranslateService);
 
   menu = computed(() => {
     return {
       admin: [
-        { label: 'Add New User', path: '/new-user' },
-        { label: 'View All Users', path: '/users' },
-        { label: 'View All Products', path: '/view-products' },
+        { label: 'SIDEBAR.ADD_NEW_USER', path: '/new-user' },
+        { label: 'SIDEBAR.VIEW_ALL_USERS', path: '/users' },
+        { label: 'SIDEBAR.VIEW_ALL_PRODUCTS', path: '/view-products' },
       ],
       seller: [
-        { label: 'Add New Product', path: '/new-product' },
-        { label: 'View Your Products', path: '/view-products' },
+        { label: 'SIDEBAR.ADD_NEW_PRODUCT', path: '/new-product' },
+        { label: 'SIDEBAR.VIEW_YOUR_PRODUCTS', path: '/view-products' },
       ],
     }[this.auth.userRole.value!] ?? []
   })
@@ -49,6 +51,12 @@ export class Sidebar {
   toggleSidebar() {
     this.sidebarOpen.update(v => !v);
   }
+  changeLanguage(language:string){
+    document.getElementsByTagName('html')[0].setAttribute('dir',language == 'en' ? 'ltr' : 'rtl')
+    this.translateService.use(language);
+    localStorage.setItem('language',language)
+  }
+
 
   closeSidebar() {
     this.sidebarOpen.set(false);

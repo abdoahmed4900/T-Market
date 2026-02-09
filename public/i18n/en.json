@@ -78,12 +78,14 @@
       "EMPTY": "Your Cart is Empty",
       "DELETE": "Delete",
       "TOTAL_PRICE": "Total Price",
-      "CHECKOUT": "Checkout"
+      "CHECKOUT": "Checkout",
+      "TOTAL_SUMMARY": "Total Summary"
    },
    "CATEGORIES": {
-      "STARS_RATING_OR_LESS": "Stars Or Less Products",
+      "STARS_RATING_OR_LESS": "{{stars}} Stars Or Less Products",
       "STARS_RATING": "Star rating",
-      "SEARCH_PLACEHOLDER": "Search"
+      "SEARCH_PLACEHOLDER": "Search",
+      "ALL_PRODUCTS": "All Products"
    },
    "ORDERS": {
       "ORDERS_LIST": "Orders List",
@@ -104,5 +106,43 @@
    },
    "WISHLIST": {
       "ADD_ITEMS": "Add Items To WishList"
+   },
+   "PAYMENT": {
+      "PAYMENT_FORM": "Payment Form",
+      "CARDHOLDER_NAME_LABEL": "Cardholder Name",
+      "NAME_PLACEHOLDER": "Name",
+      "CARDHOLDER_ADDRESS_LABEL": "Cardholder Address",
+      "STREET_PLACEHOLDER": "Street",
+      "ZIP_CODE_PLACEHOLDER": "Zip Code",
+      "CITY_PLACEHOLDER": "CITY",
+      "CARD_NUMBER": "Card Number",
+      "CARD_EXPIRY_DATE": "Expiry Date",
+      "CARD_CVC": "CVC",
+      "PAY": "Pay"
+   },
+   "NAVBAR": {
+      "CATEGORIES": "Categories",
+      "SUPPORT": "Support",
+      "SIGN_OUT": "Sign Out",
+      "CART": "Cart",
+      "ORDERS": "Orders",
+      "WISHLIST": "WishList"
+   },
+   "PRODUCT_CARD": {
+      "ADD_TO_CART": "Add to Cart",
+      "ADD_TO_WISHLIST": "Add to WishList",
+      "VIEW": "View"
+   },
+   "SIDEBAR": {
+      "ADD_NEW_USER": "Add New User",
+      "ADD_NEW_PRODUCT": "Add New Product",
+      "VIEW_ALL_USERS": "View All Users",
+      "VIEW_ALL_PRODUCTS": "View All Products",
+      "VIEW_YOUR_PRODUCTS": "View Your Products"
+   },
+   "FOOTER": {
+      "GET_PREMIUM": "Premium tech curated for performance, design, and value. Fast shipping and dedicated support.",
+      "GET_UPDATES": "Get Updates",
+      "SUBSCRIBE": "Subscribe"
    }
 }

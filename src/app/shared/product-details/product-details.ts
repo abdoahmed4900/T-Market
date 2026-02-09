@@ -9,10 +9,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { map, Observable, tap } from 'rxjs';
 import { CartService } from '../../core/services/cart.service';
 import { Product } from '../../core/interfaces/product';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product-details',
-  imports: [CommonModule, Loader, FaIconComponent,ReactiveFormsModule],
+  imports: [CommonModule, Loader, FaIconComponent,ReactiveFormsModule,TranslatePipe],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss'
 })

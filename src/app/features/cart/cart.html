@@ -12,7 +12,6 @@
         @if((totalPrice | async) != 0){ 
          <div class="cart-summary-section flex flex-col gap-4">
            <app-cart-summary-card class="size-fit w-full"></app-cart-summary-card>
-           <button class="bg-[var(--primary-color)] text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromRightAnimation hover:bg-purple-700 self-end" routerLink="/checkout">{{'CART.CHECKOUT' | translate}}</button>
          </div>
         }
     </div>
@@ -22,6 +21,7 @@
          <h3 class="text-[var(--primary-text-color)] font-bold text-xl">{{'CART.EMPTY' | translate}}</h3>
       </section>
     }
+    <button class="bg-[var(--primary-color)] mt-4 text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromRightAnimation hover:bg-purple-700 self-end" routerLink="/checkout">{{'CART.CHECKOUT' | translate}}</button>
   }@else {
     <app-loader></app-loader>
   }

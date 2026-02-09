@@ -16,7 +16,7 @@
                 <button class="absolute end-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="decreaseCartNumber()" role="button">-</button>
             </div>
             <button class="text-white bg-[var(--primary-color)] rounded-xl p-2 text-[16px]" (click)="addToCart()"
-               >Add to cart</button>
+               >{{'PRODUCT_CARD.ADD_TO_CART' | translate}}</button>
         </div>
         @if ((product | async)!.reviews.length > 0) {
             <section class="reviews flex flex-wrap flex-col gap-4">

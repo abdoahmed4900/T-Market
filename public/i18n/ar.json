@@ -78,12 +78,14 @@
       "EMPTY": "عربة التسوق الخاصة فارغة",
       "DELETE":"مسح",
       "TOTAL_PRICE": "الإجمالي",
-      "CHECKOUT": "الدفع"
+      "CHECKOUT": "الدفع",
+      "TOTAL_SUMMARY": "اجمالي الطلب"
    },
    "CATEGORIES": {
-      "STARS_RATING_OR_LESS": "نجوم أو أقل",
+      "STARS_RATING_OR_LESS": "{{stars}} نجوم أو أقل",
       "STARS_RATING": "التقييم",
-      "SEARCH_PLACEHOLDER": "بحث"
+      "SEARCH_PLACEHOLDER": "بحث",
+      "ALL_PRODUCTS": "كل المنتجات"
    },
    "ORDERS": {
       "ORDERS_LIST": "قائمة الطلبات",
@@ -104,5 +106,43 @@
    },
     "WISHLIST": {
       "ADD_ITEMS": "اضف لقائمة المنتجات المفضلة"
+   },
+   "PAYMENT": {
+      "PAYMENT_FORM": "تفاصيل الدفع",
+      "CARDHOLDER_NAME_LABEL": "اسم صاحب البطاقة",
+      "NAME_PLACEHOLDER": "الاسم",
+      "CARDHOLDER_ADDRESS_LABEL": "العنوان",
+      "STREET_PLACEHOLDER": "الشارع",
+      "ZIP_CODE_PLACEHOLDER": "الكود البريدي",
+      "CITY_PLACEHOLDER": "المدينة",
+      "CARD_NUMBER": "رقم البطاقة",
+      "CARD_EXPIRY_DATE": "تاريخ انتهاء الصلاحية",
+      "CARD_CVC": "الرقم السري",
+      "PAY": "الدفع"
+   },
+   "NAVBAR": {
+      "CATEGORIES": "المتجر",
+      "SUPPORT": "الدعم",
+      "SIGN_OUT": "تسجيل الخروج",
+      "CART": "عربة التسوق",
+      "ORDERS": "الطلبات",
+       "WISHLIST": "المفضلة"
+   },
+   "PRODUCT_CARD": {
+      "ADD_TO_CART": "اضافة لعربة التسوق",
+      "ADD_TO_WISHLIST": "اضافة للمفضلة",
+      "VIEW": "التفاصيل"
+   },
+   "SIDEBAR": {
+      "ADD_NEW_USER": "اضافة مستخدم جديد",
+      "ADD_NEW_PRODUCT": "اضافة منتج جديد",
+      "VIEW_ALL_USERS": "اظهار جميع المستخدمين",
+      "VIEW_ALL_PRODUCTS": "اظهار جميع المنتجات",
+      "VIEW_YOUR_PRODUCTS": "اظهار منتجاتك"
+   },
+   "FOOTER": {
+      "GET_PREMIUM":  "تكنولوجيا حديثة التصميم والأداء والقيمة . مع شحن سريع ودعم مخصص",
+      "GET_UPDATES": "احصل على التحديثات",
+      "SUBSCRIBE": "اشترك"
    }
 }

@@ -49,7 +49,7 @@ export class App {
 
   getLocale(){
     let language = localStorage.getItem('language') ?? 'en';
-    // this.translateService.use(language);
+    document.getElementsByTagName('html')[0].setAttribute('dir',language == 'en' ? 'ltr' : 'rtl')
   }
 
 

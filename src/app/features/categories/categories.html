@@ -1,6 +1,6 @@
 <main class="grid md:grid-cols-3 gap-5 grid-cols-1 my-10 justify-start grow">
     <section class="search-section flex flex-col gap-10 md:col-span-1 col-span-2">
-        <input type="text" name="search" id="search" style="display: block !important;" class="border-1 p-2 rounded-xl" placeholder="{{'SEARCH_PLACEHOLDER' | translate}}" (input)="filterProducts()" [(ngModel)]="searchText">
+        <input type="text" name="search" id="search" style="display: block !important;" class="border-1 p-2 rounded-xl" placeholder="{{'CATEGORIES.SEARCH_PLACEHOLDER' | translate}}" (input)="filterProducts()" [(ngModel)]="searchText">
 
          <select name="categories" id="categories" class="text-[var(--primary-text-color)] font-bold text-[16px] border-1 p-2 rounded-xl" (change)="filterProducts()" [(ngModel)]="selectedCategory">
           <option value="All" class="text-[var(--primary-text-color)] bg-[var(--main-bg-color)]">{{'ALL' | translate}}</option>
@@ -20,12 +20,12 @@
             <label for="min" class="text-[16px]!">{{minPrice}}</label>
             <label for="max" class="text-[16px]!">{{maxPrice}}</label>
        </div>
-       <output class="text-xl text-[var(--primary-text-color)] font-bold">{{'STARS_RATING_TEXT' | translate}}</output>
+       <output class="text-xl text-[var(--primary-text-color)] font-bold">{{'CATEGORIES.STARS_RATING' | translate}}</output>
        <input type="range" name="rating" id="rating" min="0" max="5" (change)="filterProducts()" value="0" [(ngModel)]="rating">
        @if (rating() > 0 && rating() < 5) {
-        <output class="text-lg text-[var(--primary-text-color)] font-bold">{{rating()}} {{'STARS_RATING_OR_LESS' | translate}}</output>
+        <output class="text-lg text-[var(--primary-text-color)] font-bold">{{'CATEGORIES.STARS_RATING_OR_LESS' | translate: {stars: rating()} }}</output>
        }@else if(rating() == 0 || rating() == 5){
-        <output class="text-lg text-[var(--primary-text-color)] font-bold">{{'ALL_PRODUCTS' | translate}}</output>
+        <output class="text-lg text-[var(--primary-text-color)] font-bold">{{'CATEGORIES.ALL_PRODUCTS' | translate}}</output>
        }
     </section>
     <section class="search-results grid grid-cols-[repeat(md:auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
