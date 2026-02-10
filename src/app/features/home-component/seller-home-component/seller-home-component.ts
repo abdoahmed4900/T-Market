@@ -1,18 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
 import { Seller } from '../../auth/user';
 import { HomeService } from '../home.service';
-import { map, Observable, tap } from 'rxjs';
+import { combineLatest, map, Observable, startWith, Subject, takeUntil, tap } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Loader } from "../../../shared/loader/loader";
 import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
 import { ProductsService } from '../../../core/services/products.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { Sidebar } from "../../../shared/sidebar/sidebar";
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-seller-home-component',
-  imports: [AsyncPipe, CurrencyPipe, Loader,TranslatePipe],
+  imports: [AsyncPipe, CurrencyPipe, Loader, TranslatePipe, Sidebar],
   templateUrl: './seller-home-component.html',
   styleUrl: './seller-home-component.scss'
 })
@@ -28,6 +30,9 @@ export class SellerHomeComponent {
   chartInstance: Chart | null = null;
   pieChartInstance: Chart | null = null;
   isChartInitialized: boolean = false;
+  showSidebar = signal(true);
+  breakpoints = inject(BreakpointObserver);
+  destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.user = this.homeSerivce.getUser().pipe(
@@ -35,6 +40,7 @@ export class SellerHomeComponent {
         this.getSellerItems();
       }),
     );
+    this.loadLayout();
   }
   private getSellerItems() {
     console.log('in here');    
@@ -46,5 +52,25 @@ export class SellerHomeComponent {
         return products;
       })
     );
+  }
+
+   private loadLayout() {
+    combineLatest([
+      this.breakpoints.observe(['(min-width: 1024px)']).pipe(
+        startWith({ matches: window.innerWidth >= 1024 } as BreakpointState) 
+      ),
+    ])
+    .pipe(
+      takeUntil(this.destroy$),
+    )
+    .subscribe(([screen]) => {
+      const isSidebar = screen.matches;
+      this.showSidebar.set(isSidebar);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 }

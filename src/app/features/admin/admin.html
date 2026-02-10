@@ -1,84 +1,88 @@
 @if((admin | async) && (orders | async)){
 <main class="mt-10 flex flex-col gap-10">
-    <header>
+    <header class="flex flex-row gap-5 items-center">
+        @if (showSidebar()){
+            <app-sidebar></app-sidebar>
+        }
         <h1 class="text-[24px] font-bold">{{'DASHBOARD' | translate}}</h1>
     </header>
-    
-    <section aria-describedby="(admin | async)-dashbard-number" class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 w-full">
-        <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[20px] font-bold">{{'ADMIN.REVENUE' | translate}}</h2>
-            <p class="text-[16px] total-revenue">{{(admin | async)?.totalRevenue | currency}} </p>
-        </section>
-        <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[20px] font-bold">{{'ADMIN.SOLD_ITEMS' | translate}}</h2>
-            <p class="text-[16px] total-products-sold">{{(totalProductsSold | async)}}</p>
-        </section>
-        <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[20px] font-bold">{{'ADMIN.TOTAL_ORDERS' | translate}}</h2>
-            <p class="text-[16px] total-orders-number">{{(totalOrdersNumber | async)}}</p>
-        </section>
-        <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[20px] font-bold">{{'ADMIN.SHIPPED_ORDERS' | translate}}</h2>
-            <p class="text-[16px] total-shipped-orders-number">{{shippedOrdersNumber}}</p>
-        </section>
-        <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[20px] font-bold">{{'ADMIN.CANCELLED_ORDERS' | translate}}</h2>
-            <p class="text-[16px] total-cancelled-orders-number">{{cancelledOrdersNumber}}</p>
-        </section>
-        <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[20px] font-bold">{{'ADMIN.DELIVERED_ORDERS' | translate}}</h2>
-            <p class="text-[16px] total-delivered-orders-number">{{deliveredOrdersNumber}}</p>
-        </section>
-        <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
-            <h2 class="text-[20px] font-bold">{{'ADMIN.PENDING_ORDERS' | translate}}</h2>
-            <p class="text-[16px] total-pending-orders-number">{{pendingOrdersNumber}}</p>
-        </section>
-    </section>
-    <section aria-describedby="(admin | async)-dashboard-sold-items" class="grid grid-cols-1 gap-5 w-full">
-        <header>
-            <h3 class="text-[24px] font-bold">{{'ADMIN.STOCK_ITEMS' | translate}}</h3>
-        </header>
-        <main>
-            @if((allProducts | async)!.length > 0){
-               <section class="grid gap-4 all-products md:grid-cols-2">
-                   @for (item of (allProducts | async); track item.id;) {
-                      <div class="border-1 product-item rounded-xl p-4 flex flex-col gap-3 seller-products">
-                               <h2 class="text-[16px]">{{'ADMIN.PRODUCT_NAME' | translate}} : {{item.name}}</h2>
-                               <h2 class="text-[16px]">{{'PRICE' | translate}} : {{item.price | currency}}</h2>
-                               <h2 class="text-[16px]">{{'ADMIN.SOLD' | translate}} : {{item.soldItemsNumber}} {{'ADMIN.PIECES' | translate}}</h2>
-                               <h2 class="text-[16px]">{{'ADMIN.IN_STOCK' | translate}} : {{item.stock}} {{'ADMIN.PIECES' | translate}}</h2>
-                       </div>
-                   }
+    <section class="flex flex-col gap-10">
+            <section aria-describedby="(admin | async)-dashbard-number" class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 w-full">
+                <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
+                    <h2 class="text-[20px] font-bold">{{'ADMIN.REVENUE' | translate}}</h2>
+                    <p class="text-[16px] total-revenue">{{(admin | async)?.totalRevenue | currency}} </p>
                </section>
-            }@else {
-                <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
-                   <img class="w-[200px] h-[200px]" src="https://www.svgrepo.com/show/17356/empty-cart.svg" alt="no products added yet" >
-                   <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_PRODUCTS' | translate}}</p>
-                </div>
-            }
-        </main>
-    </section>
-    <section class="orders-section">
-        <header class="my-5">
-           <h3 class="text-[24px] font-bold">{{'ADMIN.STATISTICS' | translate}}</h3>
-        </header>
-        @if((orders | async)!.length == 0){
-            <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
-                <img class="w-[200px] h-[200px]" src="https://cdni.iconscout.com/illustration/premium/thumb/no-orders-yet-illustration-svg-download-png-13391226.png" alt="no orders added yet" >
-                <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_ORDERS' | translate}}</p>
-            </div>
-        }@else {
-            <section class="charts grid gap-5 grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
-            <div class="status-chart p-4 h-[350px] border-1 rounded-xl flex flex-col flex-wrap gap-3">
-                <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_STATUS_COUNT' | translate}}</p>
-                <canvas #barChartCanvas id="barChartCanvas"></canvas>
-            </div>
-            <div class="date-chart p-4 h-[350px] border-1 rounded-xl flex flex-col flex-wrap gap-3">
-                <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_PIE_COUNT' | translate}}</p>
-                <canvas #pieChartCanvas id="pieChartCanvas"></canvas>
-            </div>
-           </section>
-        }
+               <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
+                   <h2 class="text-[20px] font-bold">{{'ADMIN.SOLD_ITEMS' | translate}}</h2>
+                   <p class="text-[16px] total-products-sold">{{(totalProductsSold | async)}}</p>
+               </section>
+               <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
+                   <h2 class="text-[20px] font-bold">{{'ADMIN.TOTAL_ORDERS' | translate}}</h2>
+                   <p class="text-[16px] total-orders-number">{{(totalOrdersNumber | async)}}</p>
+               </section>
+               <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
+                   <h2 class="text-[20px] font-bold">{{'ADMIN.SHIPPED_ORDERS' | translate}}</h2>
+                   <p class="text-[16px] total-shipped-orders-number">{{shippedOrdersNumber}}</p>
+               </section>
+               <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
+                   <h2 class="text-[20px] font-bold">{{'ADMIN.CANCELLED_ORDERS' | translate}}</h2>
+                   <p class="text-[16px] total-cancelled-orders-number">{{cancelledOrdersNumber}}</p>
+               </section>
+               <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
+                   <h2 class="text-[20px] font-bold">{{'ADMIN.DELIVERED_ORDERS' | translate}}</h2>
+                   <p class="text-[16px] total-delivered-orders-number">{{deliveredOrdersNumber}}</p>
+               </section>
+               <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
+                   <h2 class="text-[20px] font-bold">{{'ADMIN.PENDING_ORDERS' | translate}}</h2>
+                   <p class="text-[16px] total-pending-orders-number">{{pendingOrdersNumber}}</p>
+               </section>
+            </section>
+            <section aria-describedby="(admin | async)-dashboard-sold-items" class="grid grid-cols-1 gap-5 w-full">
+                <header>
+                    <h3 class="text-[24px] font-bold">{{'ADMIN.STOCK_ITEMS' | translate}}</h3>
+                </header>
+                <main>
+                @if((allProducts | async)!.length > 0){
+                   <section class="grid gap-4 all-products md:grid-cols-2">
+                       @for (item of (allProducts | async); track item.id;) {
+                          <div class="border-1 product-item rounded-xl p-4 flex flex-col gap-3 seller-products">
+                                   <h2 class="text-[16px]">{{'ADMIN.PRODUCT_NAME' | translate}} : {{item.name}}</h2>
+                                   <h2 class="text-[16px]">{{'PRICE' | translate}} : {{item.price | currency}}</h2>
+                                   <h2 class="text-[16px]">{{'ADMIN.SOLD' | translate}} : {{item.soldItemsNumber}} {{'ADMIN.PIECES' | translate}}</h2>
+                                   <h2 class="text-[16px]">{{'ADMIN.IN_STOCK' | translate}} : {{item.stock}} {{'ADMIN.PIECES' | translate}}</h2>
+                           </div>
+                       }
+                   </section>
+                }@else {
+                    <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
+                       <img class="w-[200px] h-[200px]" src="https://www.svgrepo.com/show/17356/empty-cart.svg" alt="no products added yet" >
+                       <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_PRODUCTS' | translate}}</p>
+                    </div>
+                }
+            </main>
+            </section>
+            <section class="orders-section">
+                <header class="my-5">
+                   <h3 class="text-[24px] font-bold">{{'ADMIN.STATISTICS' | translate}}</h3>
+                </header>
+                @if((orders | async)!.length == 0){
+                    <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
+                        <img class="w-[200px] h-[200px]" src="https://cdni.iconscout.com/illustration/premium/thumb/no-orders-yet-illustration-svg-download-png-13391226.png" alt="no orders added yet" >
+                        <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_ORDERS' | translate}}</p>
+                    </div>
+                }@else {
+                    <section class="charts grid gap-5 grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
+                    <div class="status-chart p-4 h-[350px] border-1 rounded-xl flex flex-col flex-wrap gap-3">
+                        <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_STATUS_COUNT' | translate}}</p>
+                        <canvas #barChartCanvas id="barChartCanvas"></canvas>
+                    </div>
+                    <div class="date-chart p-4 h-[350px] border-1 rounded-xl flex flex-col flex-wrap gap-3">
+                        <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_PIE_COUNT' | translate}}</p>
+                        <canvas #pieChartCanvas id="pieChartCanvas"></canvas>
+                    </div>
+                   </section>
+                }
+            </section>
     </section>
 </main>
 }@else {

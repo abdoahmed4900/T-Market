@@ -136,6 +136,7 @@
    "SIDEBAR": {
       "ADD_NEW_USER": "Add New User",
       "ADD_NEW_PRODUCT": "Add New Product",
+      "ADD_NEW_CATEGORY": "Add New Category",
       "VIEW_ALL_USERS": "View All Users",
       "VIEW_ALL_PRODUCTS": "View All Products",
       "VIEW_YOUR_PRODUCTS": "View Your Products"
@@ -144,5 +145,13 @@
       "GET_PREMIUM": "Premium tech curated for performance, design, and value. Fast shipping and dedicated support.",
       "GET_UPDATES": "Get Updates",
       "SUBSCRIBE": "Subscribe"
+   },
+   "NEW_CATEGORY": {
+      "GO_BACK": "Go Back",
+      "GO_BACK_IMAGE": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-afsbFrwOIw0ZB7MtE9ukKmOCjRWJicfMYQ&s",
+      "CREATE_NEW_CATEGORY_TITLE": "Create New Category",
+      "CREATE_NEW_CATEGORY_SUBTITLE": "Add a new product category to your store",
+      "PLACEHOLDER": "Category Name",
+      "SUBMIT": "Create Category"
    }
 }

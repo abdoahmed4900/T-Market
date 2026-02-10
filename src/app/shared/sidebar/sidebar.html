@@ -1,13 +1,13 @@
 
 <aside class="sidebar relative" [class.w-[0px]]="!sidebarOpen()">
    
-   <main class="sidebar-content fixed top-0 start-0  flex flex-col transition duration-600 fixed ease-in-out gap-5 min-h-full w-[280px] transition duration-300 ease-in-out bg-[var(--primary-color)]" [class.open]="sidebarOpen()">
+   <main [class.translate-x-[280px]]="isLanguageArabic() && !sidebarOpen()" [class.translate-x-[-280px]]="isLanguageEnglish() && !sidebarOpen()" class="sidebar-content fixed top-0 start-0  flex flex-col transition duration-600 fixed ease-in-out gap-5 min-h-full w-[280px] transition duration-300 ease-in-out bg-[var(--primary-color)]" [class.open]="sidebarOpen()">
          <button class="menu-btn self-end p-4 text-[20px]" (click)="toggleSidebar()">
             x
          </button>
          <nav class="flex px-10 flex-col items-center gap-7">
          @for (item of menu(); track $index) {
-           <a [routerLink]="item.path">
+           <a (click)="goToRoute(item.path)">
               {{ item.label | translate}}
             </a>
          }
@@ -26,6 +26,6 @@
         <button class="text-[18px] h-fit w-fit p-4 bg-red-500 hover:bg-red-700 rounded-xl self-center mx-auto" (click)="logout()">{{'NAVBAR.SIGN_OUT' | translate}}</button>
    </main>
    @if(!sidebarOpen()){
-     <button class="menu-btn absolute start-[20px] pt-5 text-[20px]" (click)="toggleSidebar()">☰</button>
+     <button class="menu-btn text-[20px]" (click)="toggleSidebar()">☰</button>
    }
 </aside>

@@ -22,4 +22,8 @@ export class HomeService{
             shareReplay(1)
         )
     }
+
+    addNewProduct(){
+        
+    }
 }

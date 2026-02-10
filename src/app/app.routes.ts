@@ -19,7 +19,7 @@ export const routes: Routes = [
   },
   {
     path: 'reset-password',
-    loadComponent: () => import('./features/auth/reset-password/reset-password')
+    loadComponent: () => import('./features/auth/components/reset-password/reset-password')
       .then(m => m.ResetPassword)
   },
   {
@@ -51,6 +51,16 @@ export const routes: Routes = [
     path: 'order/:id',
     loadComponent: () => import('./features/orders/order-details/order-details')
       .then(m => m.OrderDetails)
+  },
+  {
+    path: 'new-product',
+    loadComponent: () => import('./features/new-product/new-product')
+      .then(m => m.NewProduct)
+  },
+  {
+    path: 'new-category',
+    loadComponent: () => import('./features/admin/components/new-category/new-category')
+      .then(m => m.NewCategory)
   },
 
     // {path: 'dashboard',},

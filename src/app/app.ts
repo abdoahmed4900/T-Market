@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from "./shared/navbar/navbar";
 import { Footer } from "./shared/footer/footer";
@@ -8,14 +8,14 @@ import { CartService } from './core/services/cart.service';
 import { Subject, Subscription, combineLatest } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 import { AuthService } from './features/auth/auth.service';
-import { Sidebar } from "./shared/sidebar/sidebar";
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { AdminService } from './features/admin/services/admin.service';
 // import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Footer, FontAwesomeModule, Sidebar, Navbar],
+  imports: [RouterOutlet, Footer, FontAwesomeModule, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -28,14 +28,13 @@ export class App {
   cartProductsSub! : Subscription;
   breakpoints = inject(BreakpointObserver);
   showNavbar = signal(false);
-  showSidebar = signal(false);
-  sideBarRef = inject(ViewContainerRef);
-  sideBar = ViewChild('sideBar',{read: this.sideBarRef});
+  isAdminHomeOpened = signal(false);
   private destroy$ = new Subject<void>();
   // translateService = inject(TranslateService);
+  admin = inject(AdminService);
 
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     let isRemembered = localStorage.getItem('isRemembered');
     if(isRemembered == 'true'){
       this.router.navigate(['/']);
@@ -45,6 +44,7 @@ export class App {
     }
     this.loadLayout();
     this.getLocale();
+    await this.admin.addNewCategory('Books')
   }
 
   getLocale(){
@@ -76,7 +76,7 @@ export class App {
       this.authService.role$,
       this.breakpoints.observe(['(max-width: 1024px)']).pipe(
         startWith({ matches: window.innerWidth <= 1024 } as BreakpointState) 
-      )
+      ),
     ])
     .pipe(
       takeUntil(this.destroy$),
@@ -85,7 +85,6 @@ export class App {
       const isMobile = screen.matches;
       const isBuyerOrGuest = role == 'buyer' || role == null;
       this.showNavbar.set(isMobile || isBuyerOrGuest);
-      this.showSidebar.set(!isMobile && !isBuyerOrGuest);
     });
   }
 

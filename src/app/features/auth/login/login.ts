@@ -12,7 +12,7 @@ import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, query, s
 import { fireStoreCollections } from '../../../../environments/environment';
 import { CartProduct } from '../../cart/cart.product';
 import { Order } from '../../../core/interfaces/order';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LangDirective } from "../../../core/lang";
 import { map } from 'rxjs';
 
@@ -36,6 +36,8 @@ export class LoginComponent implements OnInit {
   loginForm !: FormGroup;
 
   fireStore = inject(Firestore);
+
+  translateService = inject(TranslateService);
 
   // toastService = inject(ToastService);
 
@@ -76,6 +78,7 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem('role', value[0].role);
                 localStorage.setItem('isRemembered', this.rememberMe ? 'true' : 'false');
                 localStorage.setItem('token', value[0].uid);
+                localStorage.setItem('language',this.translateService.getCurrentLang())
                 this.auth.isLoginSubject.next(true);
                 this.auth.userRole.next(value[0].role);
                 this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(map((val) => {

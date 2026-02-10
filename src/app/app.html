@@ -1,8 +1,8 @@
 <main class="home min-h-screen flex flex-col">
-  @if(showSidebar()){
+  <!-- @if(showSidebar()){
     <section class="flex flex-col">
         <div class="flex flex-row">
-        <app-sidebar #sideBar></app-sidebar>
+        <app-sidebar></app-sidebar>
         <section class="admin-home max-w-[1400px] mx-auto flex flex-col w-full h-full flex-grow">
           <div class="md:px-20 px-10">
             <router-outlet></router-outlet>
@@ -11,13 +11,14 @@
       </div>
       <app-footer></app-footer>
     </section>
-  }
+  } -->
   @if(showNavbar()){
     <app-navbar></app-navbar>
-    <div class="mx-auto max-w-[1400px] md:px-20 px-10 w-full flex-grow">
-     <router-outlet></router-outlet>
-    </div>
-    <app-footer></app-footer>
   }
+  <div class="mx-auto max-w-[1400px] md:px-20 px-10 w-full flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer></app-footer>
+  
   
 </main>

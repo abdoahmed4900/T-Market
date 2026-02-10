@@ -1,10 +1,11 @@
-import { ProductsService } from './../../core/services/products.service';
+import { ProductsService } from '../../../core/services/products.service';
 import { inject, Injectable } from "@angular/core";
-import { OrderService } from "../../core/services/order.service";
+import { OrderService } from "../../../core/services/order.service";
 import { map } from 'rxjs';
 import { collection, collectionData, Firestore, query, where } from '@angular/fire/firestore';
-import { fireStoreCollections } from '../../../environments/environment';
-import { Admin } from '../auth/user';
+import { fireStoreCollections } from '../../../../environments/environment';
+import { Admin } from '../../auth/user';
+import { getDocs, limit, updateDoc } from 'firebase/firestore';
 
 @Injectable(
     {
@@ -17,6 +18,7 @@ export class AdminService{
     fireStore = inject(Firestore);
     adminFirestore = inject(AdminFirestoreService);
     userCollectionRef = collection(this.fireStore,fireStoreCollections.users);
+    categoriesCollectionRef = collection(this.fireStore,fireStoreCollections.categories);
 
     getAllOrders(){
         return this.ordersService.getAllOrders();
@@ -71,6 +73,34 @@ export class AdminService{
                 return numberOfOrders;
             })
         )
+    }
+
+    async addNewCategory(category: string): Promise<string[]> {
+        try {
+              const q = query(
+                this.categoriesCollectionRef,
+                limit(1)
+              );
+
+              const snap = await getDocs(q);
+    
+              if (snap.empty) {
+                throw new Error('No categories document found');
+              }
+
+              const docSnap = snap.docs[0];
+              const data = docSnap.data();
+
+              const cats: string[] = data['Categories'] ?? [];
+
+              if(!Object.values(cats).includes(category)){
+                  await updateDoc(docSnap.ref,{ Categories: [...Object.values(cats),category]})
+              }
+        
+              return cats;
+           } catch (error) {
+              throw error;
+           }
     }
 }
 

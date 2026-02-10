@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, startWith, Subject, Subscription, takeUntil } from 'rxjs';
 import { Order } from '../../core/interfaces/order';
-import { AdminService } from './admin.service';
+import { AdminService } from './services/admin.service';
 import { Loader } from "../../shared/loader/loader";
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Admin } from '../auth/user';
@@ -10,12 +10,14 @@ import { Product } from '../../core/interfaces/product';
 import { pieChartOptions, statusChartOptions } from '../../core/utils';
 import { ChartFactory } from '../../core/chart.factory';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Sidebar } from "../../shared/sidebar/sidebar";
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 Chart.register(...registerables);
 
 
 @Component({
   selector: 'app-admin',
-  imports: [Loader,AsyncPipe,CurrencyPipe,TranslatePipe],
+  imports: [Loader, AsyncPipe, CurrencyPipe, TranslatePipe, Sidebar],
   templateUrl: './admin.html',
   styleUrl: './admin.scss'
 })
@@ -34,6 +36,7 @@ export class AdminComponent {
   cancelledOrdersNumber!: Number;
 
   adminService = inject(AdminService);
+  breakpoints = inject(BreakpointObserver);
   chartFactory = inject(ChartFactory);
   
   admin!: Observable<Admin>;
@@ -41,9 +44,12 @@ export class AdminComponent {
   chartInstance: Chart | null = null;
   pieChartInstance: Chart | null = null;
   isChartInitialized: boolean = false;
+  destroy$ = new Subject<void>();
+  showSidebar = signal(true);
 
   ngOnInit(): void {
     this.setupDashBoard();
+    this.loadLayout();
   }
 
 
@@ -130,10 +136,27 @@ export class AdminComponent {
     this.chartInstance = this.chartFactory.createChart(barCanvas, statusChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
   }
 
+  private loadLayout() {
+    combineLatest([
+      this.breakpoints.observe(['(min-width: 1024px)']).pipe(
+        startWith({ matches: window.innerWidth >= 1024 } as BreakpointState) 
+      ),
+    ])
+    .pipe(
+      takeUntil(this.destroy$),
+    )
+    .subscribe(([screen]) => {
+      const isSidebar = screen.matches;
+      this.showSidebar.set(isSidebar);
+    });
+  }
+
   ngOnDestroy(): void {
     this.cancelledOrdersNumSub?.unsubscribe();
     this.deliveredOrdersNumSub?.unsubscribe();
     this.pendingOrdersNumSub?.unsubscribe();
     this.shippedOrdersNumSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

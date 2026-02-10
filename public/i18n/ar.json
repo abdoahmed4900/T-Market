@@ -136,6 +136,7 @@
    "SIDEBAR": {
       "ADD_NEW_USER": "اضافة مستخدم جديد",
       "ADD_NEW_PRODUCT": "اضافة منتج جديد",
+      "ADD_NEW_CATEGORY": "اضافة تصنيف جديد",
       "VIEW_ALL_USERS": "اظهار جميع المستخدمين",
       "VIEW_ALL_PRODUCTS": "اظهار جميع المنتجات",
       "VIEW_YOUR_PRODUCTS": "اظهار منتجاتك"
@@ -144,5 +145,13 @@
       "GET_PREMIUM":  "تكنولوجيا حديثة التصميم والأداء والقيمة . مع شحن سريع ودعم مخصص",
       "GET_UPDATES": "احصل على التحديثات",
       "SUBSCRIBE": "اشترك"
+   },
+    "NEW_CATEGORY": {
+      "GO_BACK": "العودة للخلف",
+      "GO_BACK_IMAGE": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh_QhTQblCAI3wbzPvwEUDo7p7qIKlK0iCmA&s",
+      "CREATE_NEW_CATEGORY_TITLE": "اضف تصنيف جديد",
+      "CREATE_NEW_CATEGORY_SUBTITLE": "اضف تصنيف جديد للمنتجات لمتجرك",
+      "PLACEHOLDER": "اسم التصنيف",
+      "SUBMIT": "انشأ التصنيف"
    }
 }
