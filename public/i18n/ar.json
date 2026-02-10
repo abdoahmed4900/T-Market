@@ -151,7 +151,7 @@
       "GO_BACK_IMAGE": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh_QhTQblCAI3wbzPvwEUDo7p7qIKlK0iCmA&s",
       "CREATE_NEW_CATEGORY_TITLE": "اضف تصنيف جديد",
       "CREATE_NEW_CATEGORY_SUBTITLE": "اضف تصنيف جديد للمنتجات لمتجرك",
-      "PLACEHOLDER": "اسم التصنيف",
+      "CREATE_NEW_CATEGORY_PLACEHOLDER": "اسم التصنيف",
       "SUBMIT": "انشأ التصنيف"
    }
 }

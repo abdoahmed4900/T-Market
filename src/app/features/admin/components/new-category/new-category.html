@@ -1,13 +1,11 @@
-<div class="flex flex-col gap-5">
-    <header class="flex flex-col gap-4">
-        <button type="button" (click)="goBack()"> <fa-icon [icon]="isLanguageEnglish() ? 'arrow-left' : 'arrow-right'"></fa-icon> {{'NEW_CATEGORY.GO_BACK' | translate}}</button>
-        <h2 class="text-[16px] font-bold">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_TITLE' | translate}}</h2>
-        <p class="text-[14px]">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_SUBTITLE' | translate}}</p>
+<main class="flex flex-col gap-10 w-full mt-10">
+    <header class="flex flex-col gap-10">
+        <button class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4" type="button" (click)="goBack()"> <fa-icon [icon]="icon()"></fa-icon> {{'NEW_CATEGORY.GO_BACK' | translate}}</button>
+        <h2 class="text-[20px] font-bold">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_TITLE' | translate}}</h2>
+        <p class="text-[17px]">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_SUBTITLE' | translate}}</p>
     </header>
-    <main>
-        <form (submit)="createCategory()">
-            <input type="text" [(ngModel)]="category" [placeholder]="'NEW_CATEGORY.CREATE_NEW_CATEGORY_PLACEHOLDER' | translate"/>
-            <button type="submit" class="hover:bg-[var(--primary-color)]-700 bg-[var(--primary-color)] p-4">{{'NEW_CATEGORY.SUBMIT' | translate}}</button>
-        </form>
-    </main>
-</div>
+    <form (submit)="createCategory()" class="flex-grow flex flex-col gap-5 border-1 rounded-xl p-10">
+        <input id="category" type="text" class="p-4 rounded-xl border-1" [(ngModel)]="category" [placeholder]="'NEW_CATEGORY.CREATE_NEW_CATEGORY_PLACEHOLDER' | translate"/>
+        <button type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'NEW_CATEGORY.SUBMIT' | translate}}</button>
+    </form>
+</main>

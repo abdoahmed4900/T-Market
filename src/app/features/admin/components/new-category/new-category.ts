@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AdminService } from '../../services/admin.service';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-new-category',
-  imports: [TranslatePipe, FormsModule, FaIconComponent],
+  imports: [TranslatePipe, FormsModule, FaIconComponent,],
   templateUrl: './new-category.html',
   styleUrl: './new-category.scss',
 })
@@ -21,6 +22,7 @@ export class NewCategory {
   isLanguageEnglish = computed(() => {
     return localStorage.getItem('language') == 'en';
   })
+  icon = signal(this.isLanguageEnglish() ? faArrowLeft : faArrowRight)
   goBack(){
     this.router.navigate(['/'],{
       replaceUrl: true

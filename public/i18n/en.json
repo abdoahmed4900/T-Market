@@ -151,7 +151,7 @@
       "GO_BACK_IMAGE": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-afsbFrwOIw0ZB7MtE9ukKmOCjRWJicfMYQ&s",
       "CREATE_NEW_CATEGORY_TITLE": "Create New Category",
       "CREATE_NEW_CATEGORY_SUBTITLE": "Add a new product category to your store",
-      "PLACEHOLDER": "Category Name",
+      "CREATE_NEW_CATEGORY_PLACEHOLDER": "Category Name",
       "SUBMIT": "Create Category"
    }
 }

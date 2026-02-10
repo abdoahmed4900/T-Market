@@ -7,7 +7,7 @@
          </button>
          <nav class="flex px-10 flex-col items-center gap-7">
          @for (item of menu(); track $index) {
-           <a (click)="goToRoute(item.path)">
+           <a (click)="goToRoute(item.path)" class="cursor-pointer">
               {{ item.label | translate}}
             </a>
          }
