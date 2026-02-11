@@ -19,6 +19,7 @@ export class AdminService{
     adminFirestore = inject(AdminFirestoreService);
     userCollectionRef = collection(this.fireStore,fireStoreCollections.users);
     categoriesCollectionRef = collection(this.fireStore,fireStoreCollections.categories);
+    brandsCollectionRef = collection(this.fireStore,fireStoreCollections.brands);
 
     getAllOrders(){
         return this.ordersService.getAllOrders();
@@ -98,6 +99,33 @@ export class AdminService{
               }
         
               return cats;
+           } catch (error) {
+              throw error;
+           }
+    }
+    async addNewBrand(brand: string): Promise<string[]> {
+        try {
+              const q = query(
+                this.categoriesCollectionRef,
+                limit(1)
+              );
+
+              const snap = await getDocs(q);
+    
+              if (snap.empty) {
+                throw new Error('No brand document found');
+              }
+
+              const docSnap = snap.docs[0];
+              const data = docSnap.data();
+
+              const brands: string[] = data['Brands'] ?? [];
+
+              if(!Object.values(brands).includes(brand)){
+                  await updateDoc(docSnap.ref,{ Brands: [...Object.values(brands),brand]})
+              }
+        
+              return brands;
            } catch (error) {
               throw error;
            }

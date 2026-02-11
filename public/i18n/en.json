@@ -5,6 +5,7 @@
    "PREVIOUS": "Previous",
    "NEXT": "Next",
    "ALL": "All",
+   "GO_BACK": "Go Back",
    "AUTH": {
       "LOGIN": {
           "BUTTON": "Login",
@@ -137,6 +138,8 @@
       "ADD_NEW_USER": "Add New User",
       "ADD_NEW_PRODUCT": "Add New Product",
       "ADD_NEW_CATEGORY": "Add New Category",
+      "ADD_NEW_BRAND": "Add New Brand",
+      "UPDATE_PRODUCT": "Update Product",
       "VIEW_ALL_USERS": "View All Users",
       "VIEW_ALL_PRODUCTS": "View All Products",
       "VIEW_YOUR_PRODUCTS": "View Your Products"
@@ -147,11 +150,28 @@
       "SUBSCRIBE": "Subscribe"
    },
    "NEW_CATEGORY": {
-      "GO_BACK": "Go Back",
-      "GO_BACK_IMAGE": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-afsbFrwOIw0ZB7MtE9ukKmOCjRWJicfMYQ&s",
       "CREATE_NEW_CATEGORY_TITLE": "Create New Category",
       "CREATE_NEW_CATEGORY_SUBTITLE": "Add a new product category to your store",
       "CREATE_NEW_CATEGORY_PLACEHOLDER": "Category Name",
       "SUBMIT": "Create Category"
+   },
+    "NEW_BRAND": {
+      "CREATE_NEW_BRAND_TITLE": "Create New Brand",
+      "CREATE_NEW_BRAND_SUBTITLE": "Add a new brand to your store",
+      "CREATE_NEW_BRAND_PLACEHOLDER": "Brand Name",
+      "SUBMIT": "Create Brand"
+   },
+   "NEW_PRODUCT": {
+      "CREATE_NEW_PRODUCT_TITLE": "Create New Product",
+      "CREATE_NEW_PRODUCT_SUBTITLE": "Add a new product to your store",
+      "CREATE_NEW_PRODUCT_NAME_PLACEHOLDER": "Enter Product Name",
+      "CREATE_NEW_PRODUCT_DESCRIPTION_PLACEHOLDER": "Enter Product Description",
+      "CREATE_NEW_PRODUCT_PRICE_PLACEHOLDER": "Enter Product Price",
+      "CREATE_NEW_PRODUCT_STOCK_PLACEHOLDER": "Enter Product Stock",
+      "NAME_FIELD": "Product Name",
+      "PRICE_FIELD": "Product Price",
+      "DESCRIPTION_FIELD": "Product Description",
+      "STOCK_FIELD": "Product Stock",
+      "SUBMIT": "Create Product"
    }
 }

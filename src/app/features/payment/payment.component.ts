@@ -15,11 +15,12 @@ import { stripePublicKey } from '../../../environments/environment';
 
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Buyer } from '../auth/user';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmailService } from '../../core/services/email.service';
 import { Product } from '../../core/interfaces/product';
 import { Order } from '../../core/interfaces/order';
 import { StripeService } from './payment.service';
+import { numericLengthValidator } from '../../core/utils';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -63,21 +64,12 @@ export class PaymentComponent {
        name: ['',[Validators.required,Validators.minLength(3)]],
        city: ['',[Validators.required,Validators.minLength(3)]],
        street : ['',[Validators.required,Validators.minLength(3)]],
-       zipCode : ['',[Validators.required,this.numericLengthValidator(5)]],
+       zipCode : ['',[Validators.required,numericLengthValidator(5)]],
        cardNumber: [false,[Validators.requiredTrue]],
        cardExpiry: [false,[Validators.requiredTrue],],
        cardCvc: [false,[Validators.requiredTrue]],
      }
     );
-
-    numericLengthValidator(minLength: number) {
-       return (control: AbstractControl) => {
-       const value = control.value?.toString() || '';
-       console.log(`value.length < minLength : ${value.length < minLength}`);
-       
-       return value.length < minLength && value.length != 0 ? { minlength: true } : null;
-      };
-    }
 
    constructor() {
     const elementRef = inject(ElementRef);

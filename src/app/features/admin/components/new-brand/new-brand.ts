@@ -1,20 +1,20 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
 import { AdminService } from '../../services/admin.service';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { Router } from '@angular/router';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-new-category',
-  imports: [TranslatePipe, FormsModule, FaIconComponent,],
-  templateUrl: './new-category.html',
-  styleUrl: './new-category.scss',
+  selector: 'app-new-brand',
+  imports: [TranslatePipe, FaIconComponent,FormsModule],
+  templateUrl: './new-brand.html',
+  styleUrl: './new-brand.scss',
 })
-export class NewCategory {
+export class NewBrand {
   router = inject(Router);
-  category = signal("");
+  brand = signal("");
   adminService = inject(AdminService);
   isAdmin = computed(() => {
     return localStorage.getItem('role') == 'admin'
@@ -29,9 +29,9 @@ export class NewCategory {
     })
   }
 
-  async createCategory(){
-    if(this.isAdmin() && this.category().length > 3){
-      await this.adminService.addNewCategory(this.category())
+  async createBrand(){
+    if(this.isAdmin() && this.brand().length > 3){
+      await this.adminService.addNewBrand(this.brand())
     }
   }
 }

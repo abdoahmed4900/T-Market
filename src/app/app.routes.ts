@@ -54,13 +54,23 @@ export const routes: Routes = [
   },
   {
     path: 'new-product',
-    loadComponent: () => import('./features/new-product/new-product')
+    loadComponent: () => import('./features/home-component/seller-home-component/components/new-product/new-product')
       .then(m => m.NewProduct)
+  },
+  {
+    path: 'update-product',
+    loadComponent: () => import('./features/home-component/seller-home-component/components/update-product/update-product')
+      .then(m => m.UpdateProduct)
   },
   {
     path: 'new-category',
     loadComponent: () => import('./features/admin/components/new-category/new-category')
       .then(m => m.NewCategory)
+  },
+  {
+    path: 'new-brand',
+    loadComponent: () => import('./features/admin/components/new-brand/new-brand')
+      .then(m => m.NewBrand)
   },
 
     // {path: 'dashboard',},

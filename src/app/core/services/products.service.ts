@@ -22,6 +22,7 @@ export class ProductsService {
     products= new Observable<Product[]>();
     productsCollectionRef = collection(inject(Firestore),fireStoreCollections.products);
     categoriesCollectionRef = collection(inject(Firestore),fireStoreCollections.categories);
+    brandsCollectionRef = collection(inject(Firestore),fireStoreCollections.brands);
     productsData = collectionData(this.productsCollectionRef);
     categories!: string[];
 
@@ -44,6 +45,13 @@ export class ProductsService {
         return collectionData(query(this.categoriesCollectionRef)).pipe(map(e => {
           let cats :string[] = Object.values(e[0]['Categories']);
           return cats;
+        })) as Observable<string[]>;
+
+    }
+    readAllBrands(){
+        return collectionData(query(this.brandsCollectionRef)).pipe(map(e => {
+          let brands :string[] = Object.values(e[0]['Brands']);
+          return brands;
         })) as Observable<string[]>;
 
     }

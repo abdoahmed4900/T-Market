@@ -10,11 +10,12 @@ import { ProductsService } from '../../../core/services/products.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Sidebar } from "../../../shared/sidebar/sidebar";
+import { RouterLink } from "@angular/router";
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-seller-home-component',
-  imports: [AsyncPipe, CurrencyPipe, Loader, TranslatePipe, Sidebar],
+  imports: [AsyncPipe, CurrencyPipe, Loader, TranslatePipe, Sidebar, RouterLink],
   templateUrl: './seller-home-component.html',
   styleUrl: './seller-home-component.scss'
 })

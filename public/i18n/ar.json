@@ -5,6 +5,7 @@
    "PREVIOUS": "السابق",
    "NEXT": "التالي",
    "ALL": "الكل",
+   "GO_BACK": "العودة للخلف",
    "AUTH": {  
       "LOGIN": {
           "BUTTON": "تسجيل الدخول",
@@ -137,6 +138,8 @@
       "ADD_NEW_USER": "اضافة مستخدم جديد",
       "ADD_NEW_PRODUCT": "اضافة منتج جديد",
       "ADD_NEW_CATEGORY": "اضافة تصنيف جديد",
+      "ADD_NEW_BRAND": "اضافة علامة تجارية",
+      "UPDATE_PRODUCT": "تحديث المنتج",
       "VIEW_ALL_USERS": "اظهار جميع المستخدمين",
       "VIEW_ALL_PRODUCTS": "اظهار جميع المنتجات",
       "VIEW_YOUR_PRODUCTS": "اظهار منتجاتك"
@@ -147,11 +150,28 @@
       "SUBSCRIBE": "اشترك"
    },
     "NEW_CATEGORY": {
-      "GO_BACK": "العودة للخلف",
-      "GO_BACK_IMAGE": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh_QhTQblCAI3wbzPvwEUDo7p7qIKlK0iCmA&s",
       "CREATE_NEW_CATEGORY_TITLE": "اضف تصنيف جديد",
       "CREATE_NEW_CATEGORY_SUBTITLE": "اضف تصنيف جديد للمنتجات لمتجرك",
       "CREATE_NEW_CATEGORY_PLACEHOLDER": "اسم التصنيف",
       "SUBMIT": "انشأ التصنيف"
+   },
+    "NEW_BRAND": {
+      "CREATE_NEW_BRAND_TITLE": "اضف علامة تجارية جديدة",
+      "CREATE_NEW_BRAND_SUBTITLE": "اضف علامة تجارية جديدة لمتجرك",
+      "CREATE_NEW_BRAND_PLACEHOLDER": "اسم العلامة التجارية",
+      "SUBMIT": "انشأ العلامة التجارية"
+   },
+    "NEW_PRODUCT": {
+      "CREATE_NEW_PRODUCT_TITLE": "اضافة منتج جديد",
+      "CREATE_NEW_PRODUCT_SUBTITLE": "اضف منتج جديد لمتجرك",
+      "CREATE_NEW_PRODUCT_NAME_PLACEHOLDER": "اسم المنتج",
+      "CREATE_NEW_PRODUCT_DESCRIPTION_PLACEHOLDER": "وصف المنتج",
+      "CREATE_NEW_PRODUCT_PRICE_PLACEHOLDER": "سعر المنتج",
+      "CREATE_NEW_PRODUCT_STOCK_PLACEHOLDER": "كمية المنتج حاليا",
+      "NAME_FIELD": "اسم المنتج",
+      "PRICE_FIELD": "سعر المنتج",
+      "STOCK_FIELD": "كمية المنتج",
+      "DESCRIPTION_FIELD": "وصف المنتج",
+      "SUBMIT": "اضف المنتج"
    }
 }

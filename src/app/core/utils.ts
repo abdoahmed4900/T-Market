@@ -1,3 +1,5 @@
+import { AbstractControl } from "@angular/forms";
+
 export let statusChartOptions : any = (pending : number,shipped: number,delivered : number,cancelled : number) => {
     return {
         type: 'bar',
@@ -105,3 +107,12 @@ export let statusChartOptions : any = (pending : number,shipped: number,delivere
     }
     }
   };
+
+  export function numericLengthValidator(minLength: number) {
+       return (control: AbstractControl) => {
+       const value = control.value?.toString() || '';
+       console.log(`value.length < minLength : ${value.length < minLength}`);
+       
+       return value.length < minLength && value.length != 0 ? { minlength: true } : null;
+      };
+  }

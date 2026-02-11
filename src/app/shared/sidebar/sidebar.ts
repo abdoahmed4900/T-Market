@@ -28,6 +28,7 @@ export class Sidebar {
       admin: [
         { label: 'SIDEBAR.ADD_NEW_USER', path: '/new-user' },
         { label: 'SIDEBAR.ADD_NEW_CATEGORY', path: '/new-category' },
+        { label: 'SIDEBAR.ADD_NEW_BRAND', path: '/new-brand' },
         { label: 'SIDEBAR.VIEW_ALL_USERS', path: '/users' },
         { label: 'SIDEBAR.VIEW_ALL_PRODUCTS', path: '/view-products' },
       ],

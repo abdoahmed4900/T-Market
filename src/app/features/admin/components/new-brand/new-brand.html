@@ -1,0 +1,11 @@
+<main class="flex flex-col gap-10 w-full mt-10">
+    <header class="flex flex-col gap-10">
+        <button class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4" type="button" (click)="goBack()"> <fa-icon [icon]="icon()"></fa-icon> {{'GO_BACK' | translate}}</button>
+        <h2 class="text-[20px] font-bold">{{'NEW_BRAND.CREATE_NEW_BRAND_TITLE' | translate}}</h2>
+        <p class="text-[17px]">{{'NEW_BRAND.CREATE_NEW_BRAND_SUBTITLE' | translate}}</p>
+    </header>
+    <form (submit)="createBrand()" class="flex-grow flex flex-col gap-5 border-1 rounded-xl p-10">
+        <input id="brand" type="text" class="p-4 rounded-xl border-1" [(ngModel)]="brand" [placeholder]="'NEW_BRAND.CREATE_NEW_BRAND_PLACEHOLDER' | translate"/>
+        <button type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'NEW_BRAND.SUBMIT' | translate}}</button>
+    </form>
+</main>
