@@ -1,13 +1,13 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { getFirebaseErrorMessage } from '../../../core/methods';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { Loader } from '../../../shared/loader/loader';
+import { Loader } from '../../../shared/components/loader/loader';
 import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, query, setDoc, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';
 import { CartProduct } from '../../cart/cart.product';
@@ -75,10 +75,7 @@ export class LoginComponent implements OnInit {
         let x = collectionData(query(userRef,where('email','==',value.user.email))).subscribe(
           {
             next : async (value : any) => {
-                localStorage.setItem('role', value[0].role);
-                localStorage.setItem('isRemembered', this.rememberMe ? 'true' : 'false');
-                localStorage.setItem('token', value[0].uid);
-                localStorage.setItem('language',this.translateService.getCurrentLang())
+                this.storeImportantData(value);
                 this.auth.isLoginSubject.next(true);
                 this.auth.userRole.next(value[0].role);
                 this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(map((val) => {
@@ -101,6 +98,13 @@ export class LoginComponent implements OnInit {
       }
     });
     }
+  }
+
+  private storeImportantData(value: any) {
+    localStorage.setItem('role', value[0].role);
+    localStorage.setItem('isRemembered', this.rememberMe ? 'true' : 'false');
+    localStorage.setItem('token', value[0].uid);
+    localStorage.setItem('language', this.translateService.getCurrentLang());
   }
 
   async loginWithGoogle() {

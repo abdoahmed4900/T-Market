@@ -1,5 +1,5 @@
 @if(user | async){
-<main class="mt-5 flex flex-col gap-5">
+<main class="mt-5 flex flex-col gap-5 slideFromLeftAnimation">
     <header class="flex flex-row gap-10">
         @if (showSidebar()){
             <app-sidebar></app-sidebar>
@@ -35,7 +35,10 @@
                                   <h2 class="text-[16px]">{{'ADMIN.SOLD_ITEMS' | translate}} : {{item.soldItemsNumber}} {{'ADMIN.PIECES' | translate}}</h2>
                                   <h2 class="text-[16px]">{{'ADMIN.IN_STOCK' | translate}} : {{item.stock}} {{'ADMIN.PIECES' | translate}}</h2>
                                 </div>
-                                <button type="button" class="size-fit bg-[var(--primary-color)] hover:bg-purple-500 p-4 rounded-xl self-center"><a routerLink="/update-product">{{'SIDEBAR.UPDATE_PRODUCT' | translate}}</a></button>
+                                <section class="actions-row flex flex-row gap-4 flex-wrap">
+                                    <button type="button" class="size-fit bg-[var(--primary-color)] hover:bg-purple-500 p-4 rounded-xl self-center" [routerLink]="['/update-product/',item.id]">{{'SIDEBAR.UPDATE_PRODUCT' | translate}}</button>
+                                    <button type="button" class="size-fit bg-red-500 hover:bg-red-700 p-4 rounded-xl self-center">{{'SIDEBAR.DELETE_PRODUCT' | translate}}</button>
+                                </section>
                              </div>
                           }
                       </section>

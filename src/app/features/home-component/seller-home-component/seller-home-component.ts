@@ -1,16 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { Seller } from '../../auth/user';
-import { HomeService } from '../home.service';
+import { HomeService } from '../../../core/services/home.service';
 import { combineLatest, map, Observable, startWith, Subject, takeUntil, tap } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
-import { Loader } from "../../../shared/loader/loader";
 import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
-import { ProductsService } from '../../../core/services/products.service';
+import { ProductsService } from '../../../shared/services/products.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { RouterLink } from "@angular/router";
+import { Loader } from '../../../shared/components/loader/loader';
+import { Sidebar } from '../../../core/components/sidebar/sidebar';
 Chart.register(...registerables);
 
 @Component({

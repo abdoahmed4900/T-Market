@@ -1,15 +1,15 @@
 import { Component, ElementRef, inject, linkedSignal, OnInit, signal, ViewChild } from '@angular/core';
-import { WebsiteTitle } from "../website-title/website-title";
 import { CommonModule } from '@angular/common';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { AuthService } from '../../features/auth/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Loader } from '../loader/loader';
-import { CartService } from '../../core/services/cart.service';
 import { combineLatest, map, Subscription } from 'rxjs';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { WebsiteTitle } from '../../../shared/components/website-title/website-title';
+import { CartService } from '../../../shared/services/cart.service';
+import { Loader } from '../../../shared/components/loader/loader';
 
 @Component({
   selector: 'app-navbar',

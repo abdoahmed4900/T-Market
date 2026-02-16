@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { of } from "rxjs";
 import { SellerHomeComponent } from "./seller-home-component";
-import { HomeService } from "../home.service";
-import { ProductsService } from "../../../core/services/products.service";
+import { HomeService } from "../../../core/services/home.service";
+import { ProductsService } from "../../../shared/services/products.service";
 
 describe('BuyerHomeComponent', () => {
 

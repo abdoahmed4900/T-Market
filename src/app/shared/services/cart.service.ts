@@ -4,7 +4,7 @@ import { collection, collectionData, doc, Firestore, getDoc, query, updateDoc, w
 import { ProductsService } from "./products.service";
 import { CartProduct } from "../../features/cart/cart.product";
 import { fireStoreCollections } from "../../../environments/environment";
-import { Product } from "../interfaces/product";
+import { Product } from "../../core/interfaces/product";
 import { Buyer } from "../../features/auth/user";
 
 @Injectable({

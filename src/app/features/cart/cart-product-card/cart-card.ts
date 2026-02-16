@@ -1,8 +1,8 @@
 import { Component, inject, input, model } from '@angular/core';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { ProductsService } from '../../../core/services/products.service';
-import { CartService } from '../../../core/services/cart.service';
+import { ProductsService } from '../../../shared/services/products.service';
+import { CartService } from '../../../shared/services/cart.service';
 import { RouterLink } from "@angular/router";
 import { Product } from '../../../core/interfaces/product';
 import { TranslatePipe } from '@ngx-translate/core';

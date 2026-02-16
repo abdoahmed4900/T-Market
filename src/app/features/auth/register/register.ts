@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Buyer, Seller, User } from '../user';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validatio
 import { CommonModule } from '@angular/common';
 import { addDoc, collection, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { Loader } from '../../../shared/loader/loader';
+import { Loader } from '../../../shared/components/loader/loader';
 import { fireStoreCollections } from '../../../../environments/environment';
 import { TranslatePipe } from '@ngx-translate/core';
 

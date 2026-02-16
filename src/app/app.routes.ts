@@ -24,7 +24,7 @@ export const routes: Routes = [
   },
   {
     path: 'product/:id',
-    loadComponent: () => import('./shared/product-details/product-details')
+    loadComponent: () => import('./features/product-details/product-details')
       .then(m => m.ProductDetails)
   },
   {
@@ -58,7 +58,7 @@ export const routes: Routes = [
       .then(m => m.NewProduct)
   },
   {
-    path: 'update-product',
+    path: 'update-product/:id',
     loadComponent: () => import('./features/home-component/seller-home-component/components/update-product/update-product')
       .then(m => m.UpdateProduct)
   },

@@ -1,6 +1,6 @@
 import { Component, computed, inject, model, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { OrderService } from '../../../core/services/order.service';
+import { OrderService } from '../../../shared/services/order.service';
 import { RouterLink } from "@angular/router";
 import { Order } from '../../../core/interfaces/order';
 import { Subscription } from 'rxjs';

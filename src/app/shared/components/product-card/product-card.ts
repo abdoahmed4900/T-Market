@@ -3,9 +3,9 @@ import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CartService } from '../../core/services/cart.service';
-import { Product } from '../../core/interfaces/product';
-import { WishlistService } from '../../features/wishlist/wishlist.service';
+import { CartService } from '../../services/cart.service';
+import { Product } from '../../../core/interfaces/product';
+import { WishlistService } from '../../../features/wishlist/wishlist.service';
 import { Subscription } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 

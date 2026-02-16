@@ -60,6 +60,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: rgba(255, 255, 255, 0) !important;
   border-radius: 0 !important;
 }
+.mat-mdc-select-trigger {
+  padding: 4px 6px !important;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.mat-mdc-select-value {
+  padding-inline-start: 4px;
+  color: var(--primary-text-color);
+}
+
+.mat-mdc-select {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+}
 
 label{
     color: var(--primary-text-color);

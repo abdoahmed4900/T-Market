@@ -6,6 +6,17 @@
    "NEXT": "التالي",
    "ALL": "الكل",
    "GO_BACK": "العودة للخلف",
+   "NAME_FIELD": "اسم المنتج",
+   "PRICE_FIELD": "سعر المنتج",
+   "STOCK_FIELD": "كمية المنتج",
+   "DESCRIPTION_FIELD": "وصف المنتج",
+   "NAME_PLACEHOLDER": "اسم المنتج",
+   "DESCRIPTION_PLACEHOLDER": "وصف المنتج",
+   "PRICE_PLACEHOLDER": "سعر المنتج",
+   "STOCK_PLACEHOLDER": "كمية المنتج حاليا",
+   "CATEGORY_FIELD": "التصنيف",
+   "BRAND_FIELD": "العلامة التجارية",
+   "IMAGES_FIELD": "صور المنتج",
    "AUTH": {  
       "LOGIN": {
           "BUTTON": "تسجيل الدخول",
@@ -140,6 +151,7 @@
       "ADD_NEW_CATEGORY": "اضافة تصنيف جديد",
       "ADD_NEW_BRAND": "اضافة علامة تجارية",
       "UPDATE_PRODUCT": "تحديث المنتج",
+      "DELETE_PRODUCT": "حذف المنتج",
       "VIEW_ALL_USERS": "اظهار جميع المستخدمين",
       "VIEW_ALL_PRODUCTS": "اظهار جميع المنتجات",
       "VIEW_YOUR_PRODUCTS": "اظهار منتجاتك"
@@ -162,16 +174,12 @@
       "SUBMIT": "انشأ العلامة التجارية"
    },
     "NEW_PRODUCT": {
-      "CREATE_NEW_PRODUCT_TITLE": "اضافة منتج جديد",
-      "CREATE_NEW_PRODUCT_SUBTITLE": "اضف منتج جديد لمتجرك",
-      "CREATE_NEW_PRODUCT_NAME_PLACEHOLDER": "اسم المنتج",
-      "CREATE_NEW_PRODUCT_DESCRIPTION_PLACEHOLDER": "وصف المنتج",
-      "CREATE_NEW_PRODUCT_PRICE_PLACEHOLDER": "سعر المنتج",
-      "CREATE_NEW_PRODUCT_STOCK_PLACEHOLDER": "كمية المنتج حاليا",
-      "NAME_FIELD": "اسم المنتج",
-      "PRICE_FIELD": "سعر المنتج",
-      "STOCK_FIELD": "كمية المنتج",
-      "DESCRIPTION_FIELD": "وصف المنتج",
+      "TITLE": "اضافة منتج جديد",
+      "SUBTITLE": "اضف منتج جديد لمتجرك",
       "SUBMIT": "اضف المنتج"
+   },
+   "UPDATE_PRODUCT": {
+      "TITLE": "حدث بيانات المنتج",
+      "SUBMIT": "حدث المنتج"
    }
 }

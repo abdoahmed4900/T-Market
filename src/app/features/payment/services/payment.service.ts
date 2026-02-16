@@ -1,13 +1,13 @@
-import { fireStoreCollections } from './../../../environments/environment';
+import { fireStoreCollections } from '../../../../environments/environment';
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PaymentIntentResult, Stripe, StripeCardNumberElement } from '@stripe/stripe-js';
 import { firstValueFrom } from 'rxjs';
 import { addDoc, collection, doc, getDoc } from '@angular/fire/firestore';
-import { CartService } from '../../core/services/cart.service';
-import { Buyer } from '../auth/user';
+import { CartService } from '../../../shared/services/cart.service';
+import { Buyer } from '../../auth/user';
 import { FormGroup } from '@angular/forms';
-import { Order } from '../../core/interfaces/order';
+import { Order } from '../../../core/interfaces/order';
 import { updateDoc } from 'firebase/firestore';
 
 @Injectable({ providedIn: 'root' })

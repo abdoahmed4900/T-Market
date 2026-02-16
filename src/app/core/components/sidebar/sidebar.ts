@@ -1,7 +1,7 @@
 import { Component, inject, linkedSignal, signal } from '@angular/core';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from '../../features/auth/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { map, Subscription } from 'rxjs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';

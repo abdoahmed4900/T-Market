@@ -1,7 +1,7 @@
 @if (product | async) {
 <main class="grid align md:grid-cols-2 gap-8 grid-cols-1 my-7 animate-slideFromTop">
     <div class="img-slider relative h-[350px] md:h-full">
-        <img class="rounded-xl w-full h-full animate-slideFromTop" [src]="(product | async)!.imageUrls[currentImageIndex]">
+        <img class="rounded-xl w-full h-full animate-slideFromTop" [src]="(product | async)!.imageUrls![currentImageIndex]">
         <button class="absolute md:top-50 top-40 translate-y-[-50] start-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="prevImage()" [disabled]="currentImageIndex == 0" aria-roledescription="slide-to-previous-image"> ← </button>
         <button class="absolute md:top-50 top-40 translate-y-[-50] end-2 rounded-3xl p-2 bg-[var(--main-bg-color)] animate-slideFromTop" (click)="nextImage()" [disabled]="currentImageIndex ==  imagesNumber - 1" aria-roledescription="slide-to-next-image"> → </button>
     </div>

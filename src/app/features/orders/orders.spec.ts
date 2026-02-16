@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Orders } from "./orders";
-import { OrderService } from "../../core/services/order.service";
+import { OrderService } from "../../shared/services/order.service";
 import { of } from "rxjs";
 import { provideRouter } from "@angular/router";
 

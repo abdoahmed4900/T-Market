@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ProductsService } from "../../../core/services/products.service";
+import { ProductsService } from "../../../shared/services/products.service";
 import { BuyerHomeComponent } from "./home";
 import { of } from "rxjs";
 

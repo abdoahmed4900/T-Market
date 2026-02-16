@@ -1,11 +1,11 @@
 import { Component, inject, model, signal } from '@angular/core';
-import { OrderService } from '../../core/services/order.service';
+import { OrderService } from '../../shared/services/order.service';
 import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { OrderItem } from "./order-item/order-item";
 import { Order } from '../../core/interfaces/order';
 import { FormsModule } from '@angular/forms';
-import { Loader } from "../../shared/loader/loader";
+import { Loader } from "../../shared/components/loader/loader";
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

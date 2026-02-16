@@ -3,15 +3,15 @@ import { Chart, registerables } from 'chart.js';
 import { combineLatest, Observable, startWith, Subject, Subscription, takeUntil } from 'rxjs';
 import { Order } from '../../core/interfaces/order';
 import { AdminService } from './services/admin.service';
-import { Loader } from "../../shared/loader/loader";
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Admin } from '../auth/user';
 import { Product } from '../../core/interfaces/product';
 import { pieChartOptions, statusChartOptions } from '../../core/utils';
-import { ChartFactory } from '../../core/chart.factory';
+import { ChartFactory } from '../../shared/services/chart.factory';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Sidebar } from "../../shared/sidebar/sidebar";
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { Loader } from '../../shared/components/loader/loader';
+import { Sidebar } from '../../core/components/sidebar/sidebar';
 Chart.register(...registerables);
 
 

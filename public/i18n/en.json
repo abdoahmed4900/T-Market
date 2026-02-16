@@ -6,6 +6,17 @@
    "NEXT": "Next",
    "ALL": "All",
    "GO_BACK": "Go Back",
+   "NAME_PLACEHOLDER": "Enter Product Name",
+   "DESCRIPTION_PLACEHOLDER": "Enter Product Description",
+   "PRICE_PLACEHOLDER": "Enter Product Price",
+   "STOCK_PLACEHOLDER": "Enter Product Stock",
+   "NAME_FIELD": "Name",
+   "PRICE_FIELD": "Price",
+   "DESCRIPTION_FIELD": "Description",
+   "STOCK_FIELD": "Stock",
+   "CATEGORY_FIELD": "Category",
+   "BRAND_FIELD": "Brand",
+   "IMAGES_FIELD": "Product Images",
    "AUTH": {
       "LOGIN": {
           "BUTTON": "Login",
@@ -140,6 +151,7 @@
       "ADD_NEW_CATEGORY": "Add New Category",
       "ADD_NEW_BRAND": "Add New Brand",
       "UPDATE_PRODUCT": "Update Product",
+      "DELETE_PRODUCT": "Delete Product",
       "VIEW_ALL_USERS": "View All Users",
       "VIEW_ALL_PRODUCTS": "View All Products",
       "VIEW_YOUR_PRODUCTS": "View Your Products"
@@ -162,16 +174,12 @@
       "SUBMIT": "Create Brand"
    },
    "NEW_PRODUCT": {
-      "CREATE_NEW_PRODUCT_TITLE": "Create New Product",
-      "CREATE_NEW_PRODUCT_SUBTITLE": "Add a new product to your store",
-      "CREATE_NEW_PRODUCT_NAME_PLACEHOLDER": "Enter Product Name",
-      "CREATE_NEW_PRODUCT_DESCRIPTION_PLACEHOLDER": "Enter Product Description",
-      "CREATE_NEW_PRODUCT_PRICE_PLACEHOLDER": "Enter Product Price",
-      "CREATE_NEW_PRODUCT_STOCK_PLACEHOLDER": "Enter Product Stock",
-      "NAME_FIELD": "Product Name",
-      "PRICE_FIELD": "Product Price",
-      "DESCRIPTION_FIELD": "Product Description",
-      "STOCK_FIELD": "Product Stock",
+      "TITLE": "Create New Product",
+      "SUBTITLE": "Add a new product to your store",
       "SUBMIT": "Create Product"
+   },
+   "UPDATE_PRODUCT": {
+      "TITLE": "Update Product",
+      "SUBMIT": "Update Product"
    }
 }

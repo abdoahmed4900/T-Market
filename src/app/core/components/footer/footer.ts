@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { WebsiteTitle } from "../website-title/website-title";
 import { TranslatePipe } from '@ngx-translate/core';
+import { WebsiteTitle } from '../../../shared/components/website-title/website-title';
 
 @Component({
   selector: 'app-footer',

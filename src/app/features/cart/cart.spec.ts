@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { CartComponent } from "./cart";
-import { CartService } from "../../core/services/cart.service";
+import { CartService } from "../../shared/services/cart.service";
 import { BehaviorSubject, of } from "rxjs";
 import { provideRouter } from "@angular/router";
 

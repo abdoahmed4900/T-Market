@@ -9,17 +9,17 @@ import {
   StripeCardCvcElement,
 } from '@stripe/stripe-js';
 import { Router } from '@angular/router';
-import { Loader } from '../../shared/loader/loader';
-import { CartService } from '../../core/services/cart.service';
+import { Loader } from '../../shared/components/loader/loader';
+import { CartService } from '../../shared/services/cart.service';
 import { stripePublicKey } from '../../../environments/environment';
 
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Buyer } from '../auth/user';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { EmailService } from '../../core/services/email.service';
+import { EmailService } from './services/email.service';
 import { Product } from '../../core/interfaces/product';
 import { Order } from '../../core/interfaces/order';
-import { StripeService } from './payment.service';
+import { StripeService } from './services/payment.service';
 import { numericLengthValidator } from '../../core/utils';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 

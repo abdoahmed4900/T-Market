@@ -13,8 +13,8 @@ import {
 import { fireStoreCollections } from "../../../environments/environment";
 import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
 import { Buyer, Seller } from "../../features/auth/user";
-import { Order } from "../interfaces/order";
-import { Product } from "../interfaces/product";
+import { Order } from "../../core/interfaces/order";
+import { Product } from "../../core/interfaces/product";
 
 @Injectable({providedIn: 'root'})
 export class OrderService {

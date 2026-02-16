@@ -1,38 +1,56 @@
-<main class="flex flex-col gap-10 w-full mt-10">
+<main class="flex flex-col gap-10 w-full mt-10 slideFromLeftAnimation">
     <header class="flex flex-col gap-10">
         <button class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4" type="button" (click)="goBack()"> <fa-icon [icon]="icon()"></fa-icon> {{'GO_BACK' | translate}}</button>
-        <h2 class="text-[20px] font-bold">{{'NEW_PRODUCT.CREATE_NEW_PRODUCT_TITLE' | translate}}</h2>
-        <p class="text-[17px]">{{'NEW_PRODUCT.CREATE_NEW_PRODUCT_SUBTITLE' | translate}}</p>
+        <h2 class="text-[20px] font-bold">{{'UPDATE_PRODUCT.TITLE' | translate}}</h2>
     </header>
-    <form class="flex-grow flex flex-col gap-5 border-1 rounded-xl p-10" [formGroup]="productFormGroup">
-        <input id="name"  type="text" class="p-4 rounded-xl border-1" formControlName="name" [placeholder]="'NEW_PRODUCT.CREATE_NEW_PRODUCT_NAME_PLACEHOLDER' | translate" value="{{(product | async)?.name}}"/>
+    @if (isLoaded()) {
+        <form class="flex-grow flex flex-col gap-5 border-1 rounded-xl p-10" [formGroup]="productFormGroup" (ngSubmit)="updateProduct()">
+        <input id="name"  type="text" class="p-4 rounded-xl border-1" formControlName="name" [placeholder]="'NAME_PLACEHOLDER' | translate"/>
         @if(productFormGroup.get('name')?.hasError('required') && productFormGroup.get('name')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'NEW_PRODUCT.NAME_FIELD' | translate} }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'NAME_FIELD' | translate} }}.</span>
         }
         @if(productFormGroup.get('name')?.hasError('minlength') && productFormGroup.get('name')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'NEW_PRODUCT.NAME_FIELD'  | translate,length: 2} }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'NAME_FIELD'  | translate,length: 2} }}.</span>
         }
-        <input id="description"  type="text" class="p-4 rounded-xl border-1" formControlName="description" [placeholder]="'NEW_PRODUCT.CREATE_NEW_PRODUCT_DESCRIPTION_PLACEHOLDER' | translate"/>
+        <input id="description"  type="text" class="p-4 rounded-xl border-1" formControlName="description" [placeholder]="'DESCRIPTION_PLACEHOLDER' | translate" />
         @if(productFormGroup.get('description')?.hasError('required') && productFormGroup.get('description')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'NEW_PRODUCT.DESCRIPTION_FIELD' | translate} }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'DESCRIPTION_FIELD' | translate} }}.</span>
         }
         @if(productFormGroup.get('description')?.hasError('minlength') && productFormGroup.get('description')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'NEW_PRODUCT.DESCRIPTION_FIELD'  | translate,length: 50} }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'DESCRIPTION_FIELD'  | translate,length: 50} }}.</span>
         }
-        <input id="price" type="number" class="p-4 rounded-xl border-1" formControlName="price" [placeholder]="'NEW_PRODUCT.CREATE_NEW_PRODUCT_PRICE_PLACEHOLDER' | translate"/>
+        <input id="price" type="number" class="p-4 rounded-xl border-1" formControlName="price" [placeholder]="'PRICE_PLACEHOLDER' | translate"/>
         @if(productFormGroup.get('price')?.hasError('required') && productFormGroup.get('price')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'NEW_PRODUCT.PRICE_FIELD' | translate} }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PRICE_FIELD' | translate} }}.</span>
         }
         @if(productFormGroup.get('price')?.hasError('minlength') && productFormGroup.get('price')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'NEW_PRODUCT.PRICE_FIELD'  | translate ,length: 2}  }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'PRICE_FIELD'  | translate ,length: 2}  }}.</span>
         }
-        <input id="stock" type="number" class="p-4 rounded-xl border-1"  formControlName="stock" [placeholder]="'NEW_PRODUCT.CREATE_NEW_PRODUCT_STOCK_PLACEHOLDER' | translate"/>
+        <input id="stock" type="number" class="p-4 rounded-xl border-1"  formControlName="stock" [placeholder]="'STOCK_PLACEHOLDER' | translate" />
         @if(productFormGroup.get('stock')?.hasError('required') && productFormGroup.get('stock')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'NEW_PRODUCT.STOCK_FIELD' | translate} }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'STOCK_FIELD' | translate} }}.</span>
         }
         @if(productFormGroup.get('stock')?.hasError('minlength') && productFormGroup.get('stock')?.touched){
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'NEW_PRODUCT.STOCK_FIELD' | translate ,length: 2} }}.</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'STOCK_FIELD' | translate ,length: 2} }}.</span>
         }
-        <button [disabled]="productFormGroup.invalid" type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'NEW_PRODUCT.SUBMIT' | translate}}</button>
-    </form>
+        <input type="file" accept="image/*" id="files" multiple (change)="addImages($event)">
+        <section class="images-section flex flex-wrap flex-row gap-5">
+             <section class="product-images-section flex flex-row flex-wrap gap-5">
+               @for (item of productImagesUrls; track $index) {
+                 <img [src]="item" alt="image" class="w-[150px] h-[150px] rounded-xl">
+                }
+             </section>
+             @if (imagePreviews().length > 0) {
+                <section class="added-images-section flex flex-row flex-wrap gap-5">
+                  @for (item of imagePreviews(); track $index) {
+                    <img [src]="item" alt="image" class="w-[150px] h-[150px] rounded-xl">
+                  }
+                </section>
+             }
+        </section>
+        <button [disabled]="productFormGroup.invalid" type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'UPDATE_PRODUCT.SUBMIT' | translate}}</button>
+      </form>
+    }@else {
+        <app-loader></app-loader>
+    }
 </main>

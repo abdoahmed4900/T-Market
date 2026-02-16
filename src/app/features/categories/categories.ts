@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
-import { ProductsService } from '../../core/services/products.service';
-import { Loader } from "../../shared/loader/loader";
-import { ProductCard } from "../../shared/product-card/product-card";
+import { ProductsService } from '../../shared/services/products.service';
+import { Loader } from "../../shared/components/loader/loader";
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
-import { PaginationService } from '../../core/services/pagination.service';
+import { PaginationService } from '../../shared/services/pagination.service';
 import { FormsModule } from "@angular/forms";
 import { map, Observable } from 'rxjs';
 import { Product } from '../../core/interfaces/product';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ProductCard } from '../../shared/components/product-card/product-card';
 
 
 @Component({

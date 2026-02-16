@@ -1,8 +1,8 @@
-import { CartService } from "../../core/services/cart.service";
+import { CartService } from "../../shared/services/cart.service";
 import { PaymentComponent } from "./payment.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { StripeService } from "./payment.service";
-import { EmailService } from "../../core/services/email.service";
+import { StripeService } from "./services/payment.service";
+import { EmailService } from "./services/email.service";
 
 describe('PaymentComponent',() => {
     let component: PaymentComponent;

@@ -1,15 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductsService } from '../../core/services/products.service';
 import { CommonModule } from '@angular/common';
-import { Loader } from "../loader/loader";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ReactiveFormsModule } from '@angular/forms';
 import { map, Observable, tap } from 'rxjs';
-import { CartService } from '../../core/services/cart.service';
-import { Product } from '../../core/interfaces/product';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Loader } from '../../shared/components/loader/loader';
+import { Product } from '../../core/interfaces/product';
+import { ProductsService } from '../../shared/services/products.service';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -54,7 +54,7 @@ export class ProductDetails {
               console.log(this.isProductLoaded());
               return p;
             }),
-            tap((p) => {this.imagesNumber = p.imageUrls.length;this.price = p.price; this.id = p.id!;this.name= p.name;})
+            tap((p) => {this.imagesNumber = p.imageUrls!.length;this.price = p.price; this.id = p.id!;this.name= p.name;})
           );
       },
     });

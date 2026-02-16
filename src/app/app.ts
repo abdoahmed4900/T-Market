@@ -1,15 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { Navbar } from "./shared/navbar/navbar";
-import { Footer } from "./shared/footer/footer";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { CartService } from './core/services/cart.service';
+import { CartService } from './shared/services/cart.service';
 import { Subject, Subscription, combineLatest } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-import { AuthService } from './features/auth/auth.service';
+import { AuthService } from './core/services/auth.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { AdminService } from './features/admin/services/admin.service';
+import { Navbar } from './core/components/navbar/navbar';
+import { Footer } from './core/components/footer/footer';
 // import { TranslateModule } from '@ngx-translate/core';
 
 

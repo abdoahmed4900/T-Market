@@ -1,5 +1,5 @@
 @let cartProducts = (products | async);
-<main class="flex flex-col w-full" [ngClass]="
+<main class="flex flex-col w-full slideFromLeftAnimation" [ngClass]="
   (cartProducts!.length == 0) ? 'h-full' : 'h-auto'
 ">
   @if (cartProducts) {

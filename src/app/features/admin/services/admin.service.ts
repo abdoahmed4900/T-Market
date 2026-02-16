@@ -1,6 +1,6 @@
-import { ProductsService } from '../../../core/services/products.service';
+import { ProductsService } from '../../../shared/services/products.service';
 import { inject, Injectable } from "@angular/core";
-import { OrderService } from "../../../core/services/order.service";
+import { OrderService } from "../../../shared/services/order.service";
 import { map } from 'rxjs';
 import { collection, collectionData, Firestore, query, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';

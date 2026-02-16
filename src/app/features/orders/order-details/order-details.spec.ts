@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { OrderDetails } from "./order-details";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
-import { OrderService } from "../../../core/services/order.service";
+import { OrderService } from "../../../shared/services/order.service";
 import { of } from "rxjs";
-import { ProductsService } from "../../../core/services/products.service";
+import { ProductsService } from "../../../shared/services/products.service";
 import { OrderItemCard } from "../order-item-card/order-item-card";
 
 describe('OrderDetailsComponent', () => {

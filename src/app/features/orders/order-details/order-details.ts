@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OrderService } from '../../../core/services/order.service';
+import { OrderService } from '../../../shared/services/order.service';
 import { AsyncPipe } from '@angular/common';
 import { OrderItemCard } from "../order-item-card/order-item-card";
-import { Loader } from "../../../shared/loader/loader";
+import { Loader } from "../../../shared/components/loader/loader";
 import { jsPDF } from 'jspdf';
 import { Order } from '../../../core/interfaces/order';
 import { TranslatePipe } from '@ngx-translate/core';

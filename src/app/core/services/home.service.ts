@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { collection, collectionData, Firestore, query, where } from "@angular/fire/firestore";
 import { fireStoreCollections } from "../../../environments/environment";
 import { map, shareReplay } from "rxjs";
-import { User } from "../auth/user";
+import { User } from "../../features/auth/user";
 
 @Injectable(
     {
@@ -21,9 +21,5 @@ export class HomeService{
             }),
             shareReplay(1)
         )
-    }
-
-    addNewProduct(){
-        
     }
 }

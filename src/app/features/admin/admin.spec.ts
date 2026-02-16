@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { AdminComponent } from "./admin";
-import { AuthService } from "../auth/auth.service";
-import { OrderService } from "../../core/services/order.service";
+import { AuthService } from "../../core/services/auth.service";
+import { OrderService } from "../../shared/services/order.service";
 import { of } from 'rxjs';
 import { AdminService } from "./admin.service";
 import { By } from "@angular/platform-browser";
-import { ChartFactory } from "../../core/chart.factory";
+import { ChartFactory } from "../../shared/services/chart.factory";
 
 describe('AdminComponent',() => {
     let adminComponent : AdminComponent;

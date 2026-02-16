@@ -1,11 +1,11 @@
-<main class="wishlist mt-10 flex flex-col flex-wrap w-full">
+<main class="wishlist mt-10 flex flex-col flex-wrap w-full slideFromLeftAnimation">
     @if (isListLoaded()) {
         @if (wishList().length > 0) {
          <section class="wishlist-items gap-10 w-full mt-10 flex flex-col">
                @for (item of wishList(); track item.id) {
                <div class="wishlist-card hover:translate-y-[-5px] transition duration-300 ease animate-slideFromTop items-center animate-slide border-1 rounded-xl p-6 w-full flex flex-row flex-wrap gap-5 justify-between">
                    <div class="wishlist-info flex flex-row gap-5">
-                     <img [src]="item.imageUrls[0]" class="rounded-xl w-[70px] h-[70px]" alt="product-image">
+                     <img [src]="item.imageUrls![0]" class="rounded-xl w-[70px] h-[70px]" alt="product-image">
                      <div class="wishlist-card-text flex flex-col gap-5 items-start justify-start">
                        <h3 class="text-[18px] font-bold">{{item.name}}</h3>
                        <p class="text-[16px]">{{item.price | currency}}</p>

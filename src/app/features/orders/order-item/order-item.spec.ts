@@ -1,5 +1,5 @@
 import { of } from "rxjs";
-import { OrderService } from "../../../core/services/order.service";
+import { OrderService } from "../../../shared/services/order.service";
 import { OrderItem } from "./order-item";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";

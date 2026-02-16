@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Categories } from "./categories";
 import { provideRouter } from "@angular/router";
-import { ProductsService } from "../../core/services/products.service";
+import { ProductsService } from "../../shared/services/products.service";
 import { of } from "rxjs";
 
 describe('CategoriesComponent', () => {

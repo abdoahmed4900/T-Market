@@ -1,7 +1,7 @@
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CartService } from '../../../core/services/cart.service';
+import { CartService } from '../../../shared/services/cart.service';
 import { Product } from '../../../core/interfaces/product';
 import { TranslatePipe } from '@ngx-translate/core';
 

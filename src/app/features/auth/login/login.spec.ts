@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { LoginComponent } from "./login";
 import { Firestore } from "@angular/fire/firestore";
-import { AuthService } from "../auth.service";
+import { AuthService } from "../../../core/services/auth.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { of } from "rxjs";
 

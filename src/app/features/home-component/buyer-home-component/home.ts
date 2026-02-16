@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { ProductCard } from "../../../shared/product-card/product-card";
-import { ProductsService } from '../../../core/services/products.service';
+import { ProductsService } from '../../../shared/services/products.service';
 import { CommonModule } from '@angular/common';
-import { Loader } from "../../../shared/loader/loader";
+import { Loader } from "../../../shared/components/loader/loader";
+import { ProductCard } from '../../../shared/components/product-card/product-card';
 
 @Component({
   selector: 'app-buyer-home-component',

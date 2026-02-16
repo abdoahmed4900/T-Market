@@ -10,7 +10,8 @@ import {
     where,
 } from "@angular/fire/firestore";
 import { fireStoreCollections } from '../../../environments/environment';
-import { Product } from "../interfaces/product";
+import { Product } from "../../core/interfaces/product";
+import { addDoc, updateDoc } from "firebase/firestore";
 
 @Injectable(
     {
@@ -79,5 +80,34 @@ export class ProductsService {
        }
 
        return x;
+    }
+
+    async updateProduct(id:string,newProduct: {
+        name: string,
+        price: number,
+        stock: number,
+        description: string,
+        imageUrls: string[]
+      }){
+        let q = query(this.productsCollectionRef,where('id','==',id));
+        let docs = await getDocs(q);
+        let docRef = docs.docs[0].ref;
+        console.log(newProduct);  
+        console.log(id);  
+        console.log(docRef);  
+        await updateDoc(docRef,
+            {
+                name: newProduct.name, 
+                description: newProduct.description, 
+                price: newProduct.price, 
+                stock: newProduct.stock,
+                imageUrls: newProduct.imageUrls
+            }
+        );
+    }
+    async addNewProduct(product: Product){
+        let ref = await addDoc(this.productsCollectionRef,{...product})
+        let newId = ref.id;
+        await updateDoc(ref,{id: newId})
     }
 }
