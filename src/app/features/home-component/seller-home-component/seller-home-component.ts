@@ -1,13 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { Seller } from '../../auth/user';
 import { HomeService } from '../../../core/services/home.service';
-import { combineLatest, map, Observable, startWith, Subject, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
 import { ProductsService } from '../../../shared/services/products.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { RouterLink } from "@angular/router";
 import { Loader } from '../../../shared/components/loader/loader';
 import { Sidebar } from '../../../core/components/sidebar/sidebar';
@@ -41,7 +41,11 @@ export class SellerHomeComponent {
         this.getSellerItems();
       }),
     );
-    this.loadLayout();
+  }
+
+  @HostListener('window:resize',[])
+  setWidth(){
+    this.showSidebar.set(window.innerWidth >= 1024);
   }
   private getSellerItems() {
     console.log('in here');    
@@ -55,21 +59,22 @@ export class SellerHomeComponent {
     );
   }
 
-   private loadLayout() {
-    combineLatest([
-      this.breakpoints.observe(['(min-width: 1024px)']).pipe(
-        startWith({ matches: window.innerWidth >= 1024 } as BreakpointState) 
-      ),
-    ])
-    .pipe(
-      takeUntil(this.destroy$),
+  deleteProduct(productId:string){
+    this.productSerivce.deleteProduct(productId).pipe(takeUntil(this.destroy$)).subscribe(
+      {
+        next : (value) => {
+          if(value){
+            this.sellerProducts = this.sellerProducts.pipe(
+              map((products) => {
+                return products.filter((p) => p.id != productId); 
+              })
+            )
+          }
+        },
+      }
     )
-    .subscribe(([screen]) => {
-      const isSidebar = screen.matches;
-      this.showSidebar.set(isSidebar);
-    });
   }
-
+  
   ngOnDestroy(): void {
     this.destroy$.next()
     this.destroy$.complete()

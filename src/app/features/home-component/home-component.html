@@ -1,9 +1,9 @@
 <main class="max-w-[1400px] home-component mx-auto w-full">
     @if(role() == 'buyer') {
       <app-buyer-home-component></app-buyer-home-component>
-    } @else if(role() == 'seller') {
+    } @else if(role()  == 'seller') {
       <app-seller-home-component></app-seller-home-component>
-    }@else if(role() == 'admin') {
+    }@else if(role()  == 'admin') {
       <app-admin></app-admin>
    }
 </main>

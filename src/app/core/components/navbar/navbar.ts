@@ -5,9 +5,9 @@ import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { combineLatest, map, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { WebsiteTitle } from '../../../shared/components/website-title/website-title';
+import { WebsiteTitle } from '../website-title/website-title';
 import { CartService } from '../../../shared/services/cart.service';
 import { Loader } from '../../../shared/components/loader/loader';
 
@@ -35,29 +35,11 @@ export class Navbar implements OnInit{
   totalCartProductsNumber$ = this.cartService.totalCartProductsNumber$;
 
   cartSubscription!: Subscription;
-
-  isLoggedIn = this.authService.isLoggedIn$;
-  role = this.authService.userRole;
+  loginSubscription!: Subscription;
 
   cartNumber = signal<number>(0);
 
   translateService = inject(TranslateService);
-
-  menu! : Record<string,string>;
-
-  menuDecider = combineLatest(
-    [
-      this.authService.role$
-    ]
-  ).subscribe(
-    ([role]) => {
-      if(role == 'buyer'){
-        this.isBuyer.set(true);
-      }
-    }
-  )
-
-  isBuyer = linkedSignal(() => this.role.value  == 'buyer');
 
   getTheme(): string {
     return localStorage.getItem('theme') ?? 'light';
@@ -93,15 +75,7 @@ export class Navbar implements OnInit{
 
     this.authService.logout().subscribe({
       next: () => {
-        this.clearCache(); 
         this.router.navigate(['/login']);
-        this.isBuyer.set(false);
-        this.isLoggedIn = this.isLoggedIn.pipe(
-          map((val) => {
-            val = false;
-            return val;
-          })
-        )
       },
 
       error: () => {
@@ -116,8 +90,6 @@ export class Navbar implements OnInit{
 
   private clearCache() {
     localStorage.clear();
-    this.authService.isLoginSubject.next(false);
-    this.authService.userRole.next(null);
   }
 
   goToWishList(){
@@ -132,6 +104,6 @@ export class Navbar implements OnInit{
 
   ngOnDestroy(): void {
     this.cartSubscription.unsubscribe();
-    this.menuDecider.unsubscribe();
+    this.loginSubscription.unsubscribe();
   }
 }

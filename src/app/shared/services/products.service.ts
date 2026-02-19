@@ -1,8 +1,9 @@
 import { inject, Injectable } from "@angular/core";
-import { from, map, Observable } from "rxjs";
+import { catchError, concatMap, from, map, Observable, of } from "rxjs";
 import {
     collection,
     collectionData,
+    doc,
     Firestore,
     getDocs,
     query,
@@ -11,7 +12,8 @@ import {
 } from "@angular/fire/firestore";
 import { fireStoreCollections } from '../../../environments/environment';
 import { Product } from "../../core/interfaces/product";
-import { addDoc, updateDoc } from "firebase/firestore";
+import { addDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { OrderService } from "./order.service";
 
 @Injectable(
     {
@@ -21,10 +23,12 @@ import { addDoc, updateDoc } from "firebase/firestore";
 export class ProductsService {
 
     products= new Observable<Product[]>();
-    productsCollectionRef = collection(inject(Firestore),fireStoreCollections.products);
-    categoriesCollectionRef = collection(inject(Firestore),fireStoreCollections.categories);
-    brandsCollectionRef = collection(inject(Firestore),fireStoreCollections.brands);
+    firestore = inject(Firestore);
+    productsCollectionRef = collection(this.firestore,fireStoreCollections.products);
+    categoriesCollectionRef = collection(this.firestore,fireStoreCollections.categories);
+    brandsCollectionRef = collection(this.firestore,fireStoreCollections.brands);
     productsData = collectionData(this.productsCollectionRef);
+    orderService = inject(OrderService);
     categories!: string[];
 
     getAllProducts(): Observable<Product[]> {
@@ -107,7 +111,26 @@ export class ProductsService {
     }
     async addNewProduct(product: Product){
         let ref = await addDoc(this.productsCollectionRef,{...product})
-        let newId = ref.id;
-        await updateDoc(ref,{id: newId})
+        await updateDoc(ref,{id: ref.id})
+    }
+
+    deleteProduct(productId:string){
+       return this.orderService.isProductInPendingOrder(productId).pipe(
+        concatMap((isInOrders) => {
+            if(isInOrders) {
+                return of(false);
+            } else {
+                return from(deleteDoc(doc(this.firestore,fireStoreCollections.products,productId))).pipe(
+                  map(() => {
+                      return true;
+                  }),
+                  catchError((err,obs) => {
+                    console.log(err);
+                    return obs;
+                  })
+                )
+            }
+        })
+       )
     }
 }

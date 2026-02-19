@@ -1,15 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { CartService } from './shared/services/cart.service';
-import { Subject, Subscription, combineLatest } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { AdminService } from './features/admin/services/admin.service';
 import { Navbar } from './core/components/navbar/navbar';
 import { Footer } from './core/components/footer/footer';
+import { TranslateService } from '@ngx-translate/core';
 // import { TranslateModule } from '@ngx-translate/core';
 
 
@@ -24,9 +23,9 @@ export class App {
   themeIcon = faMoon;
   cartService = inject(CartService);
   authService = inject(AuthService);
+  translateService = inject(TranslateService);
   router = inject(Router);
   cartProductsSub! : Subscription;
-  breakpoints = inject(BreakpointObserver);
   showNavbar = signal(false);
   isAdminHomeOpened = signal(false);
   private destroy$ = new Subject<void>();
@@ -35,20 +34,18 @@ export class App {
 
 
   async ngOnInit(): Promise<void> {
-    let isRemembered = localStorage.getItem('isRemembered');
-    if(isRemembered == 'true'){
-      this.router.navigate(['/']);
-    } else{
-      this.authService.userRole.next(null);
-      this.router.navigate(['/login']);
-    }
     this.loadLayout();
     this.getLocale();
-    await this.admin.addNewCategory('Books')
+    let role = this.authService.userRole();
+    if(role){
+      this.router.navigate(['/'])
+    }else {
+      this.router.navigate(['/login'])
+    }
   }
 
   getLocale(){
-    let language = localStorage.getItem('language') ?? 'en';
+    let language = this.translateService.getCurrentLang();
     document.getElementsByTagName('html')[0].setAttribute('dir',language == 'en' ? 'ltr' : 'rtl')
   }
 
@@ -70,22 +67,12 @@ export class App {
       }
     }
   }
-
-  private loadLayout() {
-    combineLatest([
-      this.authService.role$,
-      this.breakpoints.observe(['(max-width: 1024px)']).pipe(
-        startWith({ matches: window.innerWidth <= 1024 } as BreakpointState) 
-      ),
-    ])
-    .pipe(
-      takeUntil(this.destroy$),
-    )
-    .subscribe(([role, screen]) => {
-      const isMobile = screen.matches;
-      const isBuyerOrGuest = role == 'buyer' || role == null;
-      this.showNavbar.set(isMobile || isBuyerOrGuest);
-    });
+  @HostListener('window:resize',[])
+   loadLayout() {
+    let role = localStorage.getItem('role');
+    const isMobile = window.innerWidth < 1024;
+    const isBuyerOrGuest = role == 'buyer' || role == null
+    this.showNavbar.set(isMobile || isBuyerOrGuest);
   }
 
 

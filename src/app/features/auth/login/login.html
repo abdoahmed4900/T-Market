@@ -38,10 +38,6 @@
             }
         }
     </div>
-    <div class="remember-me flex flex-row gap-2 items-center" appLangDirective>
-        <label>{{'AUTH.LOGIN.REMEMBER_ME' | translate}}</label>
-        <input type="checkbox" (change)="toggleRememberMe()" name="remember" id="remember" class="w-4 h-4 accent-[var(--primary-color)]"/>
-    </div>
     <input value="{{'AUTH.LOGIN.BUTTON' | translate}}" type="submit" class="rounded-lg p-2 text-white bg-[var(--primary-color)] hover:opacity-90"/>
     <button type="button" class="rounded-lg p-2 text-white bg-red-700 hover:bg-red-900" (click)="loginWithGoogle()">{{'AUTH.LOGIN.GOOGLE_BUTTON' | translate}}<div class="text-white inline-block bg-red-500 font-bold mx-2 rounded-4xl px-[5px] py-[3px]">G+</div></button>
     <a class="text-[14px] text-[var(--primary-color)]" routerLink="/reset-password">{{'AUTH.LOGIN.FORGOT_PASSWORD' | translate}}</a>

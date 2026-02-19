@@ -3,7 +3,7 @@
         <section class="title-and-nav flex flex-row items-center">
            <app-website-title></app-website-title>
             <ul class="gap-3 hidden lg:flex mx-7">
-            @if (isBuyer()) {
+            @if (this.authService.isBuyer()) {
               <li><a routerLink="/shop" class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg" routerLinkActive="active">{{'NAVBAR.CATEGORIES' | translate}}</a></li>
               <li><a routerLink="/about" class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)]  rounded-lg">{{'NAVBAR.SUPPORT' | translate}}</a></li>
             }
@@ -14,7 +14,7 @@
        </button>
          <div #box class="lg:hidden navbar-mobile-hidden z-0 transition duration-300 ease navbar-mobile space-y-2 px-10 md:px-20 pb-3 absolute top-13 start-0 w-full bg-[var(--main-bg-color)] transition-all duration-300 ease-in-out pt-5 text-md">
           <section class="border-1 border-t-0 border-[var(--primary-text-color)] rounded-lg rounded-t-none p-4">
-            @if(isBuyer()){
+            @if(this.authService.isBuyer()){
               <a routerLink="/shop" class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]" routerLinkActive="active">{{'NAVBAR.CATEGORIES' | translate}}</a>
               <a class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] px-3 py-2 text-base font-medium text-[var(--primary-text-color)]">{{'NAVBAR.SUPPORT' | translate}}</a>
             }
@@ -28,12 +28,12 @@
                (click)="changeTheme()" >
                <fa-icon [icon]="themeIcon()" ></fa-icon>
              </button>
-             @if ((isLoggedIn | async)) {
+             @if (this.authService.isLoggedIn()) {
              <button 
              class="rounded-xl p-4 bg-[var(--primary-color)] border hover:bg-purple-700 focus:bg-purple-800 border-1 border-gray-200 text-white"
              (click)="logout()"
              >{{'NAVBAR.SIGN_OUT' | translate}}</button>
-             @if(isBuyer()){
+             @if(this.authService.isBuyer()){
               <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md" (click)="goToWishList()">♡ {{'NAVBAR.WISHLIST'| translate }}</button>
               <div class="cart-section relative" routerLink="/cart">
                 <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
@@ -56,7 +56,7 @@
           </section>
       </div>
       <div class="hidden lg:flex items-center gap-1">
-        @if (isBuyer()) {
+        @if (this.authService.isBuyer()) {
           <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)]" (click)="goToWishList()">♡ {{'NAVBAR.WISHLIST'| translate }}</button>
           <div class="cart-section relative" routerLink="/cart">
                <button class="rounded-xl p-4 border focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border-1 border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
@@ -83,7 +83,7 @@
              (click)="changeTheme()">
             <fa-icon class="text-lg" [icon]="themeIcon()"></fa-icon>
         </button>
-        @if ((isLoggedIn | async)) {
+        @if (this.authService.isLoggedIn()) {
           <button 
           class="rounded-xl p-4 bg-[var(--primary-color)] border hover:bg-purple-700 focus:bg-purple-800 border-1 border-gray-200 hover:text-white text-white"
           (click)="logout()"

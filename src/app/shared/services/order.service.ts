@@ -11,7 +11,7 @@ import {
    where,
 } from "@angular/fire/firestore";
 import { fireStoreCollections } from "../../../environments/environment";
-import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
+import { BehaviorSubject, catchError, forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
 import { Buyer, Seller } from "../../features/auth/user";
 import { Order } from "../../core/interfaces/order";
 import { Product } from "../../core/interfaces/product";
@@ -171,6 +171,23 @@ export class OrderService {
             
             return order;
          })
+      )
+   }
+
+   isProductInPendingOrder(productId:string){
+      return collectionData(query(this.ordersCollectionRef,where('status','==','PENDING'),where('sellerId','==',localStorage.getItem('token')))).pipe(
+          map((o) => {
+            let orders = o as Order[];
+            console.log(`🔍 Checking ${orders.length} pending orders`);
+            
+            return orders.some(order => 
+              order.items?.some(item => item.id == productId)
+            );
+          }),
+          catchError(error => {
+            console.error('Error checking product in orders:', error);
+            return of(true); 
+          })
       )
    }
 }

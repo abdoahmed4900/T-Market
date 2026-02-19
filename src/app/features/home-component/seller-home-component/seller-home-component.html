@@ -37,7 +37,7 @@
                                 </div>
                                 <section class="actions-row flex flex-row gap-4 flex-wrap">
                                     <button type="button" class="size-fit bg-[var(--primary-color)] hover:bg-purple-500 p-4 rounded-xl self-center" [routerLink]="['/update-product/',item.id]">{{'SIDEBAR.UPDATE_PRODUCT' | translate}}</button>
-                                    <button type="button" class="size-fit bg-red-500 hover:bg-red-700 p-4 rounded-xl self-center">{{'SIDEBAR.DELETE_PRODUCT' | translate}}</button>
+                                    <button type="button" class="size-fit bg-red-500 hover:bg-red-700 p-4 rounded-xl self-center" (click)="deleteProduct(item.id!)">{{'SIDEBAR.DELETE_PRODUCT' | translate}}</button>
                                 </section>
                              </div>
                           }

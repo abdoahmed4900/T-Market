@@ -8,17 +8,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/components/loader/loader';
-import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, query, setDoc, where } from '@angular/fire/firestore';
-import { fireStoreCollections } from '../../../../environments/environment';
-import { CartProduct } from '../../cart/cart.product';
-import { Order } from '../../../core/interfaces/order';
+import { Firestore } from '@angular/fire/firestore';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { LangDirective } from "../../../core/lang";
-import { map } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
-  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, RouterLink, TranslatePipe, LangDirective],
+  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, RouterLink, TranslatePipe],
   standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -30,8 +26,6 @@ export class LoginComponent implements OnInit {
   constructor(private fb : FormBuilder,private matDialog : MatDialog) { }
 
   passwordIcon = faEye;
-
-  rememberMe: boolean = false;
 
   loginForm !: FormGroup;
 
@@ -52,9 +46,7 @@ export class LoginComponent implements OnInit {
 
   router = inject(Router);
 
-  toggleRememberMe(){
-    this.rememberMe = !this.rememberMe;
-  }
+  destroy$ = new Subject<void>()
 
   togglePasswordVisibility() {
     this.isPasswordVisible = !this.isPasswordVisible;
@@ -66,114 +58,51 @@ export class LoginComponent implements OnInit {
       const dialogRef = this.matDialog.open(Loader, {
       disableClose: true,
     });
-      this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).subscribe({
-      next: async (value) => {
+      this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).pipe(takeUntil(this.destroy$)).subscribe({
+      next: async () => {
         dialogRef.close();
-        let user = JSON.parse(JSON.stringify(value.user));
-        console.log(user.uid);
-        let userRef = collection(this.fireStore,fireStoreCollections.users)
-        let x = collectionData(query(userRef,where('email','==',value.user.email))).subscribe(
-          {
-            next : async (value : any) => {
-                this.storeImportantData(value);
-                this.auth.isLoginSubject.next(true);
-                this.auth.userRole.next(value[0].role);
-                this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(map((val) => {
-                  val = true;
-                  return val;
-                }))
-                this.router.navigate(['/'], { replaceUrl: true });
-                x.unsubscribe();
-            },
-          }
-        );
+        await this.auth.changeUserCredentials(this.loginForm.get('email')!.value);
+        await this.router.navigate(['/'], { replaceUrl: true });
       },
-
-
-
       error: (err) => {
-        dialogRef.close();
-        let message = getFirebaseErrorMessage(err.code);
-        // this.toastService.showErrorToast(message);
-      }
-    });
+          dialogRef.close();
+          let message = getFirebaseErrorMessage(err.code);
+          // this.toastService.showErrorToast(message);
+          }
+      });
     }
   }
 
-  private storeImportantData(value: any) {
-    localStorage.setItem('role', value[0].role);
-    localStorage.setItem('isRemembered', this.rememberMe ? 'true' : 'false');
-    localStorage.setItem('token', value[0].uid);
-    localStorage.setItem('language', this.translateService.getCurrentLang());
-  }
-
   async loginWithGoogle() {
-    let login = this.auth.loginWithGoogle().subscribe(
+    this.auth.loginWithGoogle().pipe(takeUntil(this.destroy$)).subscribe(
       {
         next: (value) => {
-          this.auth.isLoginSubject.next(true);
-          localStorage.setItem('isLogin',this.auth.isLoginSubject.value ? 'true' : 'false');
-          localStorage.setItem('isRemembered',this.rememberMe ? 'true' : 'false');
+          this.auth.addGoogleAccount(value);
           this.router.navigate(['/'], { replaceUrl: true });
-          let users = collection(this.fireStore, fireStoreCollections.users);
-          let q = collectionData(users);
-          q.subscribe(async res => {
-            let user = res.find((u) => u['email'] == value.user.email);
-            console.log(user);
-            if(!user){
-              console.log('not found');
-              let newDoc = {
-                uid: value.user.uid,
-                email: value.user.email,
-                displayName: value.user.displayName,
-                createdAt: new Date(),
-                cartProducts : [] as CartProduct[],
-                orders: [] as Order[],
-                wishListIds: [] as string[],
-                role: 'buyer',
-              };
-              addDoc(users,newDoc).then(async (val) => {
-                await setDoc(
-                  doc(this.fireStore,fireStoreCollections.users,value.user.uid),
-                  newDoc,
-                )
-                await deleteDoc(val);
-              });
-            }else{
-              this.auth.userRole.next(user['role']);
-              localStorage.setItem('token', user['uid']);
-              localStorage.setItem('role', user['role']);
-            } 
-            this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(map((val) => {
-                  val = true;
-                  return val;
-            }))
-            login.unsubscribe();        
-          });
-
         },
-
         error: (err) => {
           let message = getFirebaseErrorMessage(err.code);
-          // this.toastService.showErrorToast(message);
         }
       }
     );
   }
   logout() {
-    this.auth.logout().subscribe({
+    this.auth.logout().pipe(takeUntil(this.destroy$)).subscribe({
       next: async () => {
-        this.auth.isLoginSubject.next(false);
-        this.auth.userRole.next(null);
+        this.auth.isLoggedIn.set(false);
+        this.auth.userRole.set('');
         localStorage.clear();
-
         await this.router.navigateByUrl('/login', { replaceUrl: true });
       },
       error : (err) => {
         let message = getFirebaseErrorMessage(err.code);
-        // this.toastService.showErrorToast(message);
       },
      }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

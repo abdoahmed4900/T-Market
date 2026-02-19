@@ -113,6 +113,6 @@ export let statusChartOptions : any = (pending : number,shipped: number,delivere
        const value = control.value?.toString() || '';
        console.log(`value.length < minLength : ${value.length < minLength}`);
        
-       return value.length < minLength && value.length != 0 ? { minlength: true } : null;
+       return value.length < minLength && value.length > 0 ? { minlength: true } : null;
       };
   }

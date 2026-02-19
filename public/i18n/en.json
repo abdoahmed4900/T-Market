@@ -126,7 +126,7 @@
       "CARDHOLDER_ADDRESS_LABEL": "Cardholder Address",
       "STREET_PLACEHOLDER": "Street",
       "ZIP_CODE_PLACEHOLDER": "Zip Code",
-      "CITY_PLACEHOLDER": "CITY",
+      "CITY_PLACEHOLDER": "City",
       "CARD_NUMBER": "Card Number",
       "CARD_EXPIRY_DATE": "Expiry Date",
       "CARD_CVC": "CVC",

@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { combineLatest, Observable, startWith, Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Order } from '../../core/interfaces/order';
 import { AdminService } from './services/admin.service';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
@@ -9,9 +9,10 @@ import { Product } from '../../core/interfaces/product';
 import { pieChartOptions, statusChartOptions } from '../../core/utils';
 import { ChartFactory } from '../../shared/services/chart.factory';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Loader } from '../../shared/components/loader/loader';
 import { Sidebar } from '../../core/components/sidebar/sidebar';
+import { OrderService } from '../../shared/services/order.service';
 Chart.register(...registerables);
 
 
@@ -37,6 +38,7 @@ export class AdminComponent {
 
   adminService = inject(AdminService);
   breakpoints = inject(BreakpointObserver);
+  orderService = inject(OrderService);
   chartFactory = inject(ChartFactory);
   
   admin!: Observable<Admin>;
@@ -46,10 +48,15 @@ export class AdminComponent {
   isChartInitialized: boolean = false;
   destroy$ = new Subject<void>();
   showSidebar = signal(true);
+  width = signal(window.innerWidth);
 
   ngOnInit(): void {
     this.setupDashBoard();
-    this.loadLayout();
+  }
+
+  @HostListener('window:resize',[])
+  setWidth(){
+    this.showSidebar.set(window.innerWidth >= 1024);
   }
 
 
@@ -134,21 +141,6 @@ export class AdminComponent {
   private createStatusChart(barCanvas: HTMLCanvasElement) {
 
     this.chartInstance = this.chartFactory.createChart(barCanvas, statusChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
-  }
-
-  private loadLayout() {
-    combineLatest([
-      this.breakpoints.observe(['(min-width: 1024px)']).pipe(
-        startWith({ matches: window.innerWidth >= 1024 } as BreakpointState) 
-      ),
-    ])
-    .pipe(
-      takeUntil(this.destroy$),
-    )
-    .subscribe(([screen]) => {
-      const isSidebar = screen.matches;
-      this.showSidebar.set(isSidebar);
-    });
   }
 
   ngOnDestroy(): void {

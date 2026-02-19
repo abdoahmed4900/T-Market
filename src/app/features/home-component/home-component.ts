@@ -1,9 +1,10 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, inject, PLATFORM_ID, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SellerHomeComponent } from "./seller-home-component/seller-home-component";
 import { BuyerHomeComponent } from "./buyer-home-component/home";
 import { AdminComponent } from "../admin/admin";
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-home-wrapper-component',
@@ -14,15 +15,13 @@ import { AdminComponent } from "../admin/admin";
 })
 export class HomeComponent implements OnInit {
   private platform = inject(PLATFORM_ID);
+  authService = inject(AuthService);
   // swPush = inject(SwPush);
   dialog = inject(MatDialog);
-  role = signal<string | null>(null);
+  role = this.authService.userRole;
 
 
   async ngOnInit() {
-    if (isPlatformBrowser(this.platform)) {
-      this.role.set(localStorage.getItem('role'));
-    }
     // console.log('service of push : ' +  this.swPush.isEnabled);    ;
     // this.dialog.open(
     //   ConfirmDialog,

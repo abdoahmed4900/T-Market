@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { afterNextRender, Component, ElementRef, inject, NgZone, signal } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, signal } from '@angular/core';
 import {
   loadStripe,
   Stripe,
@@ -49,7 +49,6 @@ export class PaymentComponent {
   cartProductsObservable!:Observable<(Product & {quantity:number})[]>;
   private formBuilder = inject(FormBuilder);
   emailService = inject(EmailService);
-  zone = inject(NgZone);
   themeInterval!: any;
   destroy$ = new Subject<void>();
   isCardNumberValid = signal(false);
@@ -65,9 +64,9 @@ export class PaymentComponent {
        city: ['',[Validators.required,Validators.minLength(3)]],
        street : ['',[Validators.required,Validators.minLength(3)]],
        zipCode : ['',[Validators.required,numericLengthValidator(5)]],
-       cardNumber: [false,[Validators.requiredTrue]],
-       cardExpiry: [false,[Validators.requiredTrue],],
-       cardCvc: [false,[Validators.requiredTrue]],
+       cardNumber: [this.isCardNumberValid(),[Validators.requiredTrue]],
+       cardExpiry: [this.isCardDateValid(),[Validators.requiredTrue],],
+       cardCvc: [this.isCardCvcValid(),[Validators.requiredTrue]],
      }
     );
 
@@ -80,24 +79,23 @@ export class PaymentComponent {
 
  
   async ngOnInit() {
-    this.stripe = await loadStripe(stripePublicKey) as Stripe;
-    this.elements = this.stripe.elements();
+    await this.createStripeInstance();
     this.price = this.cartService.totalCartPrice$.value;
-    this.cartProductsObservable = this.cartService.getAllCartProducts().pipe(
-      takeUntil(this.destroy$)
-    );
-    this.createStripeFields();
-    this.cartProductsObservable.subscribe({
+    this.cartProductsObservable.pipe(
+      takeUntil(this.destroy$)).subscribe({
         next : (value) =>{
             this.cartProducts = value;
         },
     })
     this.watchThemeChanges();
-    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.destoryStripeElements();
-      this.createStripeElements();
+  }
+  private async createStripeInstance() {
+    (loadStripe(stripePublicKey)).then((val) => {
+      this.stripe = val!;
+      this.createStripeFields();
     });
   }
+
   private watchThemeChanges() {
   let lastTheme = localStorage.getItem('theme');
   this.themeInterval = setInterval(() => {
@@ -120,7 +118,6 @@ baseStyle() {
     style: {
       base: {
       color: isDark ? 'white' : 'black',
-      direction: 'ltr !important',
       fontFamily: 'Arial, sans-serif',
       fontSize: '16px',
       '::placeholder': { color: isDark ? '#b3b3b3' : 'gray' },
@@ -143,6 +140,8 @@ baseStyle() {
     this.handleCardDateChanges();
 
     this.handleCvcFieldChanges();
+
+    // this.elements = this.stripe.elements()
   }
 
   private createStripeElements() {

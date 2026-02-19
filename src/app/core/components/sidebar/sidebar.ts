@@ -3,7 +3,7 @@ import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { map, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -36,7 +36,7 @@ export class Sidebar {
         { label: 'SIDEBAR.ADD_NEW_PRODUCT', path: '/new-product' },
         { label: 'SIDEBAR.VIEW_YOUR_PRODUCTS', path: '/view-products' },
       ],
-    }[this.auth.userRole.value!] ?? []
+    }[this.auth.userRole()!] ?? []
   })
 
 
@@ -75,13 +75,8 @@ export class Sidebar {
       next : (value) => {
         localStorage.clear();
         this.router.navigateByUrl('/login',{replaceUrl : true})
-        this.auth.userRole.next(null);
-        this.auth.isLoggedIn$ = this.auth.isLoggedIn$.pipe(
-          map((val) => {
-            val = false;
-            return val;
-          })
-        )
+        this.auth.userRole.set('');
+        this.auth.isLoggedIn.set(false);
         this.sidebarOpen.set(false);
         log.unsubscribe();
       },
