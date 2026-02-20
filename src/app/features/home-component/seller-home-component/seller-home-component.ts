@@ -7,7 +7,6 @@ import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
 import { ProductsService } from '../../../shared/services/products.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { RouterLink } from "@angular/router";
 import { Loader } from '../../../shared/components/loader/loader';
 import { Sidebar } from '../../../core/components/sidebar/sidebar';
@@ -32,7 +31,6 @@ export class SellerHomeComponent {
   pieChartInstance: Chart | null = null;
   isChartInitialized: boolean = false;
   showSidebar = signal(true);
-  breakpoints = inject(BreakpointObserver);
   destroy$ = new Subject<void>();
 
   ngOnInit(): void {
