@@ -177,9 +177,7 @@ export class OrderService {
    isProductInPendingOrder(productId:string){
       return collectionData(query(this.ordersCollectionRef,where('status','==','PENDING'),where('sellerId','==',localStorage.getItem('token')))).pipe(
           map((o) => {
-            let orders = o as Order[];
-            console.log(`🔍 Checking ${orders.length} pending orders`);
-            
+            let orders = o as Order[];            
             return orders.some(order => 
               order.items?.some(item => item.id == productId)
             );
