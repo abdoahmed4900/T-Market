@@ -34,8 +34,13 @@ jobs:
           }
           }; export const stripePublicKey = '${{ secrets.STRIPE_PUBLIC_KEY }}';
           export const stripeSecretKey = '${{ secrets.STRIPE_SECRET_KEY }}';
+          export const cloudinary = {
+            cloudName: 'dghij1dey',
+            uploadPreset: 'volt_tech'
+          }
           export const fireStoreCollections = {
             users: 'users',
+            brands: 'brands',
             categories: 'categories',
             products: 'products',orders: 'orders',};" > src/environments/environment.ts      
 

@@ -31,9 +31,14 @@ jobs:
           };
           export const stripePublicKey = '${{ secrets.STRIPE_PUBLIC_KEY }}';
           export const stripeSecretKey = '${{ secrets.STRIPE_SECRET_KEY }}';
+          export const cloudinary = {
+            cloudName: 'dghij1dey',
+            uploadPreset: 'volt_tech'
+          }
           export const fireStoreCollections = {
             users: 'users',
             categories: 'categories',
+            brands: 'brands',
             orders: 'orders',
             products: 'products',};" > src/environments/environment.ts     
       - run: npm run build:ssr
