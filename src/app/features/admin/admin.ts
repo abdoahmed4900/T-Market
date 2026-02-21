@@ -13,12 +13,13 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Loader } from '../../shared/components/loader/loader';
 import { Sidebar } from '../../core/components/sidebar/sidebar';
 import { OrderService } from '../../shared/services/order.service';
+import { ShowUsers } from "./components/show-users/show-users";
 Chart.register(...registerables);
 
 
 @Component({
   selector: 'app-admin',
-  imports: [Loader, AsyncPipe, CurrencyPipe, TranslatePipe, Sidebar],
+  imports: [Loader, AsyncPipe, CurrencyPipe, TranslatePipe, Sidebar, ShowUsers],
   templateUrl: './admin.html',
   styleUrl: './admin.scss'
 })

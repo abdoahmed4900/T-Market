@@ -1,0 +1,38 @@
+<main>
+    <section class="users-section lg:flex hidden">
+        <table class="border w-full border-separate border-spacing-0 border-1 border-black rounded-[10px]">
+            <tr>
+                <th [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6">{{'SHOW_USERS.NAME' | translate}}</th>
+                <th [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6">{{'SHOW_USERS.ROLE' | translate}}</th>
+                <th [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6">{{'SHOW_USERS.EMAIL' | translate}}</th>
+                <th [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6 ps-0">{{'SHOW_USERS.CHANGE_ROLE' | translate}}</th>
+            </tr>
+            @for (item of (users | async); track item.uid) {
+                <tr>
+                    <td [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6">{{item.name ?? '-'}}</td>
+                    <td [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6">{{item.role}}</td>
+                    <td [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6">{{item.email}}</td>
+                    @if (item.role != 'admin') {
+                        <td [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'"><button type="button" class="bg-[var(--primary-color)] p-2 rounded-xl hover:bg-purple-500">{{'SHOW_USERS.MAKE_ADMIN' | translate}}</button></td>
+                    }@else {
+                        <td [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'">{{'AUTH.ROLES.ADMIN' | translate}}</td>
+                    }
+                </tr>
+            }
+        </table>
+    </section>
+    <section class="users-section lg:hidden flex flex-col gap-5 w-full">
+        @for (item of (users | async); track item.uid) {
+            <section class="user-section flex flex-col gap-5 border-1 rounded-xl p-4">
+                <h2 class="text-[14px] font-bold">{{'AUTH.LABELS.USERNAME' | translate}} : {{item.name ?? '-'}}</h2>
+                <p class="text-[12px] font-bold">{{'AUTH.LABELS.ROLE' | translate}} : {{item.role}}</p>
+                <p class="text-[12px] font-bold">{{'AUTH.LABELS.EMAIL' | translate}} : {{item.email}}</p>
+                @if (item.role != 'admin') {
+                   <button type="button" class="size-fit bg-[var(--primary-color)] p-2 rounded-xl hover:bg-purple-500" (click)="makeUserAdmin(item.uid)">{{'SHOW_USERS.MAKE_ADMIN' | translate}}</button>
+                }@else {
+                   <p class="text-[12px] font-bold">{{'AUTH.ROLES.ADMIN' | translate}}</p>
+                }
+            </section>
+        }
+    </section>
+</main>

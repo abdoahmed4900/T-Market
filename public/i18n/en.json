@@ -181,5 +181,12 @@
    "UPDATE_PRODUCT": {
       "TITLE": "Update Product",
       "SUBMIT": "Update Product"
+   },
+   "SHOW_USERS": {
+      "NAME": "Name",
+      "ROLE": "Role",
+      "EMAIL": "Email",
+      "CHANGE_ROLE": "Change Role",
+      "MAKE_ADMIN": "Make Admin"
    }
 }

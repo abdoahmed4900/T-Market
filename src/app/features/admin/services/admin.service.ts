@@ -1,10 +1,10 @@
 import { ProductsService } from '../../../shared/services/products.service';
 import { inject, Injectable } from "@angular/core";
 import { OrderService } from "../../../shared/services/order.service";
-import { map } from 'rxjs';
-import { collection, collectionData, Firestore, query, where } from '@angular/fire/firestore';
+import { from, map } from 'rxjs';
+import { collection, collectionData, doc, Firestore, query, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';
-import { Admin } from '../../auth/user';
+import { Admin, User } from '../../auth/user';
 import { getDocs, limit, updateDoc } from 'firebase/firestore';
 
 @Injectable(
@@ -129,6 +129,21 @@ export class AdminService{
            } catch (error) {
               throw error;
            }
+    }
+
+    getUsers(){
+        return collectionData(
+            this.userCollectionRef
+        ).pipe(
+            map((u) => {
+                let users = u as User[];
+                return users.filter((u) => u.uid != localStorage.getItem('token')!);
+            })
+        )
+    }
+
+    makeUserAdmin(userId:string){
+        return from(updateDoc(doc(this.fireStore,fireStoreCollections.users,userId),{ role: 'admin'}));
     }
 }
 
