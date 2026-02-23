@@ -1,6 +1,6 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, tap } from 'rxjs';
 import { Order } from '../../core/interfaces/order';
 import { AdminService } from './services/admin.service';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
@@ -14,12 +14,13 @@ import { Loader } from '../../shared/components/loader/loader';
 import { Sidebar } from '../../core/components/sidebar/sidebar';
 import { OrderService } from '../../shared/services/order.service';
 import { ShowUsers } from "./components/show-users/show-users";
+import { Orders } from "../orders/orders";
 Chart.register(...registerables);
 
 
 @Component({
   selector: 'app-admin',
-  imports: [Loader, AsyncPipe, CurrencyPipe, TranslatePipe, Sidebar, ShowUsers],
+  imports: [Loader, AsyncPipe, CurrencyPipe, TranslatePipe, Sidebar, ShowUsers, Orders],
   templateUrl: './admin.html',
   styleUrl: './admin.scss'
 })
@@ -63,7 +64,11 @@ export class AdminComponent {
 
   setupDashBoard(){
     this.admin = this.adminService.getAdmin();
-    this.orders = this.adminService.getAllOrders();
+    this.orders = this.adminService.getAllOrders().pipe(
+      tap((o) => {
+        console.log(`orders: ${JSON.stringify(o)}`);
+      })
+    );
     this.allProducts = this.adminService.getAllProducts();
     this.totalProductsSold = this.adminService.getNumberOfSoldProducts();
     this.totalOrdersNumber = this.adminService.getOrdersNumber();

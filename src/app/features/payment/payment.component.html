@@ -1,4 +1,5 @@
-<form [formGroup]="paymentFormGroup" (ngSubmit)="pay(cardHolderName.value)" class="slideFromLeftAnimation">
+@if(isStripeCreated()){
+  <form [formGroup]="paymentFormGroup" (ngSubmit)="pay(cardHolderName.value)" class="slideFromLeftAnimation">
    <div class="flex flex-col gap-5 border-1 justify-start items-start p-4 rounded-lg max-w-[1500px] xl:mx-auto bg-[var(--main-bg-color)] text-[var(--primary-text-color)] shadow-md">
    <h3 class="text-[var(--primary-text-color)] text-lg font-bold slideFromRightAnimation">{{'PAYMENT.PAYMENT_FORM' | translate}}</h3>
 
@@ -40,7 +41,7 @@
      <label>{{'PAYMENT.CARD_NUMBER' | translate}}</label>
      <div id="card-number-element" dir="ltr" class="h-10 p-3 ltr border-1 border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"></div>
       @if(brandIcon() != ''){
-         <img [src]="brandIcon()" alt="Card Brand" width="40" class="ms-2" style="display: inline-block;position: absolute;top: 37px; inset-inline-start:5px;transform: translateY(-38%);border-radius: 10px;height: 29px;width: 35px;"/>
+         <img [src]="brandIcon()" class="h-[29px] w-[35px] inline-block absolute translate-y-[-38%] top-[37px] rounded-[10px] right-[5px]" alt="Card Brand" />
       }
       @if (isCardNumberValid() == false && isCardNumberTouched()) {
        <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CARD_NUMBER' | translate } }}</p>
@@ -63,6 +64,9 @@
       }
    </div>
 
-   <button type="submit" class="p-4 bg-[var(--primary-color)] text-white rounded-xl self-end hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out" [disabled]="paymentFormGroup.invalid">{{'PAYMENT.PAY' | translate}}</button>
+   <button type="submit" class="p-4 bg-[var(--primary-color)] text-white rounded-xl self-end hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out" [disabled]="!isFormValid() || paymentFormGroup.invalid">{{'PAYMENT.PAY' | translate}}</button>
  </div>
 </form>
+}@else {
+  <app-loader></app-loader>
+}

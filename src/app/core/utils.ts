@@ -116,3 +116,7 @@ export let statusChartOptions : any = (pending : number,shipped: number,delivere
        return value.length < minLength && value.length > 0 ? { minlength: true } : null;
       };
   }
+
+  export function normalizeDate(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }

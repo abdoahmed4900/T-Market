@@ -2,12 +2,9 @@
   <h2 class="text-lg font-bold slideFromRightAnimation">{{'CART.TOTAL_SUMMARY' | translate}}</h2>
   @for (item of cartProducts | async; track $index) {
       <div class="summary-item flex flex-row justify-between items-center slideFromRightAnimation">
-      <p class="font-bold text-var[(--primary-text-color)] slideFromRightAnimation">{{item.name}}</p>
+          <p class="font-bold text-var[(--primary-text-color)] slideFromRightAnimation">{{item.name}}</p>
           <p class="font-bold text-var[(--primary-text-color)] slideFromRightAnimation">{{(item.quantity! * item.price!) | currency}}</p>
       </div>
-      <p>
-          {{item.quantity}} X {{item.price | currency}} 
-      </p>
       } 
       <hr>
     <section class="slideFromRightAnimation flex flex-row mt-8 slideFromLeftAnimation justify-end flex-wrap">

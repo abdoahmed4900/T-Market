@@ -35,7 +35,7 @@ describe('OrdersComponent',() => {
     it('should change status to delivered and filter orders based on it', () => {
         component.setStatus('Delivered');
         expect(component.selectedStatus()).toBe('Delivered');
-        component.orders.subscribe({
+        component.ordersList.subscribe({
             next: (orders) => {
                 expect(orders.length).toBe(1);
                 expect(orders[0].status).toBe('Delivered');
@@ -52,7 +52,7 @@ describe('OrdersComponent',() => {
     it('should change end date', () => {
         component.setEndDate('2024-07-14');
         expect(component.endDate()).toBe('2024-07-14');
-        component.orders.subscribe({
+        component.ordersList.subscribe({
             next: (orders) => {
                 expect(orders.length).toBe(3);
             }

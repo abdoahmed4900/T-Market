@@ -1,9 +1,19 @@
   <main class="mt-7 slideFromLeftAnimation" [class]="!isAdmin() ? 'flex flex-col gap-5 w-full' : ''">
     <header>
-        <h1 class="text-[20px] font-bold">Orders List</h1>
+        <h1 class="text-[20px] font-bold">{{'ORDERS.ORDERS_LIST' | translate}}</h1>
     </header>
+    <section class="sort-section flex flex-col gap-5">
+      <label for="sort">Sort By</label>
+      <select [(ngModel)]="selectedSortingOption" (change)="sortBy()" name="sort" id="sort" class="p-2 ps-0 size-fit rounded-xl focus:outline-[var(--primary-color)] border-0 outline-4 outline-transparent">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="price-high">Price: High to low</option>
+        <option value="price-low">Price: Low to high</option>
+      </select>
+    </section>
     <section class="my-2 flex gap-5 size-fit flex-wrap">
         <input type="date"
+        placeholder="Start Date"
         (input)="setStartDate($event.target.value)"
          class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
          focus:border-[var(--primary-color)] focus:ring-4 focus:ring-[var(--primary-color)]/20
@@ -11,7 +21,9 @@
          text-[var(--primary-text-color)]
          [&::-webkit-calendar-picker-indicator]:opacity-0
          [&::-webkit-datetime-edit]:px-8">
-        <input type="date" (input)="setEndDate($event.target.value)" class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
+        <input         
+         placeholder="End Date"
+         type="date" (input)="setEndDate($event.target.value)" class="block rounded-lg border border-gray-300 bg-[var(--main-bg-color)] px-4 py-2.5 text-sm
          focus:border-[var(--primary-color)] focus:ring-4 focus:ring-[var(--primary-color)]/20
          focus:outline-none transition-colors
          text-[var(--primary-text-color)]
@@ -21,20 +33,20 @@
     <section class="mt-1">
         <div class="order-status-categories flex flex-row flex-wrap gap-4 my-4">
             <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'All'" (click)="setStatus('All')">{{'All' | translate}}</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Pending'" (click)="setStatus('Pending')">{{'PENDING' | translate}}</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Cancelled'" (click)="setStatus('Cancelled')">{{'CANCELLED' | translate}}</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Shipped'" (click)="setStatus('Shipped')">{{'SHIPPED' | translate}}</button>
-            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'Delivered'" (click)="setStatus('Delivered')">{{'DELIVERED' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'PENDING'" (click)="setStatus('PENDING')">{{'PENDING' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'CANCELLED'" (click)="setStatus('CANCELLED')">{{'CANCELLED' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'SHIPPED'" (click)="setStatus('SHIPPED')">{{'SHIPPED' | translate}}</button>
+            <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'DELIVERED'" (click)="setStatus('DELIVERED')">{{'DELIVERED' | translate}}</button>
         </div>
-        @if(isFiltered()){
-          @if ((orders | async)!.length > 0) {
-            @for (item of (orders | async); track item.id) {
-               <app-order-item [order]="item" class="slideFromTopAnimation"></app-order-item>
+        @if ((ordersList | async); as orders) {
+            @if (orders.length > 0) {
+              @for (item of orders; track item.id) {
+                <app-order-item [order]="item" class="slideFromTopAnimation"></app-order-item>
+              }
+            }@else{
+              <img src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-ordersList"/>
             }
-          }@else{
-              <img src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-orders"/>
-          }
-        }@else{
+        }@else {
             <app-loader></app-loader>
         }
     </section>

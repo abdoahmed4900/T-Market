@@ -1,5 +1,6 @@
 <main>
-    <section class="users-section lg:flex hidden">
+    <section class="users-section lg:flex hidden flex-col gap-5">
+        <h2 class="text-[24px] font-bold my-5">{{'SHOW_USERS.USERS' | translate}}</h2>
         <table class="border w-full border-separate border-spacing-0 border-1 border-black rounded-[10px]">
             <tr>
                 <th [class.text-left]="language() == 'en'" [class.text-right]="language() == 'ar'" class="p-6">{{'SHOW_USERS.NAME' | translate}}</th>

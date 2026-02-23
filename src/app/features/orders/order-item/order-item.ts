@@ -5,6 +5,7 @@ import { RouterLink } from "@angular/router";
 import { Order } from '../../../core/interfaces/order';
 import { Subscription } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
+import { normalizeDate } from '../../../core/utils';
 
 @Component({
   selector: 'app-order-item',
@@ -19,8 +20,14 @@ export class OrderItem {
   role = signal<string>(localStorage.getItem('role') || '');
   isAdmin = computed(() => this.role() == 'admin');
 
+  modifyOrderDate(){
+    return normalizeDate(new Date(this.order()?.orderDate!));
+  }
+
   changeOrderStatus(newStatus:"PENDING" | "SHIPPED" | "CANCELLED" | "DELIVERED"){
      if (this.role() === 'admin') {
+      console.log('is admin');
+      
        this.ordersSub = this.orderService
         .changeStatusOrder(this.order()!.id, newStatus).subscribe();
      }  

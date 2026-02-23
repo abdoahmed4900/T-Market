@@ -18,7 +18,7 @@ export class ShowUsers {
 
   translateService = inject(TranslateService)
 
-  language = signal(localStorage.getItem('language') ?? 'en')
+  language = signal(this.translateService.getCurrentLang())
 
   destroy$ = new Subject<void>();
 

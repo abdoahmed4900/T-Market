@@ -3,12 +3,12 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PaymentIntentResult, Stripe, StripeCardNumberElement } from '@stripe/stripe-js';
 import { firstValueFrom } from 'rxjs';
-import { addDoc, collection, doc, getDoc } from '@angular/fire/firestore';
+import { doc, getDoc } from '@angular/fire/firestore';
 import { CartService } from '../../../shared/services/cart.service';
 import { Buyer } from '../../auth/user';
 import { FormGroup } from '@angular/forms';
 import { Order } from '../../../core/interfaces/order';
-import { updateDoc } from 'firebase/firestore';
+import { setDoc, updateDoc } from 'firebase/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class StripeService {
@@ -78,8 +78,8 @@ export class StripeService {
                 quantity: p.quantity,
             })) ?? [],
         };
-        let orders = collection(this.cartService.fireStore, fireStoreCollections.orders);
-        await addDoc(orders, { ...newOrder, userId: uid });
+        let ref = doc(this.cartService.fireStore,fireStoreCollections.orders,result.paymentIntent?.id!)
+        await setDoc(ref,{ ...newOrder, userId: uid })
         await updateDoc(doc(this.cartService.fireStore,fireStoreCollections.users,uid!),{ ordersIds:[...userData.ordersIds,newOrder.id]},);
         this.cartService.clearCart();
         await this.updateUserOrders(newOrder);

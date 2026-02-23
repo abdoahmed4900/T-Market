@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { afterNextRender, Component, ElementRef, inject, signal } from '@angular/core';
+import { afterNextRender, Component, computed, ElementRef, inject, linkedSignal, signal } from '@angular/core';
 import {
   loadStripe,
   Stripe,
@@ -13,7 +13,7 @@ import { Loader } from '../../shared/components/loader/loader';
 import { CartService } from '../../shared/services/cart.service';
 import { stripePublicKey } from '../../../environments/environment';
 
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Buyer } from '../auth/user';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmailService } from './services/email.service';
@@ -26,7 +26,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-stripe-payment',
   templateUrl: './payment.component.html',
-  imports: [ReactiveFormsModule,TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe, Loader],
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent {
@@ -46,7 +46,6 @@ export class PaymentComponent {
   price!: number;
   cardBrand: string = 'unknown';
   cartProducts! : (Product & {quantity:number})[];
-  cartProductsObservable!:Observable<(Product & {quantity:number})[]>;
   private formBuilder = inject(FormBuilder);
   emailService = inject(EmailService);
   themeInterval!: any;
@@ -57,6 +56,15 @@ export class PaymentComponent {
   isCardNumberTouched = signal(false);
   isCardDateTouched = signal(false);
   isCardCvcTouched = signal(false);
+  isFormValid = computed(() => {
+    return this.isCardCvcValid() && this.isCardDateValid() && this.isCardNumberValid();
+  });
+
+  isLangEnglish = linkedSignal(() => {
+    return this.translateService.getCurrentLang() == 'en';
+  })
+
+  
 
   paymentFormGroup = this.formBuilder.group(
      {
@@ -64,11 +72,9 @@ export class PaymentComponent {
        city: ['',[Validators.required,Validators.minLength(3)]],
        street : ['',[Validators.required,Validators.minLength(3)]],
        zipCode : ['',[Validators.required,numericLengthValidator(5)]],
-       cardNumber: [this.isCardNumberValid(),[Validators.requiredTrue]],
-       cardExpiry: [this.isCardDateValid(),[Validators.requiredTrue],],
-       cardCvc: [this.isCardCvcValid(),[Validators.requiredTrue]],
      }
     );
+  isStripeCreated = signal(false);
 
    constructor() {
     const elementRef = inject(ElementRef);
@@ -81,17 +87,25 @@ export class PaymentComponent {
   async ngOnInit() {
     await this.createStripeInstance();
     this.price = this.cartService.totalCartPrice$.value;
-    this.cartProductsObservable.pipe(
+    this.cartService.getAllCartProducts().pipe(
       takeUntil(this.destroy$)).subscribe({
         next : (value) =>{
             this.cartProducts = value;
         },
     })
+    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe(
+      {
+        next : (value) =>{
+          this.isLangEnglish.set(value.lang == 'en' ? true : false)
+        },
+      }
+    )
     this.watchThemeChanges();
   }
   private async createStripeInstance() {
     (loadStripe(stripePublicKey)).then((val) => {
       this.stripe = val!;
+      this.elements = this.stripe.elements();
       this.createStripeFields();
     });
   }
@@ -140,8 +154,6 @@ baseStyle() {
     this.handleCardDateChanges();
 
     this.handleCvcFieldChanges();
-
-    // this.elements = this.stripe.elements()
   }
 
   private createStripeElements() {
@@ -157,21 +169,22 @@ baseStyle() {
       ...this.baseStyle(),
       placeholder: this.translateService.instant('PAYMENT.CARD_CVC'),
     });
+    this.isStripeCreated.set(true);
   }
 
   private mountStripeElements() {
-    this.cardNumber.mount('#card-number-element');
-    this.cardExpiry.mount('#card-expiry-element');
-    this.cardCvc.mount('#card-cvc-element');
+    setTimeout(() => {
+      this.cardNumber.mount('#card-number-element');
+      this.cardExpiry.mount('#card-expiry-element');
+      this.cardCvc.mount('#card-cvc-element');
+    },100)
   }
 
   private handleCardNumberChanges() {
     this.cardNumber.on('change', (event) => {
-      let control = this.paymentFormGroup.get('cardNumber');
-      control?.markAsTouched();
       this.isCardNumberValid.set(event.complete);
-      this.isCardNumberTouched.set(control!.touched)
       this.showVisaBrandIcon(event);
+      
     })
     
     this.cardNumber.on('blur',() => {
@@ -180,11 +193,8 @@ baseStyle() {
   }
 
   private handleCardDateChanges() {
-    let control = this.paymentFormGroup.get('cardExpiry');
     this.cardExpiry.on('change', (event) => {
-      control?.markAsTouched();
       this.isCardDateValid.set(event.complete);
-      this.isCardDateTouched.set(control!.touched)
     });
 
     this.cardExpiry.on('blur',() => {
@@ -193,11 +203,8 @@ baseStyle() {
   }
 
   private handleCvcFieldChanges() {
-    let control = this.paymentFormGroup.get('cardCvc');
     this.cardCvc.on('change', (event) => {
-      control?.markAsTouched();
       this.isCardCvcValid.set(event.complete);
-      this.isCardCvcTouched.set(control!.touched)
     });
 
     this.cardCvc.on('blur',() => {
@@ -222,6 +229,8 @@ baseStyle() {
       default:
         this.brandIcon.set('');
     }
+    console.log(this.brandIcon);
+    
   }
 
   async pay(name: string) {

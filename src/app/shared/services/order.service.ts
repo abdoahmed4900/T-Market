@@ -1,8 +1,9 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import {
    collection,
    collectionData,
    doc,
+   docData,
    DocumentReference,
    Firestore,
    getDocs,
@@ -11,10 +12,21 @@ import {
    where,
 } from "@angular/fire/firestore";
 import { fireStoreCollections } from "../../../environments/environment";
-import { BehaviorSubject, catchError, forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
+import {
+   BehaviorSubject,
+   catchError,
+   forkJoin,
+   from,
+   map,
+   Observable,
+   of,
+   switchMap,
+   tap,
+} from "rxjs";
 import { Buyer, Seller } from "../../features/auth/user";
 import { Order } from "../../core/interfaces/order";
 import { Product } from "../../core/interfaces/product";
+import { normalizeDate } from "../../core/utils";
 
 @Injectable({providedIn: 'root'})
 export class OrderService {
@@ -23,6 +35,9 @@ export class OrderService {
    productCollectionRef = collection(this.fireStore,fireStoreCollections.products);
    ordersCollectionRef = collection(this.fireStore,fireStoreCollections.orders);
    numberOfOrders = new BehaviorSubject<number>(0);
+   selectedStatus = signal<string>('All');
+   startDate= signal<string>('');
+   endDate= signal<string>('');
 
    getAllOrders(){
       let ordersCollection  = collectionData(query(this.ordersCollectionRef));
@@ -35,7 +50,6 @@ export class OrderService {
    }
 
    getMyOrders() {
-     console.log('your irders methods');
      
      this.numberOfOrders.next(0)
      let user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
@@ -51,18 +65,22 @@ export class OrderService {
             ordersObs = forkJoin(
               orderReqs
             ) 
-            return ordersObs.pipe(
-               map((orders) => {
-                  console.log(`orders are : ${orders}`);
-                  orders.map((o) => {
-                     console.log(`o is ${JSON.stringify(o)}`);
-                     
-                  })
-                 return orders; 
-               })
-            )
+            return ordersObs;
         }),
      )
+   }
+
+   private convertDate(o: Order) {
+      let timestamp = JSON.parse(JSON.stringify(o.orderDate));
+      const date = new Date(timestamp.seconds * 1000);
+
+      const formatted = date.toLocaleDateString('en-US', {
+         day: '2-digit',
+         month: 'long',
+         year: 'numeric'
+      });
+
+      return formatted;
    }
 
    getOrdersByStatus(status:string){
@@ -76,29 +94,24 @@ export class OrderService {
    }
 
    changeStatusOrder(orderId:string,newStatus:"PENDING" | "SHIPPED" | "CANCELLED" | "DELIVERED"){
-      let ordersCollection = collectionData(query(this.ordersCollectionRef,where('id','==',orderId)));
-      let order :Order;
-      return ordersCollection.pipe(
-         switchMap(async (orders) => {
-            order = orders[0] as Order;
-            order.status = newStatus;
-            return from(getDocs(query(this.ordersCollectionRef,where('id','==',order.id),))).pipe(
-               switchMap(orders => {
-                  let orderRef = orders.docs[0].ref;
-                  return Promise.all(
-                     [
-                        updateDoc(orderRef,{status: newStatus}),
-                     ]
-                  )
-               })
-            )
-         }),
-         tap(() => {
-            if (newStatus === 'SHIPPED' || newStatus === 'CANCELLED') {
+      const docRef = doc(this.fireStore, fireStoreCollections.orders, orderId);
+  
+      return docData(docRef).pipe(
+        switchMap((o) => {   
+          let order = o as Order;
+          if (newStatus === 'SHIPPED' || newStatus === 'CANCELLED') {
             this.updateProducts(order, newStatus);
-            }
-         })
-      )
+          }
+          return from(updateDoc(docRef, { status: newStatus }));
+        }),
+        tap(() => {
+          console.log('✅ Status updated to:', newStatus);
+        }),
+        catchError(error => {
+          console.error('❌ Error updating status:', error);
+          throw error;
+        })
+      );
    }
 
    private updateProducts(order: Order, newStatus: string) {
@@ -166,9 +179,7 @@ export class OrderService {
          )
       ).pipe(
          map((orders) => {
-            let order = orders.docs[0].data() as Order;
-            console.log(order);
-            
+            let order = orders.docs[0].data() as Order;            
             return order;
          })
       )
@@ -186,6 +197,68 @@ export class OrderService {
             console.error('Error checking product in orders:', error);
             return of(true); 
           })
+      )
+   }
+
+   setStartDate(start:string){
+      this.startDate.set(start ?? '');
+   }
+   setEndDate(end:string){
+      this.endDate.set(end ?? '');
+   }
+   setStatus(status:string){
+      this.selectedStatus.set(status ?? 'All');
+   }
+
+   filterProducts(){
+      let orders = localStorage.getItem('role') == 'admin' ? this.getAllOrders() : this.getMyOrders();
+      
+      return orders.pipe(
+         map((orders) => {
+           if(this.selectedStatus() != 'All'){
+             orders = orders.filter((order) => order.status == this.selectedStatus())
+           }
+           if(this.startDate() != ''){
+             orders = orders.filter((order) => normalizeDate(new Date(this.startDate())) >= new Date(order.orderDate!))
+           }
+           if(this.endDate() != ''){
+             orders = orders.filter((order) => normalizeDate(new Date(this.endDate())) <= new Date(order.orderDate!))
+           }
+           
+           return orders;
+         }),
+         tap((orders) => {
+            orders.map((o) => {
+               console.log(this.convertDate(o));
+               
+            })
+            
+         })
+        )
+   }
+
+   sortProducts(sortOption:string){
+      return this.filterProducts().pipe(
+         map((orders) => {
+            if(sortOption == 'newest'){
+               orders = orders.sort((a,b) => {
+                  return Date.parse(b.orderDate!) - Date.parse(a.orderDate!) ;
+               });
+            }else if(sortOption == 'oldest'){
+               orders = orders.sort((a,b) => {
+                  return Date.parse(a.orderDate!) - Date.parse(b.orderDate!) ;
+               });
+            }else if(sortOption == 'price-high'){
+               orders = orders.sort((a,b) => {
+                  return b.totalPrice - a.totalPrice! ;
+               });
+            }else if(sortOption == 'price-low'){
+               orders = orders.sort((a,b) => {
+                  return a.totalPrice - b.totalPrice! ;
+               });
+            }
+            return orders;
+         })
       )
    }
 }

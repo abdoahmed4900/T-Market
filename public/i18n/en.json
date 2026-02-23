@@ -183,6 +183,7 @@
       "SUBMIT": "Update Product"
    },
    "SHOW_USERS": {
+      "USERS": "Users",
       "NAME": "Name",
       "ROLE": "Role",
       "EMAIL": "Email",

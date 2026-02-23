@@ -1,11 +1,11 @@
-import { Component, inject, input, model } from '@angular/core';
+import { Component, inject, input, model, signal } from '@angular/core';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { ProductsService } from '../../../shared/services/products.service';
 import { CartService } from '../../../shared/services/cart.service';
 import { RouterLink } from "@angular/router";
 import { Product } from '../../../core/interfaces/product';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cart-card',
@@ -24,9 +24,17 @@ export class CartCard {
 
   productService = inject(ProductsService);
   cartService = inject(CartService);
+  translateService = inject(TranslateService);
+  isLangEnglish = signal(this.translateService.getCurrentLang() == 'en')
+  destroy$ = new Subject<void>();
   
   ngOnInit(): void {
     this.product = this.productService.getProductById(this.productId()!);  
+    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((val) => {
+      this.isLangEnglish.set(val.lang == 'en' ? true : false);
+      console.log(`islang : ${this.isLangEnglish()}`);
+      
+    })
   }
 
   increaseQuantity(){
@@ -46,5 +54,10 @@ export class CartCard {
 
   removeFromCart(){
     this.cartService.removeProductFromCart(this.productId(),this.cartProduct()!.price);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

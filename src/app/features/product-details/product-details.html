@@ -11,11 +11,11 @@
         <p class="font-bold text-[16px] animate-slideFromHorizon">{{(product | async)!.description}}</p>
         <div class="cart-and-buy items-center flex gap-3 mt-2 animate-slideFromTop flex-row flex-wrap items-center">
             <div class="input-container relative">
-                <input type="number" name="cart" id="cart" class="border-2 rounded-lg p-1 border-white text-[var(--primary-text-color)] text-center" placeholder="0" [(value)]="cartNumber"/>
-                <button class="absolute start-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="increaseCartNumber()" role="button">+</button>
-                <button class="absolute end-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="decreaseCartNumber()" role="button">-</button>
+                <input [disabled]="(product | async)?.stock == 0" type="number" name="cart" id="cart" class="border-2 rounded-lg p-1 border-white text-[var(--primary-text-color)] text-center" placeholder="0" [(value)]="cartNumber"/>
+                <button [disabled]="(product | async)?.stock == 0" class="absolute start-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="increaseCartNumber()" role="button">+</button>
+                <button [disabled]="(product | async)?.stock == 0" class="absolute end-2 top-2 text-[var(--primary-text-color)]  text-[20px]" (click)="decreaseCartNumber()" role="button">-</button>
             </div>
-            <button class="text-white bg-[var(--primary-color)] rounded-xl p-2 text-[16px]" (click)="addToCart()"
+            <button type="button" [disabled]="(product | async)?.stock == 0" class="text-white bg-[var(--primary-color)] rounded-xl p-2 text-[16px]" (click)="addToCart()"
                >{{'PRODUCT_CARD.ADD_TO_CART' | translate}}</button>
         </div>
         @if ((product | async)!.reviews.length > 0) {
