@@ -49,7 +49,7 @@ export const routes: Routes = [
   },
   {
     path: 'order/:id',
-    loadComponent: () => import('./features/orders/order-details/order-details')
+    loadComponent: () => import('./features/orders/components/order-details/order-details')
       .then(m => m.OrderDetails)
   },
   {

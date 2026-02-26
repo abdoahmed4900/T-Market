@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OrderService } from '../../../shared/services/order.service';
 import { AsyncPipe } from '@angular/common';
 import { OrderItemCard } from "../order-item-card/order-item-card";
-import { Loader } from "../../../shared/components/loader/loader";
 import { jsPDF } from 'jspdf';
-import { Order } from '../../../core/interfaces/order';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Loader } from '../../../../shared/components/loader/loader';
+import { Order } from '../../../../core/interfaces/order';
+import { OrderService } from '../../../../shared/services/order.service';
 @Component({
   selector: 'app-order-details',
   imports: [AsyncPipe, OrderItemCard, Loader,TranslatePipe],
@@ -24,7 +24,7 @@ export class OrderDetails {
   id!: string;
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-    this.order =this.orderService.getOrderById(this.id);
+    this.order = this.orderService.getOrderById(this.id);
   }
 
   async generatePDF(order : Order) {

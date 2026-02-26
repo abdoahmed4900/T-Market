@@ -1,15 +1,14 @@
 import { Injectable } from "@angular/core";
-import { Product } from "../../core/interfaces/product";
 
 @Injectable(
     {providedIn : 'root'}
 )
 export class PaginationService{
 
-    showedProducts! : Product[];
+    showedProducts! : any[];
     allPages!:number[];
     showedPages!: number[];
-    allProducts!:Product[];
+    allProducts!:any[];
     currentPage!:number;
     productsPerPage = 1;
 

@@ -1,11 +1,11 @@
 import { Component, computed, inject, model, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { OrderService } from '../../../shared/services/order.service';
 import { RouterLink } from "@angular/router";
-import { Order } from '../../../core/interfaces/order';
 import { Subscription } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
-import { normalizeDate } from '../../../core/utils';
+import { OrderService } from '../../../../shared/services/order.service';
+import { normalizeDate } from '../../../../core/utils';
+import { Order } from '../../../../core/interfaces/order';
 
 @Component({
   selector: 'app-order-item',

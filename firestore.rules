@@ -2,17 +2,92 @@ rules_version='2'
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      // This rule allows anyone with your database reference to view, edit,
-      // and delete all data in your database. It is useful for getting
-      // started, but it is configured to expire after 30 days because it
-      // leaves your app open to attackers. At that time, all client
-      // requests to your database will be denied.
-      //
-      // Make sure to write security rules for your app before that time, or
-      // else all client requests to your database will be denied until you
-      // update your rules.
-      allow read, write: if request.time < timestamp.date(2025, 10, 15);
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && getUserRole() == 'admin';
+    }
+    
+    function isSeller() {
+        return isAuthenticated() && getUserRole() == 'seller';
+    }
+    
+    function isBuyer() {
+      return isAuthenticated() && getUserRole() == 'buyer';
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // ===================================
+    // Users Collection
+    // ===================================
+
+    //match /users/{userId} {
+    //  allow read: if isOwner(userId) || isAdmin();
+    //  allow write: if isAdmin();
+    //  allow create: if request.auth != null
+    //            && request.auth.uid == userId 
+    //            && request.resource.data.keys().hasAll(['email', 'role', 'name'])
+    //            && request.resource.data.role in ['buyer', 'seller'];
+
+    //  allow update: if isOwner(userId) || isAdmin();
+    //}
+
+    // ===================================
+    // Products Collection
+    // ===================================
+
+    match /products/{productId} {
+      allow read: if true;
+      
+      allow write: if isSeller() 
+                   && request.auth.uid == resource.data.sellerId;
+
+      allow update: if isBuyer()
+                && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock'])
+                && request.resource.data.stock <= resource.data.stock 
+                && request.resource.data.stock > 0;                            
+    }
+
+    // ===================================
+    // Orders Collection
+    // ===================================
+
+    //match /orders/{orderId} {
+    //  allow read: if isAuthenticated() && request.resource.data.uid == request.auth.uid;
+
+    //  allow create: if isBuyer();
+
+    //  allow update, delete: if isAdmin();
+    //}
+
+    // ===================================
+    // Categories Collection
+    // ===================================
+
+    match /categories/{categoryId} {
+      allow read: true;
+
+      allow write: if isAdmin();
+    }
+
+    // ===================================
+    // Brands Collection
+    // ===================================
+
+    match /brands/{brandId} {
+      allow read: true;
+
+      allow write: if isAdmin();
     }
   }
 }
