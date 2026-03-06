@@ -1,10 +1,10 @@
 import { Component, inject, input, model, signal } from '@angular/core';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ProductsService } from '../../../shared/services/products.service';
-import { CartService } from '../../../shared/services/cart.service';
+import { ProductsService } from '../../../../shared/services/products.service';
+import { CartService } from '../../../../shared/services/cart.service';
 import { RouterLink } from "@angular/router";
-import { Product } from '../../../core/interfaces/product';
+import { Product } from '../../../../core/interfaces/product';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({

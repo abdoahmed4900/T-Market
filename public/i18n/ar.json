@@ -17,6 +17,7 @@
    "CATEGORY_FIELD": "التصنيف",
    "BRAND_FIELD": "العلامة التجارية",
    "IMAGES_FIELD": "صور المنتج",
+   "OUT_OF_STOCK": "لا يوجد حاليا",
    "AUTH": {  
       "LOGIN": {
           "BUTTON": "تسجيل الدخول",
@@ -108,7 +109,12 @@
       "DELIVER_ORDER": "وصول الطلب",
       "ITEMS": "المنتجات",
       "ORDER_ITEMS": "منتجات الطلب",
-      "DOWNLOAD_RECEIPT": "تحميل ايصال الطلب"
+      "DOWNLOAD_RECEIPT": "تحميل ايصال الطلب",
+      "SORT_BY": "الترتيب حسب",
+      "NEWEST_FIRST": "الأحدث للأقدم",
+      "OLDEST_FIRST": "الأقدم للأحدث",
+      "HIGH_TO_LOW": "السعر من الأعلى للأقل",
+      "LOW_TO_HIGH": "السعر من الأقل للأعلى"
    },
    "STATUS": {
       "PENDING": "ينتظر الشحن",
@@ -189,5 +195,10 @@
       "EMAIL": "البريد الإلكتروني",
       "CHANGE_ROLE": "تغيير نوع المستخدم",
       "MAKE_ADMIN": "اجعله المستخدم مسئول"
+   },
+   "PRODUCT_DETAILS": {
+      "NO_REVIEWS": "!لا يوجد تقييمات للمنتج",
+      "ADD_COMMENT": "اضف تقييمك للمنتج",
+      "YOU": "أنت"
    }
 }

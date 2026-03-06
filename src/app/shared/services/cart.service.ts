@@ -2,10 +2,10 @@ import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, debounceTime, forkJoin, from, map, of, shareReplay, switchMap, tap } from "rxjs";
 import { collection, collectionData, doc, Firestore, getDoc, query, updateDoc, where } from "@angular/fire/firestore";
 import { ProductsService } from "./products.service";
-import { CartProduct } from "../../features/cart/cart.product";
 import { fireStoreCollections } from "../../../environments/environment";
 import { Product } from "../../core/interfaces/product";
 import { Buyer } from "../../features/auth/user";
+import { CartProduct } from "../../features/cart/cart.product";
 
 @Injectable({
     providedIn: 'root'

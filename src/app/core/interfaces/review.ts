@@ -1,5 +1,6 @@
 export interface Review{
-    user: string;
+    userName: string;
+    userId: string;
     rating: number;
     comment: string;
     date: string;

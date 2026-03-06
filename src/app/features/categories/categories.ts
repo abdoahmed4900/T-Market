@@ -38,6 +38,7 @@ export class Categories {
     this.filteredProducts = this.productsService.getAllProducts().pipe(
     map((products) => {
       this.paginationService.allProducts = products
+      this.paginationService.productsPerPage = 1;
       this.paginationService.initializePagination();
       this.showFilteration();
       this.isProductsLoaded.set(true);

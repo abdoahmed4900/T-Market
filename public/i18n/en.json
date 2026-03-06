@@ -17,6 +17,7 @@
    "CATEGORY_FIELD": "Category",
    "BRAND_FIELD": "Brand",
    "IMAGES_FIELD": "Product Images",
+   "OUT_OF_STOCK":"Out of stock",
    "AUTH": {
       "LOGIN": {
           "BUTTON": "Login",
@@ -108,7 +109,12 @@
       "DELIVER_ORDER": "Deliver Order",
       "ITEMS": "Items",
       "ORDER_ITEMS": "Order Items",
-      "DOWNLOAD_RECEIPT": "Download Receipt"
+      "DOWNLOAD_RECEIPT": "Download Receipt",
+      "SORT_BY": "Sort By",
+      "NEWEST_FIRST": "Newest First",
+      "OLDEST_FIRST": "Oldest First",
+      "HIGH_TO_LOW": "Price: High to low",
+      "LOW_TO_HIGH": "Price: low to High"
    },
    "STATUS": {
       "PENDING": "Pending",
@@ -189,5 +195,10 @@
       "EMAIL": "Email",
       "CHANGE_ROLE": "Change Role",
       "MAKE_ADMIN": "Make Admin"
+   },
+   "PRODUCT_DETAILS": {
+      "NO_REVIEWS": "No Reviews were added!",
+      "ADD_COMMENT": "Add your review",
+      "YOU": "You"
    }
 }

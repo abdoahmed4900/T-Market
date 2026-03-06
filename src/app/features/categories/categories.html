@@ -1,3 +1,4 @@
+@let products = (filteredProducts | async);
 <main class="grid md:grid-cols-3 gap-5 grid-cols-1 my-10 justify-start grow slideFromLeftAnimation">
     <section class="search-section flex flex-col gap-10 md:col-span-1 col-span-2">
         <input type="text" name="search" id="search" style="display: block !important;" class="border-1 p-2 rounded-xl" placeholder="{{'CATEGORIES.SEARCH_PLACEHOLDER' | translate}}" (input)="filterProducts()" [(ngModel)]="searchText">
@@ -29,15 +30,15 @@
        }
     </section>
     <section class="search-results grid grid-cols-[repeat(md:auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
-        @if ((filteredProducts | async) != null) {
-          @for (item of (filteredProducts | async); track item.id) {
+        @if (products != null) {
+          @for (item of products; track item.id) {
                 <app-product-card [product]="item"></app-product-card>
           }
         }@else{
         <app-loader></app-loader>
         }
 
-       @if(allPages().length == 0){
+       @if(products!.length == 0){
         <div class="no-products-found flex flex-col mx-auto col-span-3">
           <img src="https://cdn-icons-png.flaticon.com/512/1178/1178428.png" alt="no-products-image" class="w-[90%] max-w-[260px]">
         </div>

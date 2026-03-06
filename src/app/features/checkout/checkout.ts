@@ -1,4 +1,4 @@
-import { CartSummaryCard } from './../cart/cart-summary-card/cart-summary-card';
+import { CartSummaryCard } from '../cart/components/cart-summary-card/cart-summary-card';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';

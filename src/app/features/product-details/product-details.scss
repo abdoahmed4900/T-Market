@@ -9,3 +9,6 @@ input[type="number"] {
   appearance: textfield;
 }
 
+input::placeholder{
+  padding-inline-start: 8px;
+}
