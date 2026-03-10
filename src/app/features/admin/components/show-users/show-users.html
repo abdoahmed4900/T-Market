@@ -29,7 +29,7 @@
                 <p class="text-[12px] font-bold">{{'AUTH.LABELS.ROLE' | translate}} : {{item.role}}</p>
                 <p class="text-[12px] font-bold">{{'AUTH.LABELS.EMAIL' | translate}} : {{item.email}}</p>
                 @if (item.role != 'admin') {
-                   <button type="button" class="size-fit bg-[var(--primary-color)] p-2 rounded-xl hover:bg-purple-500" (click)="makeUserAdmin(item.uid)">{{'SHOW_USERS.MAKE_ADMIN' | translate}}</button>
+                   <button type="button" (click)="makeUserAdmin(item.uid)" class="size-fit bg-[var(--primary-color)] p-2 rounded-xl hover:bg-purple-500">{{'SHOW_USERS.MAKE_ADMIN' | translate}}</button>
                 }@else {
                    <p class="text-[12px] font-bold">{{'AUTH.ROLES.ADMIN' | translate}}</p>
                 }

@@ -4,7 +4,7 @@
         <h2 class="text-[20px] font-bold">{{'ADD_NEW_USER.TITLE' | translate}}</h2>
         <p class="text-[17px]">{{'ADD_NEW_USER.SUBTITLE' | translate}}</p>
     </header>
-    <form [formGroup]="newUserForm" class="flex flex-col gap-4 mt-3">
+    <form [formGroup]="newUserForm" class="flex flex-col gap-4 mt-3" (ngSubmit)="addNewUser()">
         <div class="email-container flex flex-col gap-1">
          <label for="email" class="text-[14px] font-bold">{{'AUTH.LABELS.EMAIL' | translate}}</label>
          <input class="outline-none border-1 rounded-lg p-2" type="email" name="email" id="email" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" formControlName="email" 
@@ -20,15 +20,15 @@
        </div>
        <div class="user-name-container flex flex-col gap-1">
          <label for="user-name" class="text-[14px] font-bold">{{'AUTH.LABELS.USERNAME' | translate}}</label>
-         <input class="outline-none border-1 rounded-lg p-2" type="text" name="user-name" id="user-name" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" formControlName="email" 
-         [class.border-[var(--error-text-color)].focus:border-[var(--error-text-color)]]="newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched"
-         [class.border-gray-300.focus:border-[var(--primary-color)]]="newUserForm.get('email')?.valid && newUserForm.get('email')?.touched"     
+         <input class="outline-none border-1 rounded-lg p-2" type="text" name="user-name" id="user-name" placeholder="{{'AUTH.PLACEHOLDERS.USERNAME' | translate}}" formControlName="userName" 
+         [class.border-[var(--error-text-color)].focus:border-[var(--error-text-color)]]="newUserForm.get('userName')?.invalid && newUserForm.get('userName')?.touched"
+         [class.border-gray-300.focus:border-[var(--primary-color)]]="newUserForm.get('userName')?.valid && newUserForm.get('userName')?.touched"     
          />
          @if (newUserForm.get('userName')?.hasError('required') && newUserForm.get('userName')?.touched) {
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.USERNAME' | translate } }}</span>
          }
          @if (newUserForm.get('userName')?.hasError('minlength') && newUserForm.get('userName')?.touched) {
-            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.USERNAME' | translate} }}</span>
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:3, field: 'AUTH.LABELS.USERNAME' | translate} }}</span>
          }
        </div>
         <label for="role" class="text-[14px] font-bold">{{'AUTH.LABELS.ROLE' | translate}}</label>
@@ -39,12 +39,34 @@
         </mat-select>
         <div class="password-container flex flex-col gap-1 relative">
             <label>{{'AUTH.LABELS.PASSWORD' | translate}}</label>
-            <input class="outline-none border-1 rounded-lg p-2" [type]="isPasswordVisible() ? 'text' : 'password'" name="password" id="password" formControlName="password" placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}">
-            <app-password-visibility-icon (visibilityChanged)="setPasswordVisiblity($event)"></app-password-visibility-icon>
+            <div class="password-field relative">
+              <input class="outline-none border-2 w-full rounded-lg p-2 text-[var(--primary-text-color)]" [type]="isPasswordVisible() ? 'text' : 'password'" name="password" id="password" placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}" formControlName="password" [ngClass]="{
+                'border-[var(--error-text-color)]': newUserForm.get('password')?.invalid && newUserForm.get('password')?.touched,
+                'border-gray-300': newUserForm.get('password')?.valid || !newUserForm.get('password')?.touched,
+                'focus:border-[var(--primary-color)]': (newUserForm.get('password')?.valid && newUserForm.get('password')?.touched),
+                'focus:border-[var(--error-text-color)]': !(newUserForm.get('password')?.invalid && newUserForm.get('password')?.touched),
+              }"/>
+             <app-password-visibility-icon (visibilityChanged)="setPasswordVisiblity($event)"></app-password-visibility-icon>
+           </div>
+            @if (newUserForm.get('password')?.hasError('required') && newUserForm.get('password')?.touched) {
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.PASSWORD' | translate } }}</span>
+            }
+            @if (newUserForm.get('password')?.hasError('minlength') && newUserForm.get('password')?.touched) {
+               <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:6,field: 'AUTH.LABELS.PASSWORD' | translate} }}</span>
+            }
         </div>
         <div class="confirm-password-container flex flex-col gap-1">  
            <label>{{'AUTH.LABELS.CONFIRM_PASSWORD' | translate}}</label>
            <input class="outline-none border-1 rounded-lg p-2" [type]="isPasswordVisible() ? 'text' : 'password'" name="confirm-password" id="confirm-password" formControlName="confirmPassword" placeholder="{{'AUTH.PLACEHOLDERS.CONFIRM_PASSWORD' | translate}}">
+           @if (newUserForm.get('confirmPassword')?.hasError('required') && newUserForm.get('confirmPassword')?.touched) {
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.CONFIRM_PASSWORD' | translate } }}</span>
+            }
+            @if (newUserForm.get('confirmPassword')?.hasError('minlength') && newUserForm.get('confirmPassword')?.touched) {
+               <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:6,field: 'AUTH.LABELS.CONFIRM_PASSWORD' | translate} }}</span>
+            }
+            @if (newUserForm.get('confirmPassword')?.hasError('mismatch') && newUserForm.get('confirmPassword')?.touched) {
+              <span class="text-[var(--error-text-color)] font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.PASSWORDS_DO_NOT_MATCH' | translate}}</span>
+            }
         </div>
         <button type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'ADD_NEW_USER.SUBMIT' | translate}}</button>
     </form>

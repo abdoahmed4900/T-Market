@@ -40,15 +40,17 @@
             <span class="text-[var(--error-text-color)] font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.EMAIL' | translate} }}</span>
         }
      </div>
-     <div class="password-container flex flex-col gap-1 relative">
+     <div class="password-container flex flex-col gap-1">
         <label for="password" class="text-[14px] font-bold text-[var(--primary-text-color)]">{{'AUTH.LABELS.PASSWORD' | translate}}</label>
-        <input class="outline-none focus:border-[var(--primary-color)] border-2 border-gray-300 rounded-lg p-2 text-[var(--primary-text-color)]" [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password" name="password" id="password" placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}" [ngClass]="{
+        <div class="password-field relative">
+            <input class="outline-none border-2 w-full rounded-lg p-2 text-[var(--primary-text-color)]" [type]="isPasswordVisible ? 'text' : 'password'" name="password" id="password" placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}" formControlName="password" [ngClass]="{
             'border-[var(--error-text-color)]': registerForm.get('password')?.invalid && registerForm.get('password')?.touched,
             'border-gray-300': registerForm.get('password')?.valid || !registerForm.get('password')?.touched,
-             'focus:border-[var(--primary-color)]': (registerForm.get('password')?.valid && registerForm.get('password')?.touched),
+            'focus:border-[var(--primary-color)]': (registerForm.get('password')?.valid && registerForm.get('password')?.touched),
             'focus:border-[var(--error-text-color)]': !(registerForm.get('password')?.invalid && registerForm.get('password')?.touched),
-        }"/>
-        <app-password-visibility-icon (visibilityChanged)="toggleVisibility($event)"></app-password-visibility-icon>
+            }"/>
+           <app-password-visibility-icon (visibilityChanged)="toggleVisibility($event)"></app-password-visibility-icon>
+        </div>
         @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
             @if (registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
               <span class="text-[var(--error-text-color)] font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.PASSWORD' | translate} }}</span>

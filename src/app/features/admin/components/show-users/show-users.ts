@@ -1,13 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { User } from '../../../auth/user';
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-show-users',
-  imports: [AsyncPipe,TranslatePipe],
+  imports: [AsyncPipe, TranslatePipe, RouterLink],
   templateUrl: './show-users.html',
   styleUrl: './show-users.scss',
 })
@@ -21,6 +22,8 @@ export class ShowUsers {
   language = signal(this.translateService.getCurrentLang())
 
   destroy$ = new Subject<void>();
+
+  makeAdminButton = viewChild<HTMLButtonElement>('makeadmin')
 
   ngOnInit(): void {
     this.getUsers();
@@ -38,10 +41,24 @@ export class ShowUsers {
     )
   }
 
+  buttonclick(){
+    console.log('button of makeuseradmin is click');
+    
+  }
+
   makeUserAdmin(userId:string){
+    console.log('🚨 makeUserAdmin CALLED with userId:', userId, 'Time:', new Date().toISOString());
+    
     this.adminService.makeUserAdmin(userId).pipe(takeUntil(this.destroy$)).subscribe(
       {
         next : (value) => {
+          console.log('value is succcsss');
+          
+        },
+        error : (err) =>{
+          console.log(err);
+          console.log('error in errv ufnc');
+          
         },
       }
     );

@@ -101,9 +101,4 @@ export class Navbar implements OnInit{
     this.translateService.use(language);
     localStorage.setItem('language',language)
   }
-
-  ngOnDestroy(): void {
-    this.cartSubscription.unsubscribe();
-    this.loginSubscription.unsubscribe();
-  }
 }
