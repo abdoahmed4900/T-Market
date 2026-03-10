@@ -58,6 +58,11 @@ export const routes: Routes = [
       .then(m => m.NewProduct)
   },
   {
+    path: 'add-new-user',
+    loadComponent: () => import('./features/admin/components/add-new-user/add-new-user')
+      .then(m => m.AddNewUser)
+  },
+  {
     path: 'update-product/:id',
     loadComponent: () => import('./features/home-component/seller-home-component/components/update-product/update-product')
       .then(m => m.UpdateProduct)

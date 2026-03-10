@@ -1,33 +1,26 @@
 import { TranslatePipe } from '@ngx-translate/core';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductsService } from '../../../../../shared/services/products.service';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
 import { numericLengthValidator } from '../../../../../core/utils';
 import { firstValueFrom, Observable, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { Product } from '../../../../../core/interfaces/product';
 import { ImageService } from '../../../../../shared/services/image.service';
+import { GoBackButton } from "../../../../../shared/components/go-back-button/go-back-button";
 
 @Component({
   selector: 'app-new-product',
-  imports: [TranslatePipe, FaIconComponent, ReactiveFormsModule,AsyncPipe,MatSelectModule],
+  imports: [TranslatePipe, ReactiveFormsModule, AsyncPipe, MatSelectModule, GoBackButton],
   templateUrl: './new-product.html',
   styleUrl: './new-product.scss',
 })
 export class NewProduct {
 
   productService = inject(ProductsService);
-  isLanguageEnglish = computed(() => {
-    return localStorage.getItem('language') == 'en';
-  })
-  icon = signal(this.isLanguageEnglish() ? faArrowLeft : faArrowRight)
   
   fb = inject(FormBuilder);
-  router = inject(Router)
   categories!: Observable<string[]>;
   brands!: Observable<string[]>;
   selectedCategory! : string;
@@ -110,12 +103,6 @@ export class NewProduct {
       imageUrls?.push(res.secure_url);
     }
     return imageUrls;
-  }
-
-  goBack() {
-    this.router.navigate(['/'],{
-      replaceUrl: true
-    })
   }
 
   ngOnDestroy(): void {

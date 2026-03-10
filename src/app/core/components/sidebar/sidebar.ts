@@ -26,15 +26,12 @@ export class Sidebar {
   menu = linkedSignal(() => {
     return {
       admin: [
-        { label: 'SIDEBAR.ADD_NEW_USER', path: '/new-user' },
         { label: 'SIDEBAR.ADD_NEW_CATEGORY', path: '/new-category' },
         { label: 'SIDEBAR.ADD_NEW_BRAND', path: '/new-brand' },
-        { label: 'SIDEBAR.VIEW_ALL_USERS', path: '/users' },
-        { label: 'SIDEBAR.VIEW_ALL_PRODUCTS', path: '/view-products' },
+        { label: 'SIDEBAR.ADD_NEW_USER', path: '/add-new-user' },
       ],
       seller: [
         { label: 'SIDEBAR.ADD_NEW_PRODUCT', path: '/new-product' },
-        { label: 'SIDEBAR.VIEW_YOUR_PRODUCTS', path: '/view-products' },
       ],
     }[this.auth.userRole()!] ?? []
   })

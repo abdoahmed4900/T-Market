@@ -1,4 +1,4 @@
-import { AbstractControl } from "@angular/forms";
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export let statusChartOptions : any = (pending : number,shipped: number,delivered : number,cancelled : number) => {
     return {
@@ -119,4 +119,30 @@ export let statusChartOptions : any = (pending : number,shipped: number,delivere
 
   export function normalizeDate(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  export function passwordMatchValidator(passwordControl: string, confirmPasswordControl: string): ValidatorFn {
+  return (form: AbstractControl): ValidationErrors | null => {
+    const password = form.get(passwordControl)?.value;
+    const confirmPassword = form.get(confirmPasswordControl)?.value;
+
+    if(password != confirmPassword) {
+      form.get(confirmPasswordControl)?.setErrors({ mismatch: true });
+      return { mismatch: true };
+    }else{
+      if(form.get(confirmPasswordControl)?.hasError('mismatch')){
+        removeFormError(form.get(confirmPasswordControl)!, 'mismatch');
+      }
+    }
+
+    return null;
+  };
+}
+
+
+  export function removeFormError(control: AbstractControl, errorKey: string) {
+    if (!control.errors) return;
+
+    const { [errorKey]: _, ...otherErrors } = control.errors;
+    control.setErrors(Object.keys(otherErrors).length ? otherErrors : null);
   }

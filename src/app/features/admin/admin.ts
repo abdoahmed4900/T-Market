@@ -50,7 +50,6 @@ export class AdminComponent {
   isChartInitialized: boolean = false;
   destroy$ = new Subject<void>();
   showSidebar = signal(true);
-  width = signal(window.innerWidth);
 
   ngOnInit(): void {
     this.setupDashBoard();

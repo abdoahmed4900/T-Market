@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { User } from '../../../auth/user';
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -30,7 +30,12 @@ export class ShowUsers {
   }
 
   getUsers(){
-    this.users = this.adminService.getUsers();
+    this.users = this.adminService.getUsers().pipe(
+      tap((user) => {
+        console.log(JSON.stringify(user));
+        
+      })
+    )
   }
 
   makeUserAdmin(userId:string){

@@ -1,31 +1,25 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ProductsService } from '../../../../../shared/services/products.service';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { numericLengthValidator } from '../../../../../core/utils';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { Loader } from "../../../../../shared/components/loader/loader";
 import { ImageService } from '../../../../../shared/services/image.service';
+import { GoBackButton } from "../../../../../shared/components/go-back-button/go-back-button";
 
 @Component({
   selector: 'app-update-product',
-  imports: [ReactiveFormsModule, TranslatePipe, FaIconComponent, Loader],
+  imports: [ReactiveFormsModule, TranslatePipe, Loader, GoBackButton],
   templateUrl: './update-product.html',
   styleUrl: './update-product.scss',
 })
 export class UpdateProduct {
   productService = inject(ProductsService);
-  isLanguageEnglish = computed(() => {
-    return localStorage.getItem('language') == 'en';
-  })
-  icon = signal(this.isLanguageEnglish() ? faArrowLeft : faArrowRight)
   productId!: string;
   
   fb = inject(FormBuilder);
-  router = inject(Router)
   activatedRoute = inject(ActivatedRoute);
   productImagesUrls : string[] = [];
   isLoaded = signal(false);
@@ -62,13 +56,6 @@ export class UpdateProduct {
       this.isLoaded.set(true);
     });
   }
-
-  goBack() {
-    this.router.navigate(['/'],{
-      replaceUrl: true
-    })
-  }
-
   async updateProduct() {
     if (this.productFormGroup.invalid) return;
 

@@ -2,10 +2,11 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { collection, doc, query, setDoc, where } from 'firebase/firestore';
-import { defer, Observable, tap } from 'rxjs';
+import { defer, from, Observable, switchMap, tap } from 'rxjs';
 import { fireStoreCollections } from '../../../environments/environment';
 import { CartProduct } from '../../features/cart/cart.product';
 import { Order } from '../interfaces/order';
+import { Admin, Buyer, Seller, User } from '../../features/auth/user';
 
 @Injectable({
   providedIn: 'root'
@@ -70,7 +71,7 @@ export class AuthService {
       return {
          uid: value.user.uid,
          email: value.user.email,
-         displayName: value.user.displayName,
+         name: value.user.displayName,
          createdAt: new Date(),
          cartProducts: [] as CartProduct[],
          orders: [] as Order[],
@@ -80,9 +81,13 @@ export class AuthService {
    }
 
 
-   register(email:string, password:string) {
+   register(email:string,password:string,name:string,role:string) {
       let res = () => createUserWithEmailAndPassword(this.firebaseAuth,email,password);
-      return defer(res);
+      return defer(res).pipe(
+         switchMap((res) => {
+            return from(this.setUserData(email,name,res,role))
+         })
+      );
    }
 
    resetPassword(email: string) {
@@ -94,8 +99,25 @@ export class AuthService {
       const provider = new GoogleAuthProvider();
       let res = () =>  signInWithPopup(this.firebaseAuth, provider);
       return defer(res);
-    }
+   }
 
+   setUserData(email:string,name:string,value:UserCredential,role:string) {
+       let userData : User = {
+           uid: value.user.uid,
+           name: name,
+           email: email,
+           role: role.toLowerCase(),
+           createdAt: new Date().toDateString(),
+       };
+   
+       const roleHandlers = {
+        buyer: { ...userData, cartProducts: [], ordersIds: [], wishListIds: [] } as Buyer,
+        seller: { ...userData, ordersIds: [], productsIds: [], totalProductsSold: 0, totalRevenue: 0 } as Seller,
+        admin: {...userData, ordersIds: [], productsIds: [], totalRevenue:0, totalOrders:0, totalProductsSold:0 } as Admin
+       };
+       userData = roleHandlers[userData.role as 'admin' | 'seller' | 'buyer'];
+       return from(setDoc(doc(this.firestore, fireStoreCollections.users, value.user.uid), userData));
+   }
    logout() {
       let res = () => this.firebaseAuth.signOut();
       return defer(res).pipe(

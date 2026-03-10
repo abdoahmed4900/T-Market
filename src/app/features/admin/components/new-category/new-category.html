@@ -1,6 +1,6 @@
 <main class="flex flex-col gap-10 w-full mt-10 slideFromLeftAnimation">
     <header class="flex flex-col gap-10">
-        <button class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4" type="button" (click)="goBack()"> <fa-icon [icon]="icon()"></fa-icon> {{'GO_BACK' | translate}}</button>
+        <app-go-back-button></app-go-back-button>
         <h2 class="text-[20px] font-bold">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_TITLE' | translate}}</h2>
         <p class="text-[17px]">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_SUBTITLE' | translate}}</p>
     </header>

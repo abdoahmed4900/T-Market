@@ -36,7 +36,8 @@ export class ReviewService{
     private updateReviewsAndRating(product: Product, name: string, rating: number, review: string, docRef:DocumentReference) {
         let reviews = product.reviews ?? [];
         let newReviews = [...reviews, { userName: name, userId: localStorage.getItem('token')!, rating: rating, comment: review, date: new Date().toDateString() }] as Review[];
-        let newRating = (rating + product.rating) / newReviews.length;
+        const totalRating = newReviews.reduce((sum, r) => sum + r.rating, 0);
+        const newRating = totalRating / newReviews.length;
         return from(updateDoc(docRef, { reviews: newReviews,rating: newRating })).pipe(
             map(() => {
                 return newReviews;

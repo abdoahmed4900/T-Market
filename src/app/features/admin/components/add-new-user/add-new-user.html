@@ -1,0 +1,51 @@
+<main class="flex flex-col gap-5 mt-10">
+    <header class="flex flex-col gap-5">
+        <app-go-back-button></app-go-back-button>
+        <h2 class="text-[20px] font-bold">{{'ADD_NEW_USER.TITLE' | translate}}</h2>
+        <p class="text-[17px]">{{'ADD_NEW_USER.SUBTITLE' | translate}}</p>
+    </header>
+    <form [formGroup]="newUserForm" class="flex flex-col gap-4 mt-3">
+        <div class="email-container flex flex-col gap-1">
+         <label for="email" class="text-[14px] font-bold">{{'AUTH.LABELS.EMAIL' | translate}}</label>
+         <input class="outline-none border-1 rounded-lg p-2" type="email" name="email" id="email" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" formControlName="email" 
+         [class.border-[var(--error-text-color)].focus:border-[var(--error-text-color)]]="newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched"
+         [class.border-gray-300.focus:border-[var(--primary-color)]]="newUserForm.get('email')?.valid && newUserForm.get('email')?.touched"     
+         />
+         @if (newUserForm.get('email')?.hasError('required') && newUserForm.get('email')?.touched) {
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.EMAIL' | translate } }}</span>
+         }
+         @if (newUserForm.get('email')?.hasError('email') && newUserForm.get('email')?.touched) {
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.EMAIL' | translate} }}</span>
+         }
+       </div>
+       <div class="user-name-container flex flex-col gap-1">
+         <label for="user-name" class="text-[14px] font-bold">{{'AUTH.LABELS.USERNAME' | translate}}</label>
+         <input class="outline-none border-1 rounded-lg p-2" type="text" name="user-name" id="user-name" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" formControlName="email" 
+         [class.border-[var(--error-text-color)].focus:border-[var(--error-text-color)]]="newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched"
+         [class.border-gray-300.focus:border-[var(--primary-color)]]="newUserForm.get('email')?.valid && newUserForm.get('email')?.touched"     
+         />
+         @if (newUserForm.get('userName')?.hasError('required') && newUserForm.get('userName')?.touched) {
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.USERNAME' | translate } }}</span>
+         }
+         @if (newUserForm.get('userName')?.hasError('minlength') && newUserForm.get('userName')?.touched) {
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.USERNAME' | translate} }}</span>
+         }
+       </div>
+        <label for="role" class="text-[14px] font-bold">{{'AUTH.LABELS.ROLE' | translate}}</label>
+        <mat-select class="border-1 rounded-xl relative" name="role" id="role" [(value)]="selectedRole">
+            <mat-option value="Buyer">{{'AUTH.ROLES.BUYER' | translate}}</mat-option>
+            <mat-option value="Seller">{{'AUTH.ROLES.SELLER' | translate}}</mat-option>
+            <mat-option value="Admin">{{'AUTH.ROLES.ADMIN' | translate}}</mat-option>
+        </mat-select>
+        <div class="password-container flex flex-col gap-1 relative">
+            <label>{{'AUTH.LABELS.PASSWORD' | translate}}</label>
+            <input class="outline-none border-1 rounded-lg p-2" [type]="isPasswordVisible() ? 'text' : 'password'" name="password" id="password" formControlName="password" placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}">
+            <app-password-visibility-icon (visibilityChanged)="setPasswordVisiblity($event)"></app-password-visibility-icon>
+        </div>
+        <div class="confirm-password-container flex flex-col gap-1">  
+           <label>{{'AUTH.LABELS.CONFIRM_PASSWORD' | translate}}</label>
+           <input class="outline-none border-1 rounded-lg p-2" [type]="isPasswordVisible() ? 'text' : 'password'" name="confirm-password" id="confirm-password" formControlName="confirmPassword" placeholder="{{'AUTH.PLACEHOLDERS.CONFIRM_PASSWORD' | translate}}">
+        </div>
+        <button type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'ADD_NEW_USER.SUBMIT' | translate}}</button>
+    </form>
+</main>

@@ -1,0 +1,17 @@
+    <section [class]="formControlName + '-container'" class="flex flex-col gap-1">
+    <label [for]="formControlName()" class="text-[14px] font-bold">{{label() | translate}}</label>
+    <input 
+    class="outline-none border-2 rounded-lg p-2" [type]="type()" 
+    [name]="formControlName()" [id]="formControlName()" 
+    [placeholder]="placeHolder() | translate" 
+    [formControl]="control()!"  
+    [class.border-[var(--error-text-color)].focus:border-[var(--error-text-color)]]="isInvalid"
+    [class.border-gray-300.focus:border-[var(--primary-color)]]="isValid"
+    />
+    @if (hasError('email')) {
+        <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.EMAIL' | translate} }}</span>
+    }
+    @if (hasError('required')) {
+       <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.EMAIL' | translate } }}</span>
+    }
+</section>

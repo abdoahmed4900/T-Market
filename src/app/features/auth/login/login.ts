@@ -1,33 +1,35 @@
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Component, inject, OnInit } from '@angular/core';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { getFirebaseErrorMessage } from '../../../core/methods';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../shared/components/loader/loader';
 import { Firestore } from '@angular/fire/firestore';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
+import { PasswordVisibilityIcon } from "../../../shared/components/password-visibility-icon/password-visibility-icon";
 
 @Component({
   selector: 'app-login',
-  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, RouterLink, TranslatePipe],
+  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, TranslatePipe, PasswordVisibilityIcon,RouterLink],
   standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.scss',
   providers: [],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  
   isPasswordVisible: boolean = false;
 
-  constructor(private fb : FormBuilder,private matDialog : MatDialog) { }
+  fb = inject(FormBuilder);
+
+  constructor(private matDialog : MatDialog) { }
 
   passwordIcon = faEye;
-
-  loginForm !: FormGroup;
 
   fireStore = inject(Firestore);
 
@@ -35,12 +37,11 @@ export class LoginComponent implements OnInit {
 
   // toastService = inject(ToastService);
 
-  ngOnInit(): void {
-    this.loginForm = this.fb.group({
+  
+  loginForm = this.fb.group({
       email : ['', [Validators.required, Validators.email]],
       password : ['', [Validators.required, Validators.minLength(6)]]
-    });
-  }
+  });
 
   auth = inject(AuthService);
 
@@ -48,9 +49,8 @@ export class LoginComponent implements OnInit {
 
   destroy$ = new Subject<void>()
 
-  togglePasswordVisibility() {
-    this.isPasswordVisible = !this.isPasswordVisible;
-    this.passwordIcon = !this.isPasswordVisible ? faEye : faEyeSlash;
+  toggleVisibility(isVisible: boolean) {
+     this.isPasswordVisible = isVisible;
   }
 
   loginWithEmailAndPassword() {
@@ -58,10 +58,10 @@ export class LoginComponent implements OnInit {
       const dialogRef = this.matDialog.open(Loader, {
       disableClose: true,
     });
-      this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).pipe(takeUntil(this.destroy$)).subscribe({
+      this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value!, this.loginForm.get('password')?.value!).pipe(takeUntil(this.destroy$)).subscribe({
       next: async () => {
         dialogRef.close();
-        await this.auth.changeUserCredentials(this.loginForm.get('email')!.value);
+        await this.auth.changeUserCredentials(this.loginForm.get('email')!.value!);
         await this.router.navigate(['/'], { replaceUrl: true });
       },
       error: (err) => {

@@ -200,5 +200,10 @@
       "NO_REVIEWS": "No Reviews were added!",
       "ADD_COMMENT": "Add your review",
       "YOU": "You"
+   },
+   "ADD_NEW_USER": {
+      "TITLE": "Create new user",
+      "SUBTITLE": "Add a new user to your website",
+      "SUBMIT": "Add user"
    }
 }

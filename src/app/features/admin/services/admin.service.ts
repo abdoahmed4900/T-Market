@@ -1,11 +1,11 @@
 import { ProductsService } from '../../../shared/services/products.service';
 import { inject, Injectable } from "@angular/core";
 import { OrderService } from "../../../shared/services/order.service";
-import { from, map } from 'rxjs';
+import { from, map, switchMap } from 'rxjs';
 import { collection, collectionData, doc, Firestore, query, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';
 import { Admin, User } from '../../auth/user';
-import { getDocs, limit, updateDoc } from 'firebase/firestore';
+import { addDoc, getDocs, limit, updateDoc } from 'firebase/firestore';
 
 @Injectable(
     {
@@ -137,13 +137,30 @@ export class AdminService{
         ).pipe(
             map((u) => {
                 let users = u as User[];
-                return users.filter((u) => u.uid != localStorage.getItem('token')!);
+                
+                return users.filter((u) => {
+                    return u.uid != localStorage.getItem('token')!;
+                });
             })
         )
     }
 
     makeUserAdmin(userId:string){
         return from(updateDoc(doc(this.fireStore,fireStoreCollections.users,userId),{ role: 'admin'}));
+    }
+
+    addNewUser(user: User){
+        return collectionData(collection(this.fireStore,fireStoreCollections.users)).pipe(
+            switchMap(() => {
+                return from(addDoc(collection(this.fireStore,fireStoreCollections.users),{
+                    ...user
+                })).pipe(
+                    map((document) => {
+                        return from(updateDoc(document,{uid: document.id}))
+                    })
+                )
+            })
+        )
     }
 }
 
