@@ -13,10 +13,11 @@ import { CartService } from '../../shared/services/cart.service';
 import { ReviewService } from './services/review.service';
 import { Review } from '../../core/interfaces/review';
 import { MatDialog } from '@angular/material/dialog';
+import { ProductDetailsSkeleton } from "./components/product-details-skeleton/product-details-skeleton";
 
 @Component({
   selector: 'app-product-details',
-  imports: [CommonModule, Loader, FaIconComponent,ReactiveFormsModule,TranslatePipe,FormsModule],
+  imports: [CommonModule, FaIconComponent, ReactiveFormsModule, TranslatePipe, FormsModule, ProductDetailsSkeleton],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss'
 })
@@ -57,6 +58,7 @@ export class ProductDetails {
   isProductReviewed = signal(false);
   reviews = signal([] as Review[]);
   commentElement = viewChild<ElementRef<HTMLInputElement>>('review');
+  imageWidth = signal(100);
 
   ngOnInit(){
     this.getProductId();
@@ -165,6 +167,17 @@ export class ProductDetails {
   }
   handleStarRatingOnLeave() {
     this.hoveredStarRating.set(-1);
+  }
+
+  zoomInOnImage(){
+    this.imageWidth.update((v) => v + 1);
+    console.log(this.imageWidth());
+    
+  }
+  zoomOutOnImage(){
+    this.imageWidth.update((v) => v - 1);
+        console.log(this.imageWidth());
+
   }
 
   ngOnDestroy(): void {

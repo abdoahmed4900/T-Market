@@ -1,0 +1,8 @@
+<section class="my-5 rounded-[50px] w-full p-1 ps-0 border-1 relative mb-10">
+    <section #progress class="absolute p-1 top-0 bg-[var(--primary-color)] transition-[width] duration-100 ease-in-out" [style.width.%]="progressPercent()">
+    </section>
+     @if (isProgressing()) {
+        <p class="text-[14px] mt-3 font-bold z-2 p-3 px-6 bg-[var(--primary-color)] rounded-xl absolute size-fit" [style.inset-inline-start.%]="progressPercent()" [style.transform]="isEnglish() ? 'translateX(-50%)' : 'translateX(50%)'">{{progressText() | translate}}</p>
+        <section class="arrow w-[10px] top-0 z-1 h-[20px] absolute border-[10px] border-transparent border-b-[10px] border-b-[var(--primary-color)]" [style.inset-inline-start.%]="progressPercent()"[style.transform]="isEnglish() ? 'translateX(-50%)' : 'translateX(50%)'"></section>
+     }
+</section>

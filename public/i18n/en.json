@@ -194,7 +194,8 @@
       "ROLE": "Role",
       "EMAIL": "Email",
       "CHANGE_ROLE": "Change Role",
-      "MAKE_ADMIN": "Make Admin"
+      "MAKE_ADMIN": "Make Admin",
+      "DELETE_USER": "Delete user"
    },
    "PRODUCT_DETAILS": {
       "NO_REVIEWS": "No Reviews were added!",
@@ -205,5 +206,10 @@
       "TITLE": "Create new user",
       "SUBTITLE": "Add a new user to your website",
       "SUBMIT": "Add user"
+   },
+   "PROGRESS_BAR": {
+      "CART": "Cart",
+      "PAYMENT": "Payment",
+      "DONE": "Done"
    }
 }

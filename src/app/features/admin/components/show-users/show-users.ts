@@ -4,11 +4,10 @@ import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { User } from '../../../auth/user';
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-show-users',
-  imports: [AsyncPipe, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, TranslatePipe],
   templateUrl: './show-users.html',
   styleUrl: './show-users.scss',
 })
@@ -63,7 +62,6 @@ export class ShowUsers {
       }
     );
   }
-
   ngOnDestroy(): void {
     this.destroy$.next()
     this.destroy$.complete()

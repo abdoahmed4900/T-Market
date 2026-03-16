@@ -1,5 +1,13 @@
 import { MatDialog } from '@angular/material/dialog';
-import { afterNextRender, Component, computed, ElementRef, inject, linkedSignal, signal } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  linkedSignal,
+  signal,
+} from '@angular/core';
 import {
   loadStripe,
   Stripe,
@@ -22,6 +30,7 @@ import { Order } from '../../core/interfaces/order';
 import { StripeService } from './services/payment.service';
 import { numericLengthValidator } from '../../core/utils';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ProgressService } from '../../shared/components/payment-progress-bar/progress.service';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -64,8 +73,6 @@ export class PaymentComponent {
     return this.translateService.getCurrentLang() == 'en';
   })
 
-  
-
   paymentFormGroup = this.formBuilder.group(
      {
        name: ['',[Validators.required,Validators.minLength(3)]],
@@ -75,6 +82,7 @@ export class PaymentComponent {
      }
     );
   isStripeCreated = signal(false);
+  progressService = inject(ProgressService);
 
    constructor() {
     const elementRef = inject(ElementRef);
@@ -229,8 +237,6 @@ baseStyle() {
       default:
         this.brandIcon.set('');
     }
-    console.log(this.brandIcon);
-    
   }
 
   async pay(name: string) {
@@ -244,6 +250,7 @@ baseStyle() {
     if (result.paymentIntent?.status !== 'succeeded') {
       throw new Error('Payment failed');
     }
+    this.progressService.goToFinalStep();
     let newOrder = await this.stripeService.finishPayment(result, this.paymentFormGroup,this.price);
     const userData = await this.stripeService.updateUserOrders(newOrder);
     ref.close();

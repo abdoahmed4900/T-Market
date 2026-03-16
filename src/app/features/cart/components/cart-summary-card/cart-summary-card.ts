@@ -4,10 +4,11 @@ import { Observable } from 'rxjs';
 import { CartService } from '../../../../shared/services/cart.service';
 import { Product } from '../../../../core/interfaces/product';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Loader } from "../../../../shared/components/loader/loader";
 
 @Component({
   selector: 'app-cart-summary-card',
-  imports: [CurrencyPipe, AsyncPipe,TranslatePipe],
+  imports: [CurrencyPipe, AsyncPipe, TranslatePipe, Loader],
   templateUrl: './cart-summary-card.html',
   styleUrl: './cart-summary-card.scss'
 })

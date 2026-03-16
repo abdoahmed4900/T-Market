@@ -19,20 +19,60 @@ body {
 
 :root{
     --primary-color: rgb(137, 90, 246); 
-    --button-hover-color: #1FD5F9;
-    --navbar-text-selected-color: rgb(116, 61, 245);
+    .skeleton-basic {
+      background: var(--skeleton);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      will-change: background-position;
+      transform: translateZ(0);
+      margin: 5px 0;
+    }
+    transition: --skeleton 0.3s ease;
+
+   @keyframes shimmer {
+     0% { background-position: 200% 0; }
+     100% { background-position: -200% 0; }
+   }
+
+  .text-skeleton{
+    height: 50px;
+    width: 100%;
+    border-radius: 15px;
+  }
+  .small-text-skeleton{
+    height: 50px;
+    width: 50px;
+    border-radius: 15px;
+  }
+  .medium-text-skeleton{
+    height: 50px;
+    width: 150px;
+    border-radius: 15px;
+  }
 }
 .light-theme{
     --main-bg-color: #ffffff;
     --primary-text-color: #1F283D;
     --secondary-text-color: rgb(107, 114, 128);
     --error-text-color: #DC2626;
+    --skeleton :linear-gradient(
+       90deg,
+     #f5f5f5 25%,
+     #e8e8e8 50%,
+     #f5f5f5 75%
+    );
 }
 .dark-theme{
     --main-bg-color: #1F283D;
     --primary-text-color: #FFFFFF;
     --secondary-text-color: rgb(156, 163, 175);
-    --error-text-color: #F87171;
+    --error-text-color: #ed2020;
+    --skeleton : linear-gradient(
+      90deg,
+     #2a2a2a 25%,
+     #3a3a3a 50%,
+     #2a2a2a 75%
+    );
 }
 
 input[type="search"],
@@ -105,7 +145,7 @@ button:disabled{
 }
 
 .slideFromTopAnimation{
-  animation: slideFromTop 0.3s ease;  
+  animation: slideFromTop 1s ease;  
 }
 
 @keyframes slideFromTop {

@@ -9,7 +9,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cart-card',
-  imports: [CurrencyPipe, AsyncPipe, RouterLink,TranslatePipe],
+  imports: [CurrencyPipe, AsyncPipe, RouterLink, TranslatePipe],
   templateUrl: './cart-card.html',
   styleUrl: './cart-card.scss'
 })

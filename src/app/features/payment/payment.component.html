@@ -9,7 +9,7 @@
      @if (paymentFormGroup.get('name')?.hasError('required') && paymentFormGroup.get('name')?.touched) {
        <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.NAME_PLACEHOLDER' | translate } }}</span>
      }@if (paymentFormGroup.get('name')?.hasError('minlength') && paymentFormGroup.get('name')?.touched) {
-       <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.NAME_PLACEHOLDER' | translate } }}</span>
+       <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:3,field: 'PAYMENT.NAME_PLACEHOLDER' | translate } }}</span>
      }
    </div>
 
@@ -23,17 +23,17 @@
       @if (paymentFormGroup.get('street')?.hasError('required') && paymentFormGroup.get('street')?.touched) {
        <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.STREET_PLACEHOLDER' | translate } }}</p>
       }@if (paymentFormGroup.get('street')?.hasError('minlength') && paymentFormGroup.get('street')?.touched) {
-       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.STREET_PLACEHOLDER' | translate } }}</p>
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:3,field: 'PAYMENT.STREET_PLACEHOLDER' | translate } }}</p>
       }
       @if (paymentFormGroup.get('zipCode')?.hasError('required') && paymentFormGroup.get('zipCode')?.touched) {
        <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate } }}</p>
       }@if (paymentFormGroup.get('zipCode')?.hasError('minlength') && paymentFormGroup.get('zipCode')?.touched) {
-       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate } }}</p>
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:5 ,field: 'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate } }}</p>
       }
       @if (paymentFormGroup.get('city')?.hasError('required') && paymentFormGroup.get('city')?.touched) {
        <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.CITY_PLACEHOLDER' | translate } }}</p>
       }@if (paymentFormGroup.get('city')?.hasError('minlength') && paymentFormGroup.get('city')?.touched) {
-       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CITY_PLACEHOLDER' | translate } }}</p>
+       <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:3,field: 'PAYMENT.CITY_PLACEHOLDER' | translate } }}</p>
       }
    </div>
 
@@ -64,7 +64,7 @@
       }
    </div>
 
-   <button type="submit" class="p-4 bg-[var(--primary-color)] text-white rounded-xl self-end hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out" [disabled]="!isFormValid() || paymentFormGroup.invalid">{{'PAYMENT.PAY' | translate}}</button>
+   <button type="submit" class="p-4 bg-[var(--primary-color)] text-white rounded-xl hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out" [disabled]="!isFormValid() || paymentFormGroup.invalid" [class.self-end]="isLangEnglish()">{{'PAYMENT.PAY' | translate}}</button>
  </div>
 </form>
 }@else {
