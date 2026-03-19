@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Loader } from "../../shared/components/loader/loader";
 import { CartCard } from "./components/cart-product-card/cart-card";
 import { CartService } from '../../shared/services/cart.service';
 import { CartSummaryCard } from "./components/cart-summary-card/cart-summary-card";
@@ -10,10 +9,11 @@ import { Product } from '../../core/interfaces/product';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PaymentProgressBar } from "../../shared/components/payment-progress-bar/payment-progress-bar";
 import { ProgressService } from '../../shared/components/payment-progress-bar/progress.service';
+import { CartSkeleton } from "./components/cart-skeleton/cart-skeleton";
 
 @Component({
   selector: 'app-cart',
-  imports: [AsyncPipe, Loader, CartCard, NgClass, CartSummaryCard, RouterLink, TranslatePipe, PaymentProgressBar],
+  imports: [AsyncPipe, CartCard, NgClass, CartSummaryCard, RouterLink, TranslatePipe, PaymentProgressBar, CartSkeleton],
   templateUrl: './cart.html',
   styleUrl: './cart.scss'
 })

@@ -22,6 +22,7 @@ body {
     .skeleton-basic {
       background: var(--skeleton);
       background-size: 200% 100%;
+      border-radius: 12px;
       animation: shimmer 1.5s infinite;
       will-change: background-position;
       transform: translateZ(0);

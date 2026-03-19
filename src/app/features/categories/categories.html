@@ -30,12 +30,14 @@
        }
     </section>
     <section class="search-results grid grid-cols-[repeat(md:auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
-        @if (products != null) {
+        @if (isProductsLoaded()) {
           @for (item of products; track item.id) {
                 <app-product-card [product]="item"></app-product-card>
           }
         }@else{
-        <app-loader></app-loader>
+          @for (item of [1,2,3]; track $index) {
+            <app-product-card-skeleton></app-product-card-skeleton>
+          }
         }
 
        @if(products!.length == 0){

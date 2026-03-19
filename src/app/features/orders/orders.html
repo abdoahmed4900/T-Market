@@ -60,7 +60,9 @@
               <img src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-ordersList"/>
             }
         }@else {
-            <app-loader></app-loader>
+            @for (item of [1,2,3]; track $index) {
+              <app-order-item-skeleton></app-order-item-skeleton>
+            }
         }
     </section>
 </main>

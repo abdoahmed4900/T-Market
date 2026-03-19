@@ -1,20 +1,21 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { Seller } from '../../auth/user';
 import { HomeService } from '../../../core/services/home.service';
-import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
 import { ProductsService } from '../../../shared/services/products.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { RouterLink } from "@angular/router";
 import { Loader } from '../../../shared/components/loader/loader';
 import { Sidebar } from '../../../core/components/sidebar/sidebar';
+import { SellerHomeSkeleton } from "./components/seller-home-skeleton/seller-home-skeleton";
+import { SellerProducts } from "./components/seller-product/seller-products";
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-seller-home-component',
-  imports: [AsyncPipe, CurrencyPipe, Loader, TranslatePipe, Sidebar, RouterLink],
+  imports: [AsyncPipe, CurrencyPipe, Loader, TranslatePipe, Sidebar, SellerHomeSkeleton, SellerProducts],
   templateUrl: './seller-home-component.html',
   styleUrl: './seller-home-component.scss'
 })
@@ -34,47 +35,11 @@ export class SellerHomeComponent {
   destroy$ = new Subject<void>();
 
   ngOnInit(): void {
-    this.user = this.homeSerivce.getUser().pipe(
-      tap((user) => {
-        this.getSellerItems();
-      }),
-    );
+    this.user = this.homeSerivce.getUser();
   }
 
   @HostListener('window:resize',[])
   setWidth(){
     this.showSidebar.set(window.innerWidth >= 1024);
-  }
-  private getSellerItems() {
-    console.log('in here');    
-    this.sellerProducts = this.productSerivce.getAllProducts().pipe(
-      map((products) => {
-        products = products.filter((product) => product.sellerId == localStorage.getItem('token'));
-        console.log(products);
-        
-        return products;
-      })
-    );
-  }
-
-  deleteProduct(productId:string){
-    this.productSerivce.deleteProduct(productId).pipe(takeUntil(this.destroy$)).subscribe(
-      {
-        next : (value) => {
-          if(value){
-            this.sellerProducts = this.sellerProducts.pipe(
-              map((products) => {
-                return products.filter((p) => p.id != productId); 
-              })
-            )
-          }
-        },
-      }
-    )
-  }
-  
-  ngOnDestroy(): void {
-    this.destroy$.next()
-    this.destroy$.complete()
   }
 }

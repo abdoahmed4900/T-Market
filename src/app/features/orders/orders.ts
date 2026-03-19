@@ -8,10 +8,11 @@ import { Loader } from "../../shared/components/loader/loader";
 import { TranslatePipe } from '@ngx-translate/core';
 import { PaginationService } from '../../shared/services/pagination.service';
 import { OrderItem } from './components/order-item/order-item';
+import { OrderItemSkeleton } from "./components/order-item-skeleton/order-item-skeleton";
 
 @Component({
   selector: 'app-orders',
-  imports: [AsyncPipe, OrderItem, FormsModule, Loader, TranslatePipe,FormsModule,CommonModule],
+  imports: [AsyncPipe, OrderItem, FormsModule, Loader, TranslatePipe, FormsModule, CommonModule, OrderItemSkeleton],
   templateUrl: './orders.html',
   styleUrl: './orders.scss'
 })

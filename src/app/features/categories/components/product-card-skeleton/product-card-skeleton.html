@@ -1,0 +1,22 @@
+<section class="product-card flex flex-col justify-between gap-3 border-2 rounded-lg shadow-md overflow-hidden transition hover:translate-y-[-5px] duration-300 ease-in-out animate-slideFromTop relative">
+    <div class="product-content flex flex-col px-4">
+        <div class="nav-image h-[250px] rounded-xl skeleton-basic"></div>
+        <div class="skeleton-basic medium-text-skeleton mb-3"></div>
+        <div class="skeleton-basic text-skeleton"></div>
+        <div class="skeleton-basic medium-text-skeleton"></div>
+        <div class="skeleton-basic small-text-skeleton"></div>
+    </div>
+    <div class="rating-and-price flex flex-row items-center justify-between p-4">
+        <span class="rating flex flex-row">
+            @for (item of [1,2,3,4,5]; track $index) {
+                <app-star-skeleton></app-star-skeleton>
+            }
+        </span>
+        <div class="skeleton-basic small-text-skeleton"></div>
+    </div>
+    <div class="actions flex md:flex-row flex-col gap-y-3 gap-x-2 md:items-center items-start flex-wrap p-4">
+        <div class="rounded-lg p-3 md:w-[150px] h-[50px] w-full skeleton-basic"></div>
+        <div class="rounded-lg p-3 md:w-[150px] h-[50px] w-full skeleton-basic"></div>
+        <div class="rounded-lg p-3 md:w-[150px] h-[50px] w-full skeleton-basic"></div>
+    </div>
+</section>

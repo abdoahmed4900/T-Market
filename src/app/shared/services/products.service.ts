@@ -35,6 +35,10 @@ export class ProductsService {
     const q = query(this.productsCollectionRef);
     return collectionData(q, { idField: 'id' }) as Observable<Product[]>;
     }
+    getSellerProducts(): Observable<Product[]> {
+      const q = query(this.productsCollectionRef,where('sellerId','==',localStorage.getItem('token')));
+      return collectionData(q, { idField: 'id' }) as Observable<Product[]>;
+    }
 
     getProductById(id:string){
         const q = query(this.productsCollectionRef, where('id', '==', id));

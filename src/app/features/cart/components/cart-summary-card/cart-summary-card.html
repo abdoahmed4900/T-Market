@@ -9,11 +9,16 @@
         </div>
         } 
         <hr>
-      <section class="slideFromRightAnimation flex flex-row mt-8 slideFromLeftAnimation justify-end flex-wrap">
-        <h3 class="text-[var(--primary-text-color)] font-bold text-xl slideFromRightAnimation">{{'CART.TOTAL_PRICE' | translate}} : {{totalPrice | async | currency}}</h3>
-      </section>
+        <h3 class="text-[var(--primary-text-color)] slideFromRightAnimation mt-8 self-end font-bold text-xl slideFromRightAnimation">{{'CART.TOTAL_PRICE' | translate}} : {{totalPrice | async | currency}}</h3>
     } 
     @else {
-     <app-loader></app-loader>
+      @for (item of [1,2,3]; track $index) {
+        <div class="summary-item-skeleton flex flex-row justify-between items-center">
+             <div class="skeleton-basic medium-text-skeleton"></div>
+              <div class="skeleton-basic small-text-skeleton"></div>
+         </div>
+      } 
+      <hr>
+      <div class="skeleton-basic text-skeleton"></div>
     }
 </div>

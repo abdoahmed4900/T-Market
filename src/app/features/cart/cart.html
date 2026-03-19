@@ -5,18 +5,16 @@
 ">
   @if (cartProducts) {
     <app-payment-progress-bar></app-payment-progress-bar>
-    <div class="products mt-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="lg:col-span-2 flex flex-col gap-6">
-        @if (isLoaded()) {
-          @for (item of cartProducts; track item.id) {
+    <div class="products mt-4 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:grid-rows-2">
+      <div class="lg:col-span-2 flex flex-col gap-6 lg:row-span-2 min-h-[500px]">
+        @for (item of cartProducts; track item.id) {
            <app-cart-card [productId]="item.id!" [quantity]="item.quantity" [cartProduct]="item"></app-cart-card>
-          }
-        }@else {
-          <app-loader></app-loader>
         }
       </div>
       @if(price != 0){ 
-        <app-cart-summary-card></app-cart-summary-card>
+        <div class="lg:col-start-3 lg:row-start-1">
+          <app-cart-summary-card></app-cart-summary-card>
+        </div>
       }
     </div>
     @if(price == 0){
@@ -25,10 +23,10 @@
          <h3 class="text-[var(--primary-text-color)] font-bold text-xl">{{'CART.EMPTY' | translate}}</h3>
       </section>
     }
-    @else{
+    <div class="lg:col-start-3 lg:row-start-2 flex justify-end items-start">
       <button class="bg-[var(--primary-color)] mt-4 text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromRightAnimation hover:bg-purple-700" routerLink="/checkout" [class.self-end]="isEnglish()">{{'CART.CHECKOUT' | translate}}</button>
-    }
+    </div>
   }@else {
-    <app-loader></app-loader>
+    <app-cart-skeleton></app-cart-skeleton>
   }
 </main>
