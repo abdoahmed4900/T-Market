@@ -1,4 +1,5 @@
-  <main class="mt-7 slideFromLeftAnimation" [class]="!isAdmin() ? 'flex flex-col gap-5 w-full' : ''">
+@let orders = (ordersList | async);
+<main appAnimateOnScroll class="mt-7 slideFromLeftAnimation" [class]="!isAdmin() ? 'flex flex-col gap-5 w-full' : ''">
     <header>
         <h1 class="text-[20px] font-bold">{{'ORDERS.ORDERS_LIST' | translate}}</h1>
     </header>
@@ -38,26 +39,14 @@
             <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'SHIPPED'" (click)="setStatus('SHIPPED')">{{'SHIPPED' | translate}}</button>
             <button class="rounded-xl p-2 border-0 hover:bg-[var(--primary-color)]" [class.bg-[var(--primary-color)]]="selectedStatus() == 'DELIVERED'" (click)="setStatus('DELIVERED')">{{'DELIVERED' | translate}}</button>
         </div>
-        @if ((ordersList | async); as orders) {
-            @if (orders.length > 0) {
-              @for (item of showedOrders(); track item.id) {
-                <app-order-item [order]="item" class="slideFromTopAnimation"></app-order-item>
+        @if (isLoaded()) {
+            @if (orders!.length > 0) {
+              @for (item of showedProducts(); track item.id) {
+                <app-order-item appAnimateOnScroll [order]="item" class="slideFromTopAnimation"></app-order-item>
               }
-              <section aria-roledescription="see-differenet-orders" class="justify-center col-span-3 flex items-center gap-3 mt-10 flex-wrap w-[100%]">
-                @if (allPages().length > 0) {
-                  <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="previousPage()" [disabled]="currentPage() == 1">{{'PREVIOUS' | translate}}</button>
-                }
-                 @for (item of showedPages(); track $index) {
-                    <button class="text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goToPage(item)" [ngClass]="
-                            item == currentPage() ? 'bg-purple-700' : 'bg-[var(----primary-color)]'
-                          ">{{item}}</button>
-                    }
-                    @if (allPages().length > 0) {
-                      <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="nextPage()" [disabled]="currentPage() == allPages().length">{{'NEXT' | translate}}</button>
-                    }
-              </section>
+              <app-pagination-container></app-pagination-container>
             }@else{
-              <img src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-ordersList"/>
+              <img appAnimateOnScroll src="https://cdn-icons-png.flaticon.com/512/13466/13466923.png" class="w-[150px] mx-auto my-10 slideFromTopAnimation" alt="no-ordersList"/>
             }
         }@else {
             @for (item of [1,2,3]; track $index) {

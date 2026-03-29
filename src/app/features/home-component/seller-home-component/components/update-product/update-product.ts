@@ -5,13 +5,13 @@ import { numericLengthValidator } from '../../../../../core/utils';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
-import { Loader } from "../../../../../shared/components/loader/loader";
 import { ImageService } from '../../../../../shared/services/image.service';
 import { GoBackButton } from "../../../../../shared/components/go-back-button/go-back-button";
+import { AnimateOnScroll } from "../../../../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-update-product',
-  imports: [ReactiveFormsModule, TranslatePipe, Loader, GoBackButton],
+  imports: [ReactiveFormsModule, TranslatePipe, GoBackButton, AnimateOnScroll],
   templateUrl: './update-product.html',
   styleUrl: './update-product.scss',
 })

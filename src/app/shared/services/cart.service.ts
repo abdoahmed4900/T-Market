@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, debounceTime, forkJoin, from, map, of, shareReplay, switchMap, tap } from "rxjs";
+import { BehaviorSubject, debounceTime, forkJoin, from, map, of, switchMap } from "rxjs";
 import { collection, collectionData, doc, Firestore, getDoc, query, updateDoc, where } from "@angular/fire/firestore";
 import { ProductsService } from "./products.service";
 import { fireStoreCollections } from "../../../environments/environment";
@@ -18,18 +18,20 @@ export class CartService{
     productsCollectionRef = collection(this.fireStore,fireStoreCollections.products);
     totalCartPrice$ = new BehaviorSubject<number>(0);
     totalCartProductsNumber$ = new BehaviorSubject<number>(0);
+    user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
 
     getAllCartProducts(){
-        let user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
-        return user.pipe(
+        return this.user.pipe(
             switchMap(users => {
               const user = users[0] as Buyer;
-              
               if (!user || !user.cartProducts || user.cartProducts.length === 0) {
                 return of([]); 
               }
-              
+              let totalPrice = 0;
+              let cartProductsNumber = 0;
               const productStreams = user.cartProducts.map(p => {
+                cartProductsNumber += p.quantity;
+                totalPrice += (p.price * p.quantity);
                 return this.productService.getProductById(p.id!).pipe(
                   map((product) => {
                     return ({
@@ -39,20 +41,10 @@ export class CartService{
                   }),
                 )
               });
-              return forkJoin(productStreams).pipe(
-                tap((products) => {
-                  let totalPrice = 0;
-                  let cartProductsNumber = 0;
-                  products.forEach((product) => {
-                    totalPrice += product.price * product.quantity;
-                    cartProductsNumber += (product.quantity || 0);
-                  });
-                  this.totalCartProductsNumber$.next(cartProductsNumber);
-                  this.totalCartPrice$.next(totalPrice);
-                })
-              );
+              this.totalCartProductsNumber$.next(cartProductsNumber);
+              this.totalCartPrice$.next(totalPrice)
+              return forkJoin(productStreams)
             }),
-            shareReplay({ bufferSize: 1, refCount: true }),
         );
     }
 

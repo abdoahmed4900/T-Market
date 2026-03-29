@@ -6,10 +6,11 @@ import { CartService } from '../../../../shared/services/cart.service';
 import { RouterLink } from "@angular/router";
 import { Product } from '../../../../core/interfaces/product';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AnimateOnScroll } from '../../../../shared/animate-on-scroll';
 
 @Component({
   selector: 'app-cart-card',
-  imports: [CurrencyPipe, AsyncPipe, RouterLink, TranslatePipe],
+  imports: [CurrencyPipe, AsyncPipe, RouterLink, TranslatePipe,AnimateOnScroll],
   templateUrl: './cart-card.html',
   styleUrl: './cart-card.scss'
 })

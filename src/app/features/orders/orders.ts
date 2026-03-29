@@ -4,15 +4,16 @@ import { Observable, tap } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Order } from '../../core/interfaces/order';
 import { FormsModule } from '@angular/forms';
-import { Loader } from "../../shared/components/loader/loader";
 import { TranslatePipe } from '@ngx-translate/core';
 import { PaginationService } from '../../shared/services/pagination.service';
 import { OrderItem } from './components/order-item/order-item';
 import { OrderItemSkeleton } from "./components/order-item-skeleton/order-item-skeleton";
+import { AnimateOnScroll } from "../../shared/animate-on-scroll";
+import { PaginationContainer } from "../../shared/components/pagination-container/pagination-container";
 
 @Component({
   selector: 'app-orders',
-  imports: [AsyncPipe, OrderItem, FormsModule, Loader, TranslatePipe, FormsModule, CommonModule, OrderItemSkeleton],
+  imports: [AsyncPipe, OrderItem, FormsModule, TranslatePipe, FormsModule, CommonModule, OrderItemSkeleton, AnimateOnScroll, PaginationContainer],
   templateUrl: './orders.html',
   styleUrl: './orders.scss'
 })
@@ -27,44 +28,17 @@ export class Orders {
   isAdmin= model<boolean>(false);
   selectedStatus = signal<string>('All');
   role = signal<string>(localStorage.getItem('role') || '');
+
   paginationService = inject(PaginationService);
-  showedOrders= signal([] as Order[]);
-  allPages = signal([] as number[]);
-  showedPages = signal([] as number[]);
-  allOrders = signal([] as Order[]);
-  currentPage = signal(0);
+  showedProducts = this.paginationService.showedProducts;
+  isLoaded = signal(false);
 
   ngOnInit(): void {
     this.applyFilters();
-    this.paginationService.productsPerPage = 2;
-  }
-
-  nextPage(){
-    this.paginationService.nextPage();
-    this.changeShowedOrder();
-  }
-
-  previousPage(){
-    this.paginationService.previousPage();
-    this.changeShowedOrder();
-  }
-
-  goToPage(page:number){
-    this.paginationService.goToPage(page);
-    this.changeShowedOrder();
-  }
-
-  private changeShowedOrder() {
-    this.currentPage.set(this.paginationService.currentPage);
-    this.showedPages.set(this.paginationService.showedPages);
-    this.allPages.set(this.paginationService.allPages);
-    this.allOrders.set(this.paginationService.allProducts);
-    this.showedOrders.set(this.paginationService.showedProducts);
   }
 
   selectSortOption(value:string){
     this.selectedSortingOption.set(value)
-    this.currentPage.set(this.paginationService.currentPage);
   }
 
 
@@ -76,9 +50,11 @@ export class Orders {
   sortBy(){
     this.ordersList = this.orderService.sortProducts(this.selectedSortingOption()).pipe(
       tap((orders) => {
-        this.paginationService.allProducts = orders;
+        this.isLoaded.set(false);
+        this.paginationService.reset();
+        this.paginationService.allProducts.set(orders);
         this.paginationService.initializePagination();
-        this.changeShowedOrder();
+        this.isLoaded.set(true);
       })
     )
   }

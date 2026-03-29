@@ -1,26 +1,28 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { Observable, Subject, Subscription, tap } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Order } from '../../core/interfaces/order';
 import { AdminService } from './services/admin.service';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Admin } from '../auth/user';
 import { Product } from '../../core/interfaces/product';
 import { pieChartOptions, statusChartOptions } from '../../core/utils';
 import { ChartFactory } from '../../shared/services/chart.factory';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { Loader } from '../../shared/components/loader/loader';
 import { Sidebar } from '../../core/components/sidebar/sidebar';
-import { OrderService } from '../../shared/services/order.service';
 import { ShowUsers } from "./components/show-users/show-users";
 import { Orders } from "../orders/orders";
+import { StatisticsCard } from "../home-component/seller-home-component/components/statistics-card/statistics-card";
+import { DashboardProduct } from "../home-component/seller-home-component/components/dashboard-product/dashboard-product";
+import { FormsModule } from '@angular/forms';
+import { DashboardProductsSkeleton } from "../home-component/seller-home-component/components/dashboard-products-skeleton/dashboard-products-skeleton";
+import { AnimateOnScroll } from "../../shared/animate-on-scroll";
 Chart.register(...registerables);
 
 
 @Component({
   selector: 'app-admin',
-  imports: [Loader, AsyncPipe, CurrencyPipe, TranslatePipe, Sidebar, ShowUsers, Orders],
+  imports: [AsyncPipe, TranslatePipe, Sidebar, ShowUsers, Orders, StatisticsCard, DashboardProduct, FormsModule, DashboardProductsSkeleton, AnimateOnScroll],
   templateUrl: './admin.html',
   styleUrl: './admin.scss'
 })
@@ -28,28 +30,28 @@ export class AdminComponent {
   orders!: Observable<Order[]>;
   allProducts!: Observable<Product[]>;
   totalProductsSold!: Observable<Number>
-  totalOrdersNumber!: Observable<Number>;
-  pendingOrdersNumSub!: Subscription;
-  shippedOrdersNumSub!: Subscription;
-  deliveredOrdersNumSub!: Subscription;
-  cancelledOrdersNumSub!: Subscription;
-  pendingOrdersNumber!: Number;
-  shippedOrdersNumber!: Number;
-  deliveredOrdersNumber!: Number;
-  cancelledOrdersNumber!: Number;
+  totalOrdersNumber!: number;
+  pendingOrdersNumber!: number;
+  shippedOrdersNumber!: number;
+  deliveredOrdersNumber!: number;
+  cancelledOrdersNumber!: number;
+  isPendingOrdersLoaded = signal(false);
+  isShippedOrdersLoaded = signal(false);
+  isDeliveredOrdersLoaded = signal(false);
+  isCancelledOrdersLoaded = signal(false);
 
   adminService = inject(AdminService);
-  breakpoints = inject(BreakpointObserver);
-  orderService = inject(OrderService);
   chartFactory = inject(ChartFactory);
   
   admin!: Observable<Admin>;
 
   chartInstance: Chart | null = null;
   pieChartInstance: Chart | null = null;
-  isChartInitialized: boolean = false;
+  isPieChartInitialized = signal(false);
+  isStatusChartInitialized = signal(false);
   destroy$ = new Subject<void>();
   showSidebar = signal(true);
+  isTotalOrdersLoaded = signal(false);
 
   ngOnInit(): void {
     this.setupDashBoard();
@@ -61,67 +63,83 @@ export class AdminComponent {
   }
 
 
+
   setupDashBoard(){
-    this.admin = this.adminService.getAdmin();
-    this.orders = this.adminService.getAllOrders().pipe(
-      tap((o) => {
-        console.log(`orders: ${JSON.stringify(o)}`);
+    this.adminService.getAllOrders().pipe(
+      takeUntil(this.destroy$),
+      tap((value) => {
+        this.isTotalOrdersLoaded.set(true);
+        this.totalOrdersNumber = value.length;
       })
-    );
+    ).subscribe()
     this.allProducts = this.adminService.getAllProducts();
     this.totalProductsSold = this.adminService.getNumberOfSoldProducts();
-    this.totalOrdersNumber = this.adminService.getOrdersNumber();
-    this.getCancelledOrdersNumber();
-    this.getPendingOrderNumber();
-    this.getShippedOrdersNumber();
-    this.getDeliveredOrdersNumber();
+    this.getAllOrders();
   }
 
-  private getCancelledOrdersNumber() {
-    this.cancelledOrdersNumSub = this.adminService.getOrdersNumberByStatus('CANCELLED').subscribe(
+  getAllOrders(){
+    this.getCancelledOrders();
+    this.getDeliveredOrders();
+    this.getPendingOrders();
+    this.getShippedOrders();
+  }
+
+  getCancelledOrders(){
+    this.adminService.getOrdersNumberByStatus('CANCELLED').pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       {
-        next: (value) => {
+        next : (value) =>{
+          this.isCancelledOrdersLoaded.set(true);
           this.cancelledOrdersNumber = value;
         },
       }
-    );
+    ) 
   }
-
-  private getPendingOrderNumber() {
-    this.pendingOrdersNumSub = this.adminService.getOrdersNumberByStatus('PENDING').subscribe(
+  getShippedOrders(){
+    this.adminService.getOrdersNumberByStatus('SHIPPED').pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       {
-        next: (value) => {
-          this.pendingOrdersNumber = value;
-        },
-      }
-    );
-  }
-
-  private getShippedOrdersNumber() {
-    this.shippedOrdersNumSub = this.adminService.getOrdersNumberByStatus('SHIPPED').subscribe(
-      {
-        next: (value) => {
+        next : (value) =>{
+          this.isShippedOrdersLoaded.set(true);
           this.shippedOrdersNumber = value;
         },
       }
-    );
+    ) 
   }
-
-  private getDeliveredOrdersNumber() {
-    this.deliveredOrdersNumSub = this.adminService.getOrdersNumberByStatus('DELIVERED').subscribe(
+  getDeliveredOrders(){
+    this.adminService.getOrdersNumberByStatus('DELIVERED').pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       {
-        next: (value) => {
+        next : (value) =>{
+          this.isDeliveredOrdersLoaded.set(true);
           this.deliveredOrdersNumber = value;
         },
       }
-    );
+    ) 
+  }
+  getPendingOrders(){
+    this.adminService.getOrdersNumberByStatus('PENDING').pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
+      {
+        next : (value) =>{
+          this.isPendingOrdersLoaded.set(true);
+          this.pendingOrdersNumber = value;
+        },
+      }
+    ) 
   }
 
   ngAfterViewChecked(){
-    if(this.isChartInitialized){
+    if(this.isPieChartInitialized() && this.isStatusChartInitialized()){
       return;
     }
-    this.initializeCharts();
+    if(this.isTotalOrdersLoaded()){
+      this.initializeCharts();
+    }
   }
   
   initializeCharts() {
@@ -131,28 +149,23 @@ export class AdminComponent {
     const barCanvas = document.getElementById('barChartCanvas') as HTMLCanvasElement;
     const pieCanvas = document.getElementById('pieChartCanvas') as HTMLCanvasElement;
 
-    if(this.isChartInitialized){
+    if(this.isPieChartInitialized()){
       return;
     }
 
     this.createStatusChart(barCanvas);
     this.createPieInstance(pieCanvas);
-
-    this.isChartInitialized = true;
   }
   private createPieInstance(pieCanvas: HTMLCanvasElement) {
     this.pieChartInstance = this.chartFactory.createChart(pieCanvas, pieChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
+    this.isPieChartInitialized.set(true);
   }
   private createStatusChart(barCanvas: HTMLCanvasElement) {
-
     this.chartInstance = this.chartFactory.createChart(barCanvas, statusChartOptions(this.pendingOrdersNumber,this.shippedOrdersNumber,this.deliveredOrdersNumber,this.cancelledOrdersNumber));
+    this.isStatusChartInitialized.set(true);
   }
 
   ngOnDestroy(): void {
-    this.cancelledOrdersNumSub?.unsubscribe();
-    this.deliveredOrdersNumSub?.unsubscribe();
-    this.pendingOrdersNumSub?.unsubscribe();
-    this.shippedOrdersNumSub?.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }

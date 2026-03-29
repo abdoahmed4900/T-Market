@@ -24,17 +24,6 @@ export class AdminService{
     getAllOrders(){
         return this.ordersService.getAllOrders();
     }
-
-    getAdmin(){
-        const ref = collection(this.fireStore, fireStoreCollections.users);
-        const q = query(ref, where('uid', '==', localStorage.getItem('token')));
-        return collectionData(q).pipe(
-            map((q) => {
-                return q[0] as Admin;
-            })
-        );
-    }
-
     getAllProducts(){
         return this.productsService.getAllProducts()
     }

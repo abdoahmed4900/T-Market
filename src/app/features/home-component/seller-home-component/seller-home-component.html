@@ -6,12 +6,12 @@
         <h1 class="text-[20px] font-bold">{{'DASHBOARD' | translate}}</h1>
     </header>
     
-    <section class="flex flex-col gap-10 slideFromLeftAnimation">
+    <section appAnimateOnScroll class="flex flex-col gap-10 slideFromLeftAnimation">
         <section aria-describedby="(user | async)-dashbard-number" class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5 w-full">
             <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
                 @if(user | async){
-                  <h2 class="text-[16px] font-bold slideFromLeftAnimation">{{'ADMIN.REVENUE' | translate}}</h2>
-                  <p class="text-[16px] slideFromLeftAnimation">{{(user | async)?.totalRevenue | currency}} </p>
+                  <h2 appAnimateOnScroll class="text-[16px] font-bold slideFromLeftAnimation">{{'ADMIN.REVENUE' | translate}}</h2>
+                  <p appAnimateOnScroll class="text-[16px] slideFromLeftAnimation">{{(user | async)?.totalRevenue | currency}} </p>
                 }@else {
                   <div class="skeleton-basic w-[120px] h-[25px]"></div>  
                   <div class="skeleton-basic w-[120px] h-[25px]"></div>  
@@ -19,8 +19,8 @@
             </section>
             <section class="border-1 rounded-xl p-4 flex flex-col gap-3">
                 @if (user | async) {
-                  <h2 class="text-[16px] font-bold slideFromLeftAnimation">{{'ADMIN.SOLD_ITEMS' | translate}}</h2>
-                  <p class="text-[16px] slideFromLeftAnimation">{{(user | async)?.totalProductsSold}}</p>
+                  <h2 appAnimateOnScroll class="text-[16px] font-bold slideFromLeftAnimation">{{'ADMIN.SOLD_ITEMS' | translate}}</h2>
+                  <p appAnimateOnScroll class="text-[16px] slideFromLeftAnimation">{{(user | async)?.totalProductsSold}}</p>
                 }@else {
                   <div class="skeleton-basic w-[120px] h-[25px]"></div>  
                   <div class="skeleton-basic w-[120px] h-[25px]"></div>  

@@ -1,15 +1,19 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { User } from '../../../auth/user';
-import { AsyncPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AnimateOnScroll } from "../../../../shared/animate-on-scroll";
+import { PaginationService } from '../../../../shared/services/pagination.service';
+import { PaginationContainer } from "../../../../shared/components/pagination-container/pagination-container";
 
 @Component({
   selector: 'app-show-users',
-  imports: [AsyncPipe, TranslatePipe],
+  imports: [TranslatePipe, AnimateOnScroll, CommonModule, PaginationContainer],
   templateUrl: './show-users.html',
   styleUrl: './show-users.scss',
+  providers: [PaginationService]
 })
 export class ShowUsers {
   adminService = inject(AdminService);
@@ -24,6 +28,11 @@ export class ShowUsers {
 
   makeAdminButton = viewChild<HTMLButtonElement>('makeadmin')
 
+  isLoaded = signal(false);
+
+  paginationService = inject(PaginationService);
+  
+  showedUsers = this.paginationService.showedProducts
   ngOnInit(): void {
     this.getUsers();
     this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((val) => {
@@ -32,19 +41,18 @@ export class ShowUsers {
   }
 
   getUsers(){
-    this.users = this.adminService.getUsers().pipe(
-      tap((user) => {
-        console.log(JSON.stringify(user));
-        
-      })
-    )
+    this.adminService.getUsers().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
+      {
+        next: (value) =>{
+          this.isLoaded.set(true);
+          this.paginationService.allProducts.set(value);
+          this.paginationService.initializePagination();
+        },
+      }
+    );
   }
-
-  buttonclick(){
-    console.log('button of makeuseradmin is click');
-    
-  }
-
   makeUserAdmin(userId:string){
     console.log('🚨 makeUserAdmin CALLED with userId:', userId, 'Time:', new Date().toISOString());
     

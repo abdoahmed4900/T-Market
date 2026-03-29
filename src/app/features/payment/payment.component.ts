@@ -31,11 +31,12 @@ import { StripeService } from './services/payment.service';
 import { numericLengthValidator } from '../../core/utils';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProgressService } from '../../shared/components/payment-progress-bar/progress.service';
+import { AnimateOnScroll } from "../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-stripe-payment',
   templateUrl: './payment.component.html',
-  imports: [ReactiveFormsModule, TranslatePipe, Loader],
+  imports: [ReactiveFormsModule, TranslatePipe, Loader, AnimateOnScroll],
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent {

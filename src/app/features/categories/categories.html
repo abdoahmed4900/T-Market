@@ -1,5 +1,4 @@
-@let products = (filteredProducts | async);
-<main class="grid md:grid-cols-3 gap-5 grid-cols-1 my-10 justify-start grow slideFromLeftAnimation">
+<main appAnimateOnScroll class="grid md:grid-cols-3 gap-5 grid-cols-1 my-10 justify-start grow slideFromLeftAnimation">
     <section class="search-section flex flex-col gap-10 md:col-span-1 col-span-2">
         <input type="text" name="search" id="search" style="display: block !important;" class="border-1 p-2 rounded-xl" placeholder="{{'CATEGORIES.SEARCH_PLACEHOLDER' | translate}}" (input)="filterProducts()" [(ngModel)]="searchText">
 
@@ -31,35 +30,21 @@
     </section>
     <section class="search-results grid grid-cols-[repeat(md:auto-fill,minmax(260px,1fr))] gap-5 col-span-2">
         @if (isProductsLoaded()) {
-          @for (item of products; track item.id) {
+          @for (item of showedProducts(); track item.id) {
                 <app-product-card [product]="item"></app-product-card>
           }
         }@else{
-          @for (item of [1,2,3]; track $index) {
+          @for (item of [1]; track $index) {
             <app-product-card-skeleton></app-product-card-skeleton>
           }
         }
 
-       @if(products!.length == 0){
+       @if(showedProducts().length == 0){
         <div class="no-products-found flex flex-col mx-auto col-span-3">
           <img src="https://cdn-icons-png.flaticon.com/512/1178/1178428.png" alt="no-products-image" class="w-[90%] max-w-[260px]">
         </div>
         }
       
     </section>
-
-    <section aria-roledescription="see-differenet-products" class="mx-auto col-span-3 flex items-center gap-3 mt-10 flex-wrap w-[100]">
-                @if (allPages().length > 0) {
-                  <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goPreviousPage()" [disabled]="currentPage() == 1">{{'PREVIOUS' | translate}}</button>
-                }
-                @for (item of showedPages(); track $index) {
-                    <button class="text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goToPage(item)" [ngClass]="
-                      item == currentPage() ? 'bg-purple-700' : 'bg-[var(----primary-color)]'
-                    ">{{item}}</button>
-                }
-                @if (allPages().length > 0) {
-                    <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goNextPage()" [disabled]="currentPage() == allPages().length">{{'NEXT' | translate}}</button>
-                }
-      </section>
-    
+    <app-pagination-container></app-pagination-container>
 </main>

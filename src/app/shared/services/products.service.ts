@@ -70,7 +70,7 @@ export class ProductsService {
         let constraints : QueryFieldFilterConstraint[] = [
         where('price','>=',minPrice),
         where('price','<=',maxPrice),
-        where('rating','>=',rating == 0 || rating == 5 || rating == 'All' ? 0 : Math.floor(rating!))
+        where('rating','<=',rating == 0 || rating == 5 || rating == 'All' ? 5 : Math.floor(rating!))
        ];
 
        if(category != 'All'){

@@ -9,10 +9,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { Product } from '../../../../../core/interfaces/product';
 import { ImageService } from '../../../../../shared/services/image.service';
 import { GoBackButton } from "../../../../../shared/components/go-back-button/go-back-button";
+import { AnimateOnScroll } from "../../../../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-new-product',
-  imports: [TranslatePipe, ReactiveFormsModule, AsyncPipe, MatSelectModule, GoBackButton],
+  imports: [TranslatePipe, ReactiveFormsModule, AsyncPipe, MatSelectModule, GoBackButton, AnimateOnScroll],
   templateUrl: './new-product.html',
   styleUrl: './new-product.scss',
 })

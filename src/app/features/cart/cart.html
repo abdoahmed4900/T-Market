@@ -1,9 +1,9 @@
 @let cartProducts = (products | async);
 @let price = (totalPrice | async);
-<main class="flex flex-col w-full slideFromLeftAnimation" [ngClass]="
+<main class="flex flex-col w-full" [ngClass]="
   (cartProducts!.length == 0) ? 'h-full' : 'h-auto'
 ">
-  @if (cartProducts) {
+  @if (isLoaded()) {
     <app-payment-progress-bar></app-payment-progress-bar>
     <div class="products mt-4 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:grid-rows-2">
       <div class="lg:col-span-2 flex flex-col gap-6 lg:row-span-2 min-h-[500px]">
@@ -18,13 +18,13 @@
       }
     </div>
     @if(price == 0){
-      <section class="flex flex-col h-full items-center justify-center slideFromLeftAnimation flex-wrap">
+      <section appAnimateOnScroll class="flex flex-col h-full items-center justify-center slideFromLeftAnimation flex-wrap">
         <img src="https://cdn-icons-png.flaticon.com/512/2762/2762885.png" alt="empty cart" class="w-40 h-40"/>
          <h3 class="text-[var(--primary-text-color)] font-bold text-xl">{{'CART.EMPTY' | translate}}</h3>
       </section>
     }
     <div class="lg:col-start-3 lg:row-start-2 flex justify-end items-start">
-      <button class="bg-[var(--primary-color)] mt-4 text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromRightAnimation hover:bg-purple-700" routerLink="/checkout" [class.self-end]="isEnglish()">{{'CART.CHECKOUT' | translate}}</button>
+      <button appAnimateOnScroll class="bg-[var(--primary-color)] mt-4 text-white font-bold text-md p-4 size-fit rounded-xl transition duraiton-300 hover:translate-y-[-2px] slideFromLeftAnimation hover:bg-purple-700" routerLink="/checkout" [class.self-end]="isEnglish()">{{'CART.CHECKOUT' | translate}}</button>
     </div>
   }@else {
     <app-cart-skeleton></app-cart-skeleton>

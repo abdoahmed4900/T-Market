@@ -1,0 +1,9 @@
+<section appAnimateOnScroll [once]="false" class="border-1 rounded-xl p-4 flex flex-col gap-3 slideFromLeftAnimation">
+    @if(showCard()){ 
+        <h2 class="text-[20px] font-bold slideFromLeftAnimation" appAnimateOnScroll>{{ statisticName() | translate}}</h2>
+        <p class="text-[16px] orders-number slideFromLeftAnimation" appAnimateOnScroll>{{statisticNumber()}}</p>
+     }@else {
+        <div class="skeleton-basic w-[120px] h-[25px]"></div>  
+        <div class="skeleton-basic w-[120px] h-[25px]"></div>  
+    }
+</section>

@@ -1,0 +1,10 @@
+<section class="grid gap-4 all-products-skeleton md:grid-cols-2">
+   @for (item of [1,2,3]; track $index) {
+       <div class="flex flex-col gap-3 seller-products border-1 rounded-xl p-4">
+           <div class="skeleton-basic w-[250px] h-[20px]"></div>
+           <div class="skeleton-basic w-[100px] h-[20px]"></div>
+           <div class="skeleton-basic w-[150px] h-[20px]"></div>
+           <div class="skeleton-basic w-[120px] h-[20px]"></div>
+       </div>
+   }
+</section>

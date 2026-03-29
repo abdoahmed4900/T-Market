@@ -12,10 +12,11 @@ import { Firestore } from '@angular/fire/firestore';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { PasswordVisibilityIcon } from "../../../shared/components/password-visibility-icon/password-visibility-icon";
+import { AnimateOnScroll } from "../../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-login',
-  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, TranslatePipe, PasswordVisibilityIcon,RouterLink],
+  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, TranslatePipe, PasswordVisibilityIcon, RouterLink, AnimateOnScroll],
   standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -73,7 +74,7 @@ export class LoginComponent {
     }
   }
 
-  async loginWithGoogle() {
+  loginWithGoogle() {
     this.auth.loginWithGoogle().pipe(takeUntil(this.destroy$)).subscribe(
       {
         next: (value) => {

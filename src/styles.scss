@@ -145,9 +145,14 @@ button:disabled{
   opacity: 0.6;
 }
 
-.slideFromTopAnimation{
-  animation: slideFromTop 1s ease;  
-}
+  .slideFromTopAnimation{
+    opacity: 0;
+  }
+  .slideFromTopAnimation.visible{
+   opacity: 1;
+   animation: slideFromTop 1s ease;  
+  }
+
 
 @keyframes slideFromTop {
     0%{
@@ -161,6 +166,10 @@ button:disabled{
     }
 }
 .slideFromLeftAnimation{
+  opacity: 0;
+}
+.slideFromLeftAnimation.visible{
+  opacity: 1;
   animation: slideFromLeft 0.3s ease;  
 }
 

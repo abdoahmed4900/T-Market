@@ -7,15 +7,14 @@ import { Chart, registerables } from 'chart.js';
 import { Product } from '../../../core/interfaces/product';
 import { ProductsService } from '../../../shared/services/products.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Loader } from '../../../shared/components/loader/loader';
 import { Sidebar } from '../../../core/components/sidebar/sidebar';
-import { SellerHomeSkeleton } from "./components/seller-home-skeleton/seller-home-skeleton";
 import { SellerProducts } from "./components/seller-product/seller-products";
+import { AnimateOnScroll } from '../../../shared/animate-on-scroll';
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-seller-home-component',
-  imports: [AsyncPipe, CurrencyPipe, Loader, TranslatePipe, Sidebar, SellerHomeSkeleton, SellerProducts],
+  imports: [AsyncPipe, CurrencyPipe,TranslatePipe, Sidebar, SellerProducts,AnimateOnScroll],
   templateUrl: './seller-home-component.html',
   styleUrl: './seller-home-component.scss'
 })

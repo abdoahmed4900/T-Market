@@ -13,10 +13,11 @@ import { Loader } from '../../../shared/components/loader/loader';
 import { TranslatePipe } from '@ngx-translate/core';
 import { passwordMatchValidator } from '../../../core/utils';
 import { Subject, takeUntil } from 'rxjs';
+import { AnimateOnScroll } from "../../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, FontAwesomeModule, ReactiveFormsModule, CommonModule, TranslatePipe, PasswordVisibilityIcon],
+  imports: [RouterLink, FontAwesomeModule, ReactiveFormsModule, CommonModule, TranslatePipe, PasswordVisibilityIcon, AnimateOnScroll],
   standalone: true,
   templateUrl: './register.html',
   styleUrl: './register.scss'

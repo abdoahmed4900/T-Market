@@ -6,10 +6,11 @@ import { CurrencyPipe } from '@angular/common';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { TranslatePipe } from '@ngx-translate/core';
+import { AnimateOnScroll } from "../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-wishlist',
-  imports: [FaIconComponent,CurrencyPipe,TranslatePipe],
+  imports: [FaIconComponent, CurrencyPipe, TranslatePipe, AnimateOnScroll],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.scss'
 })

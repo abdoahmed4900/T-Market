@@ -1,32 +1,32 @@
-<main class="flex flex-col gap-10 w-full mt-10 slideFromLeftAnimation">
+<main class="flex flex-col gap-10 w-full mt-10">
     <header class="flex flex-col gap-10">
         <app-go-back-button></app-go-back-button>
         <h2 class="text-[20px] font-bold">{{'UPDATE_PRODUCT.TITLE' | translate}}</h2>
     </header>
     @if (isLoaded()) {
         <form class="flex-grow flex flex-col gap-5 border-1 rounded-xl p-10" [formGroup]="productFormGroup" (ngSubmit)="updateProduct()">
-        <input id="name"  type="text" class="p-4 rounded-xl border-1" formControlName="name" [placeholder]="'NAME_PLACEHOLDER' | translate"/>
+        <input appAnimateOnScroll id="name"  type="text" class="p-4 rounded-xl border-1  slideFromLeftAnimation" formControlName="name" [placeholder]="'NAME_PLACEHOLDER' | translate"/>
         @if(productFormGroup.get('name')?.hasError('required') && productFormGroup.get('name')?.touched){
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'NAME_FIELD' | translate} }}.</span>
         }
         @if(productFormGroup.get('name')?.hasError('minlength') && productFormGroup.get('name')?.touched){
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'NAME_FIELD'  | translate,length: 2} }}.</span>
         }
-        <input id="description"  type="text" class="p-4 rounded-xl border-1" formControlName="description" [placeholder]="'DESCRIPTION_PLACEHOLDER' | translate" />
+        <input appAnimateOnScroll id="description"  type="text" class="p-4 rounded-xl border-1 slideFromLeftAnimation" formControlName="description" [placeholder]="'DESCRIPTION_PLACEHOLDER' | translate" />
         @if(productFormGroup.get('description')?.hasError('required') && productFormGroup.get('description')?.touched){
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'DESCRIPTION_FIELD' | translate} }}.</span>
         }
         @if(productFormGroup.get('description')?.hasError('minlength') && productFormGroup.get('description')?.touched){
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'DESCRIPTION_FIELD'  | translate,length: 50} }}.</span>
         }
-        <input id="price" type="number" class="p-4 rounded-xl border-1" formControlName="price" [placeholder]="'PRICE_PLACEHOLDER' | translate"/>
+        <input appAnimateOnScroll id="price" type="number" class="p-4 rounded-xl border-1 slideFromLeftAnimation" formControlName="price" [placeholder]="'PRICE_PLACEHOLDER' | translate"/>
         @if(productFormGroup.get('price')?.hasError('required') && productFormGroup.get('price')?.touched){
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PRICE_FIELD' | translate} }}.</span>
         }
         @if(productFormGroup.get('price')?.hasError('minlength') && productFormGroup.get('price')?.touched){
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {field: 'PRICE_FIELD'  | translate ,length: 2}  }}.</span>
         }
-        <input id="stock" type="number" class="p-4 rounded-xl border-1"  formControlName="stock" [placeholder]="'STOCK_PLACEHOLDER' | translate" />
+        <input appAnimateOnScroll id="stock" type="number" class="p-4 rounded-xl border-1 slideFromLeftAnimation"  formControlName="stock" [placeholder]="'STOCK_PLACEHOLDER' | translate" />
         @if(productFormGroup.get('stock')?.hasError('required') && productFormGroup.get('stock')?.touched){
             <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'STOCK_FIELD' | translate} }}.</span>
         }
@@ -37,20 +37,32 @@
         <section class="images-section flex flex-wrap flex-row gap-5">
              <section class="product-images-section flex flex-row flex-wrap gap-5">
                @for (item of productImagesUrls; track $index) {
-                 <img [src]="item" alt="image" class="w-[150px] h-[150px] rounded-xl">
+                 <img appAnimateOnScroll [src]="item" alt="image" class="w-[150px] h-[150px] rounded-xl slideFromLeftAnimation">
                 }
              </section>
              @if (imagePreviews().length > 0) {
                 <section class="added-images-section flex flex-row flex-wrap gap-5">
                   @for (item of imagePreviews(); track $index) {
-                    <img [src]="item" alt="image" class="w-[150px] h-[150px] rounded-xl">
+                    <img appAnimateOnScroll [src]="item" alt="image" class="w-[150px] h-[150px] rounded-xl slideFromLeftAnimation">
                   }
                 </section>
              }
         </section>
-        <button [disabled]="productFormGroup.invalid" type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'UPDATE_PRODUCT.SUBMIT' | translate}}</button>
+        <button appAnimateOnScroll [disabled]="productFormGroup.invalid" type="submit" class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4 slideFromLeftAnimation">{{'UPDATE_PRODUCT.SUBMIT' | translate}}</button>
       </form>
     }@else {
-        <app-loader></app-loader>
+        <div class="flex-grow flex flex-col gap-5 border-1 rounded-xl p-10" >
+          <div class="skeleton-basic w-full h-[45px]"></div> 
+          <div class="skeleton-basic w-full h-[45px]"></div> 
+          <div class="skeleton-basic w-full h-[45px]"></div> 
+          <div class="skeleton-basic w-full h-[45px]"></div> 
+          <div class="skeleton-basic w-[120px] h-[35px]"></div> 
+        <section class="image-skeletons-section flex gap-5 flex-row flex-wrap">
+            @for (item of [1,2,3]; track $index) {
+              <div class="w-[150px] h-[150px] skeleton-basic"></div>
+            }
+        </section>
+        <div class="skeleton-basic w-[120px] h-[35px]"></div> 
+    </div>
     }
 </main>

@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AdminService } from '../../services/admin.service';
 import { GoBackButton } from "../../../../shared/components/go-back-button/go-back-button";
+import { AnimateOnScroll } from "../../../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-new-category',
-  imports: [TranslatePipe, FormsModule, GoBackButton],
+  imports: [TranslatePipe, FormsModule, GoBackButton, AnimateOnScroll],
   templateUrl: './new-category.html',
   styleUrl: './new-category.scss',
 })

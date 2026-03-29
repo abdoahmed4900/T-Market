@@ -2,12 +2,9 @@
 <section class="grid gap-4 grid-cols-1">
     @if (products) {
         @for (item of products; track item.id;) {
-          <div class="flex border-1 rounded-xl p-4 flex-row flex-wrap flex-grow justify-between slideFromLeftAnimation">
+          <div appAnimateOnScroll class="flex border-1 rounded-xl p-4 flex-row flex-wrap flex-grow justify-between slideFromLeftAnimation">
            <div class="flex flex-col gap-3 seller-products">
-               <h2 class="text-[16px]">{{'ADMIN.PRODUCT_NAME' | translate}} : {{item.name}}</h2>
-               <h2 class="text-[16px]">{{'PRICE' | translate}} : {{item.price | currency}}</h2>
-               <h2 class="text-[16px]">{{'ADMIN.SOLD_ITEMS' | translate}} : {{item.soldItemsNumber}} {{'ADMIN.PIECES' | translate}}</h2>
-               <h2 class="text-[16px]">{{'ADMIN.IN_STOCK' | translate}} : {{item.stock}} {{'ADMIN.PIECES' | translate}}</h2>
+               <app-dashboard-product [product]="item"></app-dashboard-product>
            </div>
            <section class="actions-row flex flex-row gap-4 flex-wrap">
                <button type="button" class="size-fit bg-[var(--primary-color)] hover:bg-purple-500 p-4 rounded-xl self-center" [routerLink]="['/update-product/',item.id]">{{'SIDEBAR.UPDATE_PRODUCT' | translate}}</button>

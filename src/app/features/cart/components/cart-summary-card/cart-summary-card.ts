@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { CartService } from '../../../../shared/services/cart.service';
 import { Product } from '../../../../core/interfaces/product';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Loader } from "../../../../shared/components/loader/loader";
+import { AnimateOnScroll } from '../../../../shared/animate-on-scroll';
 
 @Component({
   selector: 'app-cart-summary-card',
-  imports: [CurrencyPipe, AsyncPipe, TranslatePipe, Loader],
+  imports: [CurrencyPipe, AsyncPipe, TranslatePipe,AnimateOnScroll],
   templateUrl: './cart-summary-card.html',
   styleUrl: './cart-summary-card.scss'
 })

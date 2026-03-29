@@ -1,57 +1,66 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 
-@Injectable(
-    {providedIn : 'root'}
-)
+
+@Injectable({
+    providedIn: 'any'
+})
 export class PaginationService{
 
-    showedProducts! : any[];
-    allPages!:number[];
-    showedPages!: number[];
-    allProducts!:any[];
-    currentPage!:number;
-    productsPerPage = 1;
+    showedProducts = signal<any[]>([]);
+    allPages = signal<number[]>([]);
+    showedPages = signal<number[]>([]);
+    allProducts = signal<any[]>([]);
+    currentPage = signal(1);
+    productsPerPage = signal(5);
+
+    constructor(){
+        this.reset();
+    }
 
     initializePagination(){
-        this.allPages = [];
-        this.currentPage = 1;
-        for (let index = 1; index < (this.allProducts.length / this.productsPerPage) + ((this.allProducts.length % this.productsPerPage + this.productsPerPage) / this.productsPerPage); index++) {
-            this.allPages.push(index)
+        for (let index = 0; index < Math.ceil(this.allProducts().length / this.productsPerPage()); index++) {
+            this.allPages.update((pages) => [...pages,index+1])
         }
-        this.showedProducts = this.allProducts.slice(0,this.productsPerPage);
-        if(this.allPages.length > 3){
-            this.changeShowedPages(0,this.currentPage + 2);
-            console.log(this.showedPages);
-            console.log(this.allPages);            
+        this.showedProducts.set(this.allProducts().slice(0,this.productsPerPage()));
+        if(this.allPages().length > 3){
+            this.changeShowedPages(0,this.currentPage() + 2);          
         }else{
-            this.changeShowedPages(0,this.allPages.length);
+            this.changeShowedPages(0,this.allPages().length);
         }
     }
+
     public nextPage(){
-        this.currentPage++;
-        this.showedProducts = this.allProducts.slice(
-          (this.currentPage - 1) * this.productsPerPage,
-          this.currentPage * this.productsPerPage
-        );
-        if((this.currentPage - 1) % 3 == 0){
-            this.changeShowedPages(this.currentPage - 1,this.currentPage + 2);
+        this.currentPage.update((v) => v + 1);
+        this.showedProducts.set(this.allProducts().slice(
+          (this.currentPage() - 1) * this.productsPerPage(),
+          this.currentPage() * this.productsPerPage()
+        ));
+        if((this.currentPage() - 1) % 3 == 0){
+            this.changeShowedPages(this.currentPage() - 1,this.currentPage() + 2);
         }
-        console.log(this.showedPages);
     }
     public previousPage(){
-        this.showedProducts = this.allProducts.slice((this.currentPage - 2) * this.productsPerPage,(--this.currentPage) * this.productsPerPage);
-        if(this.currentPage % 3 == 0){
-            this.changeShowedPages(this.currentPage - 3,this.currentPage);
+        this.currentPage.update((v) => v - 1);
+        this.showedProducts.set(this.allProducts().slice((this.currentPage() - 1) * this.productsPerPage(),(this.currentPage()) * this.productsPerPage()))
+        if(this.currentPage() % 3 == 0){
+            this.changeShowedPages(this.currentPage() - 3,this.currentPage());
         }
     }
 
     public changeShowedPages(start:number,end:number){
-        console.log(start + ' ' + end);
-        this.showedPages = this.allPages.slice(start,end)
+        this.showedPages.set(this.allPages().slice(start,end)); 
     }
 
     public goToPage(page:number){
-        this.currentPage = page;
-        this.showedProducts = this.allProducts.slice((this.currentPage - 1) * this.productsPerPage,this.currentPage * this.productsPerPage)
+        this.currentPage.set(page);
+        this.showedProducts.set(this.allProducts().slice((this.currentPage() - 1) * this.productsPerPage(),this.currentPage() * this.productsPerPage()))
+    }
+
+    reset(){
+        this.allPages.set([])
+        this.showedPages.set([])
+        this.allProducts.set([])
+        this.showedProducts.set([])
+        this.currentPage.set(1)
     }
 }

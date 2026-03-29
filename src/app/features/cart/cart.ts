@@ -10,10 +10,11 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PaymentProgressBar } from "../../shared/components/payment-progress-bar/payment-progress-bar";
 import { ProgressService } from '../../shared/components/payment-progress-bar/progress.service';
 import { CartSkeleton } from "./components/cart-skeleton/cart-skeleton";
+import { AnimateOnScroll } from "../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-cart',
-  imports: [AsyncPipe, CartCard, NgClass, CartSummaryCard, RouterLink, TranslatePipe, PaymentProgressBar, CartSkeleton],
+  imports: [AsyncPipe, CartCard, NgClass, CartSummaryCard, RouterLink, TranslatePipe, PaymentProgressBar, CartSkeleton, AnimateOnScroll],
   templateUrl: './cart.html',
   styleUrl: './cart.scss'
 })
@@ -32,7 +33,9 @@ export class CartComponent implements OnInit{
   ngOnInit(): void {
     this.products = this.cartService.getAllCartProducts().pipe(
       tap(() => {
-        this.isLoaded.set(true);
+        setTimeout(() => {
+          this.isLoaded.set(true);
+        },1500)
       })
     );
     this.totalPrice = this.cartService.totalCartPrice$;

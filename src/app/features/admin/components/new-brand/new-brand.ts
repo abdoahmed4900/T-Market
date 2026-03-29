@@ -3,10 +3,11 @@ import { AdminService } from '../../services/admin.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { GoBackButton } from "../../../../shared/components/go-back-button/go-back-button";
+import { AnimateOnScroll } from "../../../../shared/animate-on-scroll";
 
 @Component({
   selector: 'app-new-brand',
-  imports: [TranslatePipe, FormsModule, GoBackButton],
+  imports: [TranslatePipe, FormsModule, GoBackButton, AnimateOnScroll],
   templateUrl: './new-brand.html',
   styleUrl: './new-brand.scss',
 })

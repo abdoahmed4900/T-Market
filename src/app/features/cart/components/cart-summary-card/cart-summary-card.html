@@ -1,15 +1,15 @@
 
-<div class="summary-section border-1 col-span-1 size-fit w-full p-4 rounded-xl flex flex-col gap-5 slideFromRightAnimation">
-  <h2 class="text-lg font-bold slideFromRightAnimation">{{'CART.TOTAL_SUMMARY' | translate}}</h2>
+<div class="summary-section border-1 col-span-1 size-fit w-full p-4 rounded-xl flex flex-col gap-5">
+  <h2 appAnimateOnScroll class="text-lg font-bold slideFromLeftAnimation">{{'CART.TOTAL_SUMMARY' | translate}}</h2>
   @if (cartProducts | async) {
     @for (item of cartProducts | async; track $index) {
-        <div class="summary-item flex flex-row justify-between items-center slideFromRightAnimation">
-            <p class="font-bold text-var[(--primary-text-color)] slideFromRightAnimation">{{item.name}}</p>
-            <p class="font-bold text-var[(--primary-text-color)] slideFromRightAnimation">{{(item.quantity! * item.price!) | currency}}</p>
+        <div appAnimateOnScroll class="summary-item flex flex-row justify-between slideFromLeftAnimation items-center">
+            <p  class="font-bold text-var[(--primary-text-color)]">{{item.name}}</p>
+            <p class="font-bold text-var[(--primary-text-color)]">{{(item.quantity! * item.price!) | currency}}</p>
         </div>
         } 
         <hr>
-        <h3 class="text-[var(--primary-text-color)] slideFromRightAnimation mt-8 self-end font-bold text-xl slideFromRightAnimation">{{'CART.TOTAL_PRICE' | translate}} : {{totalPrice | async | currency}}</h3>
+        <h3 appAnimateOnScroll class="text-[var(--primary-text-color)] slideFromLeftAnimation mt-8 self-end font-bold text-xl">{{'CART.TOTAL_PRICE' | translate}} : {{totalPrice | async | currency}}</h3>
     } 
     @else {
       @for (item of [1,2,3]; track $index) {
