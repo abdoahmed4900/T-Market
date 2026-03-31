@@ -50,8 +50,8 @@ export class AdminComponent {
   isPieChartInitialized = signal(false);
   isStatusChartInitialized = signal(false);
   destroy$ = new Subject<void>();
-  showSidebar = signal(true);
   isTotalOrdersLoaded = signal(false);
+  showSidebar = signal(true);
 
   ngOnInit(): void {
     this.setupDashBoard();
@@ -59,11 +59,10 @@ export class AdminComponent {
 
   @HostListener('window:resize',[])
   setWidth(){
-    this.showSidebar.set(window.innerWidth >= 1024);
+    if(window.innerWidth >= 1024){
+      this.showSidebar.set(true)
+    }
   }
-
-
-
   setupDashBoard(){
     this.adminService.getAllOrders().pipe(
       takeUntil(this.destroy$),

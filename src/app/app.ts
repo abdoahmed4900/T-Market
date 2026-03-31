@@ -1,9 +1,10 @@
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { NavigationService } from './core/services/navigation.service';
+import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { CartService } from './shared/services/cart.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 import { AdminService } from './features/admin/services/admin.service';
 import { Navbar } from './core/components/navbar/navbar';
@@ -26,19 +27,18 @@ export class App {
   translateService = inject(TranslateService);
   router = inject(Router);
   cartProductsSub! : Subscription;
-  showNavbar = signal(false);
-  isAdminHomeOpened = signal(false);
   private destroy$ = new Subject<void>();
   // translateService = inject(TranslateService);
   admin = inject(AdminService);
+  navigationService = inject(NavigationService);
 
 
-  async ngOnInit(): Promise<void> {
-    this.loadLayout();
+  ngOnInit(){
     this.getLocale();
     let role = this.authService.userRole();
     if(role){
       this.router.navigate(['/'])
+      this.cartService.getAllCartProducts().pipe(takeUntil(this.destroy$)).subscribe()
     }else {
       this.router.navigate(['/login'])
     }
@@ -67,14 +67,6 @@ export class App {
       }
     }
   }
-  @HostListener('window:resize',[])
-   loadLayout() {
-    let role = localStorage.getItem('role');
-    const isMobile = window.innerWidth < 1024;
-    const isBuyerOrGuest = role == 'buyer' || role == null
-    this.showNavbar.set(isMobile || isBuyerOrGuest);
-  }
-
 
   public static getFirebaseErrorMessage(code: string): string {
     const messages: Record<string, string> = {
@@ -96,7 +88,6 @@ export class App {
   }
 
   ngOnDestroy(): void {
-    this.cartProductsSub?.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }

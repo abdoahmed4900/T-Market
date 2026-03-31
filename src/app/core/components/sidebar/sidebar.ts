@@ -3,7 +3,7 @@ import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -22,6 +22,7 @@ export class Sidebar {
     return this.getTheme() == 'light' ? faMoon : faSun;
   });
   translateService = inject(TranslateService);
+  destroy$ = new Subject<void>()
 
   menu = linkedSignal(() => {
     return {
@@ -68,14 +69,10 @@ export class Sidebar {
   }
 
   logout() {
-    let log = this.auth.logout().subscribe({
-      next : (value) => {
-        localStorage.clear();
+    this.auth.logout().pipe(takeUntil(this.destroy$)).subscribe({
+      next : () => {
         this.router.navigateByUrl('/login',{replaceUrl : true})
-        this.auth.userRole.set('');
-        this.auth.isLoggedIn.set(false);
         this.sidebarOpen.set(false);
-        log.unsubscribe();
       },
     })
   }
@@ -87,5 +84,7 @@ export class Sidebar {
 
   ngOnDestroy(): void {
     this.sidebarOpen.set(false);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

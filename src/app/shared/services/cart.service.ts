@@ -18,10 +18,8 @@ export class CartService{
     productsCollectionRef = collection(this.fireStore,fireStoreCollections.products);
     totalCartPrice$ = new BehaviorSubject<number>(0);
     totalCartProductsNumber$ = new BehaviorSubject<number>(0);
-    user = collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!)));
-
     getAllCartProducts(){
-        return this.user.pipe(
+        return collectionData(query(this.userCollectionRef,where('uid','==',localStorage.getItem('token')!))).pipe(
             switchMap(users => {
               const user = users[0] as Buyer;
               if (!user || !user.cartProducts || user.cartProducts.length === 0) {

@@ -62,7 +62,6 @@ export class LoginComponent {
       this.auth.loginWithEmailAndPassword(this.loginForm.get('email')?.value!, this.loginForm.get('password')?.value!).pipe(takeUntil(this.destroy$)).subscribe({
       next: async () => {
         dialogRef.close();
-        await this.auth.changeUserCredentials(this.loginForm.get('email')!.value!);
         await this.router.navigate(['/'], { replaceUrl: true });
       },
       error: (err) => {
@@ -89,11 +88,8 @@ export class LoginComponent {
   }
   logout() {
     this.auth.logout().pipe(takeUntil(this.destroy$)).subscribe({
-      next: async () => {
-        this.auth.isLoggedIn.set(false);
-        this.auth.userRole.set('');
-        localStorage.clear();
-        await this.router.navigateByUrl('/login', { replaceUrl: true });
+      next: () => {
+        this.router.navigateByUrl('/login', { replaceUrl: true });
       },
       error : (err) => {
         let message = getFirebaseErrorMessage(err.code);

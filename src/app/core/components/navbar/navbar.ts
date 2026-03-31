@@ -1,11 +1,11 @@
-import { Component, ElementRef, inject, linkedSignal, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, linkedSignal, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { WebsiteTitle } from '../website-title/website-title';
 import { CartService } from '../../../shared/services/cart.service';
@@ -34,18 +34,26 @@ export class Navbar implements OnInit{
 
   totalCartProductsNumber$ = this.cartService.totalCartProductsNumber$;
 
-  cartSubscription!: Subscription;
-  loginSubscription!: Subscription;
-
   cartNumber = signal<number>(0);
 
   translateService = inject(TranslateService);
+  destroy$ = new Subject<void>();
+  isBuyer = signal(false);
+  isLoggedIn = signal(false);
+
+  constructor(){
+    effect(() => {
+      this.isBuyer = signal(this.authService.userRole() == 'buyer');
+      this.isLoggedIn = this.authService.isLoggedIn;
+    })
+  }
 
   getTheme(): string {
     return localStorage.getItem('theme') ?? 'light';
   }
 
   ngOnInit() {
+  
    window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024) { 
       document.querySelector(".navbar-mobile")?.classList.add("navbar-mobile-hidden");
@@ -53,7 +61,6 @@ export class Navbar implements OnInit{
     }
    });
    this.themeIcon.set(this.getTheme() == 'light' ? faMoon : faSun);
-   this.cartSubscription = this.cartService.getAllCartProducts().subscribe({});
   }
 
   changeTheme(){
@@ -73,7 +80,7 @@ export class Navbar implements OnInit{
       disableClose: true,
     });
 
-    this.authService.logout().subscribe({
+    this.authService.logout().pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.router.navigate(['/login']);
       },
@@ -87,11 +94,6 @@ export class Navbar implements OnInit{
     });
   }
 
-
-  private clearCache() {
-    localStorage.clear();
-  }
-
   goToWishList(){
     this.router.navigateByUrl('/wishlist');
   }
@@ -100,5 +102,10 @@ export class Navbar implements OnInit{
     document.getElementsByTagName('html')[0].setAttribute('dir',language == 'en' ? 'ltr' : 'rtl')
     this.translateService.use(language);
     localStorage.setItem('language',language)
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 }

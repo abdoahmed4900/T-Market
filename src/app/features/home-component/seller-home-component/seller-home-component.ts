@@ -30,8 +30,9 @@ export class SellerHomeComponent {
   chartInstance: Chart | null = null;
   pieChartInstance: Chart | null = null;
   isChartInitialized: boolean = false;
-  showSidebar = signal(true);
   destroy$ = new Subject<void>();
+  showSidebar = signal(true);
+
 
   ngOnInit(): void {
     this.user = this.homeSerivce.getUser();
@@ -39,6 +40,8 @@ export class SellerHomeComponent {
 
   @HostListener('window:resize',[])
   setWidth(){
-    this.showSidebar.set(window.innerWidth >= 1024);
+    if(window.innerWidth >= 1024){
+      this.showSidebar.set(true)
+    }
   }
 }
