@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { PaginationService } from '../../services/pagination.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AnimateOnScroll } from '../../animate-on-scroll';
 
 @Component({
   selector: 'app-pagination-container',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe,AnimateOnScroll],
   templateUrl: './pagination-container.html',
   styleUrl: './pagination-container.scss',
 })

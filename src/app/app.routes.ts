@@ -1,3 +1,5 @@
+import { adminGuard } from './core/guards/admin.guard';
+import { sellerGuard } from './core/guards/seller-guard';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -6,7 +8,9 @@ export const routes: Routes = [
     path: 'home', loadComponent: () => import('./features/home-component/home-component').then((m) => m.HomeComponent),
   },
   { path: 'shop', loadComponent : () => import('./features/categories/categories').then((m) => m.Categories) },
-
+  { path: 'brands', loadComponent : () => import('./features/brands/brands').then((m) => m.Brands) },
+  { path: 'support', loadComponent : () => import('./features/support/support').then((m) => m.SupportPage) },
+  { path: 'supports', loadComponent : () => import('./features/admin/components/show-supports/show-supports').then((m) => m.ShowSupports) ,canActivate: [adminGuard]},
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login')
@@ -54,33 +58,33 @@ export const routes: Routes = [
   },
   {
     path: 'new-product',
+    canActivate: [sellerGuard],
     loadComponent: () => import('./features/home-component/seller-home-component/components/new-product/new-product')
       .then(m => m.NewProduct)
   },
   {
     path: 'add-new-user',
+    canActivate: [adminGuard],
     loadComponent: () => import('./features/admin/components/add-new-user/add-new-user')
       .then(m => m.AddNewUser)
   },
   {
     path: 'update-product/:id',
+    canActivate: [sellerGuard],
     loadComponent: () => import('./features/home-component/seller-home-component/components/update-product/update-product')
       .then(m => m.UpdateProduct)
   },
   {
     path: 'new-category',
+    canActivate: [adminGuard],
     loadComponent: () => import('./features/admin/components/new-category/new-category')
       .then(m => m.NewCategory)
   },
   {
     path: 'new-brand',
+    canActivate: [adminGuard],
     loadComponent: () => import('./features/admin/components/new-brand/new-brand')
       .then(m => m.NewBrand)
   },
-
-    // {path: 'dashboard',},
-    // {path: 'profile',},
-    // {path : 'product/:id',},
-    // {path : 'category/:id',},
-    {path: '**',redirectTo: 'home' }
+  {path: '**',redirectTo: 'home' }
 ];

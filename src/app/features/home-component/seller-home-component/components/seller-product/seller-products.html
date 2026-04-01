@@ -1,7 +1,6 @@
-@let products = (sellerProducts | async);
 <section class="grid gap-4 grid-cols-1">
-    @if (products) {
-        @for (item of products; track item.id;) {
+    @if (isLoaded()) {
+        @for (item of showedProducts(); track item.id;) {
           <div appAnimateOnScroll class="flex border-1 rounded-xl p-4 flex-row flex-wrap flex-grow justify-between slideFromLeftAnimation">
            <div class="flex flex-col gap-3 seller-products">
                <app-dashboard-product [product]="item"></app-dashboard-product>
@@ -12,6 +11,7 @@
            </section>
          </div>
        }
+       <app-pagination-container></app-pagination-container>
     }@else{
         @for (item of [1,2,3]; track $index) {
          <div class="flex border-1 rounded-xl p-4 flex-row flex-wrap flex-grow justify-between">

@@ -1,5 +1,5 @@
 
-<aside class="sidebar relative" [class.w-[0px]]="!sidebarOpen()">
+<aside class="sidebar relative z-3" [class.w-[0px]]="!sidebarOpen()">
    
    <main [class.translate-x-[280px]]="isLanguageArabic() && !sidebarOpen()" [class.translate-x-[-280px]]="isLanguageEnglish() && !sidebarOpen()" class="sidebar-content fixed top-0 start-0  flex flex-col transition duration-600 fixed ease-in-out gap-5 min-h-full w-[280px] transition duration-300 ease-in-out bg-[var(--primary-color)]" [class.open]="sidebarOpen()">
          <button class="menu-btn self-end p-4 text-[20px]" (click)="toggleSidebar()">

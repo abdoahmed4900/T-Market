@@ -1,15 +1,15 @@
-<section class="product-card flex flex-col justify-between gap-3 border-2 rounded-lg shadow-md overflow-hidden transition hover:translate-y-[-5px] duration-300 ease-in-out animate-slideFromTop relative">
+<section appAnimateOnScroll class="product-card flex flex-col flex-wrap justify-between gap-3 border-2 rounded-lg shadow-md overflow-hidden transition hover:translate-y-[-5px] duration-300 ease-in-out slideFromTopAnimation relative">
     @if (product()?.stock == 0) {
         <div class="out-of-stock absolute start-0">
             <p class="text-[14px] font-bold bg-purple-500 p-4 rounded-xl rounded-ss-none">{{'OUT_OF_STOCK' | translate}}</p>
         </div>
     }
-    <div class="product-content flex flex-col">
+    <div class="product-content flex flex-col flex-wrap">
         <img loading="lazy" class="nav-image h-[250px] rounded-t-md transition hover:scale-105 hover:rotate-1 duration-300 ease-in-out" [src]="product()?.imageUrls![0]" alt="{{product()?.name}}" />
-        <h3 class="p-4 text-lg font-bold">{{product()?.name}}</h3>
-        <p class="h-[75px] line-clamp-2 p-4 pe-1 text-lg font-bold">{{product()?.description}}</p>
+        <h3 class="p-4 text-lg font-bold h-[50px] line-clamp-1">{{product()?.name}}</h3>
+        <p class="h-[47px] line-clamp-1 p-4 pe-1 text-lg font-bold">{{product()?.description}}</p>
     </div>
-    <div class="rating-and-price flex items-center justify-between p-4">
+    <div class="rating-and-price flex gap-5 flex-wrap items-center justify-between p-4">
         <span class="rating">
             @for (item of [1,2,3,4,5]; track $index) {
                 @if (item > product()?.rating!) {
@@ -21,9 +21,9 @@
         </span>
         <span class="price text-lg font-bold">${{product()?.price}}</span>
     </div>
-    <div class="actions flex md:flex-row flex-col gap-y-3 gap-x-2 md:items-center items-start flex-wrap p-4">
-        <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-2/4 text-white hover:bg-purple-700 w-full" (click)="addToCart(product()!.id!,product()!.price)" [disabled]="product()?.stock == 0">{{'PRODUCT_CARD.ADD_TO_CART' | translate}}</button>
-        <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-2/4 text-white hover:bg-purple-700 w-full" type="button" (click)="addToWishList(product()!.id!)">{{'PRODUCT_CARD.ADD_TO_WISHLIST' | translate}}</button>
-        <a [routerLink]="['/product',product()!.id]" class="view-details-btn bg-[var(--primary-color)] rounded-lg p-3 md:w-1/4 w-full text-white hover:bg-purple-700 text-center">{{'PRODUCT_CARD.VIEW' | translate}}</a>
+    <div class="actions flex lg:flex-row flex-col gap-y-3 gap-x-2 items-center flex-wrap p-4">
+        <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg w-full lg:w-auto p-3 size-fit text-white hover:bg-purple-700" (click)="addToCart(product()!.id!,product()!.price)" [disabled]="product()?.stock == 0">{{'PRODUCT_CARD.ADD_TO_CART' | translate}}</button>
+        <button class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg w-full lg:w-auto p-3 size-fit text-white hover:bg-purple-700" type="button" (click)="addToWishList(product()!.id!)">{{'PRODUCT_CARD.ADD_TO_WISHLIST' | translate}}</button>
+        <a [routerLink]="['/product',product()!.id]" class="view-details-btn w-full lg:w-auto bg-[var(--primary-color)] rounded-lg p-3 text-white hover:bg-purple-700 text-center">{{'PRODUCT_CARD.VIEW' | translate}}</a>
     </div>
 </section>

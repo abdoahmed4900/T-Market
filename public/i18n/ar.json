@@ -100,6 +100,9 @@
       "SEARCH_PLACEHOLDER": "بحث",
       "ALL_PRODUCTS": "كل المنتجات"
    },
+   "BRANDS": {
+      "SUBTITLE": "اعثر على منتجات علاماتك التجارية المفضلة"
+   },
    "ORDERS": {
       "ORDERS_LIST": "قائمة الطلبات",
       "ORDER": "الطلب",
@@ -140,6 +143,7 @@
    },
    "NAVBAR": {
       "CATEGORIES": "المتجر",
+      "BRANDS": "العلامات التجارية",
       "SUPPORT": "الدعم",
       "SIGN_OUT": "تسجيل الخروج",
       "CART": "عربة التسوق",
@@ -155,6 +159,7 @@
       "ADD_NEW_USER": "اضافة مستخدم جديد",
       "ADD_NEW_PRODUCT": "اضافة منتج جديد",
       "ADD_NEW_CATEGORY": "اضافة تصنيف جديد",
+      "SUPPORTS": "اظهار الشكاوى",
       "ADD_NEW_BRAND": "اضافة علامة تجارية",
       "UPDATE_PRODUCT": "تحديث المنتج",
       "DELETE_PRODUCT": "حذف المنتج",
@@ -211,5 +216,20 @@
       "CART": "عربة التسوق",
       "PAYMENT": "عملية الدفع",
       "DONE": "تم الدفع"
+   },
+    "SUPPORT": {
+      "PAGE_TITLE": "الدعم",
+      "PAGE_SUBTITLE": "تحتاج إلى المساعدة ؟ تواصل معنا وسنرد عليك في أقرب وقت",
+      "TITLE_PLACEHOLDER": "اكتب عنوان الشكوى",
+      "TITLE": "عنوان الشكوى",
+      "COMPLAINT": "تفاصيل الشكوى",
+      "COMPLAINT_PLACEHOLDER": "اكتب تفاصيل الشكوى",
+      "SUBMIT": "أرسل الشكوى"
+   },
+   "SHOW_SUPPORTS": {
+      "TITLE": "صفحة الشكاوى",
+      "SUBTITLE": "ساعد مستخدمين موقعك للحصول على تجربة أفضل",
+      "EMPTY": "!لم يتم إضافة شكاوى",
+      "USER_ID": "رقم حساب المستخدم"
    }
 }

@@ -3,7 +3,6 @@ import { Chart, registerables } from 'chart.js';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Order } from '../../core/interfaces/order';
 import { AdminService } from './services/admin.service';
-import { AsyncPipe } from '@angular/common';
 import { Admin } from '../auth/user';
 import { Product } from '../../core/interfaces/product';
 import { pieChartOptions, statusChartOptions } from '../../core/utils';
@@ -13,16 +12,15 @@ import { Sidebar } from '../../core/components/sidebar/sidebar';
 import { ShowUsers } from "./components/show-users/show-users";
 import { Orders } from "../orders/orders";
 import { StatisticsCard } from "../home-component/seller-home-component/components/statistics-card/statistics-card";
-import { DashboardProduct } from "../home-component/seller-home-component/components/dashboard-product/dashboard-product";
 import { FormsModule } from '@angular/forms';
-import { DashboardProductsSkeleton } from "../home-component/seller-home-component/components/dashboard-products-skeleton/dashboard-products-skeleton";
 import { AnimateOnScroll } from "../../shared/animate-on-scroll";
+import { AllProducts } from "./components/all-products/all-products";
 Chart.register(...registerables);
 
 
 @Component({
   selector: 'app-admin',
-  imports: [AsyncPipe, TranslatePipe, Sidebar, ShowUsers, Orders, StatisticsCard, DashboardProduct, FormsModule, DashboardProductsSkeleton, AnimateOnScroll],
+  imports: [TranslatePipe, Sidebar, ShowUsers, Orders, StatisticsCard, FormsModule, AnimateOnScroll, AllProducts],
   templateUrl: './admin.html',
   styleUrl: './admin.scss'
 })
@@ -39,7 +37,6 @@ export class AdminComponent {
   isShippedOrdersLoaded = signal(false);
   isDeliveredOrdersLoaded = signal(false);
   isCancelledOrdersLoaded = signal(false);
-
   adminService = inject(AdminService);
   chartFactory = inject(ChartFactory);
   
@@ -52,6 +49,7 @@ export class AdminComponent {
   destroy$ = new Subject<void>();
   isTotalOrdersLoaded = signal(false);
   showSidebar = signal(true);
+  isProductsLoaded = signal(false);
 
   ngOnInit(): void {
     this.setupDashBoard();
@@ -71,7 +69,7 @@ export class AdminComponent {
         this.totalOrdersNumber = value.length;
       })
     ).subscribe()
-    this.allProducts = this.adminService.getAllProducts();
+    this.isProductsLoaded.set(false);
     this.totalProductsSold = this.adminService.getNumberOfSoldProducts();
     this.getAllOrders();
   }

@@ -10,7 +10,6 @@ import { AdminService } from './features/admin/services/admin.service';
 import { Navbar } from './core/components/navbar/navbar';
 import { Footer } from './core/components/footer/footer';
 import { TranslateService } from '@ngx-translate/core';
-// import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({

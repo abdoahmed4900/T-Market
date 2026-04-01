@@ -1,0 +1,28 @@
+<main class="flex flex-col flex-wrap mt-10 gap-5">
+    <h2 appAnimateOnScroll class="text-[20px] slideFromLeftAnimation font-bold">{{'NAVBAR.BRANDS' | translate}}</h2>
+    <p appAnimateOnScroll class="text-[12px] slideFromLeftAnimation font-bold">{{'BRANDS.SUBTITLE' | translate}}</p>
+    <section class="brands grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2">
+        @if (isLoaded()) {
+            @for (item of showedBrands(); track $index) {
+              <div appAnimateOnScroll [once]="false" class="brand slideFromLeftAnimation flex flex-row gap-5 p-4 rounded-xl border-1 h-[150px]" [routerLink]="['/brand',item]">
+                  <div class="brand-first-char h-[50px] p-4 rounded-xl" [class.bg-gray-200]="isLight()" [class.bg-[hsl(222,32%,17%)]]="!isLight()">
+                    <p class="text-[32px] mx-auto my-auto">{{item.brandName.charAt(0)}}</p>
+                  </div>
+                  <h3 class="text-[20px] font-bold">{{item.brandName}}</h3>
+              </div>
+            }
+
+        }
+        @else {
+            @for (item of [1,2,3]; track $index) {
+              <div appAnimateOnScroll class="brand-skeleton h-[190px] slideFromLeftAnimation flex flex-row gap-3 p-4 rounded-xl border-1">
+                  <div class="w-[250px] h-[150px] skeleton-basic"></div>
+                  <div class="w-full h-[40px] skeleton-basic"></div>
+              </div>
+            }
+        }
+    </section>
+    @if (isLoaded()) {
+        <app-pagination-container></app-pagination-container>
+    }
+</main>

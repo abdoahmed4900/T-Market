@@ -35,6 +35,7 @@ export class AuthService {
         localStorage.setItem('role', role);
         localStorage.setItem('token', uid);
         localStorage.setItem('isLogin', 'true');
+        localStorage.setItem('name', value[0]['name']);
 
         console.log(`userRole updated from : ${this.userRole()}`);
         this.userRole.set(role);

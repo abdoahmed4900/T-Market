@@ -1,11 +1,10 @@
-@let products = (allProducts | async);
-<main appAnimateOnScroll class="mt-10 flex flex-col gap-10 slideFromLeftAnimation">
-    <header class="flex flex-row gap-10 items-center">
+<header class="flex flex-row gap-10 mt-10 items-center header">
         @if (showSidebar()){
             <app-sidebar></app-sidebar>
         }
         <h1 class="text-[24px] font-bold">{{'DASHBOARD' | translate}}</h1>
-    </header>
+</header>
+<main appAnimateOnScroll class="flex mt-10 flex-col gap-10 slideFromLeftAnimation">
     <section class="flex flex-col gap-10">
             <section aria-describedby="dashbard-numbers" class="grid grid-cols-[repeat(auto-fit,minmax(270px,1fr))] gap-5 w-full">
                <app-statistics-card [showCard]="isTotalOrdersLoaded()" [statisticNumber]="totalOrdersNumber" statisticName="ADMIN.TOTAL_ORDERS"></app-statistics-card>
@@ -18,24 +17,7 @@
                 <header>
                     <h3 class="text-[24px] font-bold">{{'ADMIN.STOCK_ITEMS' | translate}}</h3>
                 </header>
-                <main>
-                   @if (products) {
-                       @if(products!.length > 0){
-                         <section class="grid gap-4 all-products md:grid-cols-2">
-                             @for (item of (products); track item.id;) {
-                                <app-dashboard-product class="slideFromLeftAnimation" appAnimateOnScroll [once]="false" [product]="item"></app-dashboard-product>
-                             }
-                         </section>
-                      }@else {
-                          <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
-                             <img class="w-[200px] h-[200px]" src="https://www.svgrepo.com/show/17356/empty-cart.svg" alt="no products added yet" >
-                             <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_PRODUCTS' | translate}}</p>
-                          </div>
-                      }
-                   }@else {
-                    <app-dashboard-products-skeleton></app-dashboard-products-skeleton>
-                   }
-               </main>
+                <app-all-products></app-all-products>
             </section>
             <section class="orders-section">
                 <header class="my-5">

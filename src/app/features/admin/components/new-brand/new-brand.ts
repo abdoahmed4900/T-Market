@@ -4,6 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { GoBackButton } from "../../../../shared/components/go-back-button/go-back-button";
 import { AnimateOnScroll } from "../../../../shared/animate-on-scroll";
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-new-brand',
@@ -17,11 +18,23 @@ export class NewBrand {
   isAdmin = computed(() => {
     return localStorage.getItem('role') == 'admin'
   });
+  destroy$ = new Subject<void>();
   
 
-  async createBrand(){
+  createBrand(){
     if(this.isAdmin() && this.brand().length > 3){
-      await this.adminService.addNewBrand(this.brand())
+      this.adminService.addNewBrand(this.brand()).pipe(takeUntil(this.destroy$)).subscribe(
+        {
+          next : (value) => {
+            console.log('brand is created');
+          },
+        }
+      )
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -8,10 +8,11 @@ import { Product } from '../../../core/interfaces/product';
 import { WishlistService } from '../../../features/wishlist/wishlist.service';
 import { Subscription } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AnimateOnScroll } from '../../animate-on-scroll';
 
 @Component({
   selector: 'app-product-card',
-  imports: [FaIconComponent, RouterLink,CommonModule,TranslatePipe],
+  imports: [FaIconComponent, RouterLink,CommonModule,TranslatePipe,AnimateOnScroll],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss'
 })

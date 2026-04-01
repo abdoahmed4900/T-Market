@@ -1,0 +1,39 @@
+<header class="my-10 flex flex-col gap-5">
+    <h2 class="text-[20px] font-bold">{{'SUPPORT.PAGE_TITLE' | translate}}</h2>
+    <p class="text-[16px] text-gray-500" >{{'SUPPORT.PAGE_SUBTITLE' | translate}}</p>
+</header>
+<main class="support-form rounded-xl border-1 p-8">
+    <form [formGroup]="supportForm" class="flex flex-col gap-7">
+        <div class="title-container flex flex-col gap-1">
+            <label for="title" class="text-[14px] font-bold">{{'SUPPORT.TITLE' | translate}}</label>
+            <input class="outline-none border-2 rounded-lg p-2" type="text" name="title" id="title" placeholder="{{'SUPPORT.TITLE_PLACEHOLDER' | translate}}" formControlName="title" [ngClass]="{
+                'border-[var(--error-text-color)]': supportForm.get('title')?.invalid && supportForm.get('title')?.touched,
+                'border-gray-300': supportForm.get('title')?.valid || !supportForm.get('title')?.touched,
+                'focus:border-[var(--primary-color)]': (supportForm.get('title')?.valid && supportForm.get('title')?.touched),
+                'focus:border-[var(--error-text-color)]': !(supportForm.get('title')?.invalid && supportForm.get('title')?.touched),
+            }"/>
+            @if (supportForm.get('title')?.hasError('required') && supportForm.get('title')?.touched) {
+                <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'SUPPORT.TITLE' | translate } }}</span>
+            }
+            @if (supportForm.get('title')?.hasError('minlength') && supportForm.get('title')?.touched) {
+                <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length:5, field: 'SUPPORT.TITLE' | translate} }}</span>
+            }
+        </div>
+        <div class="complaint-container flex flex-col gap-1">
+            <label for="complaint" class="text-[14px] font-bold">{{'SUPPORT.COMPLAINT' | translate}}</label>
+            <textarea rows="10" class="outline-none resize-none border-2 rounded-lg p-2" type="text" name="complaint" id="complaint" placeholder="{{'SUPPORT.COMPLAINT_PLACEHOLDER' | translate}}" formControlName="complaint" [ngClass]="{
+                'border-[var(--error-text-color)]': supportForm.get('complaint')?.invalid && supportForm.get('complaint')?.touched,
+                'border-gray-300': supportForm.get('complaint')?.valid || !supportForm.get('complaint')?.touched,
+                'focus:border-[var(--primary-color)]': (supportForm.get('complaint')?.valid && supportForm.get('complaint')?.touched),
+                'focus:border-[var(--error-text-color)]': !(supportForm.get('complaint')?.invalid && supportForm.get('complaint')?.touched),
+            }"></textarea>
+            @if (supportForm.get('complaint')?.hasError('required') && supportForm.get('complaint')?.touched) {
+                <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'SUPPORT.COMPLAINT' | translate } }}</span>
+            }
+            @if (supportForm.get('complaint')?.hasError('minlength') && supportForm.get('complaint')?.touched) {
+                <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length:25, field: 'SUPPORT.COMPLAINT' | translate} }}</span>
+            }
+        </div>
+        <button type="submit" class="bg-[var(--primary-color)] size-fit rounded-xl text-white-200 p-4" (click)="submitSupport()">{{'SUPPORT.SUBMIT' | translate}}</button>
+    </form>
+</main>

@@ -100,6 +100,9 @@
       "SEARCH_PLACEHOLDER": "Search",
       "ALL_PRODUCTS": "All Products"
    },
+   "BRANDS": {
+      "SUBTITLE": "Find the products of your favorite brand"
+   },
    "ORDERS": {
       "ORDERS_LIST": "Orders List",
       "ORDER": "Order",
@@ -140,6 +143,7 @@
    },
    "NAVBAR": {
       "CATEGORIES": "Categories",
+      "BRANDS": "Brands",
       "SUPPORT": "Support",
       "SIGN_OUT": "Sign Out",
       "CART": "Cart",
@@ -155,6 +159,7 @@
       "ADD_NEW_USER": "Add New User",
       "ADD_NEW_PRODUCT": "Add New Product",
       "ADD_NEW_CATEGORY": "Add New Category",
+      "SUPPORTS": "View Complaints",
       "ADD_NEW_BRAND": "Add New Brand",
       "UPDATE_PRODUCT": "Update Product",
       "DELETE_PRODUCT": "Delete Product",
@@ -211,5 +216,20 @@
       "CART": "Cart",
       "PAYMENT": "Payment",
       "DONE": "Done"
+   },
+   "SUPPORT": {
+      "PAGE_TITLE": "SUPPORT",
+      "PAGE_SUBTITLE": "Need help? Reach out to our team and we'll get back to you shortly.",
+      "TITLE_PLACEHOLDER": "Enter complaint title",
+      "TITLE": "Title",
+      "COMPLAINT": "Complaint",
+      "COMPLAINT_PLACEHOLDER": "Enter complaint details",
+      "SUBMIT": "Send Complaint"
+   },
+   "SHOW_SUPPORTS": {
+      "TITLE": "Supports Page",
+      "SUBTITLE": "Help users of your website for a better experience",
+      "EMPTY": "No Complaints Added!",
+      "USER_ID": "User Id"
    }
 }

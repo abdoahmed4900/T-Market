@@ -30,6 +30,7 @@ export class Sidebar {
         { label: 'SIDEBAR.ADD_NEW_CATEGORY', path: '/new-category' },
         { label: 'SIDEBAR.ADD_NEW_BRAND', path: '/new-brand' },
         { label: 'SIDEBAR.ADD_NEW_USER', path: '/add-new-user' },
+        { label: 'SIDEBAR.SUPPORTS', path: '/supports' },
       ],
       seller: [
         { label: 'SIDEBAR.ADD_NEW_PRODUCT', path: '/new-product' },
@@ -38,7 +39,7 @@ export class Sidebar {
   })
 
 
-  sidebarOpen = signal(false);
+  sidebarOpen = signal(true);
   isLanguageEnglish = signal(this.translateService.getCurrentLang() == 'en')
   isLanguageArabic = signal(this.translateService.getCurrentLang() == 'ar')
 

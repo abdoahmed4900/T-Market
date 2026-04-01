@@ -32,7 +32,7 @@ export class ShowUsers {
 
   paginationService = inject(PaginationService);
   
-  showedUsers = this.paginationService.showedProducts
+  showedUsers = signal<User[]>([])
   ngOnInit(): void {
     this.getUsers();
     this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((val) => {
@@ -46,9 +46,12 @@ export class ShowUsers {
     ).subscribe(
       {
         next: (value) =>{
-          this.isLoaded.set(true);
+          this.paginationService.reset();
+          this.paginationService.productsPerPage.set(3);
           this.paginationService.allProducts.set(value);
           this.paginationService.initializePagination();
+          this.isLoaded.set(true);
+          this.showedUsers = this.paginationService.showedProducts;
         },
       }
     );

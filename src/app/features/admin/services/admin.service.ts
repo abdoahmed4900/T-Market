@@ -5,7 +5,7 @@ import { from, map } from 'rxjs';
 import { collection, collectionData, doc, Firestore, query, where } from '@angular/fire/firestore';
 import { fireStoreCollections } from '../../../../environments/environment';
 import { Admin, User } from '../../auth/user';
-import { getDocs, limit, updateDoc } from 'firebase/firestore';
+import { getDocs, limit, setDoc, updateDoc } from 'firebase/firestore';
 
 @Injectable(
     {
@@ -92,32 +92,17 @@ export class AdminService{
               throw error;
            }
     }
-    async addNewBrand(brand: string): Promise<string[]> {
-        try {
-              const q = query(
-                this.categoriesCollectionRef,
-                limit(1)
-              );
-
-              const snap = await getDocs(q);
-    
-              if (snap.empty) {
-                throw new Error('No brand document found');
-              }
-
-              const docSnap = snap.docs[0];
-              const data = docSnap.data();
-
-              const brands: string[] = data['Brands'] ?? [];
-
-              if(!Object.values(brands).includes(brand)){
-                  await updateDoc(docSnap.ref,{ Brands: [...Object.values(brands),brand]})
-              }
-        
-              return brands;
-           } catch (error) {
-              throw error;
-           }
+    addNewBrand(brand: string){
+       const brandsRef = collection(this.fireStore, fireStoreCollections.brands);
+       const newDocRef = doc(brandsRef);
+  
+       const newBrand = {
+         brandId: newDocRef.id,
+         brandName: brand,
+         productsName: 0,
+       };
+  
+       return from(setDoc(newDocRef, newBrand));
     }
 
     getUsers(){

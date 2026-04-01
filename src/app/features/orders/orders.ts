@@ -13,6 +13,7 @@ import { PaginationContainer } from "../../shared/components/pagination-containe
 
 @Component({
   selector: 'app-orders',
+  providers: [PaginationService],
   imports: [AsyncPipe, OrderItem, FormsModule, TranslatePipe, FormsModule, CommonModule, OrderItemSkeleton, AnimateOnScroll, PaginationContainer],
   templateUrl: './orders.html',
   styleUrl: './orders.scss'
@@ -30,7 +31,7 @@ export class Orders {
   role = signal<string>(localStorage.getItem('role') || '');
 
   paginationService = inject(PaginationService);
-  showedProducts = this.paginationService.showedProducts;
+  showedProducts = signal<Order[]>([]);
   isLoaded = signal(false);
 
   ngOnInit(): void {
@@ -52,8 +53,10 @@ export class Orders {
       tap((orders) => {
         this.isLoaded.set(false);
         this.paginationService.reset();
+        this.paginationService.productsPerPage.set(4);
         this.paginationService.allProducts.set(orders);
         this.paginationService.initializePagination();
+        this.showedProducts = this.paginationService.showedProducts;
         this.isLoaded.set(true);
       })
     )

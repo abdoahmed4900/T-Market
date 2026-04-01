@@ -1,4 +1,4 @@
- <section aria-roledescription="see-differenet-productss" class="justify-center col-span-3 flex items-center gap-3 mt-10 flex-wrap w-[100%]">
+ <section appAnimateOnScroll aria-roledescription="see-differenet-productss" class="justify-center col-span-3 flex slideFromLeftAnimation items-center gap-3 mt-10 flex-wrap w-[100%]">
      @if (allPages().length > 0) {
          <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="previousPage()" [disabled]="currentPage() == 1">{{'PREVIOUS' | translate}}</button>
      }

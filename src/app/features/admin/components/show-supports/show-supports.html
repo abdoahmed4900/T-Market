@@ -1,0 +1,34 @@
+<main class="mt-10">
+        <app-go-back-button></app-go-back-button>
+        <h2 class="text-[24px] font-bold my-5">{{'SHOW_SUPPORTS.TITLE' | translate}}</h2>
+        <p class="text-[17px] my-5">{{'SHOW_SUPPORTS.SUBTITLE' | translate}}</p>
+        <section class="users-section flex flex-col gap-5 w-full">
+          @if (isLoaded()) {
+            @if (allSupports().length > 0) {
+              @for (item of showedSupports(); track $index) {
+                <section appAnimateOnScroll [once]="false" class="user-section flex flex-col gap-5 border-1 rounded-xl p-4 slideFromLeftAnimation">
+                    <h2 class="text-[14px] font-bold">{{'AUTH.LABELS.USERNAME' | translate}} : {{item.userName}}</h2>
+                    <h2 class="text-[14px] font-bold">{{'SHOW_SUPPORTS.USER_ID' | translate}} : {{item.userId}}</h2>
+                    <p class="text-[14px] font-bold">{{'SUPPORT.TITLE' | translate}} : {{item.complaintTitle}}</p>
+                    <p class="text-[14px] font-bold">{{'SUPPORT.COMPLAINT' | translate}} : {{item.complaint}}</p>
+                </section>
+              }
+            }@else {
+              <section appAnimateOnScroll class="flex flex-col h-full items-center justify-center slideFromLeftAnimation flex-wrap">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/009/779/795/small_2x/purchase-ban-online-store-website-error-cancel-buying-order-placing-inability-buy-limit-budget-line-online-buyer-cartoon-character-vector.jpg" alt="empty cart" class="w-40 h-40"/>
+                 <h3 class="text-[var(--primary-text-color)] font-bold text-xl">{{'SHOW_SUPPORTS.EMPTY' | translate}}</h3>
+              </section>
+            }
+          }@else {
+            @for (item of [1,2,3,4,5,6]; track $index) {
+              <section appAnimateOnScroll [once]="false" class="user-section flex flex-col gap-5 border-1 rounded-xl p-4 slideFromLeftAnimation">
+                <div class="skeleton-basic h-[20px] w-[150px]"></div>
+                <div class="skeleton-basic h-[20px] w-[100px]"></div>
+                <div class="skeleton-basic h-[20px] w-[200px]"></div>
+                <div class="skeleton-basic h-[30px] w-[120px]"></div>
+              </section>
+            }
+          }
+        </section>
+        <app-pagination-container></app-pagination-container>
+</main>

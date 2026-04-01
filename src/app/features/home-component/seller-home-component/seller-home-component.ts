@@ -33,7 +33,6 @@ export class SellerHomeComponent {
   destroy$ = new Subject<void>();
   showSidebar = signal(true);
 
-
   ngOnInit(): void {
     this.user = this.homeSerivce.getUser();
   }

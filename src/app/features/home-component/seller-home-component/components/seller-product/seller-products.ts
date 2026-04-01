@@ -1,30 +1,47 @@
-import { Component, inject } from '@angular/core';
-import { Product } from '../../../../../core/interfaces/product';
+import { Component, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../../../../shared/services/products.service';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { DashboardProduct } from "../dashboard-product/dashboard-product";
 import { AnimateOnScroll } from "../../../../../shared/animate-on-scroll";
+import { PaginationService } from '../../../../../shared/services/pagination.service';
+import { PaginationContainer } from "../../../../../shared/components/pagination-container/pagination-container";
 
 @Component({
   selector: 'app-seller-products',
-  imports: [TranslatePipe, RouterLink, AsyncPipe, DashboardProduct, AnimateOnScroll],
+  imports: [TranslatePipe, RouterLink, DashboardProduct, AnimateOnScroll, PaginationContainer],
+  providers: [PaginationService],
   templateUrl: './seller-products.html',
   styleUrl: './seller-products.scss',
 })
 export class SellerProducts {
-  sellerProducts!: Observable<Product[]>;
   productSerivce = inject(ProductsService);
+  paginationSerivce = inject(PaginationService);
+  showedProducts = this.paginationSerivce.showedProducts;
   destroy$ = new Subject<void>();
+  isLoaded = signal(false);
 
   ngOnInit(): void {
     this.getSellerItems();
   }
 
   private getSellerItems() {
-    this.sellerProducts = this.productSerivce.getSellerProducts();
+    this.isLoaded.set(false);
+    this.productSerivce.getSellerProducts().pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(
+      {
+        next: (value) =>{
+          this.paginationSerivce.reset();
+          this.paginationSerivce.productsPerPage.set(3)
+          this.paginationSerivce.allProducts.set(value)
+          this.paginationSerivce.initializePagination();
+          this.showedProducts = this.paginationSerivce.showedProducts;
+          this.isLoaded.set(true);
+        },
+      }
+    );
   }
 
   deleteProduct(productId:string){
@@ -32,11 +49,7 @@ export class SellerProducts {
         {
           next : (value) => {
             if(value){
-              this.sellerProducts = this.sellerProducts.pipe(
-                map((products) => {
-                  return products.filter((p) => p.id != productId); 
-                })
-              )
+              this.getSellerItems();
             }
           },
         }

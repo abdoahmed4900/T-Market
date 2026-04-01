@@ -3,7 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductsService } from '../../../../../shared/services/products.service';
 import { numericLengthValidator } from '../../../../../core/utils';
-import { firstValueFrom, Observable, tap } from 'rxjs';
+import { firstValueFrom, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { Product } from '../../../../../core/interfaces/product';
@@ -30,6 +30,7 @@ export class NewProduct {
   selectedFiles = signal<File[]>([]);
   product = signal<Product|null>(null);
   imageService = inject(ImageService);
+  destroy$ = new Subject<void>()
 
 
   productFormGroup = this.fb.group({
@@ -46,8 +47,13 @@ export class NewProduct {
       })
     );
     this.brands = this.productService.readAllBrands().pipe(
-      tap((val) => {
-        this.selectedBrand = val[0];
+      map((val) => {
+        this.selectedBrand = val[0].brandName;
+        let names : string[] = [];
+        val.map((v) => {
+          names.push(v.brandName);
+        })
+        return names;
       })
     );
   }
@@ -74,7 +80,7 @@ export class NewProduct {
 
   async addProduct(){
     await this.setProductValue();
-    await this.productService.addNewProduct(this.product()!)
+    this.productService.addNewProduct(this.product()!).pipe(takeUntil(this.destroy$)).subscribe()
   }
 
   private async setProductValue() {
@@ -112,5 +118,7 @@ export class NewProduct {
         URL.revokeObjectURL(i);
        }) 
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

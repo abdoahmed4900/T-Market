@@ -1,9 +1,7 @@
-import { Injectable, signal } from "@angular/core";
+import { signal } from "@angular/core";
 
 
-@Injectable({
-    providedIn: 'any'
-})
+
 export class PaginationService{
 
     showedProducts = signal<any[]>([]);
@@ -62,5 +60,6 @@ export class PaginationService{
         this.allProducts.set([])
         this.showedProducts.set([])
         this.currentPage.set(1)
+        this.productsPerPage.set(5);
     }
 }
