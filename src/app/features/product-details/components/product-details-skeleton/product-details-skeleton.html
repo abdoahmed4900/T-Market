@@ -1,0 +1,41 @@
+ <section class="skeleton-product grid align lg:grid-cols-2 gap-8 grid-cols-1 my-7">
+        <!-- Image  -->
+        <div class="img-skeleton h-[400px] skeleton-basic rounded-xl">
+        </div>
+        <div class="productObservable-detail flex flex-col items-start justify-between gap-4">
+           <!-- Name -->
+          <div class="text-skeleton product-name-skeleton skeleton-basic"></div>
+          <!-- Price -->
+          <div class="small-text-skeleton product-price-skeleton skeleton-basic"></div>
+          <!-- Description -->
+          <div class="text-skeleton skeleton-basic"></div>
+          <div class="text-skeleton skeleton-basic"></div>
+          <div class="medium-text-skeleton skeleton-basic"></div>
+          <!-- Cart Action -->
+          <div class="product-cart-actions-skeleton flex flex-row gap-4">
+            <div class="small-text-skeleton skeleton-basic"></div>
+            <div class="medium-text-skeleton skeleton-basic"></div>
+            <div class="small-text-skeleton skeleton-basic"></div>
+          </div>
+          <!-- Reviews  -->
+          <div class="w-32 h-6 skeleton-basic rounded mb-2"></div> <!-- "Reviews" title -->
+          @for (item of [1,2,3]; track $index) {
+            <div class="review-skeleton space-y-2 w-full">
+            <div class="flex items-center gap-2">
+             <div class="w-24 h-4 skeleton-basic rounded"></div> <!-- Username -->
+            </div>
+            <div class="flex gap-1">
+              @for (star of [1,2,3,4,5]; track $index) {
+                <app-star-skeleton></app-star-skeleton>
+              }
+            </div>
+            <div class="text-skeleton skeleton-basic"></div> <!-- Comment -->
+            <div class="small-text-skeleton skeleton-basic"></div> <!-- Comment -->
+            </div>
+          }
+          <!-- Add Review -->
+          <div class="text-skeleton add-review-skeleton skeleton-basic"></div>
+          <!-- Add Rating -->
+          <div class="medium-text-skeleton add-rating-skeleton skeleton-basic"></div>
+        </div>      
+</section>

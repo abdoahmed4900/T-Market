@@ -1,0 +1,134 @@
+<nav class="bg-[var(--main-bg-color)] border-b-2 border-gray-200 py-3 animate-[slideFromTop]">
+  <div class="flex items-center pt-3 gap-10 max-w-[1400px] relative mx-auto md:px-20 px-10 justify-between">
+    <section class="title-and-nav flex flex-row items-center">
+      <app-website-title></app-website-title>
+      <div class="gap-3 hidden min-[1100px]:flex mx-7">
+        @if (isBuyer()) {
+        <a routerLink="/shop"
+          class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg"
+          routerLinkActive="active">{{'NAVBAR.CATEGORIES' | translate}}</a>
+        <a routerLink="/brands"
+          class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg"
+          routerLinkActive="active">{{'NAVBAR.BRANDS' | translate}}</a>
+        <a routerLink="/support"
+          class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg"
+          routerLinkActive="active">{{'NAVBAR.SUPPORT' | translate}}</a>
+        }
+      </div>
+    </section>
+    <button class="min-[1100px]:hidden text-2xl" (click)="toggleNavbar()">
+      {{isNavBarOpen() ? 'x' : '☰'}}
+    </button>
+
+    <div #box
+      class="min-[1100px]:hidden navbar-mobile-hidden z-0 transition-all ease navbar-mobile space-y-2 px-10 md:px-20 pb-3 absolute top-[100%] start-0 w-full bg-[var(--main-bg-color)] ease-in-out text-md">
+      <section class="border border-t-0 border-[var(--primary-text-color)] rounded-lg rounded-t-none">
+        @if(isBuyer()){
+        <a routerLink="/shop"
+          class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] mx-3 my-2 p-2 text-base font-medium text-[var(--primary-text-color)]"
+          routerLinkActive="active">{{'NAVBAR.CATEGORIES' | translate}}</a>
+        <a routerLink="/brands"
+          class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] mx-3 my-2 p-2 text-base font-medium text-[var(--primary-text-color)]"
+          routerLinkActive="active">{{'NAVBAR.BRANDS' | translate}}</a>
+        <a routerLink="/support"
+          class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] mx-3 my-2 p-2 text-base font-medium text-[var(--primary-text-color)]"
+          routerLinkActive="active">{{'NAVBAR.SUPPORT' | translate}}</a>
+        }
+        <div class="navbar-shortcuts flex flex-wrap items-center gap-2 my-3 mx-2">
+          <button
+            class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4"
+            (click)="changeLanguage('en')">EN</button>
+          <button
+            class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4"
+            (click)="changeLanguage('ar')">AR</button>
+          <button class="rounded-lg border text-md
+               border-gray-300 hover:bg-[var(--primary-color)] 
+               transition p-4" (click)="changeTheme()">
+            <fa-icon [icon]="themeIcon()"></fa-icon>
+          </button>
+          @if(isLoggedIn() == false && isInLoginPage() == false) {
+          <button routerLink="/login" class="p-4 rounded-xl bg-[var(--primary-color)] text-white">{{'AUTH.LOGIN.BUTTON'
+            |
+            translate}}</button>
+          }
+          @if (isLoggedIn()) {
+          <button
+            class="rounded-xl p-4 bg-[var(--primary-color)] hover:bg-purple-700 focus:bg-purple-800 border-gray-200 text-white"
+            (click)="logout()">{{'NAVBAR.SIGN_OUT' | translate}}</button>
+          @if(isBuyer()){
+          <button
+            class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md"
+            (click)="goToWishList()">♡ {{'NAVBAR.WISHLIST'| translate }}</button>
+          <div class="cart-section relative" routerLink="/cart">
+            <button
+              class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
+              <span class="inline-block text-[20px] me-1">🛒</span> {{'NAVBAR.CART' | translate}}
+            </button>
+            @if ((totalCartProductsNumber$ | async)! > 0) {
+            <div
+              class="absolute top-2 start-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
+              <p class="text-[10px]">{{totalCartProductsNumber$ | async}}</p>
+            </div>
+            }
+          </div>
+          <div class="orders-section relative" routerLink="/orders">
+            <button
+              class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
+              <img src="https://cdn-icons-png.flaticon.com/512/1356/1356594.png" alt="order"
+                class="inline-block w-5 h-5 me-1" /> {{'NAVBAR.ORDERS' | translate}}
+            </button>
+          </div>
+          }
+          }
+        </div>
+      </section>
+    </div>
+    <div class="hidden min-[1100px]:flex items-center gap-1">
+      @if (isBuyer()) {
+      <button
+        class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)]"
+        (click)="goToWishList()">♡ {{'NAVBAR.WISHLIST'| translate }}</button>
+      <div class="cart-section relative" routerLink="/cart">
+        <button
+          class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
+          <span class="inline-block text-[20px] me-1">🛒</span> {{'NAVBAR.CART' | translate}}
+        </button>
+        @if (totalCartProductsNumber$.value > 0) {
+        <div
+          class="absolute top-2 start-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
+          <p class="text-[10px]">{{totalCartProductsNumber$.value}}</p>
+        </div>
+        }
+      </div>
+      <div class="orders-section relative" routerLink="/orders">
+        <button
+          class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
+          <img src="https://cdn-icons-png.flaticon.com/512/1356/1356594.png" alt="order"
+            class="inline-block w-[20px] h-[20px] me-1" /> {{'NAVBAR.ORDERS' | translate}}
+        </button>
+      </div>
+      }
+      <button
+        class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4 px-3"
+        (click)="changeLanguage('en')">EN</button>
+      <button
+        class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4 px-3"
+        (click)="changeLanguage('ar')">AR</button>
+      <button class="rounded-lg border
+            border-gray-300 hover:bg-[var(--primary-color)] 
+            hover:text-white transition text-[12px] py-3 px-3" (click)="changeTheme()">
+        <fa-icon class="text-lg" [icon]="themeIcon()"></fa-icon>
+      </button>
+      @if(isLoggedIn() == false && isInLoginPage() == false) {
+      <button routerLink="/login" class="p-4 rounded-xl bg-[var(--primary-color)] text-white">{{'AUTH.LOGIN.BUTTON'
+        |
+        translate}}</button>
+      }
+      @if (isLoggedIn()) {
+      <button
+        class="rounded-xl p-4 bg-[var(--primary-color)] hover:bg-purple-700 focus:bg-purple-800 border-gray-200 hover:text-white text-white"
+        (click)="logout()">{{'NAVBAR.SIGN_OUT' | translate}}</button>
+      }
+    </div>
+  </div>
+</nav>

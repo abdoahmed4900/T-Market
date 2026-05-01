@@ -1,0 +1,339 @@
+{
+   "DASHBOARD" : "لوحة التحكم",
+   "PRICE": "السعر",
+   "STAR_RATING": "التقييم",
+   "PREVIOUS": "السابق",
+   "NEXT": "التالي",
+   "ALL": "الكل",
+   "GO_BACK": "العودة للخلف",
+   "NAME_FIELD": "اسم المنتج",
+   "PRICE_FIELD": "سعر المنتج",
+   "STOCK_FIELD": "كمية المنتج",
+   "DESCRIPTION_FIELD": "وصف المنتج",
+   "NAME_PLACEHOLDER": "اسم المنتج",
+   "DESCRIPTION_PLACEHOLDER": "وصف المنتج",
+   "PRICE_PLACEHOLDER": "سعر المنتج",
+   "STOCK_PLACEHOLDER": "كمية المنتج حاليا",
+   "CATEGORY_FIELD": "التصنيف",
+   "BRAND_FIELD": "العلامة التجارية",
+   "IMAGES_FIELD": "صور المنتج",
+   "OUT_OF_STOCK": "لا يوجد حاليا",
+   "AUTH": {  
+      "LOGIN": {
+          "BUTTON": "تسجيل الدخول",
+          "GOOGLE_BUTTON": "تسجيل الدخول باستخدام جوجل",
+          "TITLE": "سجل الدخول لحسابك!",
+          "SUBTITLE": "سجل الدخول إلى حسابك باستخدام بريدك الإلكتروني وكلمة المرور",
+          "REMEMBER_ME": "تذكرني",
+          "FORGOT_PASSWORD": "هل نسيت كلمة المرور ؟",
+          "NO_ACCOUNT": "ليس لديك حساب ؟ ",
+          "CREATE_ONE": "انشأ حساباً جديداً "
+      },
+      "LOGOUT": "تسجيل الخروج",
+      "REGISTER": {
+        "TITLE": "انشأ حساب جديد!",
+        "SUBTITLE": "انشأ حساب جديد باستخدام بريدك الإلكتروني وكلمة المرور",
+        "BUTTON": "إنشاء حساب",
+        "HAVE_ACCOUNT": "هل لديك حساب ؟",
+        "LOGIN": "تسجيل الدخول"
+      },
+      "VALIDATIONS": {
+         "REQUIRED": "{{field}} مطلوب",
+         "INVALID": "يرجى إدخال {{field}} صالح",
+         "MIN_LENGTH": "يجب أن يكون طول {{field}} على الأقل {{length}} حرفًا",
+         "PASSWORDS_DO_NOT_MATCH": "كلمات المرور غير متطابقة"
+      },
+      "LABELS": {
+         "EMAIL": "البريد الإلكتروني",
+         "PASSWORD": "كلمة المرور",
+         "CONFIRM_PASSWORD": "تأكيد كلمة المرور",
+         "USERNAME": "اسم المستخدم",
+         "ROLE": "نوع المستخدم"
+      },
+      "PLACEHOLDERS": {
+         "EMAIL": "أدخل بريدك الإلكتروني",
+         "PASSWORD": "أدخل كلمة المرور",
+         "CONFIRM_PASSWORD": "أعد إدخال كلمة المرور",
+         "USERNAME": "أدخل اسم المستخدم",
+         "ROLE": "اختر نوع المستخدم"
+      },
+      "ROLES":{
+          "ADMIN": "مسؤول",
+          "BUYER": "مشتري",
+          "SELLER": "بائع"
+      },
+      "RESET_PASSWORD": {
+          "TITLE": "إعادة تعيين كلمة المرور",
+          "SUBTITLE": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+          "BUTTON": "إرسال رابط إعادة التعيين"
+      }
+   },
+   "ADMIN" : {
+      "PIECES": "قطعة",
+      "REVENUE": "اجمالي الربح",
+      "SOLD_ITEMS": "القطع المباعة",
+      "TOTAL_ORDERS":"عدد الطلبات",
+      "SHIPPED_ORDERS": "الطلبات المشحونة",
+      "CANCELLED_ORDERS": "الطلبات المرتجعة",
+      "PENDING_ORDERS": "الطلبات في قائمة الانتظار",
+      "DELIVERED_ORDERS": "الطلبات المستلمة",
+      "STOCK_ITEMS": "محتويات المخزن",
+      "PRODUCT_NAME": "اسم المنتج",
+      "SOLD": "المباع",
+      "IN_STOCK": "المتبقي",
+      "NO_PRODUCTS": "لم يتم إضافة منتجات!",
+      "STATISTICS": "الاحصائيات",
+      "NO_ORDERS": "لم يتم إضافة طلبات!",
+      "ORDERS_STATUS_COUNT": "الطلبات زمنيا حسب الحالة",
+      "ORDERS_PIE_COUNT": "توضيح الطلبات طبقا للحالة"
+   },
+   "CART": {
+      "EMPTY": "عربة التسوق الخاصة فارغة",
+      "DELETE":"مسح",
+      "TOTAL_PRICE": "الإجمالي",
+      "CHECKOUT": "الدفع",
+      "TOTAL_SUMMARY": "اجمالي الطلب"
+   },
+   "CATEGORIES": {
+      "STARS_RATING_OR_LESS": "{{stars}} نجوم أو أقل",
+      "STARS_RATING": "التقييم",
+      "SEARCH_PLACEHOLDER": "بحث",
+      "ALL_PRODUCTS": "كل المنتجات"
+   },
+   "BRANDS": {
+      "SUBTITLE": "اعثر على منتجات علاماتك التجارية المفضلة",
+      "NUMBER_OF_PRODUCTS": "عدد المنتجات",
+      "VIEW_PRODUCTS": "إظهار المنتجات"
+   },
+   "ORDERS": {
+      "ORDERS_LIST": "قائمة الطلبات",
+      "ORDER": "الطلب",
+      "DETAILS": "التفاصيل",
+      "SHIP_ORDER": "شحن الطلب",
+      "CANCEL_ORDER": "الغاء الطلب",
+      "DELIVER_ORDER": "وصول الطلب",
+      "ITEMS": "المنتجات",
+      "ORDER_ITEMS": "منتجات الطلب",
+      "DOWNLOAD_RECEIPT": "تحميل ايصال الطلب",
+      "SORT_BY": "الترتيب حسب",
+      "NEWEST_FIRST": "الأحدث للأقدم",
+      "OLDEST_FIRST": "الأقدم للأحدث",
+      "HIGH_TO_LOW": "السعر من الأعلى للأقل",
+      "LOW_TO_HIGH": "السعر من الأقل للأعلى",
+      "QUANTITY": "الكمية"
+   },
+   "STATUS": {
+      "PENDING": "ينتظر الشحن",
+      "CANCELLED": "ملغي",
+      "SHIPPED": "مشحون",
+      "DELIVERED": "تم التوصيل"
+   },
+    "WISHLIST": {
+      "ADD_ITEMS": "اضف لقائمة المنتجات المفضلة"
+   },
+   "PAYMENT": {
+      "PAYMENT_FORM": "تفاصيل الدفع",
+      "CARDHOLDER_NAME_LABEL": "اسم صاحب البطاقة",
+      "NAME_PLACEHOLDER": "الاسم",
+      "CARDHOLDER_ADDRESS_LABEL": "العنوان",
+      "STREET_PLACEHOLDER": "الشارع",
+      "ZIP_CODE_PLACEHOLDER": "الكود البريدي",
+      "CITY_PLACEHOLDER": "المدينة",
+      "CARD_NUMBER": "رقم البطاقة",
+      "CARD_EXPIRY_DATE": "تاريخ انتهاء الصلاحية",
+      "CARD_CVC": "الرقم السري",
+      "PAY": "الدفع"
+   },
+   "NAVBAR": {
+      "CATEGORIES": "المتجر",
+      "BRANDS": "العلامات التجارية",
+      "SUPPORT": "الدعم",
+      "SIGN_OUT": "تسجيل الخروج",
+      "CART": "عربة التسوق",
+      "ORDERS": "الطلبات",
+       "WISHLIST": "المفضلة"
+   },
+   "PRODUCT_CARD": {
+      "ADD_TO_CART": "اضافة لعربة التسوق",
+      "ADD_TO_WISHLIST": "اضافة للمفضلة",
+      "VIEW": "التفاصيل"
+   },
+   "SIDEBAR": {
+      "ADD_NEW_USER": "اضافة مستخدم جديد",
+      "ADD_NEW_PRODUCT": "اضافة منتج جديد",
+      "ADD_NEW_CATEGORY": "اضافة تصنيف جديد",
+      "SUPPORTS": "اظهار الشكاوى",
+      "ADD_NEW_BRAND": "اضافة علامة تجارية",
+      "UPDATE_PRODUCT": "تحديث المنتج",
+      "DELETE_PRODUCT": "حذف المنتج",
+      "UNDELETE_PRODUCT": "الغاء حذف المنتج",
+      "VIEW_ALL_USERS": "اظهار جميع المستخدمين",
+      "VIEW_ALL_PRODUCTS": "اظهار جميع المنتجات",
+      "VIEW_YOUR_PRODUCTS": "اظهار منتجاتك"
+   },
+   "FOOTER": {
+      "GET_PREMIUM":  "تكنولوجيا حديثة التصميم والأداء والقيمة . مع شحن سريع ودعم مخصص",
+      "GET_UPDATES": "احصل على التحديثات",
+      "SUBSCRIBE": "اشترك"
+   },
+    "NEW_CATEGORY": {
+      "CREATE_NEW_CATEGORY_TITLE": "اضف تصنيف جديد",
+      "CREATE_NEW_CATEGORY_SUBTITLE": "اضف تصنيف جديد للمنتجات لمتجرك",
+      "CREATE_NEW_CATEGORY_PLACEHOLDER": "اسم التصنيف",
+      "SUBMIT": "انشأ التصنيف"
+   },
+    "NEW_BRAND": {
+      "CREATE_NEW_BRAND_TITLE": "اضف علامة تجارية جديدة",
+      "CREATE_NEW_BRAND_SUBTITLE": "اضف علامة تجارية جديدة لمتجرك",
+      "CREATE_NEW_BRAND_PLACEHOLDER": "اسم العلامة التجارية",
+      "SUBMIT": "انشأ العلامة التجارية"
+   },
+    "NEW_PRODUCT": {
+      "TITLE": "اضافة منتج جديد",
+      "SUBTITLE": "اضف منتج جديد لمتجرك",
+      "SUBMIT": "اضف المنتج"
+   },
+   "UPDATE_PRODUCT": {
+      "TITLE": "حدث بيانات المنتج",
+      "SUBMIT": "حدث المنتج"
+   },
+   "SHOW_USERS": {
+      "USERS": "المستخدمين",
+      "NAME": "الاسم",
+      "ROLE": "نوع المستخدم",
+      "EMAIL": "البريد الإلكتروني",
+      "CHANGE_ROLE": "تغيير نوع المستخدم",
+      "MAKE_ADMIN": "اجعله المستخدم مسئول",
+      "DELETE_USER": "ازل المستخدم"
+   },
+   "PRODUCT_DETAILS": {
+      "NO_REVIEWS": "!لا يوجد تقييمات للمنتج",
+      "ADD_COMMENT": "اضف تقييمك للمنتج",
+      "YOU": "أنت",
+      "REVIEW": "التقييمات"
+   },
+   "ADD_NEW_USER": {
+      "TITLE": "اضافة مستخدم جديد",
+      "SUBTITLE": "اضف مستخدم جديد لموقعك",
+      "SUBMIT": "اضف مستخدم"
+   },
+    "PROGRESS_BAR": {
+      "CART": "عربة التسوق",
+      "PAYMENT": "عملية الدفع",
+      "DONE": "تم الدفع"
+   },
+    "SUPPORT": {
+      "PAGE_TITLE": "الدعم",
+      "PAGE_SUBTITLE": "تحتاج إلى المساعدة ؟ تواصل معنا وسنرد عليك في أقرب وقت",
+      "TITLE_PLACEHOLDER": "اكتب عنوان الشكوى",
+      "TITLE": "عنوان الشكوى",
+      "COMPLAINT": "تفاصيل الشكوى",
+      "COMPLAINT_PLACEHOLDER": "اكتب تفاصيل الشكوى",
+      "SUBMIT": "أرسل الشكوى"
+   },
+   "SHOW_SUPPORTS": {
+      "TITLE": "صفحة الشكاوى",
+      "SUBTITLE": "ساعد مستخدمين موقعك للحصول على تجربة أفضل",
+      "EMPTY": "!لم يتم إضافة شكاوى",
+      "USER_ID": "رقم حساب المستخدم"
+   },
+   "BRAND_PRODUCTS": {
+      "TITLE": "منتجات {{name}}",
+      "SUBTITLE": "منتجات علامتك التجارية المفضلة",
+      "PRODUCT_DETAILS": "تفاصيل المنتج"
+   },
+   "DELETED_PRODUCT": {
+      "NOT_AVAILABLE": "غير متاح"
+   },
+  "SUCCESS_MESSAGES": {
+    "LOGIN": "تم تسجيل الدخول بنجاح",
+    "LOGOUT": "تم تسجيل الخروج بنجاح",
+    "WISHLIST_ITEM_ADDED": "تم إضافة المنتج إلى قائمة المفضلة بنجاح",
+    "WISHLIST_ITEM_REMOVED": "تم حذف المنتج من قائمة المفضلة بنجاح",
+    "ORDER_PLACED": "تم إنشاء الطلب بنجاح",
+    "CATEGORY_CREATED": "تم إنشاء التصنيف بنجاح",
+    "STOCK_MAXIMUM": "المخزن ليس لديه المزيد من هذا المنتج",
+    "STOCK_MINIMUM": "لا يمكن اختيار كمية بالسالب",
+    "BRAND_CREATED": "تم إنشاء العلامة التجارية بنجاح",
+    "PRODUCT_CREATED": "تم إنشاء المنتج بنجاح",
+     "PRODUCT_UPDATED": "تم تحديث المنتج بنجاح",
+     "PRODUCT_DELETED": "تم حذف المنتج بنجاح",
+     "PRODUCT_UNDELETED": "تم إلغاء حذف المنتج بنجاح",
+     "USER_ROLE_UPDATED": "تم تحديث نوع المستخدم بنجاح",
+     "SUPPORT_SENT": "تم إرسال الشكوى بنجاح",
+     "ORDER_SHIPPED": "تم شحن الطلب بنجاح",
+     "ORDER_CANCELLED": "تم إلغاء الطلب بنجاح",
+     "ORDER_DELIVERED": "تم توصيل الطلب بنجاح",
+     "PASSWORD_RESET": "تم إرسال رابط إعادة تعيين كلمة المرور بنجاح",
+     "REVIEW_ADDED": "تم إضافة تقييم المنتج بنجاح",
+     "ITEM_ADDED_TO_CART": "تم إضافة المنتج إلى عربة التسوق بنجاح",
+     "CART_ITEM_INCREASED": "تم زيادة عدد المنتج بنجاح",
+     "CART_ITEM_DECREASED": "تم نقص عدد المنتج بنجاح",
+     "ITEM_REMOVED_FROM_CART": "تم حذف المنتج من عربة التسوق بنجاح",
+     "USER_CREATED": "تم إنشاء المستخدم بنجاح",
+     "ROLE_UPDATED": "تم تحديث نوع المستخدم بنجاح"
+  },
+  "HOME": {
+    "HERO": {
+      "TITLE": "مرحباً بكم في فولتيك",
+      "SUBTITLE": "اكتشف منتجات مذهلة بأسعار لا تضاهى",
+      "SHOP_NOW": "تسوق الآن",
+      "EXPLORE_BRANDS": "استكشف العلامات التجارية"
+    },
+    "CATEGORIES": {
+      "TITLE": "تسوق حسب الفئة",
+      "SUBTITLE": "اكتشف منتجاتنا عبر فئات متنوعة",
+      "SHOW": "إظهار المنتجات"
+    },
+    "BRANDS": {
+      "TITLE": "تسوق حسب العلامة التجارية",
+      "SUBTITLE": "اكتشف منتجاتنا عبر علامات تجارية متنوعة",
+      "SHOW": "إظهار المجموعة",
+      "TOP": "أفضل العلامات التجارية"
+    },
+    "FEATURES": {
+      "TITLE": "منتجات مميزة",
+      "SUBTITLE": "تم اختيارها خصيصاً لك",
+      "VIEW_ALL": "عرض جميع المنتجات",
+      "CHEAP_SHIPPING": "شحن سريع",
+      "CHEAP_SHIPPING_DESC": "نوفر لك شحن سريع مقابل قيمة بسيطة",
+      "EASY_RETURNS": "إعادة سهلة",
+      "EASY_RETURNS_DESC": "نوفر لك إعادة سهلة للمنتجات من أجل خدمة مناسبة ",
+      "SECURE_PAYMENT": "دفع آمن",
+      "SECURE_PAYMENT_DESC": "نوفر لك دفع آمن لحماية بياناتك",
+      "LOYALTY_REWARDS": "مكافأت للعملاء",
+      "LOYALTY_REWARDS_DESC": "نوفر مكافأت وخصومات لعملائنا المميزين"
+    },
+    "NEWSLETTER": {
+      "TITLE": "ابق على اطلاع",
+      "SUBTITLE": "اشترك للحصول على عروض وتحديثات خاصة",
+      "PLACEHOLDER": "أدخل بريدك الإلكتروني",
+      "BUTTON": "اشتراك",
+      "NO_SPAM": "✓ لا بريد مزعج. يمكنك إلغاء الاشتراك في أي وقت."
+    }
+  },
+  "PAGE_TITLES": {
+    "LOGIN_PAGE": "تسجيل الدخول",
+    "REGISTER_PAGE": "إنشاء حساب",
+    "RESET_PASSWORD_PAGE": "إعادة تعيين كلمة السر",
+    "HOME_PAGE": "الصفحة الرئيسية",
+    "CART_PAGE": "عربة التسوق",
+    "WISHLIST_PAGE": "المفضلة",
+    "CHECKOUT_PAGE": "الدفع",
+    "ORDERS_PAGE": "الطلبات",
+    "NEW_PRODUCT_PAGE": "إنشاء منتج جديد",
+    "NEW_CATEGORY_PAGE": "إنشاء تصنيف جديد",
+    "NEW_BRAND_PAGE": "إنشاء علامة تجارية",
+    "NEW_USER_PAGE": "إنشاء مستخدم جديد",
+    "UPDATE_PRODUCT_PAGE": "تحديث تفاصيل المنتج",
+    "ORDER_DETAILS_PAGE": "تفاصيل الطلب",
+    "PRODUCT_DETAILS_PAGE": "تفاصيل المنتج",
+    "CATEGORIES_PAGE": "البحث عن منتج",
+    "BRANDS_PAGE": "العلامات التجارية",
+    "ADD_SUPPORT_PAGE": "اضافة شكوى",
+    "SHOW_COMPLAINTS_PAGE": "إظهار الشكاوى"
+  },
+  "ERROR_MESSAGES": {
+    "LOGIN" : "سجل الدخول أولا لكي تستخدم {{page}}"
+  }
+}

@@ -1,0 +1,26 @@
+nav{
+    transition: all 0.3s ease;
+}
+
+.navbar-mobile-hidden{
+    transform: translateY(-20px);
+    opacity: 0;
+    z-index:-1;
+}
+
+.navbar-mobile-show{
+    transform: translateY(0px);
+    opacity: 1;
+    z-index: 2;
+}
+
+.active,
+.title-and-nav li:hover{
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.slideFromHorizon{
+    transform: translateX(0px);
+    animation: slideFromHorizon 1s ease;
+}

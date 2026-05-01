@@ -1,0 +1,44 @@
+<section class="grid gap-4 grid-cols-1">
+  @if (isLoaded()) {
+  @for (item of showedProducts(); track item.id;) {
+  <div class="relative">
+    @if (item.isDeleted) {
+    <app-deleted-product-overlay></app-deleted-product-overlay>
+    }
+    <div appAnimateOnScroll
+      class="flex border rounded-xl p-4 flex-row relative flex-wrap flex-grow justify-between slideFromLeftAnimation">
+      <app-dashboard-product class="self-start" [product]="item"></app-dashboard-product>
+      <section class="actions-row flex flex-row gap-4 flex-wrap">
+        <button type="button"
+          class="size-fit bg-[var(--primary-color)] hover:bg-purple-500 p-4 rounded-xl self-center z-[11]"
+          [routerLink]="['/update-product/',item.id]">{{'SIDEBAR.UPDATE_PRODUCT' | translate}}</button>
+        <button type="button" class="size-fit bg-red-500 hover:bg-red-700 p-4 rounded-xl self-center z-[11]"
+          (click)="deleteOrUnDeleteProduct(item.id!)">
+          @if (!item.isDeleted) {
+          {{'SIDEBAR.DELETE_PRODUCT' | translate}}
+          }@else {
+          {{'SIDEBAR.UNDELETE_PRODUCT' | translate}}
+          }
+        </button>
+      </section>
+    </div>
+  </div>
+  }
+  <app-pagination-container></app-pagination-container>
+  }@else{
+  @for (item of [1,2,3]; track $index) {
+  <div class="flex border rounded-xl p-4 flex-row flex-wrap flex-grow justify-between">
+    <div class="flex flex-col gap-3 seller-products">
+      <div class="skeleton-basic w-[250px] h-[20px]"></div>
+      <div class="skeleton-basic w-[100px] h-[20px]"></div>
+      <div class="skeleton-basic w-[150px] h-[20px]"></div>
+      <div class="skeleton-basic w-[120px] h-[20px]"></div>
+    </div>
+    <section class="actions-row flex flex-row gap-4 flex-wrap">
+      <div class="skeleton-basic w-[120px] h-[40px]"></div>
+      <div class="skeleton-basic w-[120px] h-[40px]"></div>
+    </section>
+  </div>
+  }
+  }
+</section>

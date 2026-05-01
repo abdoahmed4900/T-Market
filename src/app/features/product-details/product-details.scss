@@ -1,0 +1,25 @@
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input::placeholder {
+  padding-inline-start: 8px;
+}
+
+.img-slider img {
+  transform-origin: center;
+  /* 👈 CRITICAL: Anchor at top-left */
+  /* This makes scaling expand only right and down, not all directions */
+}
+
+.img-slider {
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}

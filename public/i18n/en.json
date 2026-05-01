@@ -1,0 +1,338 @@
+{
+   "DASHBOARD" : "DashBoard",
+   "PRICE":"Price",
+   "STAR_RATING": "Star rating",
+   "PREVIOUS": "Previous",
+   "NEXT": "Next",
+   "ALL": "All",
+   "GO_BACK": "Go Back",
+   "NAME_PLACEHOLDER": "Enter Product Name",
+   "DESCRIPTION_PLACEHOLDER": "Enter Product Description",
+   "PRICE_PLACEHOLDER": "Enter Product Price",
+   "STOCK_PLACEHOLDER": "Enter Product Stock",
+   "NAME_FIELD": "Name",
+   "PRICE_FIELD": "Price",
+   "DESCRIPTION_FIELD": "Description",
+   "STOCK_FIELD": "Stock",
+   "CATEGORY_FIELD": "Category",
+   "BRAND_FIELD": "Brand",
+   "IMAGES_FIELD": "Product Images",
+   "OUT_OF_STOCK":"Out of stock",
+   "AUTH": {
+      "LOGIN": {
+          "BUTTON": "Login",
+          "GOOGLE_BUTTON": "Log In With Google",
+          "TITLE": "Login to your account!",
+          "SUBTITLE": "Login to your account using your email and password",
+          "REMEMBER_ME": "Remember me",
+          "FORGOT_PASSWORD": "Forgot password ?",
+          "NO_ACCOUNT": "Don't have an account ?",
+          "CREATE_ONE": " Create a new account"
+      },
+      "LOGOUT": "Logout",
+      "REGISTER": {
+        "TITLE": "Create a new account!",
+        "SUBTITLE": "Create a new account using your email and password",
+        "BUTTON": "Create Account",
+        "HAVE_ACCOUNT": "Already have an account ?",
+        "LOGIN": "Login"
+      },
+      "VALIDATIONS": {
+         "REQUIRED": "{{field}} is required",
+         "INVALID": "Please enter a valid {{field}}",
+         "MIN_LENGTH": "{{field}} must be at least {{length}} characters long",
+         "PASSWORDS_DO_NOT_MATCH": "Passwords do not match"
+      },
+      "LABELS": {
+         "EMAIL": "Email",
+         "PASSWORD": "Password",
+         "CONFIRM_PASSWORD": "Confirm Password",
+         "USERNAME": "Username",
+         "ROLE": "Role"
+      },
+      "PLACEHOLDERS": {
+         "EMAIL": "Enter your email",
+         "PASSWORD": "Enter your password",
+         "CONFIRM_PASSWORD": "Re-enter your password",
+         "USERNAME": "Enter your username",
+         "ROLE": "Select user role"
+      },
+      "ROLES":{
+          "ADMIN": "Admin",
+          "BUYER": "Buyer",
+          "SELLER": "Seller"
+      },
+      "RESET_PASSWORD": {
+          "TITLE": "Reset Password",
+          "SUBTITLE": "Enter your email to reset your password",
+          "BUTTON": "Send Reset Link"
+      }
+   },
+   "ADMIN" : {
+      "PIECES": "Pieces",
+      "REVENUE": "Total Revenue",
+      "SOLD_ITEMS": "Total Sold Items",
+      "TOTAL_ORDERS": "Total Orders",
+      "SHIPPED_ORDERS": "Shipped Orders",
+      "CANCELLED_ORDERS": "Cancelled Orders",
+      "PENDING_ORDERS": "Pending Orders",
+      "DELIVERED_ORDERS": "Delivered Orders",
+      "STOCK_ITEMS": "Stock Items",
+      "PRODUCT_NAME": "Product Name",
+      "SOLD":"Sold",
+      "IN_STOCK": "In Stock",
+      "NO_PRODUCTS":"No Products Added Yet",
+      "STATISTICS": "Statistics",
+      "NO_ORDERS": "No Orders Added Yet!",
+      "ORDERS_STATUS_COUNT": "Order Status Count",
+      "ORDERS_PIE_COUNT": "Orders Pie Chart"
+   },
+    "CART": {
+      "EMPTY": "Your Cart is Empty",
+      "DELETE": "Delete",
+      "TOTAL_PRICE": "Total Price",
+      "CHECKOUT": "Checkout",
+      "TOTAL_SUMMARY": "Total Summary"
+   },
+   "CATEGORIES": {
+      "STARS_RATING_OR_LESS": "{{stars}} Stars Or Less Products",
+      "STARS_RATING": "Star rating",
+      "SEARCH_PLACEHOLDER": "Search",
+      "ALL_PRODUCTS": "All Products"
+   },
+   "BRANDS": {
+      "SUBTITLE": "Find the products of your favorite brand",
+      "NUMBER_OF_PRODUCTS": "Number of products",
+      "VIEW_PRODUCTS": "View Products"
+   },
+   "ORDERS": {
+      "ORDERS_LIST": "Orders List",
+      "ORDER": "Order",
+      "DETAILS": "Details",
+      "SHIP_ORDER": "Ship Order",
+      "CANCEL_ORDER": "Cancel Order",
+      "DELIVER_ORDER": "Deliver Order",
+      "ITEMS": "Items",
+      "ORDER_ITEMS": "Order Items",
+      "DOWNLOAD_RECEIPT": "Download Receipt",
+      "SORT_BY": "Sort By",
+      "NEWEST_FIRST": "Newest First",
+      "OLDEST_FIRST": "Oldest First",
+      "HIGH_TO_LOW": "Price: High to low",
+      "LOW_TO_HIGH": "Price: low to High",
+      "QUANTITY": "Quantity"
+   },
+   "STATUS": {
+      "PENDING": "Pending",
+      "CANCELLED": "Cancelled",
+      "SHIPPED": "Shipped",
+      "DELIVERED": "Delivered"
+   },
+   "WISHLIST": {
+      "ADD_ITEMS": "Add Items To WishList"
+   },
+   "PAYMENT": {
+      "PAYMENT_FORM": "Payment Form",
+      "CARDHOLDER_NAME_LABEL": "Cardholder Name",
+      "NAME_PLACEHOLDER": "Name",
+      "CARDHOLDER_ADDRESS_LABEL": "Cardholder Address",
+      "STREET_PLACEHOLDER": "Street",
+      "ZIP_CODE_PLACEHOLDER": "Zip Code",
+      "CITY_PLACEHOLDER": "City",
+      "CARD_NUMBER": "Card Number",
+      "CARD_EXPIRY_DATE": "Expiry Date",
+      "CARD_CVC": "CVC",
+      "PAY": "Pay"
+   },
+   "NAVBAR": {
+      "CATEGORIES": "Categories",
+      "BRANDS": "Brands",
+      "SUPPORT": "Support",
+      "SIGN_OUT": "Sign Out",
+      "CART": "Cart",
+      "ORDERS": "Orders",
+      "WISHLIST": "WishList"
+   },
+   "PRODUCT_CARD": {
+      "ADD_TO_CART": "Add to Cart",
+      "ADD_TO_WISHLIST": "Add to WishList",
+      "VIEW": "View"
+   },
+   "SIDEBAR": {
+      "ADD_NEW_USER": "Add New User",
+      "ADD_NEW_PRODUCT": "Add New Product",
+      "ADD_NEW_CATEGORY": "Add New Category",
+      "SUPPORTS": "View Complaints",
+      "ADD_NEW_BRAND": "Add New Brand",
+      "UPDATE_PRODUCT": "Update Product",
+      "DELETE_PRODUCT": "Delete Product",
+      "UNDELETE_PRODUCT": "Undelete Product",
+      "VIEW_ALL_USERS": "View All Users",
+      "VIEW_ALL_PRODUCTS": "View All Products",
+      "VIEW_YOUR_PRODUCTS": "View Your Products"
+   },
+   "FOOTER": {
+      "GET_PREMIUM": "Premium tech curated for performance, design, and value. Fast shipping and dedicated support.",
+      "GET_UPDATES": "Get Updates",
+      "SUBSCRIBE": "Subscribe"
+   },
+   "NEW_CATEGORY": {
+      "CREATE_NEW_CATEGORY_TITLE": "Create New Category",
+      "CREATE_NEW_CATEGORY_SUBTITLE": "Add a new product category to your store",
+      "CREATE_NEW_CATEGORY_PLACEHOLDER": "Category Name",
+      "SUBMIT": "Create Category"
+   },
+    "NEW_BRAND": {
+      "CREATE_NEW_BRAND_TITLE": "Create New Brand",
+      "CREATE_NEW_BRAND_SUBTITLE": "Add a new brand to your store",
+      "CREATE_NEW_BRAND_PLACEHOLDER": "Brand Name",
+      "SUBMIT": "Create Brand"
+   },
+   "NEW_PRODUCT": {
+      "TITLE": "Create New Product",
+      "SUBTITLE": "Add a new product to your store",
+      "SUBMIT": "Create Product"
+   },
+   "UPDATE_PRODUCT": {
+      "TITLE": "Update Product",
+      "SUBMIT": "Update Product"
+   },
+   "SHOW_USERS": {
+      "USERS": "Users",
+      "NAME": "Name",
+      "ROLE": "Role",
+      "EMAIL": "Email",
+      "CHANGE_ROLE": "Change Role",
+      "MAKE_ADMIN": "Make Admin",
+      "DELETE_USER": "Delete user"
+   },
+   "PRODUCT_DETAILS": {
+      "NO_REVIEWS": "No Reviews were added!",
+      "ADD_COMMENT": "Add your review",
+      "YOU": "You",
+      "REVIEW": "Review"
+   },
+   "ADD_NEW_USER": {
+      "TITLE": "Create new user",
+      "SUBTITLE": "Add a new user to your website",
+      "SUBMIT": "Add user"
+   },
+   "PROGRESS_BAR": {
+      "CART": "Cart",
+      "PAYMENT": "Payment",
+      "DONE": "Done"
+   },
+   "SUPPORT": {
+      "PAGE_TITLE": "SUPPORT",
+      "PAGE_SUBTITLE": "Need help? Reach out to our team and we'll get back to you shortly.",
+      "TITLE_PLACEHOLDER": "Enter complaint title",
+      "TITLE": "Title",
+      "COMPLAINT": "Complaint",
+      "COMPLAINT_PLACEHOLDER": "Enter complaint details",
+      "SUBMIT": "Send Complaint"
+   },
+   "SHOW_SUPPORTS": {
+      "TITLE": "Supports Page",
+      "SUBTITLE": "Help users of your website for a better experience",
+      "EMPTY": "No Complaints Added!",
+      "USER_ID": "User Id"
+   },
+   "BRAND_PRODUCTS": {
+      "TITLE": "{{name}} Products",
+      "SUBTITLE": "Products of the brand you like",
+      "PRODUCT_DETAILS": "Show Product Details"
+   },
+   "DELETED_PRODUCT": {
+      "NOT_AVAILABLE": "Not available"
+   },
+   "SUCCESS_MESSAGES": {
+      "LOGIN": "Logged in successfully",
+      "LOGOUT": "Logged out successfully",
+      "REGISTER": "Registered successfully",
+      "CATEGORY_CREATED": "Category created successfully",
+      "BRAND_CREATED": "Brand created successfully",
+      "PRODUCT_CREATED": "Product created successfully",
+      "PRODUCT_UPDATED": "Product updated successfully",
+      "USER_CREATED": "User created successfully",
+      "ROLE_UPDATED": "User role updated successfully",
+      "SUPPORT_SENT": "Complaint sent successfully",
+      "ORDER_SHIPPED": "Order shipped successfully",
+      "ORDER_CANCELLED": "Order cancelled successfully",
+      "ORDER_DELIVERED": "Order delivered successfully",
+      "PRODUCT_DELETED": "Product deleted successfully",
+      "PRODUCT_UNDELETED": "Product undeleted successfully",
+      "PASSWORD_RESET": "Password reset link sent successfully",
+      "REVIEW_ADDED": "Review added successfully",
+      "STOCK_MAXIMUM": "Stock doesn't have more of this product",
+      "STOCK_MINIMUM": "Can't buy negative quantity of this product",
+      "ITEM_ADDED_TO_CART": "Item added to cart successfully",
+      "ITEM_REMOVED_FROM_CART": "Item removed from cart successfully",
+      "CART_ITEM_INCREASED": "Item number increased successfully!",
+      "CART_ITEM_DECREASED": "Item number decreased successfully!",
+      "WISHLIST_ITEM_ADDED": "Item added to wishlist successfully",
+      "WISHLIST_ITEM_REMOVED": "Item removed from wishlist successfully",
+      "ORDER_PLACED": "Order placed successfully"
+   },
+    "HOME": {
+    "HERO": {
+      "TITLE": "Welcome to VolTech",
+      "SUBTITLE": "Discover amazing products at unbeatable prices",
+      "SHOP_NOW": "Shop Now",
+      "EXPLORE_BRANDS": "Explore Brands"
+    },
+    "CATEGORIES": {
+      "TITLE": "Shop by Category",
+      "SUBTITLE": "Discover products across our wide range of categories",
+      "SHOW": "Shop Now "
+    },
+    "BRANDS": {
+      "TITLE": "Shop by brand",
+      "SUBTITLE": "Discover products across our wide range of brand",
+      "SHOW": "View Collection"
+    },
+    "FEATURES": {
+      "TITLE": "Featured Products",
+      "SUBTITLE": "Hand-picked just for you",
+      "VIEW_ALL": "View All Products",
+      "CHEAP_SHIPPING": "Cheap Shipping",
+      "CHEAP_SHIPPING_DESC": "We offer you fast shipping for minimal value",
+      "EASY_RETURNS": "Easy Returns",
+      "EASY_RETURNS_DESC": "We offer you easy returns in case of inconvenience",
+      "SECURE_PAYMENT": "Secure Payment",
+      "SECURE_PAYMENT_DESC": "We offer you secure payment for good security",
+      "LOYALTY_REWARDS": "Loyalty Rewards",
+      "LOYALTY_REWARDS_DESC": "We offer loyalty rewards for our customers"
+    },
+    "NEWSLETTER": {
+      "TITLE": "Stay Updated",
+      "SUBTITLE": "Subscribe to get special offers and updates",
+      "PLACEHOLDER": "Enter your email",
+      "BUTTON": "Subscribe",
+      "NO_SPAM": "✓ No spam. Unsubscribe anytime."
+    }
+  },
+  "PAGE_TITLES": {
+    "LOGIN_PAGE": "Login",
+    "REGISTER_PAGE": "Register",
+    "RESET_PASSWORD_PAGE": "Reset password",
+    "HOME_PAGE": "Home Page",
+    "CART_PAGE": "Cart",
+    "WISHLIST_PAGE": "Wishlist",
+    "CHECKOUT_PAGE": "Checkout",
+    "ORDERS_PAGE": "Orders",
+    "NEW_PRODUCT_PAGE": "Create new product",
+    "NEW_CATEGORY_PAGE": "Create new category",
+    "NEW_BRAND_PAGE": "Create new brand",
+    "NEW_USER_PAGE": "Create new user",
+    "UPDATE_PRODUCT_PAGE": "Update product",
+    "ORDER_DETAILS_PAGE": "Order details",
+    "PRODUCT_DETAILS_PAGE": "Product details",
+    "CATEGORIES_PAGE": "Categories",
+    "BRANDS_PAGE": "Brands",
+    "ADD_SUPPORT_PAGE": "Add support",
+    "SHOW_COMPLAINTS_PAGE": "Show complaints"
+  },
+  "ERROR_MESSAGES": {
+    "LOGIN" : "Login first before using {{page}}"
+  }
+}

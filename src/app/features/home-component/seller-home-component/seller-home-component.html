@@ -1,0 +1,42 @@
+<main class="mt-5 flex flex-col gap-5">
+  <header class="flex flex-row gap-10">
+    @if (showSidebar()){
+    <app-sidebar></app-sidebar>
+    }
+    <h1 class="text-[20px] font-bold">{{'DASHBOARD' | translate}}</h1>
+  </header>
+
+  <section appAnimateOnScroll class="flex flex-col gap-10 slideFromLeftAnimation">
+    <section aria-describedby="(user | async)-dashbard-number"
+      class="grid grid-cols-[repeat(auto-fit,minmax(270px,1fr))] gap-5 w-full">
+      <section class="border rounded-xl p-4 flex flex-col gap-3">
+        @if(user | async){
+        <h2 appAnimateOnScroll class="text-[16px] font-bold slideFromLeftAnimation">{{'ADMIN.REVENUE' | translate}}</h2>
+        <p appAnimateOnScroll class="text-[16px] slideFromLeftAnimation">{{(user | async)?.totalRevenue | currency}}
+        </p>
+        }@else {
+        <div class="skeleton-basic w-[120px] h-[25px]"></div>
+        <div class="skeleton-basic w-[120px] h-[25px]"></div>
+        }
+      </section>
+      <section class="border rounded-xl p-4 flex flex-col gap-3">
+        @if (user | async) {
+        <h2 appAnimateOnScroll class="text-[16px] font-bold slideFromLeftAnimation">{{'ADMIN.SOLD_ITEMS' | translate}}
+        </h2>
+        <p appAnimateOnScroll class="text-[16px] slideFromLeftAnimation">{{(user | async)?.soldItemsNumber}}</p>
+        }@else {
+        <div class="skeleton-basic w-[120px] h-[25px]"></div>
+        <div class="skeleton-basic w-[120px] h-[25px]"></div>
+        }
+      </section>
+    </section>
+    <section aria-describedby="(user | async)-dashboard-sold-items" class="grid grid-cols-1 gap-5 w-full">
+      <header>
+        <h3 class="text-[20px] font-bold">{{'ADMIN.STOCK_ITEMS' | translate}}</h3>
+      </header>
+      <main>
+        <app-seller-products></app-seller-products>
+      </main>
+    </section>
+  </section>
+</main>

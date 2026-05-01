@@ -1,0 +1,66 @@
+// styles.scss
+
+// ✅ Remove default snackbar background
+.custom-toast-panel {
+  background: transparent !important; // Remove grey background
+  box-shadow: none !important;
+
+  .mat-mdc-snack-bar-container {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mdc-snackbar__surface {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+.toast-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  min-width: 300px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  &.success {
+    background-color: #4caf50;
+  }
+
+  &.error {
+    background-color: #f44336;
+  }
+
+  &.warning {
+    background-color: #ff9800;
+  }
+
+  &.info {
+    background-color: #2196f3;
+  }
+
+  .toast-icon {
+    font-size: 20px;
+  }
+
+  .toast-message {
+    flex: 1;
+    font-size: 14px;
+  }
+
+  .toast-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

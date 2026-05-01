@@ -1,0 +1,28 @@
+@let products = (cartProducts | async);
+@let price = (totalPrice | async);
+<div class="summary-section border col-span-1 size-fit w-full p-4 rounded-xl flex flex-col gap-5">
+  <h2 appAnimateOnScroll class="text-lg font-bold slideFromLeftAnimation">{{'CART.TOTAL_SUMMARY' | translate}}</h2>
+  @if (products) {
+  @for (item of products; track $index) {
+  <div appAnimateOnScroll class="summary-item flex flex-row justify-between slideFromLeftAnimation items-center"
+    [class.line-through]="item.isDeleted">
+    <p class="font-bold text-var[(--primary-text-color)]">{{item.name}}</p>
+    <p class="font-bold text-var[(--primary-text-color)]">{{(item.quantity! * item.price!) | currency}}</p>
+  </div>
+  }
+  <hr>
+  <h3 appAnimateOnScroll
+    class="text-[var(--primary-text-color)] slideFromLeftAnimation mt-8 self-end font-bold text-xl">{{'CART.TOTAL_PRICE'
+    | translate}} : {{price | currency}}</h3>
+  }
+  @else {
+  @for (item of [1,2,3]; track $index) {
+  <div class="summary-item-skeleton flex flex-row justify-between items-center">
+    <div class="skeleton-basic medium-text-skeleton"></div>
+    <div class="skeleton-basic small-text-skeleton"></div>
+  </div>
+  }
+  <hr>
+  <div class="skeleton-basic text-skeleton"></div>
+  }
+</div>

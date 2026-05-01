@@ -1,0 +1,41 @@
+@let orderDetails = order | async;
+@if (orderDetails) {
+<main class="flex flex-col w-full mt-10" id="order-details">
+  <header class="mb-5 mt-0">
+    <h2 class="text-[20px] font-bold">{{'ORDERS.ORDER_ITEMS' | translate}} : </h2>
+  </header>
+  <section class="flex flex-col gap-5 flex-wrap">
+    @for (item of orderDetails.items; track $index) {
+    <app-order-item-card [orderItem]="item"></app-order-item-card>
+    }
+  </section>
+  <button (click)="generatePDF(orderDetails!)"
+    class="rounded-xl bg-[var(--primary-color)] border-0 w-fit p-4 mt-5 mx-auto">{{'ORDERS.DOWNLOAD_RECEIPT' |
+    translate}}</button>
+</main>
+}
+@else{
+<div class="flex flex-col w-full gap-5">
+  <div class="skeleton-basic mt-5 w-[150px] h-[50px]"></div>
+  <section class="flex flex-col gap-5 flex-wrap">
+    @for (item of [1,2,3]; track $index) {
+    <section class="flex rounded-xl border ps-1 gap-4 flex-col lg:flex-row justify-between">
+      <div class="skeleton-basic rounded-4xl p-4 md:h-[250px] h-70 lg:w-70 w-full"></div>
+      <div class="details flex flex-col justify-between w-full flex-wrap gap-4 p-4 items-start">
+        <section class="card-text flex flex-col items-start gap-6">
+          <div class="skeleton-basic rounded-4xl h-[55px] w-[100px]"></div>
+          <div class="skeleton-basic rounded-4xl h-[55px] w-[300px]"></div>
+        </section>
+        <div class="cart-actions flex items-center flex-row gap-6 flex-wrap w-full">
+          <div class="skeleton-basic rounded-4xl h-[55px] w-[100px]"></div>
+          <div class="skeleton-basic rounded-4xl h-[55px] w-[100px]"></div>
+        </div>
+      </div>
+    </section>
+    }
+  </section>
+  <div class="flex flex-row w-full mt-5 items-center justify-center">
+    <div class="skeleton-basic rounded-xl w-[150px] h-[80px] mt-10 mx-auto"></div>
+  </div>
+</div>
+}

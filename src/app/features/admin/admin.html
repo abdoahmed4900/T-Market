@@ -1,0 +1,62 @@
+<header class="flex flex-row gap-10 mt-10 items-center header">
+  @if (showSidebar()){
+  <app-sidebar></app-sidebar>
+  }
+  <h1 class="text-[24px] font-bold">{{'DASHBOARD' | translate}}</h1>
+</header>
+<main appAnimateOnScroll class="flex mt-10 flex-col gap-10 slideFromLeftAnimation">
+  <section class="flex flex-col gap-10">
+    <section aria-describedby="dashbard-numbers"
+      class="grid grid-cols-[repeat(auto-fit,minmax(270px,1fr))] gap-5 w-full">
+      <app-statistics-card [showCard]="isTotalOrdersLoaded()" [statisticNumber]="totalOrdersNumber"
+        statisticName="ADMIN.TOTAL_ORDERS"></app-statistics-card>
+      <app-statistics-card [showCard]="isShippedOrdersLoaded()" [statisticNumber]="shippedOrdersNumber"
+        statisticName="ADMIN.SHIPPED_ORDERS"></app-statistics-card>
+      <app-statistics-card [showCard]="isDeliveredOrdersLoaded()" [statisticNumber]="deliveredOrdersNumber"
+        statisticName="ADMIN.DELIVERED_ORDERS"></app-statistics-card>
+      <app-statistics-card [showCard]="isCancelledOrdersLoaded()" [statisticNumber]="cancelledOrdersNumber"
+        statisticName="ADMIN.CANCELLED_ORDERS"></app-statistics-card>
+      <app-statistics-card [showCard]="isPendingOrdersLoaded()" [statisticNumber]="pendingOrdersNumber"
+        statisticName="ADMIN.PENDING_ORDERS"></app-statistics-card>
+    </section>
+    <section aria-describedby="dashboard-sold-items" class="grid grid-cols-1 gap-5 w-full">
+      <header>
+        <h3 class="text-[24px] font-bold">{{'ADMIN.STOCK_ITEMS' | translate}}</h3>
+      </header>
+      <app-all-products></app-all-products>
+    </section>
+    <section class="orders-section">
+      <header class="my-5">
+        <h3 class="text-[24px] font-bold">{{'ADMIN.STATISTICS' | translate}}</h3>
+      </header>
+      @if(totalOrdersNumber == 0){
+      <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
+        <img class="w-[200px] h-[200px]"
+          src="https://cdni.iconscout.com/illustration/premium/thumb/no-orders-yet-illustration-svg-download-png-13391226.png"
+          alt="no orders added yet">
+        <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_ORDERS' | translate}}</p>
+      </div>
+      }@else {
+      <section class="charts grid gap-5 grid-cols-[repeat(auto-fit,minmax(270px,1fr))]">
+        <div class="status-chart p-4 h-[350px] border rounded-xl flex flex-col flex-wrap gap-3">
+          <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_STATUS_COUNT' | translate}}</p>
+          @if (isStatusChartInitialized() == false) {
+          <div class="skeleton-basic h-[200px] w-full"></div>
+          }
+          <canvas #barChartCanvas id="barChartCanvas"></canvas>
+        </div>
+        <div class="date-chart p-4 h-[350px] border rounded-xl flex flex-col flex-wrap gap-3">
+          <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_PIE_COUNT' | translate}}</p>
+          @if (isPieChartInitialized() == false) {
+          <div class="w-full h-[200px] skeleton-basic"></div>
+          }
+          <canvas #pieChartCanvas id="pieChartCanvas"
+            [style.display]="isPieChartInitialized() ? 'block' : 'none'"></canvas>
+        </div>
+      </section>
+      }
+    </section>
+    <app-show-users></app-show-users>
+    <app-orders></app-orders>
+  </section>
+</main>

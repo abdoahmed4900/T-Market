@@ -1,0 +1,203 @@
+<main class="my-10">
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-r from-purple-600 to-blue-600 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-black/20"></div>
+    <div class="container mx-auto px-6 py-24 md:py-32 relative">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 appAnimateOnScroll [once]="false"
+          class="text-5xl slideFromLeftAnimation md:text-7xl font-bold mb-6 leading-tight">
+          {{'HOME.HERO.TITLE' | translate}}
+        </h1>
+        <p appAnimateOnScroll [once]="false" class="text-xl slideFromLeftAnimation md:text-2xl mb-8 opacity-90">
+          {{'HOME.HERO.SUBTITLE' | translate}}
+        </p>
+        <div class="flex gap-4 justify-center flex-wrap">
+          <a appAnimateOnScroll [once]="false" routerLink="/shop"
+            class="bg-white slideFromLeftAnimation text-purple-600 px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all hover:scale-105">
+            {{'HOME.HERO.SHOP_NOW' | translate}}
+          </a>
+          <a appAnimateOnScroll [once]="false" routerLink="/brands"
+            class="border-2 slideFromLeftAnimation border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition-all">
+            {{'HOME.HERO.EXPLORE_BRANDS' | translate}}
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+        <div class="w-1 h-2 bg-white rounded-full mt-2 animate-pulse"></div>
+      </div>
+    </div>
+  </section>
+  <!-- Categories Section - Clean Version -->
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <!-- Section Header -->
+      <div appAnimateOnScroll [once]="false" class="text-center mb-16 slideFromLeftAnimation">
+        <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4">
+          {{'HOME.CATEGORIES.TITLE' | translate}}
+        </h2>
+        <p appAnimateOnScroll [once]="false" class="text-gray-600 text-lg max-w-2xl mx-auto slideFromLeftAnimation">
+          {{'HOME.CATEGORIES.SUBTITLE' | translate}}
+        </p>
+      </div>
+
+
+      @if (isLoading()) {
+      <div class="grid md:grid-cols-4 grid-cols-2 gap-6">
+        @for (item of [1,2,3,4,5,6,7,8]; track $index) {
+        <div class="w-[100px] h-[100px] skeleton-basic mx-auto mb-4 rounded-2xl">
+        </div>
+        }
+      </div>
+      }@else {
+      <div class="grid md:grid-cols-4 grid-cols-2 gap-6">
+        @for (item of categories; track $index) {
+        <div appAnimateOnScroll [once]="false"
+          class="group block text-center transition-all slideFromTopAnimation duration-300 hover:-translate-y-2">
+          <div
+            class="w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center text-3xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
+            🛍️
+          </div>
+          <h3 appAnimateOnScroll
+            class="font-semibold slideFromLeftAnimation text-base capitalize transition-colors duration-300">
+            {{item}}</h3>
+          <a [routerLink]="['/shop',item]"
+            class="text-sm mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 hover:text-[var(--primary-color)] text-[var(--primary-text-color)]">
+            {{'HOME.CATEGORIES.SHOW' | translate}}</a>
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Brands Section - Clean Version -->
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <!-- Section Header -->
+      <div class="text-center mb-16">
+        <h2 appAnimateOnScroll [once]="false" class="text-4xl slideFromLeftAnimation md:text-5xl font-bold mt-3 mb-4">
+          {{'HOME.BRANDS.TITLE' | translate}}
+        </h2>
+        <p appAnimateOnScroll [once]="false" class="text-gray-600 slideFromLeftAnimation text-lg max-w-2xl mx-auto">
+          {{'HOME.BRANDS.SUBTITLE' | translate}}
+        </p>
+      </div>
+
+      @if (isLoading()) {
+      <div class="grid md:grid-cols-4 grid-cols-2 gap-6">
+        @for (item of [1,2,3,4,5,6,7,8]; track $index) {
+        <a class="group block text-center transition-all duration-300 hover:-translate-y-2">
+          <div class="w-[100px] h-[100px] skeleton-basic mx-auto mb-4 rounded-2xl">
+          </div>
+        </a>
+        }
+      </div>
+      }
+      @else {
+      <div class="grid md:grid-cols-4 grid-cols-2 gap-6">
+        @for (item of brands; track $index) {
+        <div appAnimateOnScroll [once]="false"
+          class="group block text-center slideFromTopAnimation transition-all duration-300 hover:-translate-y-2">
+          <div
+            class="w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center text-3xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
+            🏷️
+          </div>
+          <h3 class="font-semibold text-base capitalize">
+            {{item.brandName}}</h3>
+          <a [routerLink]="['/brand', item.brandName]"
+            class="text-sm hover:text-[var(--primary-color)] mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 text-[var(--primary-text-color)]">
+            {{'HOME.BRANDS.SHOW' | translate}}</a>
+        </div>
+        }
+      </div>
+      }
+
+    </div>
+  </section>
+  <!-- Features Section -->
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 appAnimateOnScroll [once]="false" class="text-4xl font-bold mb-4 slideFromLeftAnimation">
+          {{'HOME.FEATURES.TITLE' | translate}}
+        </h2>
+        <p appAnimateOnScroll [once]="false" class="text-gray-600 slideFromLeftAnimation">
+          {{'HOME.FEATURES.SUBTITLE' | translate}}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <!-- Feature 1 -->
+        <div appAnimateOnScroll [once]="false" class="text-center slideFromTopAnimation">
+          <div
+            class="w-20 h-20 mx-auto mb-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center text-3xl">
+            🚚
+          </div>
+          <h3 class="text-xl font-bold mb-2">{{'HOME.FEATURES.CHEAP_SHIPPING' | translate}}</h3>
+          <p class="text-gray-600 ">{{'HOME.FEATURES.CHEAP_SHIPPING_DESC' | translate}}</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div appAnimateOnScroll [once]="false" class="text-center slideFromTopAnimation">
+          <div
+            class="w-20 h-20 mx-auto mb-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center text-3xl">
+            🔄
+          </div>
+          <h3 class="text-xl font-bold mb-2">{{'HOME.FEATURES.EASY_RETURNS' | translate}}</h3>
+          <p class="text-gray-600 ">{{'HOME.FEATURES.EASY_RETURNS_DESC' | translate}}</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div appAnimateOnScroll [once]="false" class="text-center slideFromTopAnimation">
+          <div
+            class="w-20 h-20 mx-auto mb-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center text-3xl">
+            🔒
+          </div>
+          <h3 class="text-xl font-bold mb-2">{{'HOME.FEATURES.SECURE_PAYMENT' | translate}}</h3>
+          <p class="text-gray-600 ">{{'HOME.FEATURES.SECURE_PAYMENT_DESC' | translate}}</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div appAnimateOnScroll [once]="false" class="text-center slideFromTopAnimation">
+          <div
+            class="w-20 h-20 mx-auto mb-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center text-3xl">
+            🎁
+          </div>
+          <h3 class="text-xl font-bold mb-2">{{'HOME.FEATURES.LOYALTY_REWARDS' | translate}}</h3>
+          <p class="text-gray-600 ">{{'HOME.FEATURES.LOYALTY_REWARDS_DESC' | translate}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Newsletter Section -->
+  <section class="py-20">
+    <div appAnimateOnScroll [once]="false" class="container mx-auto px-6 slideFromLeftAnimation">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-4xl text-[var(--primary-text-color)] font-bold mb-4">
+          📧 {{'HOME.NEWSLETTER.TITLE' | translate}}
+        </h2>
+        <p class="text-gray-600  mb-8">
+          {{'HOME.NEWSLETTER.SUBTITLE' | translate}}
+        </p>
+
+        <div appAnimateOnScroll [once]="false" class="flex flex-col sm:flex-row gap-4 slideFromLeftAnimation">
+          <input type="email" placeholder="{{'HOME.NEWSLETTER.PLACEHOLDER' | translate}}"
+            class="flex-1 px-6 py-3 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500">
+          <button
+            class="bg-purple-600 text-white px-8 py-3 rounded-full hover:bg-purple-700 transition-all hover:scale-105">
+            {{'HOME.NEWSLETTER.BUTTON' | translate}}
+          </button>
+        </div>
+
+        <p appAnimateOnScroll [once]="false"
+          class="text-sm text-[var(--primary-text-color)] mt-4 slideFromLeftAnimation">
+          {{'HOME.NEWSLETTER.NO_SPAM' |
+          translate}}</p>
+      </div>
+    </div>
+  </section>
+
+</main>

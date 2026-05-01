@@ -1,0 +1,14 @@
+<main appAnimateOnScroll class="flex flex-col gap-10 w-full mt-10 slideFromLeftAnimation">
+  <header class="flex flex-col gap-10">
+    <app-go-back-button></app-go-back-button>
+    <h2 class="text-[20px] font-bold">{{'NEW_BRAND.CREATE_NEW_BRAND_TITLE' | translate}}</h2>
+    <p class="text-[17px]">{{'NEW_BRAND.CREATE_NEW_BRAND_SUBTITLE' | translate}}</p>
+  </header>
+  <form (submit)="createBrand()" class="flex-grow flex flex-col gap-5 border rounded-xl p-10">
+    <input id="brand" type="text" class="p-4 rounded-xl border" [(ngModel)]="brand"
+      [placeholder]="'NEW_BRAND.CREATE_NEW_BRAND_PLACEHOLDER' | translate" />
+    <button type="submit"
+      class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'NEW_BRAND.SUBMIT' |
+      translate}}</button>
+  </form>
+</main>

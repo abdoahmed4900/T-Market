@@ -1,0 +1,30 @@
+<header class="my-10 flex flex-col gap-5">
+  <h2 class="text-[20px] font-bold">{{'BRAND_PRODUCTS.TITLE' | translate: {name: name()} }}</h2>
+  <p class="text-[16px] text-gray-600">{{'BRAND_PRODUCTS.SUBTITLE' | translate }}</p>
+</header>
+<main>
+  @if (isLoaded()) {
+  @if(showedProducts()!.length > 0){
+  <section class="flex flex-col gap-4 all-products">
+    @for (item of showedProducts(); track item.id;) {
+    <div class="border slideFromLeftAnimation rounded-xl flex flex-col items-start pb-2" appAnimateOnScroll
+      [once]="false">
+      <app-dashboard-product [product]="item"></app-dashboard-product>
+      <button [routerLink]="['/product',item.id]"
+        class="bg-[var(--primary-color)] ms-4 p-4 rounded-xl size-fit">{{'BRAND_PRODUCTS.PRODUCT_DETAILS' |
+        translate}}</button>
+    </div>
+    }
+  </section>
+  <app-pagination-container></app-pagination-container>
+  }@else {
+  <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
+    <img class="w-[200px] h-[200px]" src="https://www.svgrepo.com/show/17356/empty-cart.svg"
+      alt="no products added yet">
+    <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_PRODUCTS' | translate}}</p>
+  </div>
+  }
+  }@else {
+  <app-dashboard-products-skeleton></app-dashboard-products-skeleton>
+  }
+</main>

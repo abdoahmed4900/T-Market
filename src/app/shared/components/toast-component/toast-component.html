@@ -1,0 +1,5 @@
+<div class="toast-container" [class]="data.type">
+  <fa-icon [icon]="getIcon()" class="toast-icon"></fa-icon>
+  <span class="toast-message">{{ data.message }}</span>
+  <button class="toast-close" (click)="snackBarRef.dismiss()">✕</button>
+</div>

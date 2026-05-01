@@ -1,0 +1,23 @@
+@let p = (product | async)!;
+<a [routerLink]="['/product',p.id]" class="relative">
+  @if (p.isDeleted) {
+  <app-deleted-product-overlay></app-deleted-product-overlay>
+  }
+  <section appAnimateOnScroll id="order-card"
+    class="order-card flex items-start rounded-xl border gap-4 flex-col lg:flex-row justify-between transition hover:translate-y-[-5px] duration-300 ease-in-out slideFromTopAnimation">
+    <img loading="lazy" [src]="p.imageUrls![0]" alt="product-image"
+      class="rounded-4xl p-4 md:h-[250px] h-70 lg:w-70 w-full">
+    <div class="details flex flex-col justify-between w-full flex-wrap gap-4 p-4 items-start">
+      <section class="card-text flex flex-col items-start gap-4">
+        <h2 class="text-xl font-bold">{{orderItem()?.name}}</h2>
+        <p class="text-lg font-bold line-clamp-2 h-[55px] w-full">{{p.description}}</p>
+      </section>
+      <div class="cart-actions flex items-start flex-col gap-3 flex-wrap w-full">
+        <p class="font-bold text-lg">{{'PRICE' | translate}} : {{orderItem()?.price | currency}}</p>
+        <p class="font-bold text-lg">{{'ORDERS.QUANTITY' | translate}} : {{orderItem()?.quantity}}</p>
+        <p class="font-bold text-lg">{{'CART.TOTAL_PRICE' | translate}} : {{(orderItem()!.price) *
+          (orderItem()!.quantity) | currency}}</p>
+      </div>
+    </div>
+  </section>
+</a>
