@@ -17,7 +17,7 @@ A modern e-commerce web application built with **Angular** and **Firebase**, off
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/abdoahmed4900/tmarket.git
+git clone https://github.com/abdoahmed4900/T-Market.git
 cd tmarket
 npm install
 ng serve
