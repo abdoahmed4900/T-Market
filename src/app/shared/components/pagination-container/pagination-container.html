@@ -1,12 +1,48 @@
- <section appAnimateOnScroll aria-roledescription="see-differenet-productss" class="justify-center col-span-3 flex slideFromLeftAnimation items-center gap-3 mt-10 flex-wrap w-[100%]">
-     @if (allPages().length > 0) {
-         <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="previousPage()" [disabled]="currentPage() == 1">{{'PREVIOUS' | translate}}</button>
-     }
-     @for (item of showedPages(); track $index) {
-        <button class="text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="goToPage(item)" 
-        [class.bg-purple-700]="item == currentPage()">{{item}}</button>
-     }
-     @if (allPages().length > 0) {
-       <button class="bg-[var(--primary-color)] text-[var(--primary-text-color)] p-3 rounded-lg hover:bg-purple-700" (click)="nextPage()" [disabled]="currentPage() == allPages().length">{{'NEXT' | translate}}</button>
-     }
+<section appAnimateOnScroll aria-roledescription="see-different-products"
+  class="flex justify-center items-center gap-2 my-4 flex-wrap w-full">
+
+  <div
+    class="flex items-center gap-1 md:gap-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1 shadow-lg shadow-purple-500/5">
+
+    <!-- Previous Button -->
+    @if (allPages().length > 0) {
+    <button class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300
+                     bg-gradient-to-r from-purple-600 to-indigo-600 text-white
+                     hover:shadow-lg hover:shadow-purple-500/30
+                     disabled:opacity-40 disabled:cursor-not-allowed" (click)="previousPage()"
+      [disabled]="currentPage() == 1">
+      <fa-icon [icon]="chevronLeftIcon" class="text-sm"></fa-icon>
+    </button>
+    }
+
+    <!-- Page Numbers -->
+    @for (item of showedPages(); track $index) {
+    <button class="relative w-10 h-10 rounded-xl font-semibold transition-all duration-300
+                     hover:scale-105" (click)="goToPage(item)" [class.bg-gradient-to-r]="item == currentPage()"
+      [class.from-purple-600]="item == currentPage()" [class.to-indigo-600]="item == currentPage()"
+      [class.text-white]="item == currentPage()" [class.shadow-md]="item == currentPage()"
+      [class.text-gray-600]="item != currentPage()" [class.dark:text-gray-400]="item != currentPage()"
+      [class.hover:bg-purple-100]="item != currentPage()" [class.dark:hover:bg-purple-900]="item != currentPage()">
+
+      @if (item == currentPage()) {
+      <div class="absolute inset-0 rounded-xl bg-purple-400 blur-md opacity-40 -z-10"></div>
+      }
+
+      {{ item }}
+    </button>
+    }
+
+    <!-- Next Button -->
+    @if (allPages().length > 0) {
+    <button class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300
+                     bg-gradient-to-r from-purple-600 to-indigo-600 text-white
+                     hover:shadow-lg hover:shadow-purple-500/30
+                     disabled:opacity-40 disabled:cursor-not-allowed" (click)="nextPage()"
+      [disabled]="currentPage() == allPages().length">
+      <fa-icon [icon]="chevronRightIcon" class="text-sm"></fa-icon>
+    </button>
+    }
+
+  </div>
+
 </section>

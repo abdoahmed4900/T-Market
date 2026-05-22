@@ -9,26 +9,26 @@ export class ProgressService {
     SECOND: 66,
     THIRD: 100
   };
-  
-  goToFirstStep() { 
-    setTimeout(() => {
-      this.progressPercent.set(this.steps.FIRST);
-    },10)
+
+  goToFirstStep() {
+    this.goToStep(this.steps.FIRST)
   }
   goToSecondStep() {
-    setTimeout(() => {
-      this.progressPercent.set(this.steps.SECOND);
-    },10)      
+    this.goToStep(this.steps.SECOND)
   }
   goToFinalStep() {
-    setTimeout(() => {
-      this.progressPercent.set(this.steps.THIRD);
-    },10)
+    this.goToStep(this.steps.THIRD)
     setTimeout(() => {
       this.reset();
     }, 2000);
   }
-  reset() { 
-    this.progressPercent.set(0);    
+
+  goToStep(step: number) {
+    setTimeout(() => {
+      this.progressPercent.set(step);
+    }, 10)
+  }
+  reset() {
+    this.progressPercent.set(0);
   }
 }

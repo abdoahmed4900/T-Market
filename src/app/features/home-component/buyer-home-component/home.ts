@@ -1,5 +1,5 @@
 // buyer-home.component.ts
-import { Component, inject, OnInit, OnDestroy, signal, effect } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { ProductsService } from '../../../shared/services/products.service';
 import { CommonModule } from '@angular/common';
 import { AnimateOnScroll } from "../../../shared/animate-on-scroll";
@@ -8,6 +8,7 @@ import { Product } from '../../../core/interfaces/product';
 import { RouterLink } from "@angular/router";
 import { Brand } from '../../brands/interfaces/brand';
 import { TranslateModule } from '@ngx-translate/core';
+import { CartService } from '../../../shared/services/cart.service';
 
 @Component({
   selector: 'app-buyer-home-component',
@@ -25,20 +26,14 @@ export class BuyerHomeComponent implements OnInit, OnDestroy {
   categoryCounts = new Map<string, number>();
   brandCounts = new Map<string, number>();
   isLoading = signal(true);
+  cartService = inject(CartService);
 
   destroy$ = new Subject<void>();
-
-  constructor() {
-    effect(() => {
-      console.log(this.isLoading());
-
-    })
-  }
-
   ngOnInit(): void {
     this.allProducts = this.productService.getAllProducts();
     this.loadCategories();
     this.loadBrands();
+    this.cartService.getAllCartProducts().pipe(takeUntil(this.destroy$)).subscribe()
   }
 
   private loadCategories() {

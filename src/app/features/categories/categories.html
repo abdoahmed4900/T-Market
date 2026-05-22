@@ -1,56 +1,143 @@
-<main class="grid lg:grid-cols-3 gap-5 grid-cols-1 my-10 justify-start grow">
-  <section class="search-section flex flex-col gap-10 col-span-1">
-    <input appAnimateOnScroll type="text" name="search" id="search" style="display: block !important;"
-      class="border slideFromLeftAnimation p-2 rounded-xl" placeholder="{{'CATEGORIES.SEARCH_PLACEHOLDER' | translate}}"
-      (input)="filterProducts()" [(ngModel)]="searchText">
+<main class="grid lg:grid-cols-3 gap-8 grid-cols-1 my-10 justify-start grow">
 
-    <select appAnimateOnScroll name="categories" id="categories"
-      class="text-[var(--primary-text-color)] font-bold text-[16px] border p-2 rounded-xl slideFromLeftAnimation"
-      (change)="filterProducts()" [(ngModel)]="selectedCategory">
-      <option value="All" class="text-[var(--primary-text-color)] bg-[var(--main-bg-color)]">{{'ALL' | translate}}
-      </option>
-      @for (item of categories; track $index) {
-      <option [value]="item" class="text-[var(--primary-text-color)] bg-[var(--main-bg-color)]">{{item}}</option>
-      }
-    </select>
+  <!-- Sidebar Filters Section -->
+  <section class="search-section flex flex-col gap-8 col-span-1">
 
-    <label appAnimateOnScroll for="price"
-      class="text-xl text-[var(--primary-text-color)] font-bold slideFromLeftAnimation">{{'PRICE' | translate}}</label>
-    <section appAnimateOnScroll class="min-max-section flex flex-row w-full gap-10 slideFromLeftAnimation">
-      <input (input)="filterProducts()" type="number" id="min" [(ngModel)]="minPrice" (input)="changeMinPrice($event)"
-        class="w-[45%] p-2 rounded-xl" placeholder="0">
-      <input (input)="filterProducts()" type="number" id="max" [(ngModel)]="maxPrice" (input)="changeMaxPrice($event)"
-        class="w-[45%] p-2 rounded-xl" placeholder="10000">
-    </section>
-    <output appAnimateOnScroll
-      class="text-xl text-[var(--primary-text-color)] font-bold slideFromLeftAnimation">{{'CATEGORIES.STARS_RATING' |
-      translate}}</output>
-    <input class="slideFromLeftAnimation" appAnimateOnScroll type="range" name="rating" id="rating" min="0" max="5"
-      (change)="filterProducts()" value="0" [(ngModel)]="rating">
-    @if (rating() > 0 && rating() < 5) { <output class="text-lg text-[var(--primary-text-color)] font-bold">
-      {{'CATEGORIES.STARS_RATING_OR_LESS' | translate: {stars: rating()} }}</output>
-      }@else if(rating() == 0 || rating() == 5){
-      <output class="text-lg text-[var(--primary-text-color)] font-bold">{{'CATEGORIES.ALL_PRODUCTS' |
-        translate}}</output>
-      }
-  </section>
-  <section class="search-results grid lg:grid-cols-3 md:grid-cols-2 flex-wrap gap-5 col-span-2">
-    @if (isProductsLoaded()) {
-    @if(showedProducts().length == 0){
-    <div appAnimateOnScroll class="no-products-found flex flex-col mx-auto col-span-3 slideFromLeftAnimation">
-      <img src="https://cdn-icons-png.flaticon.com/512/1178/1178428.png" alt="no-products-image"
-        class="w-[90%] max-w-[260px]">
+    <!-- Search Input -->
+    <div class="relative group" appAnimateOnScroll>
+      <div
+        class="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors z-10">
+        <fa-icon [icon]="searchIcon" class="text-sm"></fa-icon>
+      </div>
+      <input type="text" name="search" id="search" class="w-full ps-10 pe-4 py-3 rounded-xl border-2 border-purple-100/50 dark:border-purple-800/30 
+                backdrop-blur-sm
+               focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
+               transition-all duration-300 outline-none " [class.border-purple-500]="searchText()"
+        placeholder="{{'CATEGORIES.SEARCH_PLACEHOLDER' | translate}}" (input)="changeSearchText($event)">
     </div>
-    }@else{
+
+    <!-- Categories Select -->
+    <div class="relative group" appAnimateOnScroll>
+      <div
+        class="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors z-10">
+        <fa-icon [icon]="categoryIcon" class="text-sm"></fa-icon>
+      </div>
+      <mat-select [value]="selectedCategory()" (selectionChange)="changeCategory($event)" class="w-full ps-10 pe-4 py-3 rounded-xl border-2 border-purple-100/50 dark:border-purple-800/30
+                backdrop-blur-sm
+               focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
+               transition-all duration-300 outline-none  cursor-pointer">
+        <mat-option value="All">{{'CATEGORIES.ALL' | translate}}</mat-option>
+        @for (item of categories; track $index) {
+        <mat-option [value]="item">{{item}}</mat-option>
+        }
+      </mat-select>
+    </div>
+
+    <!-- Price Range -->
+    <div appAnimateOnScroll>
+      <label class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <fa-icon [icon]="priceIcon" class="text-purple-500"></fa-icon>
+        {{'CATEGORIES.PRICE' | translate}}
+      </label>
+      <div class="min-max-section flex flex-row w-full gap-4 mt-3">
+        <div class="relative flex-1">
+          <span class="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+          <input type="number" id="min" (input)="changeMinPrice($event)" class="w-full ps-8 pe-3 py-2 rounded-xl border border-purple-100/50 dark:border-purple-800/30
+                   
+                   focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
+                   transition-all duration-300 outline-none " placeholder="0">
+        </div>
+        <span class="text-purple-400 self-center">—</span>
+        <div class="relative flex-1">
+          <span class="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+          <input type="number" id="max" (input)="changeMaxPrice($event)" class="w-full ps-8 pe-3 py-2 rounded-xl border border-purple-100/50 dark:border-purple-800/30
+                   
+                   focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
+                   transition-all duration-300 outline-none " placeholder="10000">
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating Filter -->
+    <div appAnimateOnScroll>
+      <label class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <fa-icon [icon]="starIcon" class="text-yellow-500"></fa-icon>
+        {{'CATEGORIES.STARS_RATING' | translate}}
+      </label>
+      <div class="rating-slider-container">
+        <input type="range" name="rating" id="rating" min="0" max="5" step="1" class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gradient-to-r from-purple-200 to-purple-500
+                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
+                 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-purple-600
+                 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
+          (change)="changeStarRating($event)" value="0">
+
+        <div class="flex justify-between mt-2 text-xs text-gray-500">
+          <span>0</span>
+          <span>⭐ 1</span>
+          <span>⭐ 2</span>
+          <span>⭐ 3</span>
+          <span>⭐ 4</span>
+          <span>⭐ 5</span>
+        </div>
+      </div>
+
+      @if (rating() > 0 && rating() < 5) { <output
+        class="block mt-3 text-sm text-purple-600 dark:text-purple-400 font-medium text-center">
+        {{'CATEGORIES.STARS_RATING_OR_LESS' | translate: {stars: rating()} }}
+        </output>
+        } @else if(rating() == 0 || rating() == 5) {
+        <output class="block mt-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+          {{'CATEGORIES.ALL_PRODUCTS' | translate}}
+        </output>
+        }
+    </div>
+
+  </section>
+
+  <!-- Products Grid Section -->
+  <section class="search-results grid lg:grid-cols-2 xl:grid-cols-2 gap-6 col-span-2">
+
+    <!-- Loading Skeletons -->
+    @if (isLoading()) {
+    @for (item of [1,2,3,4]; track $index) {
+    <div class="animate-fade-in-up" appAnimateOnScroll>
+      <app-product-card-skeleton></app-product-card-skeleton>
+    </div>
+    }
+    } @else {
+    <!-- Empty State -->
+    @if(paginationService.allProducts().length == 0){
+    <div appAnimateOnScroll class="no-products-found flex flex-col items-center justify-center col-span-full py-16 rounded-2xl
+                                      bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20
+                                      border border-purple-100 dark:border-purple-800/30">
+      <div class="relative">
+        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900/40 dark:to-indigo-900/40 
+                        flex items-center justify-center animate-float-slow">
+          <fa-icon [icon]="emptyIcon" class="text-4xl text-purple-400"></fa-icon>
+        </div>
+      </div>
+      <h3 class="mt-6 text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{'CATEGORIES.NO_PRODUCTS' | translate}}
+      </h3>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center">
+        {{'CATEGORIES.NO_PRODUCTS_SUBTITLE' | translate}}
+      </p>
+    </div>
+    } @else {
+    <!-- Products -->
     @for (item of showedProducts(); track item.id) {
-    <app-product-card [product]="item"></app-product-card>
+    <div appAnimateOnScroll class="transition-all duration-300 hover:-translate-y-1">
+      <app-product-card [product]="item"></app-product-card>
+    </div>
     }
-    }
-    }@else{
-    @for (item of [1,2,3]; track $index) {
-    <app-product-card-skeleton></app-product-card-skeleton>
     }
     }
   </section>
 </main>
-<app-pagination-container></app-pagination-container>
+
+<!-- Pagination -->
+@if (!isLoading() && paginationService.allProducts().length > 0) {
+<div class="mt-10" appAnimateOnScroll>
+  <app-pagination-container></app-pagination-container>
+</div>
+}

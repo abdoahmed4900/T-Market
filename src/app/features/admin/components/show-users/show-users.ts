@@ -1,4 +1,4 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { User } from '../../../auth/user';
@@ -10,10 +10,20 @@ import { PaginationContainer } from "../../../../shared/components/pagination-co
 import { MatDialog } from '@angular/material/dialog';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { Loader } from '../../../../shared/components/loader/loader';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import {
+  faUsers,
+  faUser,
+  faEnvelope,
+  faUserTag,
+  faCrown,
+  faCheckCircle,
+  faShieldAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-users',
-  imports: [TranslateModule, AnimateOnScroll, CommonModule, PaginationContainer],
+  imports: [TranslateModule, AnimateOnScroll, CommonModule, PaginationContainer, FaIconComponent],
   templateUrl: './show-users.html',
   styleUrl: './show-users.scss',
   providers: [PaginationService]
@@ -37,6 +47,19 @@ export class ShowUsers {
 
   matDialog = inject(MatDialog);
   toastService = inject(ToastService);
+  usersIcon = faUsers;
+
+  // In your component
+  userIcon = faUser;
+  emailIcon = faEnvelope;
+  roleIcon = faUserTag;
+  crownIcon = faCrown;
+  adminIcon = faShieldAlt;
+  checkIcon = faCheckCircle;
+  allUsers = computed(() => {
+    return this.paginationService.allProducts();
+  })
+
 
   showedUsers = signal<User[]>([])
   ngOnInit(): void {
@@ -54,8 +77,7 @@ export class ShowUsers {
         next: (value) => {
           this.paginationService.reset();
           this.paginationService.productsPerPage.set(3);
-          this.paginationService.allProducts.set(value);
-          this.paginationService.initializePagination();
+          this.paginationService.initializePagination(value);
           this.isLoaded.set(true);
           this.showedUsers = this.paginationService.showedProducts;
         },
@@ -81,5 +103,6 @@ export class ShowUsers {
   ngOnDestroy(): void {
     this.destroy$.next()
     this.destroy$.complete()
+    this.paginationService.reset();
   }
 }

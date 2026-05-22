@@ -1,30 +1,135 @@
-<header class="my-10 flex flex-col gap-5">
-  <h2 class="text-[20px] font-bold">{{'BRAND_PRODUCTS.TITLE' | translate: {name: name()} }}</h2>
-  <p class="text-[16px] text-gray-600">{{'BRAND_PRODUCTS.SUBTITLE' | translate }}</p>
+<header class="my-10 flex flex-col gap-5 animate-fade-in-up" appAnimateOnScroll [once]="false">
+  <h2
+    class="text-[20px] font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent py-[2px]">
+    {{'BRAND_PRODUCTS.TITLE' | translate: {name: name()} }}
+  </h2>
+  <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full"></div>
+  <p class="text-[16px] text-gray-600 dark:text-gray-400">{{'BRAND_PRODUCTS.SUBTITLE' | translate }}</p>
 </header>
+
 <main>
   @if (isLoaded()) {
   @if(showedProducts()!.length > 0){
-  <section class="flex flex-col gap-4 all-products">
-    @for (item of showedProducts(); track item.id;) {
-    <div class="border slideFromLeftAnimation rounded-xl flex flex-col items-start pb-2" appAnimateOnScroll
-      [once]="false">
-      <app-dashboard-product [product]="item"></app-dashboard-product>
-      <button [routerLink]="['/product',item.id]"
-        class="bg-[var(--primary-color)] ms-4 p-4 rounded-xl size-fit">{{'BRAND_PRODUCTS.PRODUCT_DETAILS' |
-        translate}}</button>
-    </div>
+  <section class="flex flex-col gap-6 all-products">
+    @for (item of showedProducts(); track item.id; let i = $index) {
+    <section [once]="false" appAnimateOnScroll [style.animation-delay]="(i * 0.05) + 's'" class="group cart-card flex items-start cursor-pointer rounded-2xl border gap-4 flex-col lg:flex-row justify-between relative 
+                          transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-purple-500/10
+                           border-purple-100/50 dark:border-purple-800/30
+                          overflow-hidden">
+
+      <!-- Hover glow effect -->
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-indigo-500/0 group-hover:from-purple-500/5 group-hover:to-indigo-500/5 transition-all duration-700">
+      </div>
+
+      @if (item.isDeleted) {
+      <app-deleted-product-overlay></app-deleted-product-overlay>
+      }
+
+      <!-- Product Image -->
+      <div
+        class="relative overflow-hidden rounded-xl m-4 md:h-[250px] h-[300px] lg:w-[250px] w-full group-hover:scale-105 transition-transform duration-500">
+        <img [src]="item.imageUrls![0]" alt="product-image" class="w-full h-full object-cover rounded-xl">
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        </div>
+      </div>
+
+      <!-- Product Details -->
+      <div class="details flex flex-col justify-between w-full flex-wrap gap-4 p-6 items-start">
+        <section class="card-text flex flex-col items-start gap-3 w-full">
+          <h2 class="text-xl md:text-2xl font-bold text-purple-600 dark:text-purple-400 transition-colors duration-300">
+            {{item.name}}
+          </h2>
+          <p class="text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
+            {{item.description}}
+          </p>
+        </section>
+
+        <!-- Price and Action -->
+        <div class="flex items-center justify-between w-full mt-2">
+          <h3 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            {{item.price | currency}}
+          </h3>
+          <div
+            class="flex items-center gap-2 text-purple-500 group-hover:translate-x-2 transition-transform duration-300"
+            [routerLink]="['/product',item.id]">
+            <span class="text-sm">{{ 'VIEW_DETAILS' | translate }}</span>
+            <fa-icon [icon]="arrowIcon" class="text-sm"></fa-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decorative corner -->
+      <div class="absolute top-0 end-0 w-16 h-16 overflow-hidden pointer-events-none">
+        <div
+          class="absolute top-0 end-0 w-8 h-8 bg-gradient-to-bl from-purple-400/20 to-transparent transform rotate-45 translate-x-4 -translate-y-4">
+        </div>
+      </div>
+    </section>
     }
   </section>
-  <app-pagination-container></app-pagination-container>
-  }@else {
-  <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
-    <img class="w-[200px] h-[200px]" src="https://www.svgrepo.com/show/17356/empty-cart.svg"
-      alt="no products added yet">
-    <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_PRODUCTS' | translate}}</p>
+
+  <!-- Pagination -->
+  <div class="mt-10 animate-fade-in-up" appAnimateOnScroll [once]="false">
+    <app-pagination-container></app-pagination-container>
+  </div>
+
+  } @else {
+  <!-- Empty State -->
+  <div class="empty-products mx-auto flex flex-col gap-6 w-full justify-center items-center my-15 p-8 rounded-2xl 
+                  bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 
+                  border border-purple-100 dark:border-purple-800/30 animate-fade-in-up" appAnimateOnScroll
+    [once]="false">
+
+    <div class="relative">
+      <div
+        class="w-40 h-40 rounded-full bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900/40 dark:to-indigo-900/40 flex items-center justify-center animate-float-slow">
+        <fa-icon [icon]="emptyIcon" class="text-5xl text-purple-400"></fa-icon>
+      </div>
+      <div class="absolute -top-2 -end-2 w-4 h-4 bg-purple-400 rounded-full "></div>
+    </div>
+
+    <p
+      class="text-lg font-bold text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+      {{'BRAND_PRODUCTS.NO_PRODUCTS' | translate}}
+    </p>
+    <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+      {{'BRAND_PRODUCTS.NO_PRODUCTS_SUBTITLE' | translate}}
+    </p>
   </div>
   }
-  }@else {
-  <app-dashboard-products-skeleton></app-dashboard-products-skeleton>
+  } @else {
+  <!-- Skeleton Loader -->
+  <div class="flex flex-col w-full gap-6">
+    @for (item of [1,2,3]; track $index) {
+    <section class="cart-card px-3 pt-1 flex items-start rounded-2xl border gap-4 flex-col lg:flex-row justify-between
+                         border-purple-100/50 dark:border-purple-800/30 overflow-hidden">
+
+      <!-- Image skeleton -->
+      <div class="rounded-xl m-4 h-[250px] lg:w-[250px] w-full">
+        <div class="w-full h-full rounded-xl skeleton-basic "></div>
+      </div>
+
+      <!-- Details skeleton -->
+      <section class="details flex flex-col justify-between w-full flex-wrap gap-4 p-6 items-start">
+        <div class="card-text flex flex-col items-start gap-4 w-full">
+          <div class="w-3/4 h-8 skeleton-basic rounded-lg "></div>
+          <div class="w-full h-12 skeleton-basic rounded-lg "></div>
+          <div class="w-1/3 h-10 skeleton-basic rounded-lg "></div>
+        </div>
+        <div class="flex items-center justify-between w-full mt-2">
+          <div class="w-32 h-8 skeleton-basic rounded-lg "></div>
+          <div class="w-24 h-6 skeleton-basic rounded-lg "></div>
+        </div>
+      </section>
+    </section>
+    }
+  </div>
+
+  <!-- Pagination skeleton -->
+  <div class="mt-4">
+    <div class="w-full h-12 skeleton-basic rounded-xl "></div>
+  </div>
   }
 </main>

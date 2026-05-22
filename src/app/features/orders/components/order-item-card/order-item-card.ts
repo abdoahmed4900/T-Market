@@ -1,5 +1,5 @@
-import { Component, inject, input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, inject, input, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { ProductsService } from '../../../../shared/services/products.service';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -20,8 +20,13 @@ export class OrderItemCard {
   product!: Observable<Product>;
 
   productService = inject(ProductsService);
+  isLoaded = signal(false);
 
   ngOnInit(): void {
-    this.product = this.productService.getProductById(this.orderItem()!.id!);
+    this.product = this.productService.getProductById(this.orderItem()!.id!).pipe(
+      tap(() => {
+        this.isLoaded.set(true);
+      })
+    );
   }
 }

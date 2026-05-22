@@ -13,10 +13,24 @@ import { numericLengthValidator } from '../../../../../shared/methods';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { Loader } from '../../../../../shared/components/loader/loader';
+import {
+  faBox,
+  faTag,
+  faDollarSign,
+  faCube,
+  faImage,
+  faCloudUpload,
+  faPaperPlane,
+  faExclamationTriangle,
+  faPen,
+  faAlignLeft,
+  faComment,
+} from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'app-new-product',
-  imports: [TranslateModule, ReactiveFormsModule, AsyncPipe, MatSelectModule, GoBackButton, AnimateOnScroll],
+  imports: [TranslateModule, ReactiveFormsModule, AsyncPipe, MatSelectModule, GoBackButton, AnimateOnScroll, FaIconComponent],
   templateUrl: './new-product.html',
   styleUrl: './new-product.scss',
 })
@@ -39,6 +53,21 @@ export class NewProduct {
   translateService = inject(TranslateService);
   toastService = inject(ToastService);
 
+
+  // In your component
+  productIcon = faBox;
+  nameIcon = faTag;
+  editIcon = faPen;
+  descriptionIcon = faAlignLeft;
+  messageIcon = faComment;
+  categoryIcon = faTag;
+  brandIcon = faTag;
+  priceIcon = faDollarSign;
+  stockIcon = faCube;
+  imageIcon = faImage;
+  uploadIcon = faCloudUpload;
+  submitIcon = faPaperPlane;
+  warningIcon = faExclamationTriangle;
 
 
   productFormGroup = this.fb.group({

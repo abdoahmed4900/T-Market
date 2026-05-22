@@ -32,10 +32,24 @@ import { numericLengthValidator } from '../../shared/methods';
 import { ToastService } from '../../shared/services/toast.service';
 import { CartProduct } from '../cart/cart.product';
 
+import {
+  faCreditCard,
+  faUser,
+  faLocationDot,
+  faEnvelope,
+  faBuilding,
+  faCalendarAlt,
+  faLock,
+  faShieldAlt,
+  faArrowRight,
+  faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+
 @Component({
   selector: 'app-stripe-payment',
   templateUrl: './payment.component.html',
-  imports: [ReactiveFormsModule, TranslateModule, Loader, AnimateOnScroll],
+  imports: [ReactiveFormsModule, TranslateModule, Loader, AnimateOnScroll, FaIconComponent],
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent {
@@ -43,6 +57,19 @@ export class PaymentComponent {
   stripe!: Stripe;
   private elements!: StripeElements;
   translateService = inject(TranslateService);
+
+  // In your component
+  paymentIcon = faCreditCard;
+  userIcon = faUser;
+  locationIcon = faLocationDot;
+  zipIcon = faEnvelope;
+  cityIcon = faBuilding;
+  cardIcon = faCreditCard;
+  calendarIcon = faCalendarAlt;
+  lockIcon = faLock;
+  shieldIcon = faShieldAlt;
+  warningIcon = faExclamationTriangle;
+  arrowIcon = faArrowRight;
 
   cardNumber!: StripeCardNumberElement;
   cardExpiry!: StripeCardExpiryElement;
@@ -52,7 +79,9 @@ export class PaymentComponent {
   dialog = inject(MatDialog);
   cartService = inject(CartService);
   stripeService = inject(StripeService);
-  price!: number;
+  price = computed(() => {
+    return this.cartService.totalCartPrice$.value;
+  });
   cardBrand: string = 'unknown';
   cartProducts!: CartProduct[];
   private formBuilder = inject(FormBuilder);
@@ -66,11 +95,11 @@ export class PaymentComponent {
   isCardDateTouched = signal(false);
   isCardCvcTouched = signal(false);
   isFormValid = computed(() => {
-    return this.isCardCvcValid() && this.isCardDateValid() && this.isCardNumberValid();
+    return this.isCardCvcValid() && this.isCardDateValid() && this.isCardNumberValid() && this.cartService.totalCartPrice$.value > 0;
   });
 
   isLangEnglish = linkedSignal(() => {
-    return this.translateService.currentLang == 'en';
+    return (this.translateService.currentLang ?? 'en') == 'en';
   })
 
   paymentFormGroup = this.formBuilder.group(
@@ -95,7 +124,6 @@ export class PaymentComponent {
 
   async ngOnInit() {
     await this.createStripeInstance();
-    this.price = this.cartService.totalCartPrice$.value;
     this.cartService.getAllCartProducts().pipe(
       takeUntil(this.destroy$)).subscribe({
         next: (value) => {
@@ -120,9 +148,9 @@ export class PaymentComponent {
   }
 
   private watchThemeChanges() {
-    let lastTheme = localStorage.getItem('theme');
+    let lastTheme = localStorage.getItem('theme') ?? 'light';
     this.themeInterval = setInterval(() => {
-      const current = localStorage.getItem('theme');
+      const current = localStorage.getItem('theme') ?? 'light';
       if (current !== lastTheme) {
         lastTheme = current;
         const style = this.baseStyle();
@@ -140,7 +168,7 @@ export class PaymentComponent {
     return {
       style: {
         base: {
-          color: isDark ? 'white' : 'black',
+          color: 'black',
           fontFamily: 'Arial, sans-serif',
           fontSize: '16px',
           '::placeholder': { color: isDark ? '#b3b3b3' : 'gray' },
@@ -245,13 +273,13 @@ export class PaymentComponent {
     try {
       this.stripeService.setStripeAndCard(this.stripe, this.cardNumber);
       const result = await this.stripeService.createPaymentIntent(
-        this.price,
+        this.price(),
         name
       );
       if (result.paymentIntent?.status !== 'succeeded') {
         throw new Error('Payment failed');
       }
-      await this.stripeService.finishPayment(result, this.paymentFormGroup, this.price);
+      await this.stripeService.finishPayment(result, this.paymentFormGroup, this.price());
       this.progressService.goToFinalStep();
       ref.close();
       this.toastService.success(this.translateService.instant('SUCCESS_MESSAGES.ORDER_PLACED'));

@@ -27,22 +27,18 @@ export class PaymentProgressBar {
     return this.progressStrings[2];
   })
 
-  languageSub = this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe(
-    {
-      next: (value) => {
-        this.isEnglish.set(value.lang == 'en' ? true : false);
-      },
-    }
-  )
-
-  isEnglish = signal(localStorage.getItem('language') === 'en');
+  isEnglish = signal((localStorage.getItem('language') ?? 'en') == 'en');
 
   progressElement = viewChild<HTMLElement>('progress');
 
   ngOnInit(): void {
-    if (!this.isProgressing()) {
-      this.progressService.goToFirstStep();
-    }
+    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe(
+      {
+        next: (value) => {
+          this.isEnglish.set(value.lang == 'en');
+        },
+      }
+    )
   }
 
 

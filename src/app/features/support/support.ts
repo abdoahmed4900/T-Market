@@ -9,9 +9,23 @@ import { ToastService } from '../../shared/services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../shared/components/loader/loader';
 
+import {
+  faHeadset,
+  faHeading,
+  faPen,
+  faComment,
+  faPaperPlane,
+  faInfoCircle,
+  faExclamationTriangle,
+  faArrowRight,
+  faArrowLeft
+} from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { AnimateOnScroll } from "../../shared/animate-on-scroll";
+
 @Component({
   selector: 'app-support-page',
-  imports: [FormsModule, ReactiveFormsModule, TranslateModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, TranslateModule, CommonModule, FaIconComponent, AnimateOnScroll],
   templateUrl: './support.html',
   styleUrl: './support.scss',
 })
@@ -26,6 +40,21 @@ export class SupportPage {
   translateService = inject(TranslateService);
   toastService = inject(ToastService);
   matDialog = inject(MatDialog);
+
+  // In your component
+  supportIcon = faHeadset;
+  titleIcon = faHeading;
+  editIcon = faPen;
+  complaintIcon = faComment;
+  messageIcon = faComment;
+  sendIcon = faPaperPlane;
+  infoIcon = faInfoCircle;
+  warningIcon = faExclamationTriangle;
+  arrowIcon = faArrowRight;
+
+  constructor(private translate: TranslateService) {
+    this.arrowIcon = this.translate.currentLang === 'ar' ? faArrowLeft : faArrowRight;
+  }
 
 
 

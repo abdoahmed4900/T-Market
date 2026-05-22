@@ -1,41 +1,144 @@
-@let orderDetails = order | async;
-@if (orderDetails) {
+@let orderDetails = (order | async)!;
+
+@if (isLoaded()) {
 <main class="flex flex-col w-full mt-10" id="order-details">
-  <header class="mb-5 mt-0">
-    <h2 class="text-[20px] font-bold">{{'ORDERS.ORDER_ITEMS' | translate}} : </h2>
-  </header>
-  <section class="flex flex-col gap-5 flex-wrap">
-    @for (item of orderDetails.items; track $index) {
-    <app-order-item-card [orderItem]="item"></app-order-item-card>
-    }
-  </section>
-  <button (click)="generatePDF(orderDetails!)"
-    class="rounded-xl bg-[var(--primary-color)] border-0 w-fit p-4 mt-5 mx-auto">{{'ORDERS.DOWNLOAD_RECEIPT' |
-    translate}}</button>
-</main>
-}
-@else{
-<div class="flex flex-col w-full gap-5">
-  <div class="skeleton-basic mt-5 w-[150px] h-[50px]"></div>
-  <section class="flex flex-col gap-5 flex-wrap">
-    @for (item of [1,2,3]; track $index) {
-    <section class="flex rounded-xl border ps-1 gap-4 flex-col lg:flex-row justify-between">
-      <div class="skeleton-basic rounded-4xl p-4 md:h-[250px] h-70 lg:w-70 w-full"></div>
-      <div class="details flex flex-col justify-between w-full flex-wrap gap-4 p-4 items-start">
-        <section class="card-text flex flex-col items-start gap-6">
-          <div class="skeleton-basic rounded-4xl h-[55px] w-[100px]"></div>
-          <div class="skeleton-basic rounded-4xl h-[55px] w-[300px]"></div>
-        </section>
-        <div class="cart-actions flex items-center flex-row gap-6 flex-wrap w-full">
-          <div class="skeleton-basic rounded-4xl h-[55px] w-[100px]"></div>
-          <div class="skeleton-basic rounded-4xl h-[55px] w-[100px]"></div>
+
+  <!-- Header Section -->
+  <header class="mb-6 mt-0">
+    <div class="flex items-center gap-3 mb-2">
+      <div
+        class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+        <fa-icon [icon]="orderIcon" class="text-white text-lg"></fa-icon>
+      </div>
+      <h2
+        class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{'ORDERS.ORDER_ITEMS' | translate}}
+      </h2>
+    </div>
+    <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full"></div>
+
+    <!-- Order Summary Card -->
+    <div
+      class="mt-4 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border border-purple-100 dark:border-purple-800/30">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+        <div class="flex flex-col">
+          <span class="text-xs text-gray-500 dark:text-gray-400">{{'ORDERS.ORDER_DATE' | translate}}</span>
+          <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{orderDetails.orderDate| date}}</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xs text-gray-500 dark:text-gray-400">{{'ORDERS.TOTAL_AMOUNT' | translate}}</span>
+          <span
+            class="text-sm font-semibold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">{{orderDetails.totalPrice
+            | currency}}</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xs text-gray-500 dark:text-gray-400">{{'ORDERS.STATUS' | translate}}</span>
+          <span class="inline-flex items-center gap-1 text-sm font-semibold px-2 py-0.5 rounded-full w-fit"
+            [class.bg-yellow-100]="orderDetails.status === 'PENDING'"
+            [class.text-yellow-700]="orderDetails.status === 'PENDING'"
+            [class.bg-green-100]="orderDetails.status === 'DELIVERED'"
+            [class.text-green-700]="orderDetails.status === 'DELIVERED'"
+            [class.bg-blue-100]="orderDetails.status === 'SHIPPED'"
+            [class.text-blue-700]="orderDetails.status === 'SHIPPED'"
+            [class.bg-red-100]="orderDetails.status === 'CANCELLED'"
+            [class.text-red-700]="orderDetails.status === 'CANCELLED'">
+            <fa-icon [icon]="getStatusIcon(orderDetails.status!)" class="text-xs"></fa-icon>
+            {{orderDetails.status! | translate}}
+          </span>
         </div>
       </div>
-    </section>
+    </div>
+  </header>
+
+  <!-- Order Items Section -->
+  <section class="flex flex-col gap-5 flex-wrap my-4">
+    @for (item of orderDetails.items; track $index; let i = $index) {
+    <div appAnimateOnScroll [once]="false" [style.animation-delay]="(i * 0.05) + 's'" class="animate-fade-in-up">
+      <app-order-item-card [orderItem]="item"></app-order-item-card>
+    </div>
     }
   </section>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+    <button (click)="generatePDF(orderDetails!)" class="group relative overflow-hidden px-6 py-3 rounded-xl
+                     bg-gradient-to-r from-purple-600 to-indigo-600
+                     hover:from-purple-700 hover:to-indigo-700
+                     transform hover:scale-[1.02] active:scale-[0.98]
+                     transition-all duration-300
+                     shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40
+                     text-white font-semibold text-md
+                     flex items-center gap-2">
+
+      <!-- Button shine effect -->
+      <div
+        class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+      </div>
+
+      <span class="relative z-10 flex items-center gap-2">
+        <fa-icon [icon]="downloadIcon" class="text-sm"></fa-icon>
+        {{'ORDERS.DOWNLOAD_RECEIPT' | translate}}
+      </span>
+    </button>
+
+    <button [routerLink]="'/orders'" class="px-6 py-3 rounded-xl border-2 border-purple-300 dark:border-purple-700
+                     hover:bg-purple-50 dark:hover:bg-purple-900/20
+                     hover:border-purple-500 dark:hover:border-purple-500
+                     transition-all duration-300
+                     text-purple-600 dark:text-purple-400 font-semibold text-md
+                     flex items-center gap-2">
+      <fa-icon [icon]="arrowBackIcon" class="text-sm"></fa-icon>
+      {{'ORDERS.BACK_TO_ORDERS' | translate}}
+    </button>
+  </div>
+
+</main>
+} @else {
+<div class="flex flex-col w-full gap-5">
+
+  <!-- Header Skeleton -->
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="skeleton-basic w-10 h-10 rounded-xl "></div>
+      <div class="skeleton-basic w-48 h-8 rounded-lg "></div>
+    </div>
+    <div class="skeleton-basic w-20 h-1 rounded-full  mt-2"></div>
+
+    <!-- Order Summary Skeleton -->
+    <div class="mt-4 p-4 rounded-xl border">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        @for (item of [1,2,3,4]; track $index) {
+        <div class="flex flex-col gap-2">
+          <div class="skeleton-basic w-16 h-3 rounded "></div>
+          <div class="skeleton-basic w-24 h-4 rounded "></div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Items Skeleton -->
+  <section class="flex flex-col gap-5 flex-wrap">
+    @for (item of [1,2,3]; track $index) {
+    <main class="border rounded-xl p-6 flex flex-row flex-wrap justify-start gap-5 items-start my-3 w-full">
+      <div class="w-full md:w-[450px] h-[300px] skeleton-basic p-4"></div>
+      <div class="flex flex-col gap-4 flex-wrap">
+        <div class="md:w-[300px] w-full h-[30px] skeleton-basic"></div>
+        <div class="w-[300px] h-[30px] skeleton-basic"></div>
+        <div class="w-[200px] h-[30px] skeleton-basic"></div>
+        <div class="w-[50px] h-[30px] skeleton-basic"></div>
+        <div class="w-[300px] h-[30px] skeleton-basic"></div>
+        <div class="w-[300px] h-[30px] skeleton-basic"></div>
+        <div class="w-[300px] h-[30px] skeleton-basic"></div>
+      </div>
+    </main>
+    }
+  </section>
+
+  <!-- Button Skeleton -->
   <div class="flex flex-row w-full mt-5 items-center justify-center">
-    <div class="skeleton-basic rounded-xl w-[150px] h-[80px] mt-10 mx-auto"></div>
+    <div class="skeleton-basic rounded-xl w-40 h-12 "></div>
   </div>
 </div>
 }

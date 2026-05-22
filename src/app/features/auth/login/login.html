@@ -1,61 +1,225 @@
-<main appAnimateOnScroll class="my-auto slideFromLeftAnimation">
-  <form [formGroup]="loginForm" (ngSubmit)="loginWithEmailAndPassword()" novalidate>
+<main>
+
+  <!-- Main Container -->
+  <div class="flex flex-col md:flex-row">
+
+    <!-- Left Side - Brand/Info Section -->
     <div
-      class="flex flex-col flex-wrap gap-5 max-w-[500px] w-full mx-auto my-auto mt-20 p-6 pb-4 border border-gray-500 rounded-lg shadow-lg">
-      <h1 class="text-2xl font-bold text-[var(--primary-text-color)]">{{'AUTH.LOGIN.TITLE' | translate}}</h1>
-      <p class="text-[var(--secondary-text-color)] text-[14px]">{{'AUTH.LOGIN.SUBTITLE' | translate}}</p>
-      <div class="email-container flex flex-col gap-1">
-        <label for="email" class="text-[14px] font-bold">{{'AUTH.LABELS.EMAIL' | translate}}</label>
-        <input class="outline-none border-2 rounded-lg p-2" type="email" name="email" id="email"
-          placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" formControlName="email" [ngClass]="{
-            'border-[var(--error-text-color)]': loginForm.get('email')?.invalid && loginForm.get('email')?.touched,
-            'border-gray-300': loginForm.get('email')?.valid || !loginForm.get('email')?.touched,
-            'focus:border-[var(--primary-color)]': (loginForm.get('email')?.valid && loginForm.get('email')?.touched),
-            'focus:border-[var(--error-text-color)]': !(loginForm.get('email')?.invalid && loginForm.get('email')?.touched),
-        }" />
-        @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
-        <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-          'AUTH.LABELS.EMAIL' | translate } }}</span>
-        }
-        @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
-        <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field:
-          'AUTH.LABELS.EMAIL' | translate} }}</span>
-        }
+      class="relative md:w-1/2 bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 p-8 md:p-12 md:flex flex-col hidden justify-between animate-fade-in-up"
+      appAnimateOnScroll>
+
+      <!-- Animated background patterns -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-10 w-40 h-40 bg-white rounded-full blur-3xl animate-float-slow"
+          appAnimateOnScroll [once]="false"></div>
+        <div class="absolute bottom-20 right-10 w-60 h-60 bg-white rounded-full blur-3xl animate-float-delayed"
+          appAnimateOnScroll [once]="false"></div>
       </div>
-      <div class="password-container flex flex-col gap-1">
-        <label for="password" class="text-[14px] font-bold">{{'AUTH.LABELS.PASSWORD' | translate}}</label>
-        <div class="password-field relative">
-          <input class="outline-none border-2 w-full rounded-lg p-2" [type]="isPasswordVisible ? 'text' : 'password'"
-            name="password" id="password" placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}"
-            formControlName="password" [ngClass]="{
-            'border-[var(--error-text-color)]': loginForm.get('password')?.invalid && loginForm.get('password')?.touched,
-            'border-gray-300': loginForm.get('password')?.valid || !loginForm.get('password')?.touched,
-            'focus:border-[var(--primary-color)]': (loginForm.get('password')?.valid && loginForm.get('password')?.touched),
-            'focus:border-[var(--error-text-color)]': !(loginForm.get('password')?.invalid && loginForm.get('password')?.touched),
-            }" />
-          <app-password-visibility-icon (visibilityChanged)="toggleVisibility($event)"></app-password-visibility-icon>
+
+      <!-- Logo -->
+      <div class="relative z-10">
+        <div class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
+            <fa-icon [icon]="logoIcon" class="text-white text-xl"></fa-icon>
+          </div>
+          <span class="text-white font-bold text-xl">T-Market</span>
         </div>
-        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-        @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-        <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-          'AUTH.LABELS.PASSWORD' | translate} }}.</span>
-        }
-        @if (loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched) {
-        <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 6,
-          field: 'AUTH.LABELS.PASSWORD' | translate} }}</span>
-        }
-        }
       </div>
-      <input value="{{'AUTH.LOGIN.BUTTON' | translate}}" type="submit"
-        class="rounded-lg p-2 text-white bg-[var(--primary-color)] hover:opacity-90" />
-      <button type="button" class="rounded-lg p-2 text-white bg-red-700 hover:bg-red-900"
-        (click)="loginWithGoogle()">{{'AUTH.LOGIN.GOOGLE_BUTTON' | translate}}<div
-          class="text-white inline-block bg-red-500 font-bold mx-2 rounded-3xl p-[5px]">G+</div></button>
-      <a class="text-[14px] text-[var(--primary-color)]" routerLink="/reset-password">{{'AUTH.LOGIN.FORGOT_PASSWORD' |
-        translate}}</a>
-      <a routerLink="/register" class="mx-auto text-[14px]"><span
-          class="text-[var(--secondary-text-color)]">{{'AUTH.LOGIN.NO_ACCOUNT' | translate}}</span> <span
-          class="text-[var(--primary-color)]"> {{'AUTH.LOGIN.CREATE_ONE' | translate}} </span></a>
+
+      <!-- Welcome Message -->
+      <div class="relative z-10 my-auto py-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+          {{ 'AUTH.LOGIN.WELCOME_TITLE' | translate }}
+        </h1>
+        <p class="text-purple-100 text-lg mb-8 leading-relaxed">
+          {{ 'AUTH.LOGIN.WELCOME_SUBTITLE' | translate }}
+        </p>
+
+        <!-- Features List -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3 text-white">
+            <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <fa-icon [icon]="checkIcon" class="text-sm"></fa-icon>
+            </div>
+            <span>{{ 'AUTH.LOGIN.FEATURE_SECURE' | translate }}</span>
+          </div>
+          <div class="flex items-center gap-3 text-white">
+            <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <fa-icon [icon]="checkIcon" class="text-sm"></fa-icon>
+            </div>
+            <span>{{ 'AUTH.LOGIN.FEATURE_TRACK' | translate }}</span>
+          </div>
+          <div class="flex items-center gap-3 text-white">
+            <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <fa-icon [icon]="checkIcon" class="text-sm"></fa-icon>
+            </div>
+            <span>{{ 'AUTH.LOGIN.FEATURE_OFFERS' | translate }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="relative z-10 text-purple-200 text-sm">
+        {{ 'AUTH.LOGIN.FOOTER_TEXT' | translate }}
+      </div>
     </div>
-  </form>
+
+    <!-- Right Side - Login Form -->
+    <div class="md:w-1/2 bg-[var(--main-bg-color)] flex items-center justify-center p-8 md:p-12 animate-fade-in-up"
+      appAnimateOnScroll>
+
+      <div class="w-full max-w-md">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <h2 class="text-2xl md:text-3xl font-bold text-[var(--primary-text-color)] mb-2">
+            {{ 'AUTH.LOGIN.TITLE' | translate }}
+          </h2>
+          <p class="text-gray-500 dark:text-gray-400">
+            {{ 'AUTH.LOGIN.SUBTITLE' | translate }}
+          </p>
+        </div>
+
+        <!-- Login Form -->
+        <form [formGroup]="loginForm" (ngSubmit)="loginWithEmailAndPassword()" novalidate>
+
+          <!-- Email Field -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              {{ 'AUTH.LABELS.EMAIL' | translate }}
+            </label>
+            <div class="relative group">
+              <div
+                class="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors">
+                <fa-icon [icon]="envelopeIcon"></fa-icon>
+              </div>
+              <input type="email" formControlName="email" class="w-full ps-10 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-700 
+                            bg-white dark:bg-gray-800
+                            transition-all duration-300 outline-none
+                            text-gray-800 dark:text-gray-100"
+                [class.border-gray-500]="loginForm.get('email')?.valid && loginForm.get('email')?.touched"
+                [class.border-red-500]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                [class.border-gray-200]="!loginForm.get('email')?.touched" [class.focus:border-purple-500]="true"
+                [placeholder]="'AUTH.PLACEHOLDERS.EMAIL' | translate">
+            </div>
+            @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
+            <div class="mt-1">
+              <span class="flex text-[12px] text-red-500 font-bold items-center gap-1">
+                <fa-icon [icon]="warningIcon"></fa-icon>
+                {{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.EMAIL' | translate} }}
+              </span>
+            </div>
+            }
+            @if(loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched){
+            <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
+              'AUTH.LABELS.EMAIL' | translate} }}.</span>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="mb-3">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              {{ 'AUTH.LABELS.PASSWORD' | translate }}
+            </label>
+            <div class="relative group">
+              <div
+                class="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors">
+                <fa-icon [icon]="lockIcon"></fa-icon>
+              </div>
+              <input [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password" class="w-full ps-10 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-700 
+                            bg-white dark:bg-gray-800
+                            transition-all duration-300 outline-none
+                            text-gray-800 dark:text-gray-100"
+                [class.border-gray-500]="loginForm.get('password')?.valid && loginForm.get('password')?.touched"
+                [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                [class.border-gray-200]="!loginForm.get('password')?.touched" [class.focus:border-purple-500]="true"
+                [placeholder]="'AUTH.PLACEHOLDERS.PASSWORD' | translate">
+              <button type="button"
+                class="absolute end-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-500 transition-colors"
+                (click)="toggleVisibility()">
+                <fa-icon [icon]="isPasswordVisible ? eyeSlashIcon : eyeIcon"></fa-icon>
+              </button>
+            </div>
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <div class="mt-1">
+              <span class="text-red-500 text-[12px] flex items-center gap-1">
+                <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+                {{ 'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.PASSWORD' | translate} }}
+              </span>
+            </div>
+            }
+          </div>
+
+          <!-- Forgot Password -->
+          <div class="flex justify-end items-center mb-6">
+            <a routerLink="/reset-password"
+              class="text-sm text-purple-600 hover:text-purple-700 dark:text-purple-400 hover:underline transition">
+              {{ 'AUTH.LOGIN.FORGOT_PASSWORD' | translate }}
+            </a>
+          </div>
+
+          <!-- Login Button -->
+
+          <button type="submit" [disabled]="loginForm.invalid" class="relative overflow-hidden group w-full rounded-xl py-3 mb-4
+                               bg-gradient-to-r from-purple-600 to-indigo-600
+                               hover:from-purple-700 hover:to-indigo-700
+                               transform hover:scale-[1.02] active:scale-[0.98]
+                               transition-all duration-300
+                               shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40
+                               text-white font-semibold
+                               disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+
+            <div
+              class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+            </div>
+
+            <span class="relative z-10 flex items-center justify-center gap-2">
+              <fa-icon [icon]="signInIcon" class="text-lg"></fa-icon>
+              {{'AUTH.LOGIN.BUTTON' | translate}}
+            </span>
+          </button>
+
+
+          <!-- Divider -->
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-4 bg-gray-50 dark:bg-gray-900 text-gray-500">
+                {{ 'AUTH.LOGIN.OR_CONTINUE_WITH' | translate }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Google Login Button -->
+          <button type="button" (click)="loginWithGoogle()" class="relative overflow-hidden group w-full rounded-xl py-3 mb-4
+                               transform hover:scale-[1.02] active:scale-[0.98]
+                               transition-all duration-300
+                               bg-red-500
+                               hover:bg-red-700
+                               shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40
+                               text-white font-semibold">
+            <span class="flex items-center justify-center gap-3">
+              {{ 'AUTH.LOGIN.GOOGLE_BUTTON' | translate }}
+            </span>
+            <div
+              class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+            </div>
+          </button>
+
+          <!-- Register Link -->
+          <p class="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
+            {{ 'AUTH.LOGIN.NO_ACCOUNT' | translate }}
+            <a routerLink="/register"
+              class="text-purple-600 hover:text-purple-700 font-semibold hover:underline transition">
+              {{ 'AUTH.LOGIN.CREATE_ONE' | translate }}
+            </a>
+          </p>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
 </main>

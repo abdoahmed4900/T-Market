@@ -5,6 +5,15 @@
    "PREVIOUS": "Previous",
    "NEXT": "Next",
    "ALL": "All",
+         "CLICK_TO_UPLOAD": "Click or drag to upload images",
+      "IMAGE_HINT": "Upload up to 5 images (JPEG, PNG, WebP)",
+   "PAGINATION": {
+    "PAGE": "Page",
+    "OF": "of"
+   },
+    "EXISTING_IMAGES": "Current Images",
+  "NEW_IMAGES": "New Images",
+   "PASSWORDS_MATCH": "Passwords match!",
    "GO_BACK": "Go Back",
    "NAME_PLACEHOLDER": "Enter Product Name",
    "DESCRIPTION_PLACEHOLDER": "Enter Product Description",
@@ -18,16 +27,25 @@
    "BRAND_FIELD": "Brand",
    "IMAGES_FIELD": "Product Images",
    "OUT_OF_STOCK":"Out of stock",
+   "POOR_INTERNET": "Weak internet connection, try again later",
+   "VIEW_DETAILS": "View Details",
    "AUTH": {
       "LOGIN": {
-          "BUTTON": "Login",
-          "GOOGLE_BUTTON": "Log In With Google",
-          "TITLE": "Login to your account!",
-          "SUBTITLE": "Login to your account using your email and password",
-          "REMEMBER_ME": "Remember me",
-          "FORGOT_PASSWORD": "Forgot password ?",
-          "NO_ACCOUNT": "Don't have an account ?",
-          "CREATE_ONE": " Create a new account"
+        "TITLE": "Welcome Back!",
+        "SUBTITLE": "Sign in to access your account and manage your shopping experience.",
+        "BUTTON": "Sign In",
+        "GOOGLE_BUTTON": "Sign in with Google",
+        "FORGOT_PASSWORD": "Forgot Password?",
+        "NO_ACCOUNT": "Don't have an account?",
+        "CREATE_ONE": "Create an account",
+        "REMEMBER_ME": "Remember me",
+        "WELCOME_TITLE": "Welcome Back!",
+        "WELCOME_SUBTITLE": "Sign in to access your account and manage your shopping experience.",
+        "FEATURE_SECURE": "Secure & Encrypted Login",
+        "FEATURE_TRACK": "Track your orders in real-time",
+        "FEATURE_OFFERS": "Exclusive deals & offers",
+        "FOOTER_TEXT": "© 2026 T-Market. All rights reserved.",
+        "OR_CONTINUE_WITH": "Or continue with"
       },
       "LOGOUT": "Logout",
       "REGISTER": {
@@ -63,9 +81,11 @@
           "SELLER": "Seller"
       },
       "RESET_PASSWORD": {
-          "TITLE": "Reset Password",
-          "SUBTITLE": "Enter your email to reset your password",
-          "BUTTON": "Send Reset Link"
+        "TITLE": "Reset Password",
+        "SUBTITLE": "Enter your email address and we'll send you a link to reset your password",
+        "BUTTON": "Send Reset Link",
+        "BACK_TO_LOGIN": "Back to Login",
+        "INFO_MESSAGE": "We'll send a password reset link to your email address. The link will expire in 24 hours."
       }
    },
    "ADMIN" : {
@@ -80,25 +100,68 @@
       "STOCK_ITEMS": "Stock Items",
       "PRODUCT_NAME": "Product Name",
       "SOLD":"Sold",
-      "IN_STOCK": "In Stock",
       "NO_PRODUCTS":"No Products Added Yet",
-      "STATISTICS": "Statistics",
       "NO_ORDERS": "No Orders Added Yet!",
       "ORDERS_STATUS_COUNT": "Order Status Count",
-      "ORDERS_PIE_COUNT": "Orders Pie Chart"
+      "ORDERS_PIE_COUNT": "Orders Pie Chart",
+      "PRODUCTS_TITLE" : "Products",
+      "ADD_FIRST_PRODUCT": "Add first product",
+      "NO_PRODUCTS_YET": "No products",
+      "TOTAL_PRODUCTS": "Total products",
+      "OVERVIEW": "Overview",
+      "STATISTICS": "Statistics & Analytics",
+      "USERS": "User Management",
+      "RECENT_ORDERS": "Recent Orders",
+      "NO_ORDERS_SUBTITLE": "When you receive orders, they will appear here",
+      "LOW_STOCK_WARNING": "Stock is running low!",
+
+    "ACTIVE_PRODUCTS": "Active Products",
+    "VS_LAST_MONTH": "vs last month",
+    "TOTAL_SOLD": "All time sales",
+    "ITEMS": "items",
+    "PRODUCTS": "products",
+    "IN_STOCK": "Currently in stock"
    },
     "CART": {
-      "EMPTY": "Your Cart is Empty",
-      "DELETE": "Delete",
+      "CHECKOUT": "Proceed to Checkout",
+      "ADD_TO_CART": "Add products to cart before payment",
+      "EMPTY_TITLE": "Your Cart is Empty",
+      "EMPTY_SUBTITLE": "Looks like you haven't added any items to your cart yet.",
+      "CONTINUE_SHOPPING": "Continue Shopping",
+      "ITEM_COUNT": "{{count}} items",
       "TOTAL_PRICE": "Total Price",
-      "CHECKOUT": "Checkout",
-      "TOTAL_SUMMARY": "Total Summary"
+      "DELETE": "Remove",
+      "UPDATE_QUANTITY": "Update",
+      "TOTAL_SUMMARY": "Total summary",
+      "SUBTOTAL": "Subtotal",
+      "QUANTITY": "Quantity",
+      "IN_STOCK": "In Stock",
+      "OUT_OF_STOCK": "Out of Stock",
+      "SUBTOTAL_TOTAL": "Subtotal",
+      "SHIPPING": "Shipping",
+      "FREE": "Free",
+      "TAX": "Tax",
+      "ESTIMATED_TOTAL": "Estimated Total",
+      "INCLUDES_TAX": "Includes tax",
+      "TITLE": "Your Shopping Cart",
+    "SUBTITLE": "Review and manage items in your cart before checkout",
+    "BROWSE_BRANDS": "Browse Brands",
+    "ITEMS_COUNT": "{{count}} items",
+    "TOTAL_ITEMS": "Total Items",
+    "TOTAL_AMOUNT": "Total Amount",
+    "CLEAR_ALL": "Clear All",
+    "REMOVE": "Remove",
+    "UPDATE": "Update"
    },
    "CATEGORIES": {
-      "STARS_RATING_OR_LESS": "{{stars}} Stars Or Less Products",
-      "STARS_RATING": "Star rating",
-      "SEARCH_PLACEHOLDER": "Search",
-      "ALL_PRODUCTS": "All Products"
+      "SEARCH_PLACEHOLDER": "Search products...",
+      "STARS_RATING": "Rating",
+      "STARS_RATING_OR_LESS": "{{stars}} stars or less",
+      "ALL_PRODUCTS": "All products",
+      "NO_PRODUCTS": "No Products Found",
+      "NO_PRODUCTS_SUBTITLE": "Try adjusting your filters or search criteria",
+      "ALL": "All Categories",
+      "PRICE": "Price Range"
    },
    "BRANDS": {
       "SUBTITLE": "Find the products of your favorite brand",
@@ -107,32 +170,52 @@
    },
    "ORDERS": {
       "ORDERS_LIST": "Orders List",
-      "ORDER": "Order",
-      "DETAILS": "Details",
-      "SHIP_ORDER": "Ship Order",
-      "CANCEL_ORDER": "Cancel Order",
-      "DELIVER_ORDER": "Deliver Order",
-      "ITEMS": "Items",
-      "ORDER_ITEMS": "Order Items",
-      "DOWNLOAD_RECEIPT": "Download Receipt",
+      "SUBTITLE": "Track and manage all your orders in one place",
       "SORT_BY": "Sort By",
+      "All": "All Orders",
       "NEWEST_FIRST": "Newest First",
       "OLDEST_FIRST": "Oldest First",
-      "HIGH_TO_LOW": "Price: High to low",
-      "LOW_TO_HIGH": "Price: low to High",
-      "QUANTITY": "Quantity"
-   },
-   "STATUS": {
+      "HIGH_TO_LOW": "Price: High to Low",
+      "LOW_TO_HIGH": "Price: Low to High",
+      "DATE_RANGE": "Date Range",
+      "STATUS": "Status",
+      "ORDER": "Order",
+      "NO_ORDERS_FOUND": "No Orders Found",
+      "NO_ORDERS_SUBTITLE": "You haven't placed any orders yet. Start shopping to see your orders here.",
       "PENDING": "Pending",
       "CANCELLED": "Cancelled",
       "SHIPPED": "Shipped",
-      "DELIVERED": "Delivered"
-   },
+      "DELIVERED": "Delivered",
+      "DETAILS": "Order details",
+      "ORDER_ITEMS": "Order Items",
+      "ORDER_ID": "Order ID",
+      "ORDER_DATE": "Order Date",
+      "TOTAL_AMOUNT": "Total Amount",
+      "DOWNLOAD_RECEIPT": "Download Receipt",
+      "BACK_TO_ORDERS": "Back to Orders",
+      "ITEMS": "items",
+      "TOTAL": "Total",
+      "SHIP_ORDER": "Ship Order",
+      "CANCEL_ORDER": "Cancel Order",
+      "DELIVER_ORDER": "Mark Delivered",
+      "QUANTITY": "Quantity"
+    },
    "WISHLIST": {
-      "ADD_ITEMS": "Add Items To WishList"
+     "TITLE": "My Wishlist",
+     "SUBTITLE": "Your favorite products, all in one place",
+     "ITEMS": "items",
+     "IN_STOCK": "In Stock",
+     "OUT_OF_STOCK": "Out of Stock",
+     "EMPTY_TITLE": "Your Wishlist is Empty",
+     "EMPTY_SUBTITLE": "Save your favorite items here to purchase them later",
+     "ADD_ITEMS": "Add items to your wishlist",
+     "START_SHOPPING": "Start Shopping",
+     "REMOVE": "Remove"
    },
    "PAYMENT": {
-      "PAYMENT_FORM": "Payment Form",
+      "PAYMENT_FORM": "Secure Payment",
+      "PAYMENT_SUBTITLE": "Enter your payment details to complete your order",
+      "SECURE_PAYMENT": "Your payment information is secure and encrypted",
       "CARDHOLDER_NAME_LABEL": "Cardholder Name",
       "NAME_PLACEHOLDER": "Name",
       "CARDHOLDER_ADDRESS_LABEL": "Cardholder Address",
@@ -151,12 +234,15 @@
       "SIGN_OUT": "Sign Out",
       "CART": "Cart",
       "ORDERS": "Orders",
-      "WISHLIST": "WishList"
+      "WISHLIST": "WishList",
+      "THEME": "Theme"
    },
    "PRODUCT_CARD": {
       "ADD_TO_CART": "Add to Cart",
-      "ADD_TO_WISHLIST": "Add to WishList",
-      "VIEW": "View"
+      "ADD": "Add",
+      "VIEW": "View Details",
+      "QUICK_VIEW": "Quick View",
+      "OUT_OF_STOCK": "Out of Stock"   
    },
    "SIDEBAR": {
       "ADD_NEW_USER": "Add New User",
@@ -166,36 +252,55 @@
       "ADD_NEW_BRAND": "Add New Brand",
       "UPDATE_PRODUCT": "Update Product",
       "DELETE_PRODUCT": "Delete Product",
+      "DELETED":"Product is Deleted",
       "UNDELETE_PRODUCT": "Undelete Product",
       "VIEW_ALL_USERS": "View All Users",
       "VIEW_ALL_PRODUCTS": "View All Products",
       "VIEW_YOUR_PRODUCTS": "View Your Products"
    },
    "FOOTER": {
-      "GET_PREMIUM": "Premium tech curated for performance, design, and value. Fast shipping and dedicated support.",
-      "GET_UPDATES": "Get Updates",
-      "SUBSCRIBE": "Subscribe"
+    "GET_PREMIUM": "Get premium products at the best prices with fast delivery and secure payment.",
+    "GET_UPDATES": "Get Updates & Offers",
+    "SUBSCRIBE": "Subscribe",
+    "QUICK_LINKS": "Quick Links",
+    "NEWSLETTER_SUBTITLE": "Subscribe to our newsletter and get 10% off your first purchase!",
+    "SECURE_PAYMENT": "Secure Payment",
+    "FAST_DELIVERY": "Fast Delivery",
+    "SUPPORT_247": "24/7 Support",
+    "ALL_RIGHTS_RESERVED": "All rights reserved.",
+    "PRIVACY_POLICY": "Privacy Policy",
+    "TERMS_OF_SERVICE": "Terms of Service",
+    "COOKIE_POLICY": "Cookie Policy"
    },
    "NEW_CATEGORY": {
-      "CREATE_NEW_CATEGORY_TITLE": "Create New Category",
-      "CREATE_NEW_CATEGORY_SUBTITLE": "Add a new product category to your store",
-      "CREATE_NEW_CATEGORY_PLACEHOLDER": "Category Name",
-      "SUBMIT": "Create Category"
+    "CREATE_NEW_CATEGORY_TITLE": "Create New Category",
+    "CREATE_NEW_CATEGORY_SUBTITLE": "Add a new category to organize products and help customers find what they're looking for.",
+    "CREATE_NEW_CATEGORY_PLACEHOLDER": "Enter category name (e.g., Computers, Phones, Watches, etc.)",
+    "CATEGORY_NAME": "Category Name",
+    "CATEGORY_NAME_HINT": "Category name should be descriptive and easy to understand",
+    "SUBMIT": "Create Category",
+    "PREVIEW": "Preview"
    },
-    "NEW_BRAND": {
-      "CREATE_NEW_BRAND_TITLE": "Create New Brand",
-      "CREATE_NEW_BRAND_SUBTITLE": "Add a new brand to your store",
-      "CREATE_NEW_BRAND_PLACEHOLDER": "Brand Name",
-      "SUBMIT": "Create Brand"
+   "NEW_BRAND": {
+    "CREATE_NEW_BRAND_TITLE": "Create New Brand",
+    "CREATE_NEW_BRAND_SUBTITLE": "Add a new brand to help customers discover products from their favorite manufacturers.",
+    "CREATE_NEW_BRAND_PLACEHOLDER": "Enter brand name (e.g., Nike, Samsung, etc.)",
+    "BRAND_NAME": "Brand Name",
+    "BRAND_NAME_HINT": "Brand name should be unique and recognizable",
+    "SUBMIT": "Create Brand",
+    "PREVIEW": "Preview"
    },
    "NEW_PRODUCT": {
-      "TITLE": "Create New Product",
-      "SUBTITLE": "Add a new product to your store",
-      "SUBMIT": "Create Product"
+      "TITLE": "Add New Product",
+      "SUBTITLE": "Fill in the details below to add a new product to your store",
+      "SUBMIT": "Create Product",
+      "SELECT_CATEGORY": "Select a category",
+      "SELECT_BRAND": "Select a brand"
    },
    "UPDATE_PRODUCT": {
-      "TITLE": "Update Product",
-      "SUBMIT": "Update Product"
+       "TITLE": "Update Product",
+    "SUBTITLE": "Edit product details and update images",
+    "SUBMIT": "Save Changes"
    },
    "SHOW_USERS": {
       "USERS": "Users",
@@ -207,15 +312,23 @@
       "DELETE_USER": "Delete user"
    },
    "PRODUCT_DETAILS": {
-      "NO_REVIEWS": "No Reviews were added!",
-      "ADD_COMMENT": "Add your review",
+      "IN_STOCK": "In Stock",
+      "OUT_OF_STOCK": "Out of Stock",
+      "AVAILABLE": "available",
+      "QUANTITY": "Quantity",
+      "CUSTOMER_REVIEWS": "Customer Reviews",
+      "WRITE_REVIEW": "Write a Review",
+      "ADD_COMMENT": "Share your thoughts...",
+      "NO_REVIEWS": "No reviews yet. Be the first to review this product!",
       "YOU": "You",
-      "REVIEW": "Review"
+      "HOVER_TO_ZOOM": "Hover to zoom",
+      "REVIEW": "Review feature"
    },
    "ADD_NEW_USER": {
       "TITLE": "Create new user",
       "SUBTITLE": "Add a new user to your website",
-      "SUBMIT": "Add user"
+      "SUBMIT": "Add user",
+      "STRONG_PASSWORD": "Strong password: 6+ chars, uppercase, number, special"
    },
    "PROGRESS_BAR": {
       "CART": "Cart",
@@ -223,13 +336,21 @@
       "DONE": "Done"
    },
    "SUPPORT": {
-      "PAGE_TITLE": "SUPPORT",
-      "PAGE_SUBTITLE": "Need help? Reach out to our team and we'll get back to you shortly.",
-      "TITLE_PLACEHOLDER": "Enter complaint title",
-      "TITLE": "Title",
-      "COMPLAINT": "Complaint",
-      "COMPLAINT_PLACEHOLDER": "Enter complaint details",
-      "SUBMIT": "Send Complaint"
+    "USER_ID": "User ID",
+    "EMPTY": "No support tickets found",
+    "NO_TICKETS": "There are no support tickets to display at this moment",
+    "TOTAL": "Total tickets:",
+    "SHOWING": "Showing:",
+    "OPEN": "Open",
+    "REPLY": "Reply",
+    "PAGE_TITLE": "Customer Support",
+    "PAGE_SUBTITLE": "We're here to help. Please fill out the form below and we'll get back to you as soon as possible.",
+    "TITLE": "Issue Title",
+    "TITLE_PLACEHOLDER": "Brief description of your issue",
+    "COMPLAINT": "Description",
+    "COMPLAINT_PLACEHOLDER": "Please provide detailed information about your issue...",
+    "SUBMIT": "Submit Request",
+    "HELP_TEXT": "Our support team typically responds within 24-48 hours."
    },
    "SHOW_SUPPORTS": {
       "TITLE": "Supports Page",
@@ -238,10 +359,11 @@
       "USER_ID": "User Id"
    },
    "BRAND_PRODUCTS": {
-      "TITLE": "{{name}} Products",
-      "SUBTITLE": "Products of the brand you like",
-      "PRODUCT_DETAILS": "Show Product Details"
-   },
+    "TITLE": "{{name}} Products",
+    "SUBTITLE": "Browse all products from this brand",
+    "NO_PRODUCTS": "No Products Found",
+    "NO_PRODUCTS_SUBTITLE": "No products are currently available from this brand. Please check back later."
+  },
    "DELETED_PRODUCT": {
       "NOT_AVAILABLE": "Not available"
    },
@@ -286,9 +408,14 @@
       "SHOW": "Shop Now "
     },
     "BRANDS": {
-      "TITLE": "Shop by brand",
-      "SUBTITLE": "Discover products across our wide range of brand",
-      "SHOW": "View Collection"
+      "TITLE": "Brands",
+      "SUBTITLE": "Discover products from your favorite brands",
+      "NUMBER_OF_PRODUCTS": "Number of Products",
+      "VIEW_PRODUCTS": "View Products",
+      "NO_BRANDS": "No Brands Found",
+      "NO_BRANDS_SUBTITLE": "No brands are currently available. Please check back later.",
+      "FEATURED_BRANDS": "Featured Brands",
+      "ALL_BRANDS": "All Brands"
     },
     "FEATURES": {
       "TITLE": "Featured Products",
@@ -333,6 +460,15 @@
     "SHOW_COMPLAINTS_PAGE": "Show complaints"
   },
   "ERROR_MESSAGES": {
-    "LOGIN" : "Login first before using {{page}}"
+    "LOGIN" : "Login first before using {{page}}",
+    "NO_BUYER": "only Normal buyer can review the item!"
+  },
+  "COMMON": {
+    "CANCEL": "Cancel",
+    "CONFIRM": "Confirm",
+    "DELETE": "Are you sure you want to delete this product?",
+    "UNDELETE": "Are you sure you want to undelete this product?",
+    "SAVE": "Save",
+    "CLOSE": "Close"
   }
 }

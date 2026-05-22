@@ -1,43 +1,125 @@
-<section appAnimateOnScroll
-  class="product-card flex flex-col flex-wrap justify-between gap-3 rounded-xl shadow-lg overflow-hidden transition hover:translate-y-[-5px] duration-300 ease-in-out slideFromTopAnimation relative">
+<section appAnimateOnScroll class="product-card group flex flex-col flex-wrap justify-between gap-3 rounded-2xl overflow-hidden transition-all duration-500 ease-in-out relative
+         backdrop-blur-sm
+         border border-purple-100/50 dark:border-purple-800/30
+         hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2">
+
   @if (product()?.isDeleted) {
   <app-deleted-product-overlay></app-deleted-product-overlay>
   }
+
   @if (product()?.stock == 0) {
-  <div class="out-of-stock absolute start-0">
-    <p class="text-[14px] font-bold bg-purple-500 p-4 rounded-xl rounded-ss-none">{{'OUT_OF_STOCK' | translate}}</p>
+  <div class="out-of-stock absolute start-0 top-4 z-10">
+    <p
+      class="text-[12px] font-bold bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-e-xl shadow-lg">
+      {{'PRODUCT_CARD.OUT_OF_STOCK' | translate}}
+    </p>
   </div>
   }
-  <div class="product-content flex flex-col flex-wrap">
-    <img class="nav-image h-[250px] rounded-t-md transition hover:scale-105 hover:rotate-1 duration-300 ease-in-out"
-      [src]="product()!.imageUrls?.[0] || 'assets/placeholder.jpg'" alt="{{product()?.name}}" />
-    <h3 class="p-4 text-lg font-bold h-[50px] line-clamp-1">{{product()?.name}}</h3>
-    <p class="h-[47px] line-clamp-1 p-4 pe-1 text-lg font-bold">{{product()?.description}}</p>
+
+  <!-- Product Image Container -->
+  <div class="relative overflow-hidden">
+    <img
+      class="nav-image h-[250px] w-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:rotate-1"
+      [src]="product()!.imageUrls?.[0] || 'assets/placeholder.jpg'" [alt]="product()?.name" />
+
+    <!-- Image Overlay Gradient -->
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+    </div>
+
+    <!-- Quick View Button on Hover -->
+    <div
+      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+      <button [routerLink]="['/product',product()!.id]" class="px-6 py-2 rounded-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-purple-600 dark:text-purple-400 font-semibold text-sm
+                     transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:scale-105">
+        <fa-icon [icon]="eyeIcon" class="me-2"></fa-icon>
+        {{'PRODUCT_CARD.QUICK_VIEW' | translate}}
+      </button>
+    </div>
   </div>
-  <div class="rating-and-price flex gap-5 flex-wrap items-center justify-between p-4">
-    <span class="rating">
+
+  <!-- Product Content -->
+  <div class="product-content flex flex-col gap-2 p-4">
+    <h3
+      class="text-lg md:text-xl font-bold line-clamp-1 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
+      {{product()?.name}}
+    </h3>
+    <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
+      {{product()?.description}}
+    </p>
+  </div>
+
+  <!-- Rating and Price Section -->
+  <div class="rating-and-price flex gap-5 flex-wrap items-center justify-between px-4">
+    <div class="rating flex items-center gap-1">
       @for (item of [1,2,3,4,5]; track $index) {
       @if (item > product()?.rating!) {
-      <span class="text-lg font-bold"><fa-icon [icon]="starIcon" style="color: grey;"></fa-icon></span>
-      }@else {
-      <span class="text-lg font-bold"><fa-icon [icon]="starIcon" style="color:red"
-          [ngStyle]="root.classList.contains('dark-theme') ? {'color':'yellow'} : {'color':'#ebeb4a'}"></fa-icon></span>
+      <fa-icon [icon]="starIcon" class="text-gray-300 dark:text-gray-600 text-sm"></fa-icon>
+      } @else {
+      <fa-icon [icon]="starIcon" class="text-yellow-400 text-sm"></fa-icon>
       }
       }
-    </span>
-    <span class="price text-lg font-bold">${{product()?.price}}</span>
+      <span class="text-xs text-gray-500 dark:text-gray-400 ms-1">({{product()?.rating || 0}})</span>
+    </div>
+    <div class="price">
+      <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{product()?.price | currency}}
+      </span>
+    </div>
   </div>
-  <div class="actions flex lg:flex-row flex-col gap-y-3 gap-x-2 items-center flex-wrap p-4">
-    <button
-      class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg w-full lg:w-auto p-3 size-fit text-white hover:bg-purple-700"
-      (click)="addToCart(product()!.id!,product()!.price)"
-      [disabled]="product()?.stock == 0 || product()?.isDeleted">{{'PRODUCT_CARD.ADD_TO_CART' | translate}}</button>
-    <button
-      class="add-to-cart-btn bg-[var(--primary-color)] rounded-lg w-full lg:w-auto p-3 size-fit text-white hover:bg-purple-700"
-      type="button" (click)="toggleWishListItem(product()!.id!)" [disabled]="product()?.isDeleted"><fa-icon
-        [icon]="heartIcon()!"></fa-icon></button>
-    <button [routerLink]="['/product',product()!.id]"
-      class="view-details-btn w-full lg:w-auto bg-[var(--primary-color)] rounded-lg p-3 text-white hover:bg-purple-700 text-center"
-      [disabled]="product()?.isDeleted">{{'PRODUCT_CARD.VIEW' | translate}}</button>
+
+  <!-- Action Buttons -->
+  <div class="actions grid grid-cols-3 gap-2 p-4 pt-0">
+    <!-- Add to Cart Button -->
+    <button class="add-to-cart-btn group/btn relative overflow-hidden rounded-xl
+                   bg-gradient-to-r from-purple-600 to-indigo-600
+                   hover:from-purple-700 hover:to-indigo-700
+                   transition-all duration-300
+                   shadow-md hover:shadow-lg hover:shadow-purple-500/30
+                   disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none
+                   text-white font-semibold text-sm py-2.5 col-span-1"
+      (click)="addToCart(product()!.id!, product()!.price)" [disabled]="product()?.stock == 0 || product()?.isDeleted">
+
+      <div
+        class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+      </div>
+
+      <span class="relative z-10 flex items-center justify-center gap-2">
+        <fa-icon [icon]="cartIcon" class="text-sm"></fa-icon>
+        <span class="hidden sm:inline">{{'PRODUCT_CARD.ADD_TO_CART' | translate}}</span>
+        <span class="sm:hidden">{{'PRODUCT_CARD.ADD' | translate}}</span>
+      </span>
+    </button>
+
+    <!-- Wishlist Button -->
+    <button class="wishlist-btn rounded-xl transition-all duration-300 py-2.5 px-3
+                   bg-purple-100 dark:bg-purple-900/30
+                   hover:bg-purple-200 dark:hover:bg-purple-900/50
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   flex items-center justify-center" type="button" (click)="toggleWishListItem(product()!.id!)"
+      [disabled]="product()?.isDeleted">
+      <fa-icon [icon]="heartIcon()!" class="text-lg transition-transform duration-300 group-hover:scale-110"
+        [class.text-red-500]="isInWishList()" [class.text-gray-400]="!isInWishList()"></fa-icon>
+    </button>
+
+    <!-- View Details Button -->
+    <button [routerLink]="['/product',product()!.id]" class="view-details-btn rounded-xl transition-all duration-300 py-2.5 px-3
+                   border-2 border-purple-300 dark:border-purple-700
+                   hover:bg-purple-50 dark:hover:bg-purple-900/20
+                   hover:border-purple-500 dark:hover:border-purple-500
+                   text-purple-600 dark:text-purple-400 font-semibold text-sm
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   flex items-center justify-center gap-1" [disabled]="product()?.isDeleted">
+      <fa-icon [icon]="eyeIcon" class="text-sm"></fa-icon>
+      <span class="hidden sm:inline">{{'PRODUCT_CARD.VIEW' | translate}}</span>
+    </button>
   </div>
+
+  <!-- Decorative corner -->
+  <div class="absolute top-0 end-0 w-16 h-16 overflow-hidden pointer-events-none">
+    <div
+      class="absolute top-0 end-0 w-8 h-8 bg-gradient-to-bl from-purple-400/20 to-transparent transform rotate-45 translate-x-4 -translate-y-4">
+    </div>
+  </div>
+
 </section>

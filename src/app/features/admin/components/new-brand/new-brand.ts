@@ -8,10 +8,13 @@ import { Subject, takeUntil } from 'rxjs';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../../shared/components/loader/loader';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faCheckCircle, faGem, faInfoCircle, faPaperPlane, faTag } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-brand',
-  imports: [TranslateModule, FormsModule, GoBackButton, AnimateOnScroll],
+  imports: [TranslateModule, FormsModule, GoBackButton, AnimateOnScroll, FaIconComponent],
   templateUrl: './new-brand.html',
   styleUrl: './new-brand.scss',
 })
@@ -25,6 +28,13 @@ export class NewBrand {
   translateService = inject(TranslateService);
   toastService = inject(ToastService);
   matDialog = inject(MatDialog);
+  brandIcon = faGem;
+  tagIcon = faTag;
+  infoIcon = faInfoCircle;
+  submitIcon = faPaperPlane;
+  checkCircleIcon = faCheckCircle;
+  router = inject(Router)
+
 
 
   createBrand() {
@@ -40,6 +50,8 @@ export class NewBrand {
           next: () => {
             loader.close();
             this.toastService.success(this.translateService.instant('SUCCESS_MESSAGES.BRAND_CREATED'));
+            this.brand.set('');
+            this.router.navigateByUrl('/')
           },
           error: () => {
             loader.close();

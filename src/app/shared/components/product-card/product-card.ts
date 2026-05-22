@@ -1,7 +1,7 @@
-import { Component, computed, inject, input, Signal, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as faHeartSolid, faStar, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faEye, faHeart, faHeart as faHeartSolid, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
@@ -13,6 +13,7 @@ import { AnimateOnScroll } from '../../animate-on-scroll';
 import { DeletedProductOverlay } from "../deleted-product-overlay/deleted-product-overlay";
 import { MatDialog } from '@angular/material/dialog';
 import { ToastService } from '../../services/toast.service';
+
 
 @Component({
   selector: 'app-product-card',
@@ -30,13 +31,22 @@ export class ProductCard {
   cartService = inject(CartService);
   wishListService = inject(WishlistService);
   destroy = new Subject<void>();
-  heartIcon!: Signal<IconDefinition>
   isInWishList = signal(false);
   translateService = inject(TranslateService)
 
   matDialog = inject(MatDialog);
   toastService = inject(ToastService);
   router = inject(Router);
+
+  // In your component
+  cartIcon = faCartShopping;
+  eyeIcon = faEye;
+
+  // For wishlist heart (filled vs outlined)
+  heartIcon = computed(() => {
+    return this.isInWishList() ? faHeart : faHeartRegular;
+  });
+
 
   ngOnInit(): void {
     this.wishListService.isProductInWishList(this.product()!.id!).pipe(takeUntil(this.destroy)).subscribe(isInWishList => {

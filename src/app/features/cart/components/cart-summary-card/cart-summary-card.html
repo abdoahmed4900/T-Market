@@ -1,28 +1,122 @@
 @let products = (cartProducts | async);
 @let price = (totalPrice | async);
-<div class="summary-section border col-span-1 size-fit w-full p-4 rounded-xl flex flex-col gap-5">
-  <h2 appAnimateOnScroll class="text-lg font-bold slideFromLeftAnimation">{{'CART.TOTAL_SUMMARY' | translate}}</h2>
+
+<div class="summary-section relative col-span-1 size-fit w-full p-6 rounded-2xl 
+            backdrop-blur-sm
+            border border-purple-100/50 dark:border-purple-800/30
+            shadow-xl hover:shadow-2xl hover:shadow-purple-500/10
+            transition-all duration-500 overflow-hidden">
+
+  <!-- Decorative top gradient bar -->
+  <div
+    class="absolute top-0 start-0 end-0 h-1.5 rounded-t-2xl bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500">
+  </div>
+
+  <!-- Decorative corner accent -->
+  <div class="absolute top-3 end-3 w-12 h-12 overflow-hidden pointer-events-none">
+    <div
+      class="absolute top-0 end-0 w-6 h-6 bg-gradient-to-bl from-purple-400/20 to-transparent transform rotate-45 translate-x-3 -translate-y-3">
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="flex items-center gap-3 mb-6 pb-3 border-b border-purple-100 dark:border-purple-800/30">
+    <div
+      class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+      <fa-icon [icon]="summaryIcon" class="text-white text-lg"></fa-icon>
+    </div>
+    <h2 class="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+      {{'CART.TOTAL_SUMMARY' | translate}}
+    </h2>
+  </div>
+
+  <!-- Summary Items -->
   @if (products) {
-  @for (item of products; track $index) {
-  <div appAnimateOnScroll class="summary-item flex flex-row justify-between slideFromLeftAnimation items-center"
-    [class.line-through]="item.isDeleted">
-    <p class="font-bold text-var[(--primary-text-color)]">{{item.name}}</p>
-    <p class="font-bold text-var[(--primary-text-color)]">{{(item.quantity! * item.price!) | currency}}</p>
+  <div class="summary-items flex flex-col gap-4 max-h-[400px] overflow-y-auto pe-2 custom-scrollbar">
+    @for (item of products; track $index; let i = $index) {
+    <div appAnimateOnScroll [once]="false" [style.animation-delay]="(i * 0.05) + 's'" class="summary-item group flex flex-row justify-between items-center p-3 rounded-xl
+                    hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-300"
+      [class.line-through]="item.isDeleted" [class.opacity-50]="item.isDeleted">
+
+      <div class="flex flex-col gap-1">
+        <p
+          class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+          {{item.name}}
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          {{'CART.QUANTITY' | translate}}: {{item.quantity}}
+        </p>
+      </div>
+
+      <p class="font-bold text-lg bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{(item.quantity! * item.price!) | currency}}
+      </p>
+    </div>
+    }
   </div>
-  }
-  <hr>
-  <h3 appAnimateOnScroll
-    class="text-[var(--primary-text-color)] slideFromLeftAnimation mt-8 self-end font-bold text-xl">{{'CART.TOTAL_PRICE'
-    | translate}} : {{price | currency}}</h3>
-  }
-  @else {
-  @for (item of [1,2,3]; track $index) {
-  <div class="summary-item-skeleton flex flex-row justify-between items-center">
-    <div class="skeleton-basic medium-text-skeleton"></div>
-    <div class="skeleton-basic small-text-skeleton"></div>
+
+  <!-- Divider with animation -->
+  <div class="relative my-6">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t border-purple-200 dark:border-purple-800/50"></div>
+    </div>
+    <div class="relative flex justify-center text-sm">
+      <span class="px-4 bg-white dark:bg-gray-800 text-purple-500 text-xs">✦</span>
+    </div>
   </div>
-  }
-  <hr>
-  <div class="skeleton-basic text-skeleton"></div>
+
+  <!-- Total Price -->
+  <div class="total-section mt-2 flex flex-col gap-2">
+    <div class="flex justify-between items-center">
+      <p class="text-gray-600 dark:text-gray-400">{{'CART.SUBTOTAL_TOTAL' | translate}}</p>
+      <p class="font-semibold text-gray-800 dark:text-gray-200">{{price | currency}}</p>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <p class="text-gray-600 dark:text-gray-400">{{'CART.SHIPPING' | translate}}</p>
+      <p class="font-semibold text-gray-800 dark:text-gray-200">{{'CART.FREE' | translate}}</p>
+    </div>
+
+    <div class="flex justify-between items-center pt-3 mt-2 border-t-2 border-purple-200 dark:border-purple-800/50">
+      <h3 class="font-bold text-xl text-gray-800 dark:text-white">
+        {{'CART.TOTAL_PRICE' | translate}}
+      </h3>
+      <h3 class="font-bold text-2xl bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{price | currency}}
+      </h3>
+    </div>
+  </div>
+
+  } @else {
+  <!-- Skeleton Loader -->
+  <div class="summary-items-skeleton flex flex-col gap-4">
+    @for (item of [1,2,3]; track $index) {
+    <div class="summary-item-skeleton flex flex-row justify-between items-center p-3">
+      <div class="flex flex-col gap-2">
+        <div class="skeleton-basic w-32 h-5 rounded-lg animate-pulse"></div>
+        <div class="skeleton-basic w-20 h-3 rounded-lg animate-pulse"></div>
+      </div>
+      <div class="skeleton-basic w-24 h-6 rounded-lg animate-pulse"></div>
+    </div>
+    }
+  </div>
+
+  <div class="relative my-6">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t border-purple-200 dark:border-purple-800/50"></div>
+    </div>
+  </div>
+
+  <div class="total-section-skeleton flex flex-col gap-3">
+    <div class="flex justify-between items-center">
+      <div class="skeleton-basic w-28 h-5 rounded-lg animate-pulse"></div>
+      <div class="skeleton-basic w-24 h-5 rounded-lg animate-pulse"></div>
+    </div>
+    <div class="skeleton-basic w-full h-px my-2 animate-pulse"></div>
+    <div class="flex justify-between items-center">
+      <div class="skeleton-basic w-32 h-7 rounded-lg animate-pulse"></div>
+      <div class="skeleton-basic w-28 h-7 rounded-lg animate-pulse"></div>
+    </div>
+  </div>
   }
 </div>

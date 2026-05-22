@@ -1,40 +1,53 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faExclamationTriangle, faInfoCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-confirm-dialog',
-  imports: [],
-  templateUrl: './confirm-dialog.html',
-  styleUrl: './confirm-dialog.scss'
+  selector: 'app-confirmation-dialog',
+  standalone: true,
+  imports: [CommonModule, TranslateModule, FaIconComponent, MatDialogModule],
+  templateUrl: 'confirm-dialog.html',
+  styleUrl: 'confirm-dialog.scss',
 })
-export class ConfirmDialog {
-  confirmFunction! : () => Promise<void>;
-  dialogTitle! : string;
+export class ConfirmationDialogComponent {
+  @Input() title: string = '';
+  @Input() message: string = '';
+  @Input() type: 'warning' | 'danger' | 'info' = 'warning';
+  @Input() confirmText: string = '';
+  @Input() cancelText: string = '';
 
-   constructor(
-    @Inject(MAT_DIALOG_DATA) data: any,
-    private dialogRef: MatDialogRef<ConfirmDialog>
-  ) {
-    this.dialogTitle = data.dialogTitle;
-    this.confirmFunction = data.confirmFunction;
-  }
+  @Output() confirm = new EventEmitter<boolean>();
+  @Output() cancel = new EventEmitter<boolean>();
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
 
-  onCancel() {
-    this.dialogRef.close();
-  }
-
-  async onConfirm() {
-    console.log(this.confirmFunction);
-    console.log(this.dialogTitle);
-    try {
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') return;
-      await this.confirmFunction();
-     } catch (err) {
-       console.error('Confirm function failed:', err);
-     } finally {
-       this.dialogRef.close();
+  getIcon() {
+    switch (this.type) {
+      case 'danger':
+        return faTrashAlt;
+      case 'info':
+        return faInfoCircle;
+      default:
+        return faExclamationTriangle;
     }
   }
 
+  onConfirm() {
+    this.confirm.emit(true);
+  }
+
+  onCancel() {
+    this.cancel.emit();
+  }
+
+  onOverlayClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('overlay')) {
+      this.onCancel();
+    }
+  }
 }

@@ -11,11 +11,25 @@ import { OrderItemSkeleton } from "./components/order-item-skeleton/order-item-s
 import { AnimateOnScroll } from "../../shared/animate-on-scroll";
 import { PaginationContainer } from "../../shared/components/pagination-container/pagination-container";
 
+import {
+  faBox,
+  faSort,
+  faCalendarAlt,
+  faFilter,
+  faCheckCircle,
+  faTruck,
+  faTimesCircle,
+  faClock,
+  faChevronDown,
+  faInbox
+} from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+
 @Component({
   selector: 'app-orders',
   providers: [PaginationService],
   standalone: true,
-  imports: [AsyncPipe, OrderItem, FormsModule, TranslateModule, FormsModule, CommonModule, OrderItemSkeleton, AnimateOnScroll, PaginationContainer],
+  imports: [AsyncPipe, OrderItem, FormsModule, TranslateModule, FormsModule, CommonModule, OrderItemSkeleton, AnimateOnScroll, PaginationContainer, FaIconComponent],
   templateUrl: './orders.html',
   styleUrl: './orders.scss'
 })
@@ -34,6 +48,33 @@ export class Orders {
   paginationService = inject(PaginationService);
   showedProducts = signal<Order[]>([]);
   isLoaded = signal(false);
+
+  // In your component
+  ordersIcon = faBox;
+  sortIcon = faSort;
+  calendarIcon = faCalendarAlt;
+  statusIcon = faFilter;
+  chevronDownIcon = faChevronDown;
+  emptyOrdersIcon = faInbox;
+
+  // Status options array
+  statusOptions = ['All', 'PENDING', 'CANCELLED', 'SHIPPED', 'DELIVERED'];
+
+  // Method to get status icon
+  getStatusIcon(status: string): any {
+    switch (status) {
+      case 'PENDING':
+        return faClock;
+      case 'CANCELLED':
+        return faTimesCircle;
+      case 'SHIPPED':
+        return faTruck;
+      case 'DELIVERED':
+        return faCheckCircle;
+      default:
+        return faFilter;
+    }
+  }
 
   ngOnInit(): void {
     this.applyFilters();
@@ -55,8 +96,7 @@ export class Orders {
         this.isLoaded.set(false);
         this.paginationService.reset();
         this.paginationService.productsPerPage.set(4);
-        this.paginationService.allProducts.set(orders);
-        this.paginationService.initializePagination();
+        this.paginationService.initializePagination(orders);
         this.showedProducts = this.paginationService.showedProducts;
         this.isLoaded.set(true);
       })

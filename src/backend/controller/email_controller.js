@@ -4,7 +4,6 @@ const nodemailer = require('nodemailer');
 exports.sendEmail = async (req, res) => {
     try {
     const { name, message, email } = req.body;
-    console.log('Request body:', req.body);
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -24,11 +23,9 @@ exports.sendEmail = async (req, res) => {
     };
     
     await transporter.verify();
-    console.log("✅ SMTP connection successful");
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.response);
-
+   
 
     // const resend = new Resend(process.env.RESEND_API_KEY);
     // await resend.emails.send({

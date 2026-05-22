@@ -1,7 +1,7 @@
 import { FirebaseErrorService } from '../../../../core/services/firebase.error.service';
 import { Component, inject, input, model, signal } from '@angular/core';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { ProductsService } from '../../../../shared/services/products.service';
 import { CartService } from '../../../../shared/services/cart.service';
 import { RouterLink } from "@angular/router";
@@ -12,10 +12,12 @@ import { DeletedProductOverlay } from "../../../../shared/components/deleted-pro
 import { ToastService } from '../../../../shared/services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CartProduct } from '../../cart.product';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cart-card',
-  imports: [CurrencyPipe, AsyncPipe, RouterLink, TranslateModule, AnimateOnScroll, DeletedProductOverlay],
+  imports: [CurrencyPipe, AsyncPipe, RouterLink, TranslateModule, AnimateOnScroll, DeletedProductOverlay, FaIconComponent],
   templateUrl: './cart-card.html',
   styleUrl: './cart-card.scss'
 })
@@ -37,15 +39,20 @@ export class CartCard {
 
   matDialog = inject(MatDialog);
   toastService = inject(ToastService);
+  deleteIcon = faTrashCan;
+  isLoaded = signal(false);
+
 
 
 
   ngOnInit(): void {
-    this.product = this.productService.getProductById(this.productId()!);
+    this.product = this.productService.getProductById(this.productId()!).pipe(
+      tap(() => {
+        this.isLoaded.set(true);
+      })
+    );
     this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((val) => {
       this.isLangEnglish.set(val.lang == 'en' ? true : false);
-      console.log(`islang : ${this.isLangEnglish()}`);
-
     })
   }
 

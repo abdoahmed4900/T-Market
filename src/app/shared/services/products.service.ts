@@ -1,5 +1,15 @@
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, debounceTime, from, map, Observable, of, switchMap, take, throwError } from "rxjs";
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  throwError,
+} from "rxjs";
 import { collection, collectionData, doc, Firestore, getDocs, query, where } from "@angular/fire/firestore";
 import { fireStoreCollections } from '../../../environments/environment';
 import { Product } from "../../core/interfaces/product";
@@ -31,20 +41,18 @@ export class ProductsService {
   firebaseErrorService = inject(FirebaseErrorService);
 
   getAllProducts(): Observable<Product[]> {
-    const q = query(this.productsCollectionRef);
-    return collectionData(q, { idField: 'id' }).pipe(
+    return collectionData(query(collection(this.firestore, fireStoreCollections.products))).pipe(
       map((products) => {
         return products as Product[];
       }),
-      take(1),
       catchError((err) => {
         this.firebaseErrorService.handleError(err);
         return of([])
       }),
     );
   }
-  getSellerProducts(): Observable<Product[]> {
-    const q = query(this.productsCollectionRef, where('sellerId', '==', localStorage.getItem('token')));
+  getSellerProducts(id: string = ''): Observable<Product[]> {
+    const q = query(this.productsCollectionRef, where('sellerId', '==', id == '' ? localStorage.getItem('token') : id));
     return collectionData(q, { idField: 'id' }).pipe(
       map((products) => {
         return products as Product[];
@@ -72,8 +80,7 @@ export class ProductsService {
     );
   }
   getProductsByBrand(brand: string) {
-    const q = query(this.productsCollectionRef, where('brand', '==', brand));
-    return collectionData(q, { idField: 'id' }).pipe(
+    return collectionData(query(collection(this.firestore, fireStoreCollections.products), where('brand', '==', brand))).pipe(
       map(products => products as Product[]),
       catchError((err) => {
         this.firebaseErrorService.handleError(err);
@@ -82,8 +89,7 @@ export class ProductsService {
     );
   }
   getProductsNumberByBrand(brand: string) {
-    const q = query(this.productsCollectionRef, where('brand', '==', brand));
-    return collectionData(q, { idField: 'id' }).pipe(
+    return collectionData(query(collection(this.firestore, fireStoreCollections.products), where('brand', '==', brand))).pipe(
       map(products => {
         return products.length;
       }),
@@ -132,10 +138,23 @@ export class ProductsService {
     )
   }
 
+  isProductDeleted(id: string) {
+    return this.getProductById(id).pipe(
+      map((product) => {
+        return product.isDeleted ?? false;
+      }),
+      catchError((err) => {
+        this.firebaseErrorService.handleError(err);
+        return of(false);
+      }),
+    )
+  }
+
   filterAllProducts(searchTerm: string, minPrice: number, maxPrice: number, category?: string, rating?: any): Observable<Product[]> {
-    return this.getAllProducts().pipe(
-      debounceTime(400),
-      map((products) => {
+    return collectionData(query(this.productsCollectionRef)).pipe(
+      debounceTime(300),
+      map((p) => {
+        let products = p as Product[];
         let filteredProducts = products;
         if (category != 'All') {
           filteredProducts = filteredProducts.filter((product) => product.category == category)

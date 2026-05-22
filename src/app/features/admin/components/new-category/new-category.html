@@ -1,14 +1,136 @@
-<main appAnimateOnScroll class="flex flex-col gap-10 w-full mt-10 slideFromLeftAnimation">
-  <header class="flex flex-col gap-10">
-    <app-go-back-button></app-go-back-button>
-    <h2 class="text-[20px] font-bold">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_TITLE' | translate}}</h2>
-    <p class="text-[17px]">{{'NEW_CATEGORY.CREATE_NEW_CATEGORY_SUBTITLE' | translate}}</p>
-  </header>
-  <form (submit)="createCategory()" class="flex-grow flex flex-col gap-5 border rounded-xl p-10">
-    <input id="category" type="text" class="p-4 rounded-xl border" [(ngModel)]="category"
-      [placeholder]="'NEW_CATEGORY.CREATE_NEW_CATEGORY_PLACEHOLDER' | translate" />
-    <button type="submit"
-      class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'NEW_CATEGORY.SUBMIT' |
-      translate}}</button>
-  </form>
+<main appAnimateOnScroll class="flex flex-col gap-10 w-full mt-10 pb-16">
+
+  <!-- Animated background elements -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div
+      class="absolute -top-40 -end-40 w-80 h-80 bg-purple-300/20 dark:bg-purple-600/10 rounded-full blur-3xl animate-float-slow"
+      appAnimateOnScroll>
+    </div>
+    <div
+      class="absolute -bottom-40 -start-40 w-80 h-80 bg-indigo-300/20 dark:bg-indigo-600/10 rounded-full blur-3xl animate-float-delayed"
+      appAnimateOnScroll>
+    </div>
+    <div
+      class="absolute top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-200/10 dark:bg-purple-500/5 rounded-full blur-3xl">
+    </div>
+  </div>
+
+  <div>
+
+    <!-- Header Section -->
+    <header class="flex flex-col gap-6 mb-6 relative animate-fade-in-up" appAnimateOnScroll>
+      <div class="flex items-center gap-4">
+        <div class="group">
+          <app-go-back-button></app-go-back-button>
+        </div>
+
+        <!-- Decorative line -->
+        <div class="hidden md:block h-px flex-1 bg-gradient-to-r from-purple-200 to-transparent dark:from-purple-800">
+        </div>
+      </div>
+
+      <!-- Title with gradient and icon -->
+      <div class="relative">
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <fa-icon [icon]="categoryIcon" class="text-white text-xl"></fa-icon>
+          </div>
+          <h2
+            class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            {{'NEW_CATEGORY.CREATE_NEW_CATEGORY_TITLE' | translate}}
+          </h2>
+        </div>
+        <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full"></div>
+        <p class="text-gray-600 dark:text-gray-300 mt-4 text-base md:text-lg ml-13">
+          {{'NEW_CATEGORY.CREATE_NEW_CATEGORY_SUBTITLE' | translate}}
+        </p>
+      </div>
+    </header>
+
+    <!-- Form Card -->
+    <form (submit)="createCategory()" class="flex-grow flex flex-col gap-6 rounded-2xl p-6 md:p-8 lg:p-10 mt-4
+                  bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm
+                  border border-purple-100/50 dark:border-purple-800/30
+                  shadow-xl shadow-purple-500/5 hover:shadow-2xl hover:shadow-purple-500/10
+                  transition-all duration-500">
+
+      <!-- Category Name Input -->
+      <div class="relative group">
+        <label for="category" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+          {{'NEW_CATEGORY.CATEGORY_NAME' | translate}}
+          <span class="text-red-500">*</span>
+        </label>
+
+        <div class="relative">
+          <!-- Input Icon -->
+          <div
+            class="absolute start-4 top-1/2 -translate-y-1/2 text-purple-400 transition-all duration-300 group-focus-within:scale-110 group-focus-within:text-purple-600">
+            <fa-icon [icon]="folderIcon" class="text-lg"></fa-icon>
+          </div>
+
+          <!-- Input Field -->
+          <input id="category" type="text" class="w-full ps-12 py-4 rounded-xl border-2 transition-all duration-300
+                        bg-white dark:bg-gray-900
+                        focus:outline-none focus:ring-2 focus:ring-purple-500/20
+                        text-gray-800 dark:text-gray-100 placeholder:text-gray-400"
+            [class.border-purple-500]="category().trim()" [class.border-purple-200]="!category().trim()"
+            [class.focus:border-purple-500]="true" [(ngModel)]="category"
+            [placeholder]="'NEW_CATEGORY.CREATE_NEW_CATEGORY_PLACEHOLDER' | translate" name="category" required />
+
+          <!-- Character counter -->
+          <div class="absolute end-4 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+            {{ category().length }}/50
+          </div>
+        </div>
+
+        <!-- Hint text -->
+        <div class="mt-2 text-xs text-gray-400 flex items-center gap-1">
+          <fa-icon [icon]="infoIcon" class="text-xs"></fa-icon>
+          <span>{{'NEW_CATEGORY.CATEGORY_NAME_HINT' | translate}}</span>
+        </div>
+      </div>
+
+      <!-- Preview Card (shows live preview of category) -->
+      @if (category().trim()) {
+      <div
+        class="mt-2 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border border-purple-100 dark:border-purple-800/30 animate-fade-in-up"
+        appAnimateOnScroll>
+        <p class="text-xs text-purple-600 dark:text-purple-400 font-semibold mb-2">{{'NEW_CATEGORY.PREVIEW' |
+          translate}}</p>
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
+            <fa-icon [icon]="categoryIcon" class="text-white text-sm"></fa-icon>
+          </div>
+          <span class="font-semibold text-gray-800 dark:text-gray-200">{{ category() }}</span>
+        </div>
+      </div>
+      }
+
+      <!-- Submit Button -->
+      <button type="submit" class="relative overflow-hidden group mt-4 rounded-xl w-full py-4
+                     bg-gradient-to-r from-purple-600 to-indigo-600
+                     hover:from-purple-700 hover:to-indigo-700
+                     transform hover:scale-[1.02] active:scale-[0.98]
+                     transition-all duration-300
+                     shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+        [disabled]="category().length < 3">
+
+        <!-- Button shine effect -->
+        <div
+          class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent">
+        </div>
+
+        <!-- Button content -->
+        <span class="relative z-10 flex items-center justify-center gap-2 text-white font-semibold">
+          <fa-icon [icon]="submitIcon"
+            class="text-lg group-hover:rotate-12 transition-transform duration-300"></fa-icon>
+          {{'NEW_CATEGORY.SUBMIT' | translate}}
+        </span>
+      </button>
+
+    </form>
+  </div>
 </main>

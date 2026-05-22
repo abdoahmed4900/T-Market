@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, linkedSignal, signal, ViewChild } from '@angular/core';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -21,53 +21,64 @@ export class Sidebar {
   themeIcon = linkedSignal(() => {
     return this.getTheme() == 'light' ? faMoon : faSun;
   });
+  logoutIcon = faArrowAltCircleLeft
   translateService = inject(TranslateService);
   destroy$ = new Subject<void>()
   toastService = inject(ToastService);
   @ViewChild('sidebarContent') sidebarContent!: ElementRef<HTMLElement>;
 
 
-  menu = linkedSignal(() => {
-    return {
-      admin: [
-        { label: 'SIDEBAR.ADD_NEW_CATEGORY', path: '/new-category' },
-        { label: 'SIDEBAR.ADD_NEW_BRAND', path: '/new-brand' },
-        { label: 'SIDEBAR.ADD_NEW_USER', path: '/add-new-user' },
-        { label: 'SIDEBAR.SUPPORTS', path: '/supports' },
-      ],
-      seller: [
-        { label: 'SIDEBAR.ADD_NEW_PRODUCT', path: '/new-product' },
-      ],
-    }[this.auth.userRole()!] ?? []
-  })
-  sidebarOpen = signal(true);
-  isLanguageEnglish = signal(localStorage.getItem('language') == 'en')
-  isLanguageArabic = signal(localStorage.getItem('language') == 'ar')
+  menu = linkedSignal<{ label: string, icon: string, path: string }[]>(() => {
+    const role = this.auth.userRole();
 
+    if (role === 'admin') {
+      return [
+        { label: 'SIDEBAR.ADD_NEW_CATEGORY', path: '/new-category', icon: '📂' },
+        { label: 'SIDEBAR.ADD_NEW_BRAND', path: '/new-brand', icon: '🔖' },
+        { label: 'SIDEBAR.ADD_NEW_USER', path: '/add-new-user', icon: '👤' },
+        { label: 'SIDEBAR.SUPPORTS', path: '/supports', icon: '💬' },
+      ];
+    }
 
+    if (role === 'seller') {
+      return [
+        { label: 'SIDEBAR.ADD_NEW_PRODUCT', path: '/new-product', icon: '✏️' },
+      ];
+    }
+
+    return [];
+  });
+
+  // Add active route highlighting
+  isActiveRoute(path: string): boolean {
+    return this.router.url === path;
+  }
+  sidebarOpen = signal(false);
+  isLanguageEnglish = signal(
+    (localStorage.getItem('language') ?? 'en') == 'en'
+  );
 
   ngOnInit(): void {
     this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((val) => {
-      this.isLanguageArabic.set(val.lang == 'ar')
-      this.isLanguageEnglish.set(val.lang == 'en')
-      if (this.isLanguageArabic()) {
-        this.sidebarContent.nativeElement.classList.remove('translate-x-[-280px]')
-        this.sidebarContent.nativeElement.classList.add('translate-x-[280px]')
-      } else if (this.isLanguageEnglish()) {
-        this.sidebarContent.nativeElement.classList.remove('translate-x-[280px]')
-        this.sidebarContent.nativeElement.classList.add('translate-x-[-280px]')
-      }
+      this.changeLanguage(val.lang);
     })
   }
 
   ngAfterViewInit(): void {
-    if (this.isLanguageEnglish()) {
-      this.sidebarContent.nativeElement.classList.add('translate-x-[-280px]')
-    } else if (this.isLanguageArabic()) {
-      this.sidebarContent.nativeElement.classList.add('translate-x-[280px]')
-    }
-    this.sidebarContent.nativeElement.classList.toggle('open')
+    this.setSideBarDirection();
+    this.toggleSidebar();
   }
+
+  private setSideBarDirection() {
+    if (this.isLanguageEnglish()) {
+      this.sidebarContent.nativeElement.classList.remove('translate-x-[280px]');
+      this.sidebarContent.nativeElement.classList.add('translate-x-[-280px]');
+    } else {
+      this.sidebarContent.nativeElement.classList.remove('translate-x-[-280px]');
+      this.sidebarContent.nativeElement.classList.add('translate-x-[280px]');
+    }
+  }
+
   toggleSidebar() {
     this.sidebarOpen.update(v => !v);
     this.sidebarContent.nativeElement.classList.toggle('open')
@@ -75,10 +86,10 @@ export class Sidebar {
   changeLanguage(language: string) {
     if (language != localStorage.getItem('language')) {
       document.getElementsByTagName('html')[0].setAttribute('dir', language == 'en' ? 'ltr' : 'rtl')
-      this.translateService.use(language);
+      this.translateService.use(language).pipe(takeUntil(this.destroy$)).subscribe();
       localStorage.setItem('language', language)
-      this.isLanguageArabic.update((val) => !val)
-      this.isLanguageEnglish.update((val) => !val)
+      this.isLanguageEnglish.set(language == 'en')
+      this.setSideBarDirection();
     }
   }
   getTheme() {

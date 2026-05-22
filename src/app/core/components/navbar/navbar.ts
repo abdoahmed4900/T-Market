@@ -10,7 +10,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { AuthService } from '../../services/auth.service';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -21,6 +20,20 @@ import { WebsiteTitle } from '../website-title/website-title';
 import { CartService } from '../../../shared/services/cart.service';
 import { Loader } from '../../../shared/components/loader/loader';
 import { ToastService } from '../../../shared/services/toast.service';
+import {
+  faStore,
+  faTag,
+  faHeadset,
+  faHeart,
+  faShoppingCart,
+  faBox,
+  faSun,
+  faMoon,
+  faSignInAlt,
+  faSignOutAlt,
+  faBars,
+  faTimes
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navbar',
@@ -37,19 +50,32 @@ export class Navbar implements OnInit {
     return this.getTheme() == 'light' ? faMoon : faSun;
   });
 
+
+  // In your component
+  categoriesIcon = faStore;
+  brandsIcon = faTag;
+  supportIcon = faHeadset;
+  heartIcon = faHeart;
+  cartIcon = faShoppingCart;
+  ordersIcon = faBox;
+  loginIcon = faSignInAlt;
+  logoutIcon = faSignOutAlt;
+  menuIcon = faBars;
+  closeIcon = faTimes;
+
   @ViewChild('box') box!: ElementRef;
 
   matDialog = inject(MatDialog);
 
   cartService = inject(CartService);
+  translate = inject(TranslateService)
 
-  totalCartProductsNumber$ = this.cartService.totalCartProductsNumber$;
-
-  cartNumber = signal<number>(0);
+  cartItemNumber = this.cartService.totalCartProductsNumber$.asObservable();
 
   translateService = inject(TranslateService);
   destroy$ = new Subject<void>();
   isBuyer = signal(false);
+  isNotBuyer = signal(false);
   isLoggedIn = signal(false);
   toastService = inject(ToastService);
   isNavBarOpen = signal(false);
@@ -60,8 +86,12 @@ export class Navbar implements OnInit {
 
   constructor() {
     effect(() => {
-      this.isBuyer = signal(this.authService.userRole() == 'buyer');
+      this.isBuyer = signal(this.authService.userRole() == 'buyer' || this.authService.userRole() == '');
+      this.isNotBuyer = signal(this.authService.userRole() == 'seller' || this.authService.userRole() == 'admin');
       this.isLoggedIn = this.authService.isLoggedIn;
+      if (this.isBuyer()) {
+        this.cartService.getAllCartProducts().pipe(takeUntil(this.destroy$)).subscribe()
+      }
     })
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -124,13 +154,42 @@ export class Navbar implements OnInit {
   }
 
   goToWishList() {
-    this.router.navigateByUrl('/wishlist');
+    if (this.isLoggedIn()) {
+      this.router.navigateByUrl('/wishlist');
+    } else {
+      this.toastService.error(this.translateService.instant('ERROR_MESSAGES.LOGIN', { page: this.translateService.instant('NAVBAR.WISHLIST') }))
+      this.router.navigateByUrl('/login')
+    }
+  }
+  goToSupport() {
+    if (this.isLoggedIn()) {
+      this.router.navigateByUrl('/support');
+    } else {
+      this.toastService.error(this.translateService.instant('ERROR_MESSAGES.LOGIN', { page: this.translateService.instant('NAVBAR.SUPPORT') }))
+      this.router.navigateByUrl('/login')
+    }
+  }
+  goToOrders() {
+    if (this.isLoggedIn()) {
+      this.router.navigateByUrl('/orders');
+    } else {
+      this.toastService.error(this.translateService.instant('ERROR_MESSAGES.LOGIN', { page: this.translateService.instant('NAVBAR.ORDERS') }))
+      this.router.navigateByUrl('/login')
+    }
+  }
+  goToCart() {
+    if (this.isLoggedIn()) {
+      this.router.navigateByUrl('/cart');
+    } else {
+      this.toastService.error(this.translateService.instant('ERROR_MESSAGES.LOGIN', { page: this.translateService.instant('NAVBAR.CART') }))
+      this.router.navigateByUrl('/login')
+    }
   }
 
   changeLanguage(language: string) {
     if (language != localStorage.getItem('language')) {
       document.getElementsByTagName('html')[0].setAttribute('dir', language == 'en' ? 'ltr' : 'rtl')
-      this.translateService.use(language);
+      this.translateService.use(language).pipe(takeUntil(this.destroy$)).subscribe();
       localStorage.setItem('language', language)
     }
   }

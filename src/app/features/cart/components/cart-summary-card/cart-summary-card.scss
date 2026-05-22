@@ -1,0 +1,30 @@
+// Custom scrollbar for summary items
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.5) rgba(139, 92, 246, 0.1);
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(139, 92, 246, 0.1);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.5);
+    border-radius: 10px;
+
+    &:hover {
+      background: rgba(139, 92, 246, 0.7);
+    }
+  }
+}
+
+// Line-through styling for deleted items
+.line-through {
+  text-decoration: line-through;
+  text-decoration-color: #ef4444;
+  text-decoration-thickness: 2px;
+}

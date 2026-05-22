@@ -1,89 +1,269 @@
-<main class="flex flex-col gap-5 mt-10">
-  <header class="flex flex-col gap-5">
-    <app-go-back-button></app-go-back-button>
-    <h2 class="text-[20px] font-bold">{{'ADD_NEW_USER.TITLE' | translate}}</h2>
-    <p class="text-[17px]">{{'ADD_NEW_USER.SUBTITLE' | translate}}</p>
-  </header>
-  <form [formGroup]="newUserForm" class="flex flex-col gap-4 mt-3" (ngSubmit)="addNewUser()">
-    <div class="email-container flex flex-col gap-1">
-      <label for="email" class="text-[14px] font-bold">{{'AUTH.LABELS.EMAIL' | translate}}</label>
-      <input class="outline-none border rounded-lg p-2" type="email" name="email" id="email"
-        placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" formControlName="email"
-        [class.border-[var(--error-text-color)].focus:border-[var(--error-text-color)]]="newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched"
-        [class.border-gray-300.focus:border-[var(--primary-color)]]="newUserForm.get('email')?.valid && newUserForm.get('email')?.touched" />
-      @if (newUserForm.get('email')?.hasError('required') && newUserForm.get('email')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'AUTH.LABELS.EMAIL' | translate } }}</span>
-      }
-      @if (newUserForm.get('email')?.hasError('email') && newUserForm.get('email')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field:
-        'AUTH.LABELS.EMAIL' | translate} }}</span>
-      }
-    </div>
-    <div class="user-name-container flex flex-col gap-1">
-      <label for="user-name" class="text-[14px] font-bold">{{'AUTH.LABELS.USERNAME' | translate}}</label>
-      <input class="outline-none border rounded-lg p-2" type="text" name="user-name" id="user-name"
-        placeholder="{{'AUTH.PLACEHOLDERS.USERNAME' | translate}}" formControlName="userName"
-        [class.border-[var(--error-text-color)].focus:border-[var(--error-text-color)]]="newUserForm.get('userName')?.invalid && newUserForm.get('userName')?.touched"
-        [class.border-gray-300.focus:border-[var(--primary-color)]]="newUserForm.get('userName')?.valid && newUserForm.get('userName')?.touched" />
-      @if (newUserForm.get('userName')?.hasError('required') && newUserForm.get('userName')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'AUTH.LABELS.USERNAME' | translate } }}</span>
-      }
-      @if (newUserForm.get('userName')?.hasError('minlength') && newUserForm.get('userName')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:3,
-        field: 'AUTH.LABELS.USERNAME' | translate} }}</span>
-      }
-    </div>
-    <label for="role" class="text-[14px] font-bold">{{'AUTH.LABELS.ROLE' | translate}}</label>
-    <mat-select class="border rounded-xl relative" name="role" id="role" [(value)]="selectedRole">
-      <mat-option value="Buyer">{{'AUTH.ROLES.BUYER' | translate}}</mat-option>
-      <mat-option value="Seller">{{'AUTH.ROLES.SELLER' | translate}}</mat-option>
-      <mat-option value="Admin">{{'AUTH.ROLES.ADMIN' | translate}}</mat-option>
-    </mat-select>
-    <div class="password-container flex flex-col gap-1 relative">
-      <label>{{'AUTH.LABELS.PASSWORD' | translate}}</label>
-      <div class="password-field relative">
-        <input class="outline-none border-2 w-full rounded-lg p-2 text-[var(--primary-text-color)]"
-          [type]="isPasswordVisible() ? 'text' : 'password'" name="password" id="password"
-          placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}" formControlName="password" [ngClass]="{
-                'border-[var(--error-text-color)]': newUserForm.get('password')?.invalid && newUserForm.get('password')?.touched,
-                'border-gray-300': newUserForm.get('password')?.valid || !newUserForm.get('password')?.touched,
-                'focus:border-[var(--primary-color)]': (newUserForm.get('password')?.valid && newUserForm.get('password')?.touched),
-                'focus:border-[var(--error-text-color)]': !(newUserForm.get('password')?.invalid && newUserForm.get('password')?.touched),
-              }" />
-        <app-password-visibility-icon (visibilityChanged)="setPasswordVisiblity($event)"></app-password-visibility-icon>
+<main class="min-h-screen">
+  <div class="container w-full px-4 py-8">
+
+    <!-- Animated header section -->
+    <header class="flex flex-col gap-5 mb-8 relative">
+      <!-- Decorative blur elements -->
+      <div class="absolute top-20 -right-20 w-64 h-64 bg-purple-300/30 rounded-full blur-3xl pointer-events-none">
       </div>
-      @if (newUserForm.get('password')?.hasError('required') && newUserForm.get('password')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'AUTH.LABELS.PASSWORD' | translate } }}</span>
-      }
-      @if (newUserForm.get('password')?.hasError('minlength') && newUserForm.get('password')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {
-        length:6,field: 'AUTH.LABELS.PASSWORD' | translate} }}</span>
-      }
-    </div>
-    <div class="confirm-password-container flex flex-col gap-1">
-      <label>{{'AUTH.LABELS.CONFIRM_PASSWORD' | translate}}</label>
-      <input class="outline-none border rounded-lg p-2" [type]="isPasswordVisible() ? 'text' : 'password'"
-        name="confirm-password" id="confirm-password" formControlName="confirmPassword"
-        placeholder="{{'AUTH.PLACEHOLDERS.CONFIRM_PASSWORD' | translate}}">
-      @if (newUserForm.get('confirmPassword')?.hasError('required') && newUserForm.get('confirmPassword')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'AUTH.LABELS.CONFIRM_PASSWORD' | translate } }}</span>
-      }
-      @if (newUserForm.get('confirmPassword')?.hasError('minlength') && newUserForm.get('confirmPassword')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {
-        length:6,field: 'AUTH.LABELS.CONFIRM_PASSWORD' | translate} }}</span>
-      }
-      @if (newUserForm.get('confirmPassword')?.hasError('mismatch') && newUserForm.get('confirmPassword')?.touched) {
-      <span
-        class="text-[var(--error-text-color)] font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.PASSWORDS_DO_NOT_MATCH' |
-        translate}}</span>
-      }
-    </div>
-    <button type="submit"
-      class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4">{{'ADD_NEW_USER.SUBMIT' |
-      translate}}</button>
-  </form>
+      <div class="absolute bottom-20 -left-20 w-64 h-64 bg-indigo-300/30 rounded-full blur-3xl pointer-events-none">
+      </div>
+
+      <app-go-back-button class="relative z-10"></app-go-back-button>
+
+      <div class="relative z-10">
+        <h2
+          class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent animate-fade-in"
+          appAnimateOnScroll [once]="false">
+          {{'ADD_NEW_USER.TITLE' | translate}}
+        </h2>
+        <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full mt-3 animate-slide-in"
+          appAnimateOnScroll [once]="false"></div>
+        <p class="text-gray-600 dark:text-gray-300 mt-4 text-lg animate-fade-in-up" appAnimateOnScroll [once]="false">
+          {{'ADD_NEW_USER.SUBTITLE' | translate}}
+        </p>
+      </div>
+    </header>
+
+    <!-- Modern card form -->
+    <form [formGroup]="newUserForm" class="flex flex-col gap-6 mt-5 relative" (ngSubmit)="addNewUser()">
+
+      <!-- Email Field -->
+      <div class="form-group animate-fade-in-up" appAnimateOnScroll [once]="false" style="animation-delay: 0.1s">
+        <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+          {{'AUTH.LABELS.EMAIL' | translate}}
+          <span class="text-red-500">*</span>
+        </label>
+        <div class="relative">
+          <div class="absolute start-5 top-1/2 -translate-y-1/2 text-purple-400">
+            <fa-icon [icon]="envelopeIcon"></fa-icon>
+          </div>
+          <input
+            class="w-full ps-10 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20 bg-white dark:bg-gray-800"
+            [class.border-red-500]="newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched"
+            [class.border-gray-200]="newUserForm.get('email')?.valid || !newUserForm.get('email')?.touched"
+            [class.focus:border-purple-500]="newUserForm.get('email')?.valid || !newUserForm.get('email')?.touched"
+            [class.focus:border-red-500]="newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched"
+            type="email" name="email" id="email" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}"
+            formControlName="email" />
+        </div>
+
+        <!-- Validation errors with animations -->
+        @if (newUserForm.get('email')?.invalid && newUserForm.get('email')?.touched) {
+        <div class="animate-slide-down mt-2" appAnimateOnScroll [once]="false">
+          @if (newUserForm.get('email')?.hasError('required')) {
+          <span class="flex items-center gap-2 text-red-500 text-xs font-medium">
+            <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+            {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.EMAIL' | translate} }}
+          </span>
+          }
+          @if (newUserForm.get('email')?.hasError('email')) {
+          <span class="flex items-center gap-2 text-red-500 text-xs font-medium">
+            <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+            {{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'AUTH.LABELS.EMAIL' | translate} }}
+          </span>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Username Field -->
+      <div class="form-group animate-fade-in-up" appAnimateOnScroll [once]="false" style="animation-delay: 0.2s">
+        <label for="user-name" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+          {{'AUTH.LABELS.USERNAME' | translate}}
+          <span class="text-red-500">*</span>
+        </label>
+        <div class="relative">
+          <div class="absolute start-5 top-1/2 -translate-y-1/2 text-purple-400">
+            <fa-icon [icon]="userIcon"></fa-icon>
+          </div>
+          <input
+            class="w-full ps-10 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20 bg-white dark:bg-gray-800"
+            [class.border-red-500]="newUserForm.get('userName')?.invalid && newUserForm.get('userName')?.touched"
+            [class.border-gray-200]="newUserForm.get('userName')?.valid || !newUserForm.get('userName')?.touched"
+            [class.focus:border-purple-500]="newUserForm.get('userName')?.valid || !newUserForm.get('userName')?.touched"
+            [class.focus:border-red-500]="newUserForm.get('userName')?.invalid && newUserForm.get('userName')?.touched"
+            type="text" name="user-name" id="user-name" placeholder="{{'AUTH.PLACEHOLDERS.USERNAME' | translate}}"
+            formControlName="userName" />
+        </div>
+
+        @if (newUserForm.get('userName')?.invalid && newUserForm.get('userName')?.touched) {
+        <div class="animate-slide-down mt-2" appAnimateOnScroll [once]="false">
+          @if (newUserForm.get('userName')?.hasError('required')) {
+          <span class="flex items-center gap-2 text-red-500 text-xs font-medium">
+            <fa-icon [icon]="warningIcon"></fa-icon>
+            {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.USERNAME' | translate} }}
+          </span>
+          }
+          @if (newUserForm.get('userName')?.hasError('minlength')) {
+          <span class="flex items-center gap-2 text-red-500 text-xs font-medium">
+            <fa-icon [icon]="warningIcon"></fa-icon>
+            {{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 3, field: 'AUTH.LABELS.USERNAME' | translate} }}
+          </span>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Role Selection -->
+      <div class="form-group animate-fade-in-up" appAnimateOnScroll [once]="false" style="animation-delay: 0.3s">
+        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+          {{'AUTH.LABELS.ROLE' | translate}}
+          <span class="text-red-500">*</span>
+        </label>
+
+        <!-- Icon wrapper around mat-select -->
+        <div class="relative">
+          <div class="absolute start-5 top-1/2 -translate-y-1/2 text-purple-400 z-10 pointer-events-none">
+            <fa-icon [icon]="roleIcon"></fa-icon>
+          </div>
+          <mat-select
+            class="w-full rounded-xl border-2 border-gray-200 focus:border-purple-500 transition-all duration-300 ps-8"
+            [ngClass]="{'border-purple-500 shadow-lg shadow-purple-500/20': selectedRole}" panelClass="purple-dropdown"
+            name="role" id="role" [(value)]="selectedRole">
+            <mat-option value="Buyer">
+              <div class="flex items-center gap-2">
+                <fa-icon [icon]="userIcon" class="text-purple-500"></fa-icon>
+                <span>{{'AUTH.ROLES.BUYER' | translate}}</span>
+              </div>
+            </mat-option>
+            <mat-option value="Seller">
+              <div class="flex items-center gap-2">
+                <fa-icon [icon]="storeIcon" class="text-purple-500"></fa-icon>
+                <span>{{'AUTH.ROLES.SELLER' | translate}}</span>
+              </div>
+            </mat-option>
+            <mat-option value="Admin">
+              <div class="flex items-center gap-2">
+                <fa-icon [icon]="adminIcon" class="text-purple-500"></fa-icon>
+                <span>{{'AUTH.ROLES.ADMIN' | translate}}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group animate-fade-in-up" appAnimateOnScroll [once]="false" style="animation-delay: 0.4s">
+        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+          {{'AUTH.LABELS.PASSWORD' | translate}}
+          <span class="text-red-500">*</span>
+        </label>
+        <div class="password-field relative">
+          <div class="absolute start-5 top-1/2 -translate-y-1/2 text-purple-400 z-10">
+            <fa-icon [icon]="lockIcon"></fa-icon>
+          </div>
+          <input
+            class="w-full ps-10 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20 bg-white dark:bg-gray-800"
+            [type]="isPasswordVisible() ? 'text' : 'password'" name="password" id="password"
+            placeholder="{{'AUTH.PLACEHOLDERS.PASSWORD' | translate}}" formControlName="password" [ngClass]="{
+                        'border-[var(--error-text-color)]': newUserForm.get('password')?.invalid && newUserForm.get('password')?.touched,
+                        'border-gray-300': newUserForm.get('password')?.valid || !newUserForm.get('password')?.touched,
+                        'focus:border-[var(--primary-color)]': (newUserForm.get('password')?.valid && newUserForm.get('password')?.touched),
+                        'focus:border-[var(--error-text-color)]': !(newUserForm.get('password')?.invalid && newUserForm.get('password')?.touched),
+                      }" />
+          <app-password-visibility-icon
+            (visibilityChanged)="setPasswordVisiblity($event)"></app-password-visibility-icon>
+        </div>
+
+        <!-- Password strength indicator -->
+        <div class="mt-2 animate-slide-down" appAnimateOnScroll [once]="false">
+          <div class="flex gap-1 h-1">
+            <!-- Length check -->
+            <div class="flex-1 h-full rounded-full transition-all duration-300"
+              [class.bg-green-500]="passwordChecks().minLength" [class.bg-red-500]="!passwordChecks().minLength">
+            </div>
+
+            <!-- Uppercase check - FIXED: was checking minLength incorrectly -->
+            <div class="flex-1 h-full rounded-full transition-all duration-300"
+              [class.bg-green-500]="passwordChecks().hasUpperCase" [class.bg-red-500]="!passwordChecks().hasUpperCase">
+            </div>
+
+            <!-- Number check - FIXED: was checking minLength incorrectly -->
+            <div class="flex-1 h-full rounded-full transition-all duration-300"
+              [class.bg-green-500]="passwordChecks().hasNumber" [class.bg-red-500]="!passwordChecks().hasNumber">
+            </div>
+
+            <!-- Special character check - FIXED: was checking minLength incorrectly -->
+            <div class="flex-1 h-full rounded-full transition-all duration-300"
+              [class.bg-green-500]="passwordChecks().hasSpecialChar"
+              [class.bg-red-500]="!passwordChecks().hasSpecialChar">
+            </div>
+          </div>
+          <span class="text-xs text-gray-500 mt-1">{{'ADD_NEW_USER.STRONG_PASSWORD' | translate}}</span>
+        </div>
+
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group animate-fade-in-up" appAnimateOnScroll [once]="false" style="animation-delay: 0.5s">
+        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+          {{'AUTH.LABELS.CONFIRM_PASSWORD' | translate}}
+          <span class="text-red-500">*</span>
+        </label>
+        <div class="relative">
+          <div class="absolute start-5 top-1/2 -translate-y-1/2 text-purple-400">
+            <fa-icon [icon]="lockIcon"></fa-icon>
+          </div>
+          <input
+            class="w-full ps-10 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20 bg-white dark:bg-gray-800"
+            [class.border-red-500]="newUserForm.get('confirmPassword')?.invalid && newUserForm.get('confirmPassword')?.touched"
+            [class.border-gray-200]="newUserForm.get('confirmPassword')?.valid || !newUserForm.get('confirmPassword')?.touched"
+            [class.focus:border-purple-500]="newUserForm.get('confirmPassword')?.valid || !newUserForm.get('confirmPassword')?.touched"
+            [class.focus:border-red-500]="newUserForm.get('confirmPassword')?.invalid && newUserForm.get('confirmPassword')?.touched"
+            [type]="isPasswordVisible() ? 'text' : 'password'" name="confirm-password" id="confirm-password"
+            formControlName="confirmPassword" placeholder="{{'AUTH.PLACEHOLDERS.CONFIRM_PASSWORD' | translate}}" />
+        </div>
+
+        <!-- Password match success indicator -->
+        @if (newUserForm.get('confirmPassword')?.valid && newUserForm.get('confirmPassword')?.value &&
+        newUserForm.get('password')?.value === newUserForm.get('confirmPassword')?.value) {
+        <div class="animate-slide-down mt-2" appAnimateOnScroll [once]="false">
+          <span class="flex items-center gap-2 text-green-500 text-xs font-medium">
+            <fa-icon [icon]="checkIcon"></fa-icon>
+            Passwords match!
+          </span>
+        </div>
+        }
+
+        @if (newUserForm.get('confirmPassword')?.invalid && newUserForm.get('confirmPassword')?.touched) {
+        <div class="animate-slide-down mt-2" appAnimateOnScroll [once]="false">
+          @if (newUserForm.get('confirmPassword')?.hasError('required')) {
+          <span class="flex items-center gap-2 text-red-500 text-xs font-medium">
+            <fa-icon [icon]="warningIcon"></fa-icon>
+            {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'AUTH.LABELS.CONFIRM_PASSWORD' | translate} }}
+          </span>
+          }
+          @if (newUserForm.get('confirmPassword')?.hasError('minlength')) {
+          <span class="flex items-center gap-2 text-red-500 text-xs font-medium">
+            <fa-icon [icon]="warningIcon"></fa-icon>
+            {{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 6, field: 'AUTH.LABELS.CONFIRM_PASSWORD' | translate}
+            }}
+          </span>
+          }
+          @if (newUserForm.get('confirmPassword')?.hasError('mismatch')) {
+          <span class="flex items-center gap-2 text-red-500 text-xs font-medium">
+            <fa-icon [icon]="warningIcon"></fa-icon>
+            {{'AUTH.VALIDATIONS.PASSWORDS_DO_NOT_MATCH' | translate}}
+          </span>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="relative overflow-hidden group mt-4 rounded-xl w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+        [disabled]="newUserForm.invalid">
+        <span class="relative z-10 flex items-center justify-center gap-2 text-white font-semibold">
+          <fa-icon [icon]="submitIcon" class="text-lg group-hover:rotate-12 transition-transform"></fa-icon>
+          {{'ADD_NEW_USER.SUBMIT' | translate}}
+        </span>
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        </div>
+      </button>
+
+    </form>
+  </div>
 </main>

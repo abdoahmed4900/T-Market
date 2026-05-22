@@ -1,1 +1,15 @@
-<button class="rounded-xl size-fit hover:bg-purple-500 bg-[var(--primary-color)] p-4" type="button" (click)="goBack()"> <fa-icon [icon]="icon()"></fa-icon> {{'GO_BACK' | translate}}</button>
+<button type="button" class="group relative overflow-hidden flex items-center gap-3 px-6 py-3 rounded-xl
+               bg-gradient-to-r from-purple-600 to-indigo-600
+               hover:from-purple-700 hover:to-indigo-700
+               transform hover:scale-[1.02] active:scale-[0.98]
+               transition-all duration-300
+               shadow-lg hover:shadow-xl hover:shadow-purple-500/40
+               text-white font-bold text-base" (click)="goBack()">
+
+  <div
+    class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+  </div>
+
+  <fa-icon [icon]="icon()" class="text-base group-hover:-translate-x-1.5 transition-transform duration-300"></fa-icon>
+  <span class="relative z-10">{{'GO_BACK' | translate}}</span>
+</button>

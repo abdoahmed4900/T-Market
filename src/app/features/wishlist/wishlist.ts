@@ -3,13 +3,20 @@ import { Subject, takeUntil } from 'rxjs';
 import { Product } from '../../core/interfaces/product';
 import { WishlistService } from './wishlist.service';
 import { CurrencyPipe } from '@angular/common';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AnimateOnScroll } from "../../shared/animate-on-scroll";
 import { DeletedProductOverlay } from "../../shared/components/deleted-product-overlay/deleted-product-overlay";
 import { ToastService } from '../../shared/services/toast.service';
 import { RouterLink } from "@angular/router";
+import {
+  faHeart,
+  faShoppingBag,
+  faBoxOpen,
+  faBox,
+  faCheckCircle,
+  faExclamationTriangle
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-wishlist',
@@ -25,6 +32,15 @@ export class Wishlist {
   destroy$ = new Subject<void>();
   translateService = inject(TranslateService);
   toastService = inject(ToastService);
+
+
+  // In your component
+  wishlistIcon = faHeart;
+  itemsIcon = faBox;
+  emptyWishlistIcon = faBoxOpen;
+  shopIcon = faShoppingBag;
+  checkIcon = faCheckCircle;
+  warningIcon = faExclamationTriangle;
   ngOnInit(): void {
     this.wishListService.getWishList().pipe(takeUntil(this.destroy$)).subscribe(
       {

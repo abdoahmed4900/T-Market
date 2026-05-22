@@ -5,8 +5,7 @@
   }
   <section appAnimateOnScroll id="order-card"
     class="order-card flex items-start rounded-xl border gap-4 flex-col lg:flex-row justify-between transition hover:translate-y-[-5px] duration-300 ease-in-out slideFromTopAnimation">
-    <img loading="lazy" [src]="p.imageUrls![0]" alt="product-image"
-      class="rounded-4xl p-4 md:h-[250px] h-70 lg:w-70 w-full">
+    <img [src]="p.imageUrls![0]" alt="product-image" class="rounded-[33px] p-4 md:h-[250px] h-70 lg:w-60 w-full">
     <div class="details flex flex-col justify-between w-full flex-wrap gap-4 p-4 items-start">
       <section class="card-text flex flex-col items-start gap-4">
         <h2 class="text-xl font-bold">{{orderItem()?.name}}</h2>

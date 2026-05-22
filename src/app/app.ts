@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { CartService } from './shared/services/cart.service';
@@ -12,10 +12,11 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { ProductsService } from './shared/services/products.service';
 import { TitleService } from './shared/services/title.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Footer, FontAwesomeModule, Navbar,],
+  imports: [RouterOutlet, Footer, FontAwesomeModule, Navbar, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -28,15 +29,13 @@ export class App {
   private destroy$ = new Subject<void>();
   admin = inject(AdminService);
   productService = inject(ProductsService);
+  router = inject(Router);
   titleService = inject(TitleService);
+
 
 
   ngOnInit() {
     this.getLocale();
-    let isLoggedIn = this.authService.isLoggedIn();
-    if (isLoggedIn) {
-      this.cartService.getAllCartProducts().pipe(takeUntil(this.destroy$)).subscribe()
-    }
     this.productService.readAllCategories().pipe(takeUntil(this.destroy$)).subscribe();
     this.productService.readAllBrands().pipe(takeUntil(this.destroy$)).subscribe();
   }

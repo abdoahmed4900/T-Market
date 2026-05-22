@@ -1,0 +1,57 @@
+// Animation Classes
+.animate-fade-in {
+  opacity: 0;
+}
+
+.animate-fade-in.visible {
+  opacity: 1;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+}
+
+.animate-fade-in-up.visible {
+  opacity: 1;
+  animation: fadeIn 0.6s ease-out;
+}
+
+
+.delay-150 {
+  animation-delay: 150ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+// Grid stagger effect
+.all-products>* {
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.all-products>*:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.all-products>*:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.all-products>*:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.all-products>*:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.all-products>*:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.all-products>*:nth-child(6) {
+  animation-delay: 0.3s;
+}

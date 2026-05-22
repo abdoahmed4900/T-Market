@@ -11,10 +11,23 @@ import { numericLengthValidator } from '../../../../../shared/methods';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastService } from '../../../../../shared/services/toast.service';
 import { Loader } from '../../../../../shared/components/loader/loader';
+import {
+  faPen,
+  faTag,
+  faDollarSign,
+  faCube,
+  faImage,
+  faCloudUpload,
+  faExclamationTriangle,
+  faEdit,
+  faAlignLeft,
+  faComment
+} from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'app-update-product',
-  imports: [ReactiveFormsModule, TranslateModule, GoBackButton, AnimateOnScroll],
+  imports: [ReactiveFormsModule, TranslateModule, GoBackButton, AnimateOnScroll, FaIconComponent],
   templateUrl: './update-product.html',
   styleUrl: './update-product.scss',
 })
@@ -28,6 +41,18 @@ export class UpdateProduct {
   isLoaded = signal(false);
   imagePreviews = signal<string[]>([]);
   selectedFiles = signal<File[]>([]);
+
+  // In your component
+  updateIcon = faPen;
+  nameIcon = faTag;
+  editIcon = faEdit;
+  descriptionIcon = faAlignLeft;
+  messageIcon = faComment;
+  priceIcon = faDollarSign;
+  stockIcon = faCube;
+  imageIcon = faImage;
+  uploadIcon = faCloudUpload;
+  warningIcon = faExclamationTriangle;
 
   productFormGroup = this.fb.group({
     name: ['', [Validators.minLength(3), Validators.required]],
@@ -89,9 +114,6 @@ export class UpdateProduct {
         loader.close();
       },
     });
-
-    console.log('updat3d');
-
   }
 
   async uploadImages() {
@@ -121,8 +143,6 @@ export class UpdateProduct {
       }
       this.imagePreviews.set(selectedImagesPreviews)
       this.selectedFiles.set(selectedImages);
-      console.log(`selected files : ${this.selectedFiles()}`);
-
     }
   }
 

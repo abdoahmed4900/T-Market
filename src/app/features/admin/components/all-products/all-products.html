@@ -1,25 +1,103 @@
 <main>
-  @if (isProductsLoaded()) {
-  @if(showedProducts()!.length > 0){
-  <section class="grid gap-4 all-products md:grid-cols-2">
-    @for (item of showedProducts(); track item.id;) {
-    <div class="relative slideFromLeftAnimation border rounded-xl" appAnimateOnScroll [once]="false">
-      @if (item.isDeleted) {
-      <app-deleted-product-overlay></app-deleted-product-overlay>
+  <div class="mx-auto py-8">
+    <!-- Header with stats -->
+    <div class="my-8">
+      <div class="flex flex-col animate-fade-in-up" appAnimateOnScroll [once]="false">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <fa-icon [icon]="plusIcon" class="text-white text-xl"></fa-icon>
+          </div>
+          <h2
+            class="text-2xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            {{'ADMIN.PRODUCTS_TITLE' | translate}}
+          </h2>
+        </div>
+        <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full ms-15"></div>
+      </div>
+    </div>
+
+    @if (isProductsLoaded()) {
+    @if (showedProducts()!.length > 0) {
+
+
+
+    <!-- Products Grid -->
+    <section class="grid gap-6 all-products md:grid-cols-2">
+      @for (item of showedProducts(); track item.id) {
+      <div class="relative group animate-fade-in-up cursor-pointer" appAnimateOnScroll [once]="false" [once]="false"
+        [style.animation-delay]="(item.id * 0.05) + 's'">
+
+        <!-- Hover glow effect -->
+        <div
+          class="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-300 blur-lg">
+        </div>
+
+        <!-- Product Card -->
+        <div
+          class="relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+
+          @if (item.isDeleted) {
+          <app-deleted-product-overlay></app-deleted-product-overlay>
+          }
+
+          <app-dashboard-product [product]="item"></app-dashboard-product>
+
+          <!-- Decorative corner accent -->
+          <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden pointer-events-none">
+            <div
+              class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-purple-400/20 to-transparent transform rotate-45 translate-x-4 -translate-y-4">
+            </div>
+          </div>
+        </div>
+      </div>
       }
-      <app-dashboard-product [product]="item"></app-dashboard-product>
+    </section>
+
+    <!-- Pagination with styling -->
+    <div class="mt-10 animate-fade-in-up" appAnimateOnScroll [once]="false" style="animation-delay: 0.3s">
+      <app-pagination-container></app-pagination-container>
+    </div>
+
+    } @else {
+
+    <!-- Fancy Empty State -->
+    <div class="empty-products mx-auto flex flex-col gap-6 w-full justify-center items-center min-h-[60vh]">
+
+      <!-- Animated empty state illustration -->
+      <div class="relative animate-float" appAnimateOnScroll [once]="false">
+        <div
+          class="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30 flex items-center justify-center">
+          <img class="w-32 h-32 md:w-40 md:h-40 object-contain opacity-80"
+            src="https://cdn-icons-png.flaticon.com/512/4076/4076573.png" alt="no products added yet"
+            onerror="this.src='https://cdn-icons-png.flaticon.com/512/4076/4076573.png'">
+        </div>
+
+        <!-- Floating decorative dots -->
+        <div class="absolute top-2 right-2 w-4 h-4 bg-purple-400 rounded-full animate-pulse" appAnimateOnScroll
+          [once]="false"></div>
+        <div class="absolute bottom-2 left-2 w-3 h-3 bg-indigo-400 rounded-full animate-pulse delay-150"
+          appAnimateOnScroll [once]="false"></div>
+        <div class="absolute top-1/2 right-4 w-2 h-2 bg-pink-400 rounded-full animate-pulse delay-300"
+          appAnimateOnScroll [once]="false"></div>
+      </div>
+
+      <!-- Empty state text -->
+      <div class="text-center">
+        <h3 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text ">
+          {{'ADMIN.NO_PRODUCTS_YET' | translate}}
+        </h3>
+      </div>
+
+
+
     </div>
     }
-  </section>
-  <app-pagination-container></app-pagination-container>
-  }@else {
-  <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
-    <img class="w-[200px] h-[200px]" src="https://www.svgrepo.com/show/17356/empty-cart.svg"
-      alt="no products added yet">
-    <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_PRODUCTS' | translate}}</p>
+
+    } @else {
+    <!-- Enhanced skeleton loader -->
+    <app-dashboard-products-skeleton></app-dashboard-products-skeleton>
+    }
+
   </div>
-  }
-  }@else {
-  <app-dashboard-products-skeleton></app-dashboard-products-skeleton>
-  }
 </main>

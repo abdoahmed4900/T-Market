@@ -1,9 +1,8 @@
 import { FirebaseErrorService } from '../../core/services/firebase.error.service';
-import { Component, ElementRef, inject, signal, ViewChild, viewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, signal, ViewChild, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faPaperPlane, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -18,6 +17,16 @@ import { ProductDetailsSkeleton } from "./components/product-details-skeleton/pr
 import { AnimateOnScroll } from "../../shared/animate-on-scroll";
 import { ToastService } from '../../shared/services/toast.service';
 import { ImageZoomDirective } from "./image-zoom-directive";
+import {
+  faStar,
+  faComment,
+  faShoppingCart,
+  faArrowRight,
+  faArrowLeft,
+  faPaperPlane,
+  faSearchPlus
+} from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-product-details',
@@ -35,17 +44,23 @@ export class ProductDetails {
 
   cartNumber = 1;
 
-  root = document.getElementsByTagName('html')[0];
+  rootElement = document.getElementsByTagName('html')[0];
 
   starIcon = faStar;
+  commentIcon = faComment;
+  cartIcon = faShoppingCart;
+  sendIcon = faPaperPlane;
+  zoomIcon = faSearchPlus;
+
+  // Dynamic arrow icons based on language
+  prevArrowIcon = faArrowLeft;
+  nextArrowIcon = faArrowRight;
 
   currentImageIndex = 1;
 
   imagesNumber = 0;
 
   isProductLoaded = signal<boolean>(false);
-
-  commentIcon = faPaperPlane;
 
   reviewService = inject(ReviewService);
   firebaseErrorService = inject(FirebaseErrorService);
@@ -68,6 +83,28 @@ export class ProductDetails {
   translateService = inject(TranslateService);
   toastService = inject(ToastService);
   router = inject(Router);
+  auth = inject(AuthService);
+  isNormalUser = signal(this.auth.userRole() == 'buyer' || this.auth.userRole() == '')
+
+  isBuyer = signal(this.auth.userRole() == 'buyer')
+
+  constructor(private translate: TranslateService, private root: ElementRef) {
+    // Update arrows when language changes
+    this.updateArrows();
+    this.translate.onLangChange.subscribe(() => {
+      this.updateArrows();
+    });
+    effect(() => {
+      this.isBuyer.set(this.auth.userRole() == 'buyer');
+      this.isNormalUser.set(this.auth.userRole() == 'buyer' || this.auth.userRole() == '');
+    })
+  }
+
+  private updateArrows(): void {
+    const isRTL = this.translate.currentLang === 'ar';
+    this.prevArrowIcon = isRTL ? faArrowRight : faArrowLeft;
+    this.nextArrowIcon = isRTL ? faArrowLeft : faArrowRight;
+  }
 
   ngOnInit() {
     this.getProductId();
@@ -153,26 +190,30 @@ export class ProductDetails {
   addReview() {
     let id = localStorage.getItem('token');
     if (id) {
-      let loader = this.matDialog.open(
-        Loader, {
-        disableClose: true,
-      }
-      )
-      this.reviewService.addReview(this.comment, this.clickedStarRating(), this.product.id!).pipe(takeUntil(this.destroy$)).subscribe(
-        {
-          next: (value) => {
-            this.toastService.success(this.translateService.instant('SUCCESS_MESSAGES.REVIEW_ADDED'));
-            loader.close();
-            this.reviews.set(value);
-            this.isProductReviewed.set(true);
-            this.comment = '';
-            this.clickedStarRating.set(-1);
-          },
-          error: (err) => {
-            loader.close();
-          },
+      if (this.isBuyer()) {
+        let loader = this.matDialog.open(
+          Loader, {
+          disableClose: true,
         }
-      );
+        )
+        this.reviewService.addReview(this.comment, this.clickedStarRating(), this.product.id!).pipe(takeUntil(this.destroy$)).subscribe(
+          {
+            next: (value) => {
+              this.toastService.success(this.translateService.instant('SUCCESS_MESSAGES.REVIEW_ADDED'));
+              loader.close();
+              this.reviews.set(value);
+              this.isProductReviewed.set(true);
+              this.comment = '';
+              this.clickedStarRating.set(-1);
+            },
+            error: (err) => {
+              loader.close();
+            },
+          }
+        );
+      } else {
+        this.toastService.error(this.translateService.instant('ERROR_MESSAGES.NO_BUYER', { page: this.translateService.instant('PRODUCT_DETAILS.REVIEW') }))
+      }
     } else {
       this.toastService.error(this.translateService.instant('ERROR_MESSAGES.LOGIN', { page: this.translateService.instant('PRODUCT_DETAILS.REVIEW') }))
       this.router.navigateByUrl('/login')
@@ -196,6 +237,7 @@ export class ProductDetails {
         this.toastService.success(this.translateService.instant('SUCCESS_MESSAGES.STOCK_MAXIMUM'));
       }
     } else {
+      this.toastService.error(this.translateService.instant('ERROR_MESSAGES.LOGIN', { page: this.translateService.instant('NAVBAR.CART') }))
       this.router.navigateByUrl('/login');
     }
   }
@@ -208,6 +250,7 @@ export class ProductDetails {
         this.toastService.success(this.translateService.instant('SUCCESS_MESSAGES.STOCK_MINIMUM'));
       }
     } else {
+      this.toastService.error(this.translateService.instant('ERROR_MESSAGES.LOGIN', { page: this.translateService.instant('NAVBAR.CART') }))
       this.router.navigateByUrl('/login');
     }
   }
@@ -233,20 +276,6 @@ export class ProductDetails {
   }
   handleStarRatingOnLeave() {
     this.hoveredStarRating.set(-1);
-  }
-
-  zoomInOnImage() {
-    if (this.zoomDirective) {
-      this.zoomDirective.zoomIn();
-    }
-    // this.viewer?.zoom(0.3)
-  }
-
-  zoomOutOnImage() {
-    if (this.zoomDirective) {
-      this.zoomDirective.zoomOut();
-    }
-    // this.viewer?.zoom(-0.3)
   }
 
   ngOnDestroy(): void {

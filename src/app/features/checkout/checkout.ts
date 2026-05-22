@@ -1,3 +1,4 @@
+import { ToastService } from './../../shared/services/toast.service';
 import { CartSummaryCard } from '../cart/components/cart-summary-card/cart-summary-card';
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,6 +7,9 @@ import { PaymentComponent } from "../payment/payment.component";
 import { PaymentProgressBar } from "../../shared/components/payment-progress-bar/payment-progress-bar";
 import { ProgressService } from '../../shared/components/payment-progress-bar/progress.service';
 import { AnimateOnScroll } from "../../shared/animate-on-scroll";
+import { CartService } from '../../shared/services/cart.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -16,9 +20,13 @@ import { AnimateOnScroll } from "../../shared/animate-on-scroll";
   styleUrl: './checkout.scss'
 })
 export class Checkout {
-    progressService = inject(ProgressService);
+  progressService = inject(ProgressService);
+  cartService = inject(CartService)
+  toastService = inject(ToastService)
+  translate = inject(TranslateService)
+  router = inject(Router)
 
-    ngOnInit(): void {
-      this.progressService.goToSecondStep();
-    }
+  ngOnInit(): void {
+    this.progressService.goToSecondStep();
+  }
 }

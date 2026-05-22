@@ -23,3 +23,65 @@ input::placeholder {
   overflow: auto !important;
   -webkit-overflow-scrolling: touch !important;
 }
+
+/* Input container styling */
+.input-container {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition: all 0.2s ease;
+}
+
+.input-container:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Number input styling */
+.input-container input[type="number"] {
+  width: 6rem;
+  padding: 0.5rem 2rem;
+  background-color: rgb(249 250 251);
+  font-weight: 500;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.input-container input[type="number"]::-webkit-inner-spin-button,
+.input-container input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* +/- buttons */
+.input-container button {
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.input-container button:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.input-container button:disabled {
+  opacity: 0.4;
+}
+
+.input-container button:disabled:hover {
+  transform: scale(1);
+}
+
+/* Add to cart button */
+.cart-and-buy button:last-child {
+  transition: all 0.2s ease;
+}
+
+.cart-and-buy button:last-child:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.cart-and-buy button:last-child:disabled {
+  opacity: 0.5;
+}
+
+.cart-and-buy button:last-child:disabled:hover {
+  transform: scale(1);
+}

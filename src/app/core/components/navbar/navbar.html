@@ -1,133 +1,258 @@
+@let cartNumber = (cartItemNumber | async)!;
 <nav class="bg-[var(--main-bg-color)] border-b-2 border-gray-200 py-3 animate-[slideFromTop]">
   <div class="flex items-center pt-3 gap-10 max-w-[1400px] relative mx-auto md:px-20 px-10 justify-between">
     <section class="title-and-nav flex flex-row items-center">
       <app-website-title></app-website-title>
-      <div class="gap-3 hidden min-[1100px]:flex mx-7">
-        @if (isBuyer()) {
+      <div class="gap-3 hidden min-[1200px]:flex mx-7">
         <a routerLink="/shop"
-          class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg"
-          routerLinkActive="active">{{'NAVBAR.CATEGORIES' | translate}}</a>
+          class="nav-link relative px-4 py-2 rounded-xl  font-medium
+                              hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-300
+                              after:absolute after:bottom-0 after:start-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-purple-500 after:to-indigo-500
+                              after:transition-all after:duration-300 hover:after:w-[calc(100%-2rem)] hover:after:start-4"
+          routerLinkActive="text-purple-600 dark:text-purple-400 after:w-[calc(100%-2rem)] after:start-4">
+          <fa-icon [icon]="categoriesIcon" class="me-2 text-sm"></fa-icon>
+          {{'NAVBAR.CATEGORIES' | translate}}
+        </a>
         <a routerLink="/brands"
-          class="nav-link hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg"
-          routerLinkActive="active">{{'NAVBAR.BRANDS' | translate}}</a>
-        <a routerLink="/support"
-          class="hover:bg-[var(--primary-color)] p-2 hover:text-white text-[var(--primary-text-color)] rounded-lg"
-          routerLinkActive="active">{{'NAVBAR.SUPPORT' | translate}}</a>
+          class="nav-link relative px-4 py-2 rounded-xl  font-medium
+                                hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-300
+                                after:absolute after:bottom-0 after:start-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-purple-500 after:to-indigo-500
+                                after:transition-all after:duration-300 hover:after:w-[calc(100%-2rem)] hover:after:start-4"
+          routerLinkActive="text-purple-600 dark:text-purple-400 after:w-[calc(100%-2rem)] after:start-4">
+          <fa-icon [icon]="brandsIcon" class="me-2 text-sm"></fa-icon>
+          {{'NAVBAR.BRANDS' | translate}}
+        </a>
+        @if (isBuyer()) {
+        <a (click)="goToSupport()"
+          class="nav-link relative px-4 py-2 rounded-xl  font-medium cursor-pointer
+                                        hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-300
+                                        after:absolute after:bottom-0 after:start-1/2 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-purple-500 after:to-indigo-500
+                                        after:transition-all after:duration-300 hover:after:w-[calc(100%-2rem)] hover:after:start-4"
+          routerLinkActive="text-purple-600 dark:text-purple-400 after:w-[calc(100%-2rem)] after:start-4">
+          <fa-icon [icon]="supportIcon" class="me-2 text-sm"></fa-icon>
+          {{'NAVBAR.SUPPORT' | translate}}
+        </a>
         }
       </div>
     </section>
-    <button class="min-[1100px]:hidden text-2xl" (click)="toggleNavbar()">
-      {{isNavBarOpen() ? 'x' : '☰'}}
+    <button
+      class="min-[1200px]:hidden text-2xl  hover:text-purple-500 transition-colors p-2 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20"
+      (click)="toggleNavbar()">
+      <fa-icon [icon]="isNavBarOpen() ? closeIcon : menuIcon"></fa-icon>
     </button>
 
-    <div #box
-      class="min-[1100px]:hidden navbar-mobile-hidden z-0 transition-all ease navbar-mobile space-y-2 px-10 md:px-20 pb-3 absolute top-[100%] start-0 w-full bg-[var(--main-bg-color)] ease-in-out text-md">
-      <section class="border border-t-0 border-[var(--primary-text-color)] rounded-lg rounded-t-none">
-        @if(isBuyer()){
+    <div #box class="min-[1200px]:hidden md:px-20 px-10 absolute top-full start-0 w-full backdrop-blur-md
+                    border-t border-purple-100/50 dark:border-purple-800/30 shadow-xl rounded-b-2xl
+                    transition-all duration-300 ease-in-out overflow-hidden z-50" [class.max-h-0]="!isNavBarOpen()"
+      [class.max-h-[600px] ]="isNavBarOpen()" [class.opacity-0]="!isNavBarOpen()" [class.opacity-100]="isNavBarOpen()">
+      <div class="py-2 space-y-3">
+        <!-- Mobile Navigation Links -->
         <a routerLink="/shop"
-          class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] mx-3 my-2 p-2 text-base font-medium text-[var(--primary-text-color)]"
-          routerLinkActive="active">{{'NAVBAR.CATEGORIES' | translate}}</a>
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20  hover:text-purple-600 transition-all duration-300"
+          routerLinkActive="bg-purple-50 dark:bg-purple-900/20 text-purple-600" (click)="toggleNavbar()">
+          <fa-icon [icon]="categoriesIcon" class="text-lg"></fa-icon>
+          <span>{{'NAVBAR.CATEGORIES' | translate}}</span>
+        </a>
         <a routerLink="/brands"
-          class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] mx-3 my-2 p-2 text-base font-medium text-[var(--primary-text-color)]"
-          routerLinkActive="active">{{'NAVBAR.BRANDS' | translate}}</a>
-        <a routerLink="/support"
-          class="block rounded-md hover:bg-[var(--primary-color)] hover:text-[var(--main-bg-color)] mx-3 my-2 p-2 text-base font-medium text-[var(--primary-text-color)]"
-          routerLinkActive="active">{{'NAVBAR.SUPPORT' | translate}}</a>
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20  hover:text-purple-600 transition-all duration-300"
+          routerLinkActive="bg-purple-50 dark:bg-purple-900/20 text-purple-600" (click)="toggleNavbar()">
+          <fa-icon [icon]="brandsIcon" class="text-lg"></fa-icon>
+          <span>{{'NAVBAR.BRANDS' | translate}}</span>
+        </a>
+        @if (isBuyer()) {
+        <a (click)="goToSupport()"
+          class="flex cursor-pointer items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20  hover:text-purple-600 transition-all duration-300"
+          routerLinkActive="bg-purple-50 dark:bg-purple-900/20 text-purple-600" (click)="toggleNavbar()">
+          <fa-icon [icon]="supportIcon" class="text-lg"></fa-icon>
+          <span>{{'NAVBAR.SUPPORT' | translate}}</span>
+        </a>
         }
-        <div class="navbar-shortcuts flex flex-wrap items-center gap-2 my-3 mx-2">
-          <button
-            class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4"
-            (click)="changeLanguage('en')">EN</button>
-          <button
-            class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4"
-            (click)="changeLanguage('ar')">AR</button>
-          <button class="rounded-lg border text-md
-               border-gray-300 hover:bg-[var(--primary-color)] 
-               transition p-4" (click)="changeTheme()">
-            <fa-icon [icon]="themeIcon()"></fa-icon>
-          </button>
-          @if(isLoggedIn() == false && isInLoginPage() == false) {
-          <button routerLink="/login" class="p-4 rounded-xl bg-[var(--primary-color)] text-white">{{'AUTH.LOGIN.BUTTON'
-            |
-            translate}}</button>
-          }
-          @if (isLoggedIn()) {
-          <button
-            class="rounded-xl p-4 bg-[var(--primary-color)] hover:bg-purple-700 focus:bg-purple-800 border-gray-200 text-white"
-            (click)="logout()">{{'NAVBAR.SIGN_OUT' | translate}}</button>
-          @if(isBuyer()){
-          <button
-            class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md"
-            (click)="goToWishList()">♡ {{'NAVBAR.WISHLIST'| translate }}</button>
-          <div class="cart-section relative" routerLink="/cart">
-            <button
-              class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
-              <span class="inline-block text-[20px] me-1">🛒</span> {{'NAVBAR.CART' | translate}}
-            </button>
-            @if ((totalCartProductsNumber$ | async)! > 0) {
-            <div
-              class="absolute top-2 start-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
-              <p class="text-[10px]">{{totalCartProductsNumber$ | async}}</p>
-            </div>
-            }
-          </div>
-          <div class="orders-section relative" routerLink="/orders">
-            <button
-              class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
-              <img src="https://cdn-icons-png.flaticon.com/512/1356/1356594.png" alt="order"
-                class="inline-block w-5 h-5 me-1" /> {{'NAVBAR.ORDERS' | translate}}
-            </button>
-          </div>
-          }
-          }
+
+        <div class="h-px bg-gradient-to-r from-transparent via-purple-200 dark:via-purple-800 to-transparent my-2">
         </div>
-      </section>
-    </div>
-    <div class="hidden min-[1100px]:flex items-center gap-1">
-      @if (isBuyer()) {
-      <button
-        class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)]"
-        (click)="goToWishList()">♡ {{'NAVBAR.WISHLIST'| translate }}</button>
-      <div class="cart-section relative" routerLink="/cart">
-        <button
-          class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
-          <span class="inline-block text-[20px] me-1">🛒</span> {{'NAVBAR.CART' | translate}}
+        <div class="flex flex-wrap gap-2 p-2">
+          @if (isBuyer()) {
+          <button
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
+                                                 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
+            (click)="goToWishList()">
+            <fa-icon [icon]="heartIcon"></fa-icon>
+            {{'NAVBAR.WISHLIST' | translate}}
+          </button>
+
+
+          <div class="cart-section flex-1" (click)="goToCart()">
+            <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
+                                       bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
+              (click)="toggleNavbar()">
+              <fa-icon [icon]="cartIcon"></fa-icon>
+              {{'NAVBAR.CART' | translate}}
+              @if (cartNumber > 0) {
+              <span class="bg-purple-600 text-white text-xs rounded-full px-1.5 py-0.5">{{cartNumber}}</span>
+              }
+            </button>
+          </div>
+
+          <div class="orders-section flex-1" (click)="goToOrders()">
+            <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl
+                                       bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
+              (click)="toggleNavbar()">
+              <fa-icon [icon]="ordersIcon"></fa-icon>
+              {{'NAVBAR.ORDERS' | translate}}
+            </button>
+          </div>
+          }
+
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2 p-2 border-t border-purple-100 dark:border-purple-800/30 pt-3">
+        <div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
+          <button class="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-200 text-sm font-medium transition-all duration-300
+                                  hover:bg-white dark:hover:bg-gray-700 hover:text-purple-600"
+            [class.bg-white]="translate.currentLang === 'en'" [class.dark:bg-gray-700]="translate.currentLang === 'en'"
+            [class.text-purple-600]="translate.currentLang === 'en'" (click)="changeLanguage('en')">
+            EN
+          </button>
+          <button class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-700 dark:text-gray-200 duration-300
+                                  hover:bg-white dark:hover:bg-gray-700 hover:text-purple-600"
+            [class.bg-white]="translate.currentLang === 'ar'" [class.dark:bg-gray-700]="translate.currentLang === 'ar'"
+            [class.text-purple-600]="translate.currentLang === 'ar'" (click)="changeLanguage('ar')">
+            عربي
+          </button>
+        </div>
+
+        <button class="flex-1 bg-[var(--main-bg-color)] flex items-center justify-center gap-2 px-4 py-2 rounded-xl
+                                 " (click)="changeTheme()">
+          <fa-icon class="text-[var(--primary-text-color)]" [icon]="themeIcon()"></fa-icon>
+          {{'NAVBAR.THEME' | translate}}
         </button>
-        @if (totalCartProductsNumber$.value > 0) {
+
+        @if(isLoggedIn() == false && isInLoginPage() == false) {
+        <button routerLink="/login"
+          class="flex-1 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold"
+          (click)="toggleNavbar()">
+          {{'AUTH.LOGIN.BUTTON' | translate}}
+        </button>
+        }
+
+        @if (isLoggedIn()) {
+        <button class="flex-1 px-4 py-2 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold"
+          (click)="logout()">
+          {{'NAVBAR.SIGN_OUT' | translate}}
+        </button>
+        }
+      </div>
+
+    </div>
+    <div class="hidden min-[1200px]:flex items-center gap-1">
+      @if(isBuyer()){
+      <button class="group relative overflow-hidden px-4 py-2.5 rounded-xl
+                                       hover:bg-purple-50 dark:hover:bg-purple-900/20
+                                       transition-all duration-300 
+                                       hover:text-purple-600 dark:hover:text-purple-400" (click)="goToWishList()">
         <div
-          class="absolute top-2 start-6 bg-[var(--primary-color)] text-white text-center rounded-full h-4 w-4 flex items-center justify-center">
-          <p class="text-[10px]">{{totalCartProductsNumber$.value}}</p>
+          class="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-indigo-500/0 group-hover:from-purple-500/10 group-hover:to-indigo-500/10 transition-all duration-700 rounded-xl">
+        </div>
+        <span class="relative z-10 flex items-center gap-2">
+          <fa-icon [icon]="heartIcon" class="text-lg"></fa-icon>
+          <span>{{'NAVBAR.WISHLIST' | translate}}</span>
+        </span>
+      </button>
+      <div class="cart-section relative" (click)="goToCart()">
+        <button class="group relative overflow-hidden px-4 py-2.5 rounded-xl
+                                         hover:bg-purple-50 dark:hover:bg-purple-900/20
+                                         transition-all duration-300 
+                                         hover:text-purple-600 dark:hover:text-purple-400">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-indigo-500/0 group-hover:from-purple-500/10 group-hover:to-indigo-500/10 transition-all duration-700 rounded-xl">
+          </div>
+          <span class="relative z-10 flex items-center gap-2">
+            <fa-icon [icon]="cartIcon" class="text-lg"></fa-icon>
+            <span>{{'NAVBAR.CART' | translate}}</span>
+          </span>
+        </button>
+        @if (cartNumber > 0) {
+        <div
+          class="absolute -top-1 -end-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-center rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg shadow-purple-500/30">
+          <p class="text-[10px] font-bold">{{cartNumber}}</p>
         </div>
         }
       </div>
-      <div class="orders-section relative" routerLink="/orders">
-        <button
-          class="rounded-xl p-4 focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] outline-none border border-gray-200 hover:text-white text-[var(--primary-text-color)] text-md">
-          <img src="https://cdn-icons-png.flaticon.com/512/1356/1356594.png" alt="order"
-            class="inline-block w-[20px] h-[20px] me-1" /> {{'NAVBAR.ORDERS' | translate}}
+
+      <div class="orders-section relative" (click)="goToOrders()">
+        <button class="group relative overflow-hidden px-4 py-2.5 rounded-xl
+                                         hover:bg-purple-50 dark:hover:bg-purple-900/20
+                                         transition-all duration-300 
+                                         hover:text-purple-600 dark:hover:text-purple-400">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-indigo-500/0 group-hover:from-purple-500/10 group-hover:to-indigo-500/10 transition-all duration-700 rounded-xl">
+          </div>
+          <span class="relative z-10 flex items-center gap-2">
+            <fa-icon [icon]="ordersIcon" class="text-lg"></fa-icon>
+            <span>{{'NAVBAR.ORDERS' | translate}}</span>
+          </span>
         </button>
       </div>
       }
-      <button
-        class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4 px-3"
-        (click)="changeLanguage('en')">EN</button>
-      <button
-        class="rounded-lg focus:bg-[var(--primary-color)] hover:bg-[var(--primary-color)] border border-gray-200 hover:text-white text-[var(--primary-text-color)] p-4 px-3"
-        (click)="changeLanguage('ar')">AR</button>
-      <button class="rounded-lg border
-            border-gray-300 hover:bg-[var(--primary-color)] 
-            hover:text-white transition text-[12px] py-3 px-3" (click)="changeTheme()">
-        <fa-icon class="text-lg" [icon]="themeIcon()"></fa-icon>
+
+      <div class="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
+        <button class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300
+                            hover:bg-white text-gray-700 dark:text-gray-200 dark:hover:bg-gray-700 hover:text-purple-600
+                            focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+          [class.bg-white]=" translate.currentLang==='en'" [class.dark:bg-gray-700]=" translate.currentLang==='en'"
+          [class.text-purple-600]=" translate.currentLang==='en'"
+          [class.dark:text-purple-400]=" translate.currentLang==='en'" [class.shadow-sm]=" translate.currentLang==='en'"
+          (click)=" changeLanguage('en')">
+          EN
+        </button>
+        <button class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300
+                            hover:bg-white text-gray-700 dark:text-gray-200 dark:hover:bg-gray-700 hover:text-purple-600
+                            focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+          [class.bg-white]=" translate.currentLang==='ar'" [class.dark:bg-gray-700]=" translate.currentLang==='ar'"
+          [class.text-purple-600]=" translate.currentLang==='ar'"
+          [class.dark:text-purple-400]=" translate.currentLang==='ar'" [class.shadow-sm]=" translate.currentLang==='ar'"
+          (click)=" changeLanguage('ar')">
+          عربي
+        </button>
+      </div>
+      <button class="w-10 h-10 rounded-xl bg-[var(--primary-text-color)]
+                             hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:text-purple-600
+                             transition-all duration-300 flex items-center justify-center" (click)="changeTheme()">
+        <fa-icon [icon]="themeIcon()" class="text-lg text-[var(--main-bg-color)]"></fa-icon>
       </button>
       @if(isLoggedIn() == false && isInLoginPage() == false) {
-      <button routerLink="/login" class="p-4 rounded-xl bg-[var(--primary-color)] text-white">{{'AUTH.LOGIN.BUTTON'
-        |
-        translate}}</button>
+      <button routerLink="/login" class="group relative overflow-hidden px-6 py-2.5 rounded-xl
+                             bg-gradient-to-r from-purple-600 to-indigo-600
+                             hover:from-purple-700 hover:to-indigo-700
+                             transform hover:scale-[1.02] active:scale-[0.98]
+                             transition-all duration-300
+                             shadow-md hover:shadow-lg hover:shadow-purple-500/30
+                             text-white font-semibold">
+        <div
+          class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+        </div>
+        <span class="relative z-10 flex items-center gap-2">
+          <fa-icon [icon]="loginIcon"></fa-icon>
+          {{'AUTH.LOGIN.BUTTON' | translate}}
+        </span>
+      </button>
       }
       @if (isLoggedIn()) {
-      <button
-        class="rounded-xl p-4 bg-[var(--primary-color)] hover:bg-purple-700 focus:bg-purple-800 border-gray-200 hover:text-white text-white"
-        (click)="logout()">{{'NAVBAR.SIGN_OUT' | translate}}</button>
+      <button class="group relative overflow-hidden px-6 py-2.5 rounded-xl
+                             bg-gradient-to-r from-red-500 to-red-600
+                             hover:from-red-600 hover:to-red-700
+                             transform hover:scale-[1.02] active:scale-[0.98]
+                             transition-all duration-300
+                             shadow-md hover:shadow-lg hover:shadow-red-500/30
+                             text-white font-semibold" (click)="logout()">
+        <div
+          class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+        </div>
+        <span class="relative z-10 flex items-center gap-2">
+          <fa-icon [icon]="logoutIcon"></fa-icon>
+          {{'NAVBAR.SIGN_OUT' | translate}}
+        </span>
+      </button>
       }
     </div>
   </div>

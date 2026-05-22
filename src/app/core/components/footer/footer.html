@@ -1,30 +1,174 @@
-<footer class="border-t-2 border-gray-200 mt-10 bg-[var(--main-bg-color)] text-[var(--primary-text-color)]">
+<footer class="relative border-t border-purple-100/50 dark:border-purple-800/30 mt-10 overflow-hidden">
+
+  <!-- Animated background gradient -->
   <div
-    class="footer-content md:px-20 px-10 py-10 flex flex-col lg:flex-row gap-10 max-w-[1400px] mx-auto justify-between">
-    <div class="website-info">
-      <app-website-title></app-website-title>
-      <p class="mt-4 mb-2 text-sm max-w-xs text-[var(--secondary-text-color)]">
-        {{'FOOTER.GET_PREMIUM' | translate}}
-      </p>
-    </div>
-    <nav class="flex gap-4 text-lg flex-col">
-      <a href="/shop" class="text-sm font-bold text-[var(--primary-text-color)]">{{'NAVBAR.CATEGORIES' |
-        translate}}</a>
-      <a href="/brands" class="text-sm font-bold text-[var(--primary-text-color)]">{{'NAVBAR.BRANDS' |
-        translate}}</a>
-      <a (click)="goToSupport()"
-        class="text-sm cursor-pointer font-bold text-[var(--primary-text-color)]">{{'NAVBAR.SUPPORT' |
-        translate}}</a>
-    </nav>
-    <div class="contact flex flex-wrap flex-col justify-start items-start min-w-30">
-      <p class="text-sm font-bold text-[var(--primary-text-color)]">{{'FOOTER.GET_UPDATES' | translate}}</p>
-      <div class="contact-input flex gap-2 mt-2 justify-start flex-wrap flex-row">
-        <input type="email" name="email" id="email" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}"
-          class="p-2 border rounded-md border-gray-300 sm:w-56 w-full">
-        <input type="button"
-          class="bg-[var(--primary-color)] hover:bg-purple-500 p-2 cursor-pointer rounded-md h-10 sm:w-27 w-30 hover:opacity-90 text-white"
-          value="{{'FOOTER.SUBSCRIBE' | translate}}">
+    class="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-indigo-50/50 dark:from-purple-950/20 dark:via-transparent dark:to-indigo-950/20 pointer-events-none">
+  </div>
+
+  <!-- Decorative top gradient line -->
+  <div class="absolute top-0 start-0 end-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
+
+  <div class="footer-content max-w-[1400px] md:px-20 px-10 w-full my-10 mx-auto relative z-10">
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 justify-between">
+
+      <!-- Brand Section -->
+      <div class="website-info lg:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <div
+            class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <fa-icon [icon]="logoIcon" class="text-white text-sm"></fa-icon>
+          </div>
+          <app-website-title></app-website-title>
+        </div>
+
+        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-xs">
+          {{'FOOTER.GET_PREMIUM' | translate}}
+        </p>
+
+        <!-- Social Links with solid icons -->
+        <div class="flex gap-3 mt-6">
+          <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center
+                          text-gray-600 dark:text-gray-400 hover:bg-purple-500 hover:text-white
+                          transition-all duration-300 hover:scale-110">
+            <fa-icon [icon]="facebookIcon" class="text-sm"></fa-icon>
+          </a>
+          <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center
+                          text-gray-600 dark:text-gray-400 hover:bg-purple-500 hover:text-white
+                          transition-all duration-300 hover:scale-110">
+            <fa-icon [icon]="twitterIcon" class="text-sm"></fa-icon>
+          </a>
+          <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center
+                          text-gray-600 dark:text-gray-400 hover:bg-purple-500 hover:text-white
+                          transition-all duration-300 hover:scale-110">
+            <fa-icon [icon]="instagramIcon" class="text-sm"></fa-icon>
+          </a>
+          <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center
+                          text-gray-600 dark:text-gray-400 hover:bg-purple-500 hover:text-white
+                          transition-all duration-300 hover:scale-110">
+            <fa-icon [icon]="linkedinIcon" class="text-sm"></fa-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links Section -->
+      <div class="nav-links">
+        <h3 class="text-lg font-bold  mb-4 flex items-center gap-2">
+          <fa-icon [icon]="linkIcon" class="text-purple-500 text-sm"></fa-icon>
+          {{'FOOTER.QUICK_LINKS' | translate}}
+        </h3>
+        <nav class="flex flex-col gap-3">
+          <a href="/shop" class="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400
+                    transition-all duration-300 hover:translate-x-1 flex items-center gap-2">
+            <fa-icon [icon]="categoriesIcon" class="text-xs text-purple-400"></fa-icon>
+            {{'NAVBAR.CATEGORIES' | translate}}
+          </a>
+          <a href="/brands" class="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400
+                    transition-all duration-300 hover:translate-x-1 flex items-center gap-2">
+            <fa-icon [icon]="brandsIcon" class="text-xs text-purple-400"></fa-icon>
+            {{'NAVBAR.BRANDS' | translate}}
+          </a>
+          <a (click)="goToSupport()" class="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400
+                    transition-all duration-300 hover:translate-x-1 cursor-pointer flex items-center gap-2">
+            <fa-icon [icon]="supportIcon" class="text-xs text-purple-400"></fa-icon>
+            {{'NAVBAR.SUPPORT' | translate}}
+          </a>
+          <a (click)="goToOrders()" class="text-sm cursor-pointer text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400
+                    transition-all duration-300 hover:translate-x-1 flex items-center gap-2">
+            <fa-icon [icon]="ordersIcon" class="text-xs text-purple-400"></fa-icon>
+            {{'NAVBAR.ORDERS' | translate}}
+          </a>
+          <a (click)="goToWishList()" class="text-sm cursor-pointer text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400
+                    transition-all duration-300 hover:translate-x-1 flex items-center gap-2">
+            <fa-icon [icon]="heartIcon" class="text-xs text-purple-400"></fa-icon>
+            {{'NAVBAR.WISHLIST' | translate}}
+          </a>
+        </nav>
+      </div>
+
+      <!-- Contact/Newsletter Section -->
+      <div class="contact lg:col-span-2">
+        <h3 class="text-lg font-bold  mb-4 flex items-center gap-2">
+          <fa-icon [icon]="newsletterIcon" class="text-purple-500 text-sm"></fa-icon>
+          {{'FOOTER.GET_UPDATES' | translate}}
+        </h3>
+
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 max-w-md">
+          {{'FOOTER.NEWSLETTER_SUBTITLE' | translate}}
+        </p>
+
+        <div class="contact-input flex flex-col sm:flex-row gap-3">
+          <div class="relative flex-1">
+            <div class="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <fa-icon [icon]="emailIcon" class="text-sm"></fa-icon>
+            </div>
+            <input type="email" name="email" id="email" placeholder="{{'AUTH.PLACEHOLDERS.EMAIL' | translate}}" class="w-full ps-10 pe-4 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-700
+                          bg-white dark:bg-gray-800
+                          focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
+                          transition-all duration-300 outline-none
+                          text-gray-800 dark:text-gray-100 text-sm">
+          </div>
+
+          <button class="group relative overflow-hidden px-6 py-2.5 rounded-xl
+                         bg-gradient-to-r from-purple-600 to-indigo-600
+                         hover:from-purple-700 hover:to-indigo-700
+                         transform hover:scale-[1.02] active:scale-[0.98]
+                         transition-all duration-300
+                         shadow-md hover:shadow-lg hover:shadow-purple-500/30
+                         text-white font-semibold text-sm
+                         flex items-center justify-center gap-2">
+            <div
+              class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+            </div>
+            <span class="relative z-10 flex items-center gap-2">
+              <fa-icon [icon]="sendIcon" class="text-sm"></fa-icon>
+              {{'FOOTER.SUBSCRIBE' | translate}}
+            </span>
+          </button>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="flex flex-wrap gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-2">
+            <fa-icon [icon]="shieldIcon" class="text-green-500 text-sm"></fa-icon>
+            <span class="text-xs text-gray-500 dark:text-gray-400">{{'FOOTER.SECURE_PAYMENT' | translate}}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <fa-icon [icon]="truckIcon" class="text-blue-500 text-sm"></fa-icon>
+            <span class="text-xs text-gray-500 dark:text-gray-400">{{'FOOTER.FAST_DELIVERY' | translate}}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <fa-icon [icon]="supportIcon" class="text-purple-500 text-sm"></fa-icon>
+            <span class="text-xs text-gray-500 dark:text-gray-400">{{'FOOTER.SUPPORT_247' | translate}}</span>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Bottom Bar -->
+    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          © {{currentYear}} T-Market. {{'FOOTER.ALL_RIGHTS_RESERVED' | translate}}
+        </p>
+
+        <div class="flex gap-4">
+          <a href="#" class="text-xs text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors">
+            {{'FOOTER.PRIVACY_POLICY' | translate}}
+          </a>
+          <span class="text-gray-300 dark:text-gray-600">|</span>
+          <a href="#" class="text-xs text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors">
+            {{'FOOTER.TERMS_OF_SERVICE' | translate}}
+          </a>
+          <span class="text-gray-300 dark:text-gray-600">|</span>
+          <a href="#" class="text-xs text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-colors">
+            {{'FOOTER.COOKIE_POLICY' | translate}}
+          </a>
+        </div>
+
+
+      </div>
+    </div>
+
   </div>
 </footer>

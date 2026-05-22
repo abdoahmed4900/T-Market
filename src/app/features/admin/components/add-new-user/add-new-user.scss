@@ -1,0 +1,31 @@
+.form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.form-group:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.form-group:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+// Dropdown styling
+::ng-deep .purple-dropdown {
+  .mat-option:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
+  }
+
+  .mat-option.mat-selected {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.2));
+    color: #7c3aed;
+  }
+}

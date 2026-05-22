@@ -32,7 +32,7 @@ export class StripeService {
   async createPaymentIntent(amount: number, name: string) {
 
     try {
-      const response: any = await firstValueFrom(this.http.post('http://localhost:4242/api/create-payment-intent', {
+      const response: any = await firstValueFrom(this.http.post('https://backend-weld-two-98.vercel.app/api/create-payment-intent', {
         amount: amount * 100
       }));
 

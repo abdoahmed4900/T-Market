@@ -61,7 +61,7 @@ export class OrderService {
         ordersObs = forkJoin(
           orderReqs
         )
-        return ordersObs;
+        return ordersObs
       }),
       catchError((error) => {
         this.firebaseErrorService.handleError(error);
@@ -87,6 +87,7 @@ export class OrderService {
 
 
   changeStatusOrder(orderId: string, newStatus: "PENDING" | "SHIPPED" | "CANCELLED" | "DELIVERED") {
+
     const orderRef = doc(this.fireStore, fireStoreCollections.orders, orderId);
 
     return from(runTransaction(this.fireStore, async (transaction) => {
@@ -94,7 +95,7 @@ export class OrderService {
       const orderSnap = await transaction.get(orderRef);
       if (!orderSnap.exists()) throw new Error('Order not found');
       const order = orderSnap.data() as Order;
-      if (order.status === newStatus || newStatus !== 'SHIPPED') return;
+      if (order.status === newStatus || order.status == 'DELIVERED') return;
 
       const userRef = doc(this.fireStore, fireStoreCollections.users, localStorage.getItem('token')!);
 
@@ -127,6 +128,7 @@ export class OrderService {
     );
   }
   private writeProductsAndSellersAndStatus(productUpdates: { productRef: any; newStock: number; }[], transaction: Transaction, sellerUpdates: { sellerRef: any; newSoldItems: number; newRevenue: number; }[], orderRef: any, newStatus: string) {
+
     for (const { productRef, newStock } of productUpdates) {
       transaction.update(productRef, { stock: newStock });
     }

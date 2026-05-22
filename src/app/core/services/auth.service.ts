@@ -8,6 +8,7 @@ import { CartProduct } from '../../features/cart/cart.product';
 import { Order } from '../interfaces/order';
 import { Admin, Buyer, Seller, User } from '../../features/auth/user';
 import { FirebaseErrorService } from './firebase.error.service';
+import { CartService } from '../../shared/services/cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,17 @@ import { FirebaseErrorService } from './firebase.error.service';
 export class AuthService {
   private firebaseAuth = inject(Auth);
   private firestore = inject(Firestore);
-  userRole = signal(localStorage.getItem('role'));
+  cartService = inject(CartService);
+  userRole = signal(localStorage.getItem('role') ?? '');
   isLoggedIn = signal(localStorage.getItem('isLogin') == 'true');
   userCollection = collection(this.firestore, fireStoreCollections.users);
   firebaseErrorService = inject(FirebaseErrorService);
 
-  loginWithEmailAndPassword(email: string, password: string){
+  loginWithEmailAndPassword(email: string, password: string) {
     return from(signInWithEmailAndPassword(this.firebaseAuth, email, password)).pipe(
-      switchMap(() => this.changeUserCredentials(email)),
+      switchMap(() => {
+        return this.changeUserCredentials(email);
+      }),
       catchError((err) => {
         this.firebaseErrorService.handleError(err);
         return throwError(() => err);
@@ -36,17 +40,16 @@ export class AuthService {
       tap((value) => {
         const role = value[0]['role'];
         const uid = value[0]['uid'];
-          
+
         // Update localStorage
         localStorage.setItem('role', role);
         localStorage.setItem('token', uid);
         localStorage.setItem('isLogin', 'true');
         localStorage.setItem('name', value[0]['name']);
 
-        console.log(`userRole updated from : ${this.userRole()}`);
         this.userRole.set(role);
         this.isLoggedIn.set(true);
-        console.log(`userRole updated to : ${this.userRole()}`);
+        this.cartService.getAllCartProducts();
       }),
       catchError((err) => {
         this.firebaseErrorService.handleError(err);
@@ -54,12 +57,12 @@ export class AuthService {
       })
     )
   }
-  
+
   addGoogleAccount(value: UserCredential) {
     return collectionData(this.userCollection).pipe(
       switchMap((u) => {
         let users = u as User[];
-        let user = users.find((u) => u['email'] == value.user.email); 
+        let user = users.find((u) => u['email'] == value.user.email);
         if (!user) {
           let newDoc = this.setNewGoogleAccountData(value);
           let userDoc = doc(this.firestore, fireStoreCollections.users, value.user.uid);
@@ -144,22 +147,18 @@ export class AuthService {
       seller: { ...userData, ordersIds: [], productsIds: [], soldItemsNumber: 0, totalRevenue: 0 } as Seller,
       admin: { ...userData, ordersIds: [], productsIds: [], totalRevenue: 0, totalOrders: 0, totalProductsSold: 0 } as Admin
     };
-    
+
     userData = roleHandlers[userData.role as 'admin' | 'seller' | 'buyer'];
     await setDoc(doc(this.firestore, fireStoreCollections.users, value.user.uid), userData);
   }
-  
+
   logout() {
     return from(this.firebaseAuth.signOut()).pipe(
       tap(() => {
-        localStorage.removeItem('isLogin');
-        localStorage.removeItem('role');
-        localStorage.removeItem('token');
-        localStorage.removeItem('theme');
-        localStorage.removeItem('language');
+        localStorage.clear()
+        this.cartService.clearCart();
         this.userRole.set('')
         this.isLoggedIn.set(false)
-        console.log('Logout complete - all state cleared');
       }),
       catchError((err) => {
         this.firebaseErrorService.handleError(err);

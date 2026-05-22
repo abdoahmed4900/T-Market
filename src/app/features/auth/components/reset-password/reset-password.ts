@@ -6,10 +6,21 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Loader } from '../../../../shared/components/loader/loader';
+import {
+  faEnvelope,
+  faExclamationTriangle,
+  faInfoCircle,
+  faPaperPlane,
+  faArrowLeft,
+  faKey
+} from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { AnimateOnScroll } from "../../../../shared/animate-on-scroll";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule, FaIconComponent, AnimateOnScroll, RouterLink],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss'
 })
@@ -20,6 +31,12 @@ export class ResetPassword {
   translateService = inject(TranslateService);
   toastService = inject(ToastService);
   matDialog = inject(MatDialog);
+  resetIcon = faKey;
+  envelopeIcon = faEnvelope;
+  warningIcon = faExclamationTriangle;
+  infoIcon = faInfoCircle;
+  sendIcon = faPaperPlane;
+  arrowLeftIcon = faArrowLeft;
 
   resetPasswordFirstForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]]

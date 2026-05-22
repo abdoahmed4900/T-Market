@@ -12,6 +12,6 @@ exports.createPaymentIntent = async (req, res) => {
         );
         res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: error.statusText });
     }
 }

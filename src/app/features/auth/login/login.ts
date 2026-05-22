@@ -1,4 +1,4 @@
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -10,13 +10,13 @@ import { Loader } from '../../../shared/components/loader/loader';
 import { Firestore } from '@angular/fire/firestore';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
-import { PasswordVisibilityIcon } from "../../../shared/components/password-visibility-icon/password-visibility-icon";
 import { AnimateOnScroll } from "../../../shared/animate-on-scroll";
 import { ToastService } from '../../../shared/services/toast.service';
+import { faEnvelope, faLock, faExclamationTriangle, faSignInAlt, faStore } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
-  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, TranslateModule, PasswordVisibilityIcon, RouterLink, AnimateOnScroll,],
+  imports: [FontAwesomeModule, ReactiveFormsModule, CommonModule, TranslateModule, RouterLink, AnimateOnScroll,],
   standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -50,9 +50,18 @@ export class LoginComponent {
 
   destroy$ = new Subject<void>()
 
+  logoIcon = faStore;
+  envelopeIcon = faEnvelope;
+  lockIcon = faLock;
+  warningIcon = faExclamationTriangle;
+  signInIcon = faSignInAlt;
+  eyeIcon = faEye;
+  eyeSlashIcon = faEyeSlash;
+  checkIcon = faCheckCircle;
 
-  toggleVisibility(isVisible: boolean) {
-    this.isPasswordVisible = isVisible;
+
+  toggleVisibility() {
+    this.isPasswordVisible = !this.isPasswordVisible
   }
 
   loginWithEmailAndPassword() {

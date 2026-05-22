@@ -4,6 +4,7 @@ import { adminGuard } from './core/guards/admin.guard';
 import { sellerGuard } from './core/guards/seller-guard';
 import { HomeComponent } from './features/home-component/home-component';
 import { LoginComponent } from './features/auth/login/login';
+import { buyerGuard } from './core/guards/buyer-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -70,23 +71,27 @@ export const routes: Routes = [
   },
   {
     path: 'wishlist',
+    canActivate: [buyerGuard],
     loadComponent: () => import('./features/wishlist/wishlist').then(m => m.Wishlist),
     data: { title: 'PAGE_TITLES.WISHLIST_PAGE' }
   },
   {
     path: 'checkout',
+    canActivate: [buyerGuard],
     loadComponent: () => import('./features/checkout/checkout').then(m => m.Checkout),
     data: { title: 'PAGE_TITLES.CHECKOUT_PAGE' }
   },
   {
     path: 'orders',
+    canActivate: [buyerGuard],
     loadComponent: () => import('./features/orders/orders').then(m => m.Orders),
     data: { title: 'PAGE_TITLES.ORDERS_PAGE' }
   },
   {
     path: 'order/:id',
+    canActivate: [buyerGuard],
     loadComponent: () => import('./features/orders/components/order-details/order-details').then(m => m.OrderDetails),
-    title: () => 'PAGE_TITLES.ORDER_DETAILS_PAGE'
+    data: { title: 'PAGE_TITLES.ORDER_DETAILS_PAGE' },
   },
   {
     path: 'new-product',
@@ -104,7 +109,9 @@ export const routes: Routes = [
     path: 'update-product/:id',
     canActivate: [sellerGuard],
     loadComponent: () => import('./features/home-component/seller-home-component/components/update-product/update-product').then(m => m.UpdateProduct),
-    title: () => 'PAGE_TITLES.UPDATE_PRODUCT_PAGE'
+    data: {
+      title: 'PAGE_TITLES.UPDATE_PRODUCT_PAGE'
+    },
   },
   {
     path: 'new-category',

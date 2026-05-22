@@ -1,103 +1,340 @@
 @if(isStripeCreated()){
 <form [formGroup]="paymentFormGroup" (ngSubmit)="pay(cardHolderName.value)">
-  <div
-    class="flex flex-col gap-5 border justify-start items-start p-4 rounded-lg max-w-[1500px] xl:mx-auto bg-[var(--main-bg-color)] text-[var(--primary-text-color)] shadow-md">
-    <h3 appAnimateOnScroll class="slideFromLeftAnimation text-[var(--primary-text-color)] text-lg font-bold">
-      {{'PAYMENT.PAYMENT_FORM' | translate}}</h3>
+  <div class="relative">
 
-    <div appAnimateOnScroll class="w-full flex flex-col slideFromLeftAnimation">
-      <label for="cardholder-name">{{'PAYMENT.CARDHOLDER_NAME_LABEL' | translate}}</label>
-      <input id="cardholder-name" formControlName="name"
-        class="h-10 p-3 border border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"
-        type="text" placeholder="{{'PAYMENT.NAME_PLACEHOLDER' | translate}}" #cardHolderName />
-      @if (paymentFormGroup.get('name')?.hasError('required') && paymentFormGroup.get('name')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'PAYMENT.NAME_PLACEHOLDER' | translate } }}</span>
-      }@if (paymentFormGroup.get('name')?.hasError('minlength') && paymentFormGroup.get('name')?.touched) {
-      <span class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {
-        length:3,field: 'PAYMENT.NAME_PLACEHOLDER' | translate } }}</span>
-      }
+    <!-- Animated background elements -->
+    <div
+      class="absolute -top-20 -end-20 w-64 h-64 bg-purple-300/20 dark:bg-purple-600/10 rounded-full blur-3xl animate-float-slow"
+      appAnimateOnScroll>
+    </div>
+    <div
+      class="absolute -bottom-20 -start-20 w-64 h-64 bg-indigo-300/20 dark:bg-indigo-600/10 rounded-full blur-3xl animate-float-delayed"
+      appAnimateOnScroll>
     </div>
 
-    <div appAnimateOnScroll class="address w-full slideFromLeftAnimation">
-      <label for="cardholder-address">{{'PAYMENT.CARDHOLDER_ADDRESS_LABEL' | translate}}</label>
-      <div
-        class="address-fields mt-2 grid lg:grid-cols-[repeat(auto-fit,minmax(50px,1fr))] md:grid-cols-2 grid-cols-1 flex-wrap gap-2 items-center w-full">
-        <input id="cardholder-address-street" formControlName="street"
-          class="h-10 p-3 border border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"
-          type="text" #cardHolderStreet placeholder="{{'PAYMENT.STREET_PLACEHOLDER' | translate}}" />
-        <input id="cardholder-address-zip" formControlName="zipCode"
-          class="h-10 p-3  border border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"
-          type="number" #cardHolderZipCode placeholder="{{'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate}}" />
-        <input id="cardholder-address-city" formControlName="city"
-          class="h-10 p-3 border border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!"
-          type="text" #cardHolderCity placeholder="{{'PAYMENT.CITY_PLACEHOLDER' | translate}}" />
+    <!-- Main Form Card -->
+    <div class="relative rounded-2xl overflow-hidden
+                backdrop-blur-sm
+                border border-purple-100/50 dark:border-purple-800/30
+                shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20
+                transition-all duration-500">
+
+      <!-- Decorative top gradient bar -->
+      <div class="absolute top-0 start-0 end-0 h-1.5 bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500">
       </div>
-      @if (paymentFormGroup.get('street')?.hasError('required') && paymentFormGroup.get('street')?.touched) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'PAYMENT.STREET_PLACEHOLDER' | translate } }}</p>
-      }@if (paymentFormGroup.get('street')?.hasError('minlength') && paymentFormGroup.get('street')?.touched) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:3,field:
-        'PAYMENT.STREET_PLACEHOLDER' | translate } }}</p>
-      }
-      @if (paymentFormGroup.get('zipCode')?.hasError('required') && paymentFormGroup.get('zipCode')?.touched) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate } }}</p>
-      }@if (paymentFormGroup.get('zipCode')?.hasError('minlength') && paymentFormGroup.get('zipCode')?.touched) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:5 ,field:
-        'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate } }}</p>
-      }
-      @if (paymentFormGroup.get('city')?.hasError('required') && paymentFormGroup.get('city')?.touched) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field:
-        'PAYMENT.CITY_PLACEHOLDER' | translate } }}</p>
-      }@if (paymentFormGroup.get('city')?.hasError('minlength') && paymentFormGroup.get('city')?.touched) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: { length:3,field:
-        'PAYMENT.CITY_PLACEHOLDER' | translate } }}</p>
-      }
-    </div>
 
-    <div appAnimateOnScroll class="relative flex flex-col w-full slideFromLeftAnimation">
-      <label>{{'PAYMENT.CARD_NUMBER' | translate}}</label>
-      <div id="card-number-element" dir="ltr"
-        class="h-10 p-3 ltr border border-solid focus:border-red-500 rounded-xl text-[var(--primary-text-color)]!">
+      <!-- Header Section -->
+      <div class="relative p-6 pb-0">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <fa-icon [icon]="paymentIcon" class="text-white text-xl"></fa-icon>
+          </div>
+          <div>
+            <h3
+              class="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              {{'PAYMENT.PAYMENT_FORM' | translate}}
+            </h3>
+            <div class="w-16 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full mt-1"></div>
+          </div>
+        </div>
+        <p class="text-gray-500 dark:text-gray-400 text-sm ms-15">
+          {{'PAYMENT.PAYMENT_SUBTITLE' | translate}}
+        </p>
       </div>
-      @if(brandIcon() != ''){
-      <img [src]="brandIcon()"
-        class="h-[29px] w-[35px] inline-block absolute translate-y-[-38%] top-[37px] rounded-[10px] right-[5px]"
-        alt="Card Brand" />
-      }
-      @if (isCardNumberValid() == false && isCardNumberTouched()) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field:
-        'PAYMENT.CARD_NUMBER' | translate } }}</p>
-      }
-    </div>
 
-    <div appAnimateOnScroll class="flex flex-col w-full slideFromLeftAnimation">
-      <label>{{'PAYMENT.CARD_EXPIRY_DATE' | translate}}</label>
-      <div id="card-expiry-element" dir="ltr" class="h-10 p-3 border border-solid focus:border-red-500 rounded-xl"
-        aria-placeholder="Expiry Date"></div>
-      @if (!isCardDateValid() && isCardDateTouched()) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field:
-        'PAYMENT.CARD_EXPIRY_DATE' | translate } }}</p>
-      }
-    </div>
+      <!-- Form Content -->
+      <div class="p-6 pt-4 flex flex-col gap-6">
 
-    <div appAnimateOnScroll class="flex flex-col w-full slideFromLeftAnimation">
-      <label>{{'PAYMENT.CARD_CVC' | translate}}</label>
-      <div id="card-cvc-element" dir="ltr" class="h-10 p-3 ltr! border border-solid focus:border-red-500 rounded-xl"
-        aria-placeholder="Cvc"></div>
-      @if (!isCardCvcValid() && isCardCvcTouched()) {
-      <p class="text-red-500 font-bold mt-2 text-[12px]">{{'AUTH.VALIDATIONS.INVALID' | translate: {field:
-        'PAYMENT.CARD_CVC' | translate } }}</p>
-      }
-    </div>
+        <!-- Cardholder Name -->
+        <div appAnimateOnScroll class="relative group">
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+            {{'PAYMENT.CARDHOLDER_NAME_LABEL' | translate}}
+            <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <div
+              class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+              <fa-icon [icon]="userIcon" class="text-sm"></fa-icon>
+            </div>
+            <input id="cardholder-name" formControlName="name" class="w-full ps-10 pe-4 py-3 rounded-xl border-2 transition-all duration-300 outline-none
+                          bg-white dark:bg-gray-900
+                          text-gray-800 dark:text-gray-100 placeholder:text-gray-400
+                          focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+              [class.border-purple-500]="paymentFormGroup.get('name')?.valid && paymentFormGroup.get('name')?.touched"
+              [class.border-red-500]="paymentFormGroup.get('name')?.invalid && paymentFormGroup.get('name')?.touched"
+              [class.border-gray-200]="!paymentFormGroup.get('name')?.touched" type="text"
+              placeholder="{{'PAYMENT.NAME_PLACEHOLDER' | translate}}" #cardHolderName />
+          </div>
+          @if (paymentFormGroup.get('name')?.invalid && paymentFormGroup.get('name')?.touched) {
+          <div class="animate-slide-down mt-2" appAnimateOnScroll>
+            @if (paymentFormGroup.get('name')?.hasError('required')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              <span>{{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.NAME_PLACEHOLDER' | translate} }}</span>
+            </span>
+            }
+            @if (paymentFormGroup.get('name')?.hasError('minlength')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 3, field: 'PAYMENT.NAME_PLACEHOLDER' | translate} }}
+            </span>
+            }
+          </div>
+          }
+        </div>
 
-    <button appAnimateOnScroll type="submit"
-      class="p-4 bg-[var(--primary-color)] text-white rounded-xl hover:translate-y-[-5px] hover:bg-purple-700 transition duration-300 ease-in-out slideFromLeftAnimation"
-      [disabled]="!isFormValid() || paymentFormGroup.invalid" [class.self-end]="isLangEnglish()">{{'PAYMENT.PAY' |
-      translate}}</button>
+        <!-- Address Section -->
+        <div appAnimateOnScroll class="relative">
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+            {{'PAYMENT.CARDHOLDER_ADDRESS_LABEL' | translate}}
+            <span class="text-red-500">*</span>
+          </label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Street -->
+            <div class="relative group">
+              <div
+                class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+                <fa-icon [icon]="locationIcon" class="text-sm"></fa-icon>
+              </div>
+              <input id="cardholder-address-street" formControlName="street" class="w-full ps-10 pe-3 py-3 rounded-xl border-2 transition-all duration-300 outline-none
+                            bg-white dark:bg-gray-900
+                            text-gray-800 dark:text-gray-100 placeholder:text-gray-400
+                            focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                [class.border-purple-500]="paymentFormGroup.get('street')?.valid && paymentFormGroup.get('street')?.touched"
+                [class.border-red-500]="paymentFormGroup.get('street')?.invalid && paymentFormGroup.get('street')?.touched"
+                [class.border-gray-200]="!paymentFormGroup.get('street')?.touched" type="text" #cardHolderStreet
+                placeholder="{{'PAYMENT.STREET_PLACEHOLDER' | translate}}" />
+            </div>
+
+            <!-- Zip Code -->
+            <div class="relative group">
+              <div
+                class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+                <fa-icon [icon]="zipIcon" class="text-sm"></fa-icon>
+              </div>
+              <input id="cardholder-address-zip" formControlName="zipCode" class="w-full ps-10 pe-3 py-3 rounded-xl border-2 transition-all duration-300 outline-none
+                            bg-white dark:bg-gray-900
+                            text-gray-800 dark:text-gray-100 placeholder:text-gray-400
+                            focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                [class.border-purple-500]="paymentFormGroup.get('zipCode')?.valid && paymentFormGroup.get('zipCode')?.touched"
+                [class.border-red-500]="paymentFormGroup.get('zipCode')?.invalid && paymentFormGroup.get('zipCode')?.touched"
+                [class.border-gray-200]="!paymentFormGroup.get('zipCode')?.touched" type="text" #cardHolderZipCode
+                placeholder="{{'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate}}" />
+            </div>
+
+            <!-- City -->
+            <div class="relative group">
+              <div
+                class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+                <fa-icon [icon]="cityIcon" class="text-sm"></fa-icon>
+              </div>
+              <input id="cardholder-address-city" formControlName="city" class="w-full ps-10 pe-3 py-3 rounded-xl border-2 transition-all duration-300 outline-none
+                            bg-white dark:bg-gray-900
+                            text-gray-800 dark:text-gray-100 placeholder:text-gray-400
+                            focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                [class.border-purple-500]="paymentFormGroup.get('city')?.valid && paymentFormGroup.get('city')?.touched"
+                [class.border-red-500]="paymentFormGroup.get('city')?.invalid && paymentFormGroup.get('city')?.touched"
+                [class.border-gray-200]="!paymentFormGroup.get('city')?.touched" type="text" #cardHolderCity
+                placeholder="{{'PAYMENT.CITY_PLACEHOLDER' | translate}}" />
+            </div>
+          </div>
+
+          <!-- Address Validation Errors -->
+          <div class="mt-2 space-y-1">
+            @if (paymentFormGroup.get('street')?.invalid && paymentFormGroup.get('street')?.touched) {
+            @if (paymentFormGroup.get('street')?.hasError('required')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.STREET_PLACEHOLDER' | translate} }}
+            </span>
+            }
+            @if (paymentFormGroup.get('street')?.hasError('minlength')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 3, field: 'PAYMENT.STREET_PLACEHOLDER' | translate}
+              }}
+            </span>
+            }
+            }
+            @if (paymentFormGroup.get('zipCode')?.invalid && paymentFormGroup.get('zipCode')?.touched) {
+            @if (paymentFormGroup.get('zipCode')?.hasError('required')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.ZIP_CODE_PLACEHOLDER' | translate} }}
+            </span>
+            }
+            @if (paymentFormGroup.get('zipCode')?.hasError('minlength')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 5, field: 'PAYMENT.ZIP_CODE_PLACEHOLDER' |
+              translate} }}
+            </span>
+            }
+            }
+            @if (paymentFormGroup.get('city')?.invalid && paymentFormGroup.get('city')?.touched) {
+            @if (paymentFormGroup.get('city')?.hasError('required')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.CITY_PLACEHOLDER' | translate} }}
+            </span>
+            }
+            @if (paymentFormGroup.get('city')?.hasError('minlength')) {
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.MIN_LENGTH' | translate: {length: 3, field: 'PAYMENT.CITY_PLACEHOLDER' | translate} }}
+            </span>
+            }
+            }
+          </div>
+        </div>
+
+        <!-- Card Number with Brand Icon -->
+        <div appAnimateOnScroll class="relative group">
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+            {{'PAYMENT.CARD_NUMBER' | translate}}
+            <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <div
+              class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+              <fa-icon [icon]="cardIcon" class="text-sm"></fa-icon>
+            </div>
+            <div id="card-number-element" dir="ltr" class="w-full ps-14 py-3 rounded-xl border-2 transition-all duration-300
+                     bg-white dark:bg-gray-900
+                     focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20">
+            </div>
+            @if(brandIcon() != ''){
+            <img [src]="brandIcon()" class="absolute top-1/2 -translate-y-1/2 h-[30px] w-[40px] rounded-full shadow-sm"
+              alt="Card Brand" [class.end-3]="isLangEnglish()" [class.start-3]="!isLangEnglish()" />
+            }
+          </div>
+          @if (!isCardNumberValid() && isCardNumberTouched()) {
+          <div class="animate-slide-down mt-2" appAnimateOnScroll>
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CARD_NUMBER' | translate} }}
+            </span>
+          </div>
+          }
+          @if (paymentFormGroup.get('cardNumber')?.hasError('required') && paymentFormGroup.get('cardNumber')?.touched)
+          {
+          <div class="animate-slide-down mt-2" appAnimateOnScroll>
+            <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+              <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+              {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.CARD_NUMBER' | translate} }}
+            </span>
+          </div>
+          }
+        </div>
+
+        <!-- Expiry & CVC Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Expiry Date -->
+          <div appAnimateOnScroll class="relative group">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+              {{'PAYMENT.CARD_EXPIRY_DATE' | translate}}
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <div
+                class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+                <fa-icon [icon]="calendarIcon" class="text-sm"></fa-icon>
+              </div>
+              <div id="card-expiry-element" dir="ltr" class="w-full ps-10 pe-3 py-3 rounded-xl border-2 transition-all duration-300
+                       bg-white dark:bg-gray-900
+                       focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20">
+              </div>
+            </div>
+            @if (!isCardDateValid() && isCardDateTouched()) {
+            <div class="animate-slide-down mt-2" appAnimateOnScroll>
+              <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+                <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+                {{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CARD_EXPIRY_DATE' | translate} }}
+              </span>
+            </div>
+            }
+            @if (paymentFormGroup.get('expiry')?.hasError('required') && paymentFormGroup.get('expiry')?.touched) {
+            <div class="animate-slide-down mt-2" appAnimateOnScroll>
+              <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+                <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+                {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.CARD_EXPIRY_DATE' | translate} }}
+              </span>
+            </div>
+            }
+          </div>
+
+          <!-- CVC -->
+          <div appAnimateOnScroll class="relative group">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+              {{'PAYMENT.CARD_CVC' | translate}}
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <div
+                class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+                <fa-icon [icon]="lockIcon" class="text-sm"></fa-icon>
+              </div>
+              <div id="card-cvc-element" dir="ltr" class="w-full ps-10 pe-3 py-3 rounded-xl border-2 transition-all duration-300
+                       bg-white dark:bg-gray-900
+                       focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20">
+              </div>
+            </div>
+            @if (!isCardCvcValid() && isCardCvcTouched()) {
+            <div class="animate-slide-down mt-2" appAnimateOnScroll>
+              <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+                <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+                {{'AUTH.VALIDATIONS.INVALID' | translate: {field: 'PAYMENT.CARD_CVC' | translate} }}
+              </span>
+            </div>
+            }
+            @if (paymentFormGroup.get('cvc')?.hasError('required') && paymentFormGroup.get('cvc')?.touched) {
+            <div class="animate-slide-down mt-2" appAnimateOnScroll>
+              <span class="flex items-center gap-1 text-red-500 text-xs font-medium">
+                <fa-icon [icon]="warningIcon" class="text-xs"></fa-icon>
+                {{'AUTH.VALIDATIONS.REQUIRED' | translate: {field: 'PAYMENT.CARD_CVC' | translate} }}
+              </span>
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-4">
+          <button appAnimateOnScroll type="submit" [disabled]="!isFormValid() || paymentFormGroup.invalid" class="group relative overflow-hidden px-8 py-3 rounded-xl
+                         bg-gradient-to-r from-purple-600 to-indigo-600
+                         hover:from-purple-700 hover:to-indigo-700
+                         transform hover:scale-[1.02] active:scale-[0.98]
+                         transition-all duration-300
+                         shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40
+                         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                         text-white font-semibold text-md
+                         flex items-center gap-2">
+
+            <!-- Button shine effect -->
+            <div
+              class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+            </div>
+
+            <span class="relative z-10 flex items-center gap-2">
+              <fa-icon [icon]="lockIcon" class="text-sm"></fa-icon>
+              {{'PAYMENT.PAY' | translate}}
+              <fa-icon [icon]="arrowIcon"
+                class="text-sm group-hover:translate-x-1 transition-transform duration-300"></fa-icon>
+            </span>
+          </button>
+        </div>
+
+        <!-- Secure Payment Notice -->
+        <div class="flex items-center justify-center gap-2 mt-2 text-xs text-gray-400">
+          <fa-icon [icon]="shieldIcon" class="text-purple-400"></fa-icon>
+          <span>{{'PAYMENT.SECURE_PAYMENT' | translate}}</span>
+        </div>
+
+      </div>
+    </div>
   </div>
 </form>
-}@else {
+} @else {
 <app-loader></app-loader>
 }

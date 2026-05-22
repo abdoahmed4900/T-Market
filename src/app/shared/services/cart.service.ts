@@ -1,3 +1,4 @@
+import { CartProduct } from './../../features/cart/cart.product';
 import { FirebaseErrorService } from '../../core/services/firebase.error.service';
 import { inject, Injectable } from "@angular/core";
 import {
@@ -16,7 +17,6 @@ import { collection, collectionData, doc, Firestore, query, where } from "@angul
 import { ProductsService } from "./products.service";
 import { fireStoreCollections } from "../../../environments/environment";
 import { Buyer } from "../../features/auth/user";
-import { CartProduct } from "../../features/cart/cart.product";
 import { runTransaction } from 'firebase/firestore';
 
 @Injectable({
@@ -33,6 +33,7 @@ export class CartService {
   totalCartProductsNumber$ = new BehaviorSubject<number>(0);
   private productsSubject = new BehaviorSubject<CartProduct[]>([]);
   products$ = this.productsSubject.asObservable();
+
   getAllCartProducts() {
     return collectionData(query(this.userCollectionRef, where('uid', '==', localStorage.getItem('token')!))).pipe(
       map(users => {
@@ -120,6 +121,11 @@ export class CartService {
       await transaction.update(userRef, { cartProducts: cartProducts });
       this.totalCartPrice$.next(oldPrice - (price * quantityToRemove));
       this.totalCartProductsNumber$.next(oldCount - quantityToRemove);
+      this.products$ = this.products$.pipe(
+        map((cartProducts) => {
+          return cartProducts.filter((product) => product.id != id);
+        })
+      )
     })).pipe(
       catchError((error) => {
         this.totalCartPrice$.next(oldPrice);
@@ -137,9 +143,6 @@ export class CartService {
       const snap = await transaction.get(userRef);
       const user = snap.data() as Buyer;
       const cartProducts: CartProduct[] = user.cartProducts ?? [];
-      console.log(JSON.stringify(user));
-      console.log(cartProducts);
-
       let item = cartProducts.find(item => item.id == productId);
       if (item) {
         item.quantity += (numberOfItems ?? 1);
@@ -177,8 +180,7 @@ export class CartService {
 
       cartProducts = this.filterProductsByQuantity(newQuantity, oldItemQuantity, itemPrice, cartProducts, id);
 
-      transaction.update(userRef, { cartProducts: cartProducts });
-
+      await transaction.update(userRef, { cartProducts: cartProducts });
     }
     )).pipe(
       catchError((error) => {

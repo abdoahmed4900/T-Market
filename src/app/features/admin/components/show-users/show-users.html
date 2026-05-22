@@ -1,6 +1,17 @@
-<main>
-  <h2 class="text-[24px] font-bold my-5">{{'SHOW_USERS.USERS' | translate}}</h2>
-
+<main class="my-12">
+  <header class="flex flex-col animate-fade-in-up my-6" appAnimateOnScroll [once]="false">
+    <div class="flex items-center gap-3 mb-2">
+      <div
+        class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+        <fa-icon [icon]="usersIcon" class="text-white text-xl"></fa-icon>
+      </div>
+      <h2
+        class="text-2xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{'ADMIN.USERS' | translate}}
+      </h2>
+    </div>
+    <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full ms-15"></div>
+  </header>
   <section class="users-section flex flex-col gap-5 w-full">
     @if (isLoaded()) {
     @for (item of showedUsers(); track item.uid) {

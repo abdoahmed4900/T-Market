@@ -1,34 +1,146 @@
-<main
-  class="border border-[var(--secondary-text-color)] rounded-xl p-6 flex flex-col flex-wrap justify-start gap-5 items-start my-3">
-  <section class="flex flex-row justify-between w-full flex-wrap gap-5">
-    <div class="order-details flex flex-row flex-wrap gap-5">
-      <p>{{'ORDERS.ORDER' | translate}} {{order()?.id}}</p>
-      <p class="text-[var(--secondary-text-color)]">{{order()!.orderDate}}</p>
+<main class="group relative rounded-2xl p-5 flex flex-col flex-wrap justify-start gap-5 items-start my-3
+            backdrop-blur-sm
+            border border-purple-100/50 dark:border-purple-800/30
+            shadow-md hover:shadow-xl hover:shadow-purple-500/10
+            transition-all duration-300 hover:-translate-y-1">
+
+  <!-- Decorative corner -->
+  <div class="absolute top-0 end-0 w-16 h-16 overflow-hidden pointer-events-none">
+    <div
+      class="absolute top-0 end-0 w-8 h-8 bg-gradient-to-bl from-purple-400/20 to-transparent transform rotate-45 translate-x-4 -translate-y-4">
     </div>
-    <div class="order-item-actions flex flex-row flex-wrap gap-5">
-      <p class="p-2 border-0 rounded-xl text-white" [class.bg-red-700]="order()?.status == 'CANCELLED'"
-        [class.bg-yellow-500]="order()?.status == 'PENDING'" [class.bg-green-500]="order()?.status == 'SHIPPED'"
-        [class.bg-green-700]="order()?.status == 'DELIVERED'">{{order()!.status! | translate}}</p>
-      <a class="border rounded-xl p-2" [routerLink]="['/order/',order()?.id]">{{'ORDERS.DETAILS' | translate}}</a>
+  </div>
+
+  <!-- Order Header -->
+  <section class="flex flex-row justify-between w-full flex-wrap gap-4 items-center">
+    <div class="order-details flex flex-row flex-wrap gap-4 items-center">
+      <div class="flex items-center gap-2">
+        <div
+          class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-md">
+          <fa-icon [icon]="orderIcon" class="text-white text-xs"></fa-icon>
+        </div>
+        <p class="font-bold text-gray-800 dark:text-gray-200">
+          {{'ORDERS.ORDER' | translate}}
+          <span class="text-purple-600 dark:text-purple-400">{{order()?.id}}</span>
+        </p>
+      </div>
+      <div class="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+        <fa-icon [icon]="calendarIcon" class="text-xs"></fa-icon>
+        <p class="text-sm">{{order()!.orderDate | date:'mediumDate'}}</p>
+      </div>
+    </div>
+
+    <div class="order-item-actions flex flex-row flex-wrap gap-3 items-center">
+      <!-- Status Badge -->
+      <div class="relative">
+        <div class="absolute inset-0 rounded-xl blur-md opacity-50" [class.bg-red-500]="order()?.status == 'CANCELLED'"
+          [class.bg-yellow-500]="order()?.status == 'PENDING'" [class.bg-blue-500]="order()?.status == 'SHIPPED'"
+          [class.bg-green-500]="order()?.status == 'DELIVERED'"></div>
+
+        <p class="relative px-3 py-1.5 rounded-xl text-white text-sm font-semibold flex items-center gap-2 shadow-md"
+          [class.bg-gradient-to-r]="true" [class.from-red-600]="order()?.status == 'CANCELLED'"
+          [class.to-red-700]="order()?.status == 'CANCELLED'" [class.from-yellow-500]="order()?.status == 'PENDING'"
+          [class.to-yellow-600]="order()?.status == 'PENDING'" [class.from-blue-500]="order()?.status == 'SHIPPED'"
+          [class.to-blue-600]="order()?.status == 'SHIPPED'" [class.from-green-500]="order()?.status == 'DELIVERED'"
+          [class.to-green-600]="order()?.status == 'DELIVERED'">
+          <fa-icon [icon]="getStatusIcon(order()!.status!)" class="text-xs"></fa-icon>
+          {{order()!.status! | translate}}
+        </p>
+      </div>
+
+      <!-- View Details Link -->
+      <a class="group/link flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-purple-200 dark:border-purple-800/50
+                hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20
+                transition-all duration-300 text-purple-600 dark:text-purple-400 font-medium text-sm"
+        [routerLink]="['/order/',order()?.id]">
+        {{'ORDERS.DETAILS' | translate}}
+        <fa-icon [icon]="arrowIcon"
+          class="text-xs group-hover/link:translate-x-1 transition-transform duration-300"></fa-icon>
+      </a>
+
+      <!-- Admin Actions -->
       @if (isAdmin()) {
-      <div class="order-status-actions flex flex-row flex-wrap gap-5">
+      <div class="order-status-actions flex flex-row flex-wrap gap-2">
         @if (order()!.status == 'PENDING') {
-        <button class="border-0 rounded-xl text-white p-2 bg-green-500"
-          (click)="changeOrderStatus('SHIPPED')">{{'ORDERS.SHIP_ORDER' | translate}}</button>
-        <button class="border-0 rounded-xl text-white p-2 bg-red-700"
-          (click)="changeOrderStatus('CANCELLED')">{{'ORDERS.CANCEL_ORDER' | translate}}</button>
+        <button class="group/btn relative overflow-hidden px-4 py-2 rounded-xl text-white text-sm font-semibold
+                          bg-gradient-to-r from-green-500 to-green-600
+                          hover:from-green-600 hover:to-green-700
+                          transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-green-500/30"
+          (click)="changeOrderStatus('SHIPPED')">
+          <div
+            class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+          </div>
+          <span class="relative z-10 flex items-center gap-2">
+            <fa-icon [icon]="truckIcon" class="text-xs"></fa-icon>
+            {{'ORDERS.SHIP_ORDER' | translate}}
+          </span>
+        </button>
+
+        <button class="group/btn relative overflow-hidden px-4 py-2 rounded-xl text-white text-sm font-semibold
+                          bg-gradient-to-r from-red-500 to-red-600
+                          hover:from-red-600 hover:to-red-700
+                          transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-red-500/30"
+          (click)="changeOrderStatus('CANCELLED')">
+          <div
+            class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+          </div>
+          <span class="relative z-10 flex items-center gap-2">
+            <fa-icon [icon]="cancelIcon" class="text-xs"></fa-icon>
+            {{'ORDERS.CANCEL_ORDER' | translate}}
+          </span>
+        </button>
         }
+
         @if (order()?.status == 'SHIPPED') {
-        <button class="border-0 text-white rounded-xl p-2 bg-green-700"
-          (click)="changeOrderStatus('DELIVERED')">{{'ORDERS.DELIVER_ORDER' | translate}}</button>
+        <button class="group/btn relative overflow-hidden px-4 py-2 rounded-xl text-white text-sm font-semibold
+                          bg-gradient-to-r from-green-600 to-green-700
+                          hover:from-green-700 hover:to-green-800
+                          transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-green-500/30"
+          (click)="changeOrderStatus('DELIVERED')">
+          <div
+            class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent">
+          </div>
+          <span class="relative z-10 flex items-center gap-2">
+            <fa-icon [icon]="deliveredIcon" class="text-xs"></fa-icon>
+            {{'ORDERS.DELIVER_ORDER' | translate}}
+          </span>
+        </button>
         }
       </div>
       }
     </div>
   </section>
-  <p>{{order()?.address}}</p>
-  <section class="order-summary flex flex-row flex-wrap gap-5">
-    <p>{{order()?.totalQuantity}} {{'ORDERS.ITEMS' | translate}}</p>
-    <p>{{order()?.totalPrice | currency }}</p>
+
+  <!-- Address -->
+  <div class="flex items-start gap-2 w-full border-t border-purple-100 dark:border-purple-800/30 pt-3 mt-2">
+    <fa-icon [icon]="locationIcon" class="text-purple-400 text-sm mt-0.5"></fa-icon>
+    <p class="text-sm text-gray-600 dark:text-gray-300 flex-1">{{order()?.address}}</p>
+  </div>
+
+  <!-- Order Summary -->
+  <section
+    class="order-summary flex flex-row flex-wrap gap-6 pt-2 border-t border-purple-100 dark:border-purple-800/30 w-full">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+        <fa-icon [icon]="itemsIcon" class="text-purple-500 text-sm"></fa-icon>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{'ORDERS.ITEMS' | translate}}</p>
+        <p class="font-semibold text-gray-800 dark:text-gray-200">{{order()?.totalQuantity}}</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+        <fa-icon [icon]="priceIcon" class="text-purple-500 text-sm"></fa-icon>
+      </div>
+      <div>
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{'ORDERS.TOTAL' | translate}}</p>
+        <p class="font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+          {{order()?.totalPrice | currency}}
+        </p>
+      </div>
+    </div>
   </section>
+
 </main>

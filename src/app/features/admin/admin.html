@@ -1,62 +1,194 @@
-<header class="flex flex-row gap-10 mt-10 items-center header">
+<header class="mt-10 items-center header relative">
+  <!-- Animated background elements -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div
+      class="absolute -top-40 -end-40 w-80 h-80 bg-purple-300/20 dark:bg-purple-600/10 rounded-full blur-3xl animate-float-slow"
+      appAnimateOnScroll [once]="false">
+    </div>
+    <div
+      class="absolute -bottom-40 -start-40 w-80 h-80 bg-indigo-300/20 dark:bg-indigo-600/10 rounded-full blur-3xl animate-float-delayed"
+      appAnimateOnScroll [once]="false">
+    </div>
+  </div>
+
   @if (showSidebar()){
   <app-sidebar></app-sidebar>
   }
-  <h1 class="text-[24px] font-bold">{{'DASHBOARD' | translate}}</h1>
-</header>
-<main appAnimateOnScroll class="flex mt-10 flex-col gap-10 slideFromLeftAnimation">
-  <section class="flex flex-col gap-10">
-    <section aria-describedby="dashbard-numbers"
-      class="grid grid-cols-[repeat(auto-fit,minmax(270px,1fr))] gap-5 w-full">
-      <app-statistics-card [showCard]="isTotalOrdersLoaded()" [statisticNumber]="totalOrdersNumber"
-        statisticName="ADMIN.TOTAL_ORDERS"></app-statistics-card>
-      <app-statistics-card [showCard]="isShippedOrdersLoaded()" [statisticNumber]="shippedOrdersNumber"
-        statisticName="ADMIN.SHIPPED_ORDERS"></app-statistics-card>
-      <app-statistics-card [showCard]="isDeliveredOrdersLoaded()" [statisticNumber]="deliveredOrdersNumber"
-        statisticName="ADMIN.DELIVERED_ORDERS"></app-statistics-card>
-      <app-statistics-card [showCard]="isCancelledOrdersLoaded()" [statisticNumber]="cancelledOrdersNumber"
-        statisticName="ADMIN.CANCELLED_ORDERS"></app-statistics-card>
-      <app-statistics-card [showCard]="isPendingOrdersLoaded()" [statisticNumber]="pendingOrdersNumber"
-        statisticName="ADMIN.PENDING_ORDERS"></app-statistics-card>
-    </section>
-    <section aria-describedby="dashboard-sold-items" class="grid grid-cols-1 gap-5 w-full">
-      <header>
-        <h3 class="text-[24px] font-bold">{{'ADMIN.STOCK_ITEMS' | translate}}</h3>
-      </header>
-      <app-all-products></app-all-products>
-    </section>
-    <section class="orders-section">
-      <header class="my-5">
-        <h3 class="text-[24px] font-bold">{{'ADMIN.STATISTICS' | translate}}</h3>
-      </header>
-      @if(totalOrdersNumber == 0){
-      <div class="empty-products mx-auto flex flex-col gap-5 w-full justify-center items-center my-15">
-        <img class="w-[200px] h-[200px]"
-          src="https://cdni.iconscout.com/illustration/premium/thumb/no-orders-yet-illustration-svg-download-png-13391226.png"
-          alt="no orders added yet">
-        <p class="text-[16px] font-bold text-center">{{'ADMIN.NO_ORDERS' | translate}}</p>
+
+  <div class="flex flex-col animate-fade-in-up my-6" appAnimateOnScroll [once]="false">
+    <div class="flex items-center gap-3 mb-2">
+      <div
+        class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+        <fa-icon [icon]="dashboardIcon" class="text-white text-xl"></fa-icon>
       </div>
-      }@else {
-      <section class="charts grid gap-5 grid-cols-[repeat(auto-fit,minmax(270px,1fr))]">
-        <div class="status-chart p-4 h-[350px] border rounded-xl flex flex-col flex-wrap gap-3">
-          <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_STATUS_COUNT' | translate}}</p>
+      <h2
+        class="text-2xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{'DASHBOARD' | translate}}
+      </h2>
+    </div>
+    <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full ms-15"></div>
+  </div>
+</header>
+
+<main class="flex mt-10 flex-col gap-10">
+  <div>
+
+    <!-- Statistics Cards Section -->
+    <section class="flex flex-col gap-10">
+
+      <section aria-describedby="dashboard-numbers"
+        class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 w-full">
+
+        <!-- Total Orders Card -->
+        <div class="group card-hover">
+          <app-statistics-card [showCard]="isTotalOrdersLoaded()" [statisticNumber]="totalOrdersNumber()"
+            statisticName="ADMIN.TOTAL_ORDERS"></app-statistics-card>
+        </div>
+
+        <!-- Shipped Orders Card -->
+        <div class="group card-hover">
+          <app-statistics-card [showCard]="isShippedOrdersLoaded()" [statisticNumber]="shippedOrdersNumber()"
+            statisticName="ADMIN.SHIPPED_ORDERS"></app-statistics-card>
+        </div>
+
+        <!-- Delivered Orders Card -->
+        <div class="group card-hover">
+          <app-statistics-card [showCard]="isDeliveredOrdersLoaded()" [statisticNumber]="deliveredOrdersNumber()"
+            statisticName="ADMIN.DELIVERED_ORDERS"></app-statistics-card>
+        </div>
+
+        <!-- Cancelled Orders Card -->
+        <div class="group card-hover">
+          <app-statistics-card [showCard]="isCancelledOrdersLoaded()" [statisticNumber]="cancelledOrdersNumber()"
+            statisticName="ADMIN.CANCELLED_ORDERS"></app-statistics-card>
+        </div>
+
+        <!-- Pending Orders Card -->
+        <div class="group card-hover">
+          <app-statistics-card [showCard]="isPendingOrdersLoaded()" [statisticNumber]="pendingOrdersNumber()"
+            statisticName="ADMIN.PENDING_ORDERS"></app-statistics-card>
+        </div>
+      </section>
+    </section>
+
+    <!-- All Products Section -->
+    <app-all-products></app-all-products>
+
+
+    <!-- Statistics & Charts Section -->
+    <section class="orders-section my-6">
+      <header class="flex flex-col animate-fade-in-up my-6" appAnimateOnScroll [once]="false">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <fa-icon [icon]="chartIcon" class="text-white text-xl"></fa-icon>
+          </div>
+          <h2
+            class="text-2xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            {{'ADMIN.STATISTICS' | translate}}
+          </h2>
+        </div>
+        <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full ms-15"></div>
+      </header>
+
+      @if(totalOrdersNumber() == 0){
+      <!-- Enhanced Empty State -->
+      <div
+        class="empty-products mx-auto flex flex-col gap-6 w-full justify-center items-center my-15 p-8 rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border border-purple-100 dark:border-purple-800/30">
+        <div class="relative">
+          <div
+            class="w-40 h-40 rounded-full bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900/40 dark:to-indigo-900/40 flex items-center justify-center animate-float-slow"
+            appAnimateOnScroll [once]="false">
+            <fa-icon [icon]="emptyOrdersIcon" class="text-5xl text-purple-400"></fa-icon>
+          </div>
+          <div class="absolute -top-2 -end-2 w-4 h-4 bg-purple-400 rounded-full animate-pulse" appAnimateOnScroll
+            [once]="false"></div>
+        </div>
+        <p
+          class="text-lg font-bold text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+          {{'ADMIN.NO_ORDERS' | translate}}
+        </p>
+        <p class="text-sm text-gray-500 text-center">{{'ADMIN.NO_ORDERS_SUBTITLE' | translate}}</p>
+      </div>
+      } @else {
+      <!-- Charts Grid with Enhanced Styling -->
+      <section class="charts grid gap-6 grid-cols-[repeat(auto-fit,minmax(350px,1fr))]">
+
+        <!-- Bar Chart Card -->
+        <div
+          class="p-5 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-purple-100/50 dark:border-purple-800/30 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div
+                class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
+                <fa-icon [icon]="barChartIcon" class="text-white text-sm"></fa-icon>
+              </div>
+              <p class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{'ADMIN.ORDERS_STATUS_COUNT' |
+                translate}}</p>
+            </div>
+            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse" appAnimateOnScroll [once]="false"></div>
+          </div>
+
           @if (isStatusChartInitialized() == false) {
-          <div class="skeleton-basic h-[200px] w-full"></div>
+          <div class="space-y-3">
+            <div class="skeleton-basic h-[200px] w-full rounded-xl"></div>
+            <div class="skeleton-basic h-4 w-32 mx-auto rounded-lg"></div>
+          </div>
           }
-          <canvas #barChartCanvas id="barChartCanvas"></canvas>
+          <canvas #barChartCanvas id="barChartCanvas" class="w-full"></canvas>
         </div>
-        <div class="date-chart p-4 h-[350px] border rounded-xl flex flex-col flex-wrap gap-3">
-          <p class="text-[20px] font-bold">{{'ADMIN.ORDERS_PIE_COUNT' | translate}}</p>
+
+        <!-- Pie Chart Card -->
+        <div
+          class="p-5 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-purple-100/50 dark:border-purple-800/30 shadow-lg hover:shadow-xl transition-all duration-300 group">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div
+                class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+                <fa-icon [icon]="pieChartIcon" class="text-white text-sm"></fa-icon>
+              </div>
+              <p class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{'ADMIN.ORDERS_PIE_COUNT' | translate}}
+              </p>
+            </div>
+            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse" appAnimateOnScroll [once]="false"></div>
+          </div>
+
           @if (isPieChartInitialized() == false) {
-          <div class="w-full h-[200px] skeleton-basic"></div>
+          <div class="space-y-3">
+            <div class="skeleton-basic h-[200px] w-full rounded-full"></div>
+            <div class="skeleton-basic h-4 w-32 mx-auto rounded-lg"></div>
+          </div>
           }
-          <canvas #pieChartCanvas id="pieChartCanvas"
-            [style.display]="isPieChartInitialized() ? 'block' : 'none'"></canvas>
+          <canvas #pieChartCanvas id="pieChartCanvas" [style.display]="isPieChartInitialized() ? 'block' : 'none'"
+            class="w-full"></canvas>
         </div>
+
       </section>
       }
     </section>
-    <app-show-users></app-show-users>
-    <app-orders></app-orders>
-  </section>
+
+    <!-- Users Section -->
+    <section>
+      <app-show-users></app-show-users>
+    </section>
+
+    <!-- Orders Section -->
+    <section>
+      <header class="flex flex-col animate-fade-in-up my-6" appAnimateOnScroll [once]="false">
+        <div class="flex items-center gap-3 mb-2">
+          <div
+            class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <fa-icon [icon]="ordersIcon" class="text-white text-xl"></fa-icon>
+          </div>
+          <h2
+            class="text-2xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            {{'ADMIN.RECENT_ORDERS' | translate}}
+          </h2>
+        </div>
+        <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full ms-15"></div>
+      </header>
+      <app-orders></app-orders>
+    </section>
+
+  </div>
 </main>

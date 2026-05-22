@@ -1,6 +1,95 @@
-<div class="product-item-skeleton rounded-xl p-4 flex flex-col gap-3 seller-products">
-    <h2 class="text-[16px]">{{'ADMIN.PRODUCT_NAME' | translate}} : {{product()!.name}}</h2>
-    <h2 class="text-[16px]">{{'PRICE' | translate}} : {{product()!.price | currency}}</h2>
-    <h2 class="text-[16px]">{{'ADMIN.SOLD' | translate}} : {{product()!.soldItemsNumber}} {{'ADMIN.PIECES' | translate}}</h2>
-    <h2 class="text-[16px]">{{'ADMIN.IN_STOCK' | translate}} : {{product()!.stock}} {{'ADMIN.PIECES' | translate}}</h2>
+<div
+  class="group relative flex lg:flex-row flex-col gap-4 cursor-pointer rounded-xl transition-all duration-300 hover:-translate-y-1">
+
+
+
+  <!-- Product Image Container -->
+  <div
+    class="relative w-full lg:w-[200px] lg:h-[150px] h-[250px] p-2 overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20">
+    <img class="rounded-xl h-full w-full object-cover transition-all duration-500 group-hover:scale-110"
+      [src]="product()!.imageUrls![0]" [alt]="product().name">
+
+    <!-- Image overlay gradient -->
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl">
+    </div>
+  </div>
+
+  <!-- Product Details -->
+  <div class="product-item-details rounded-xl py-3 pe-4 flex flex-col gap-2 flex-1">
+
+    <!-- Product Name -->
+    <div class="flex items-center gap-2">
+      <div class="w-1 h-5 bg-gradient-to-b from-purple-500 to-indigo-500 rounded-full"></div>
+      <h2 class="text-sm md:text-base font-bold transition-colors duration-300 line-clamp-1">
+        {{'ADMIN.PRODUCT_NAME' | translate}}:
+        <span class="font-semibold">{{product()!.name}}</span>
+      </h2>
+    </div>
+
+    <!-- Price -->
+    <div class="flex items-center gap-2 text-sm">
+      <fa-icon [icon]="priceIcon" class="text-purple-500 text-sm w-4"></fa-icon>
+      <span class="text-gray-600 dark:text-gray-400">{{'PRICE' | translate}}:</span>
+      <span class="font-bold text-base bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {{product()!.price | currency}}
+      </span>
+    </div>
+
+    <!-- Sold Items -->
+    <div class="flex items-center gap-2 text-sm">
+      <fa-icon [icon]="soldIcon" class="text-green-500 text-sm w-4"></fa-icon>
+      <span class="text-gray-600 dark:text-gray-400">{{'ADMIN.SOLD' | translate}}:</span>
+      <span class="font-semibold text-gray-800 dark:text-gray-200">
+        {{product()!.soldItemsNumber || 0}}
+        <span class="text-xs text-gray-500">{{'ADMIN.PIECES' | translate}}</span>
+      </span>
+    </div>
+
+    <!-- Stock Status -->
+    <div class="flex items-center gap-2 text-sm">
+      <fa-icon [icon]="stockIcon" class="text-blue-500 text-sm w-4"></fa-icon>
+      <span class="text-gray-600 dark:text-gray-400">{{'ADMIN.IN_STOCK' | translate}}:</span>
+
+      @if (product()!.stock > 0) {
+      <div class="flex items-center gap-1">
+        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        <span class="font-semibold text-green-600 dark:text-green-400">
+          {{product()!.stock}} {{'ADMIN.PIECES' | translate}}
+        </span>
+      </div>
+      } @else {
+      <div class="flex items-center gap-1">
+        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+        <span class="font-semibold text-red-500">
+          {{'PRODUCT_DETAILS.OUT_OF_STOCK' | translate}}
+        </span>
+      </div>
+      }
+    </div>
+
+    <!-- Stock Progress Bar (if stock is low) -->
+    @if (product()!.stock > 0 && product()!.stock < 10) { <div class="mt-1">
+      <div class="flex justify-between text-xs text-gray-500 my-2">
+        <span>{{'ADMIN.LOW_STOCK_WARNING' | translate}}</span>
+        <span>{{product()!.stock}} {{'ADMIN.PIECES' | translate}}</span>
+      </div>
+      <div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full transition-all duration-500"
+          [style.width.%]="(product()!.stock / 50) * 100"></div>
+      </div>
+  </div>
+  }
+
+</div>
+
+<!-- View details indicator on hover -->
+<div
+  class="absolute bottom-3 end-4 opacity-0 group-hover:opacity-100 group-hover:mb-10 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+  <div class="flex items-center gap-1 text-purple-500 text-xs font-medium" [routerLink]="['/product', product().id]">
+    <span>{{'VIEW_DETAILS' | translate}}</span>
+    <fa-icon [icon]="arrowIcon" class="text-xs"></fa-icon>
+  </div>
+</div>
+
 </div>
