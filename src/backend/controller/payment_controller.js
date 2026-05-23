@@ -2,6 +2,7 @@ const stripe = require('../config/stripe');
 
 exports.createPaymentIntent = async (req, res) => {
     const { amount } = req.body;
+    console.log('Received amount:', amount);
     try {
         const paymentIntent = await stripe.paymentIntents.create(
             {
@@ -12,6 +13,6 @@ exports.createPaymentIntent = async (req, res) => {
         );
         res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
-        res.status(500).json({ error: error.statusText });
+        res.status(500).json({ error: error.message ?? error.statusText });
     }
 }

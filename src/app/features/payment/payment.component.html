@@ -197,7 +197,8 @@
           </label>
           <div class="relative">
             <div
-              class="absolute start-3 top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10">
+              class="absolute top-1/2 -translate-y-1/2 text-purple-400 group-focus-within:text-purple-600 transition-colors z-10"
+              [class.start-3]="isLangEnglish()" [class.end-3]="!isLangEnglish()">
               <fa-icon [icon]="cardIcon" class="text-sm"></fa-icon>
             </div>
             <div id="card-number-element" dir="ltr" class="w-full ps-14 py-3 rounded-xl border-2 transition-all duration-300

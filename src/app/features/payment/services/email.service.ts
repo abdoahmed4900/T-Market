@@ -25,7 +25,7 @@ export class EmailService {
         email = '';
       }
     }
-    await firstValueFrom(this.httpService.post('https://backend-187372m9k-abdoahmed4900s-projects.vercel.app/api/send-email', {
+    await firstValueFrom(this.httpService.post('http://localhost:4242/api/send-email', {
       name: name,
       message: message,
       email: email

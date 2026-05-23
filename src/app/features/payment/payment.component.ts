@@ -1,13 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import {
-  afterNextRender,
-  Component,
-  computed,
-  ElementRef,
-  inject,
-  linkedSignal,
-  signal,
-} from '@angular/core';
+import { afterNextRender, Component, computed, ElementRef, inject, signal } from '@angular/core';
 import {
   loadStripe,
   Stripe,
@@ -98,9 +90,7 @@ export class PaymentComponent {
     return this.isCardCvcValid() && this.isCardDateValid() && this.isCardNumberValid() && this.cartService.totalCartPrice$.value > 0;
   });
 
-  isLangEnglish = linkedSignal(() => {
-    return (this.translateService.currentLang ?? 'en') == 'en';
-  })
+  isLangEnglish = signal((localStorage.getItem('language') ?? 'en') == 'en')
 
   paymentFormGroup = this.formBuilder.group(
     {
