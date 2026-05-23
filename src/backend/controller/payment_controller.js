@@ -2,7 +2,6 @@ const stripe = require('../config/stripe');
 
 exports.createPaymentIntent = async (req, res) => {
     const { amount } = req.body;
-    console.log('Received amount:', amount);
     try {
         const paymentIntent = await stripe.paymentIntents.create(
             {
