@@ -7,5 +7,4 @@ const { sendEmail } = require('../controller/email_controller')
 
 router.post('/create-payment-intent', createPaymentIntent)
 router.post('/send-email', sendEmail)
-router.get('/get-notification-key', getNotificationKey)
 module.exports = router;
