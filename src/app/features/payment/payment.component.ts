@@ -168,7 +168,7 @@ export class PaymentComponent {
     return {
       style: {
         base: {
-          color: 'white',
+          color: 'black',
           fontFamily: 'Arial, sans-serif',
           fontSize: '16px',
           '::placeholder': { color: isDark ? '#b3b3b3' : 'gray' },
