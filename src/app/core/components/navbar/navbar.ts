@@ -70,7 +70,7 @@ export class Navbar implements OnInit {
   cartService = inject(CartService);
   translate = inject(TranslateService)
 
-  cartItemNumber = this.cartService.totalCartProductsNumber$.asObservable();
+  cartNumber = signal(0);
 
   translateService = inject(TranslateService);
   destroy$ = new Subject<void>();
@@ -89,9 +89,7 @@ export class Navbar implements OnInit {
       this.isBuyer = signal(this.authService.userRole() == 'buyer' || this.authService.userRole() == '');
       this.isNotBuyer = signal(this.authService.userRole() == 'seller' || this.authService.userRole() == 'admin');
       this.isLoggedIn = this.authService.isLoggedIn;
-      if (this.isBuyer()) {
-        this.cartService.getAllCartProducts().pipe(takeUntil(this.destroy$)).subscribe()
-      }
+
     })
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -140,6 +138,7 @@ export class Navbar implements OnInit {
     this.authService.logout().pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         loader.close();
+        this.cartNumber.set(0);
         this.toastService.success(this.translateService.instant('SUCCESS_MESSAGES.LOGOUT'));
         this.router.navigate(['/login']);
       },

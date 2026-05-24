@@ -1,6 +1,6 @@
 @let orderDetails = (order | async)!;
 
-@if (isLoaded()) {
+@if (isLoaded() && orderDetails) {
 <main class="flex flex-col w-full mt-10" id="order-details">
 
   <!-- Header Section -->

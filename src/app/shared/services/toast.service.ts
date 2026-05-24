@@ -31,10 +31,6 @@ export class ToastService implements OnDestroy {
   }
 
   error(message: string, duration?: number) {
-    if (message.includes('undefined')) {
-      this.show(this.translateService.instant('POOR_INTERNET'), 'toast-error', duration);
-      return;
-    }
     this.show(message, 'toast-error', duration);
   }
 

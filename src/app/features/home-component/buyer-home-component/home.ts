@@ -33,7 +33,9 @@ export class BuyerHomeComponent implements OnInit, OnDestroy {
     this.allProducts = this.productService.getAllProducts();
     this.loadCategories();
     this.loadBrands();
-    this.cartService.getAllCartProducts().pipe(takeUntil(this.destroy$)).subscribe()
+    if (localStorage.getItem('role') == 'buyer') {
+      this.cartService.getAllCartProducts().pipe(takeUntil(this.destroy$)).subscribe()
+    }
   }
 
   private loadCategories() {

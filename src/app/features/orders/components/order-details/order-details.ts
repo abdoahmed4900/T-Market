@@ -51,7 +51,7 @@ export class OrderDetails {
     this.id = this.route.snapshot.paramMap.get('id')!;
     this.order = this.orderService.getOrderById(this.id).pipe(
       tap(() => {
-        // this.isLoaded.set(true);
+        this.isLoaded.set(true);
       })
     );
   }

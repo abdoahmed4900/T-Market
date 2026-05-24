@@ -1,4 +1,3 @@
-@let cartNumber = (cartItemNumber | async)!;
 <nav class="bg-[var(--main-bg-color)] border-b-2 border-gray-200 py-3 animate-[slideFromTop]">
   <div class="flex items-center pt-3 gap-10 max-w-[1400px] relative mx-auto md:px-20 px-10 justify-between">
     <section class="title-and-nav flex flex-row items-center">
@@ -87,8 +86,8 @@
               (click)="toggleNavbar()">
               <fa-icon [icon]="cartIcon"></fa-icon>
               {{'NAVBAR.CART' | translate}}
-              @if (cartNumber > 0) {
-              <span class="bg-purple-600 text-white text-xs rounded-full px-1.5 py-0.5">{{cartNumber}}</span>
+              @if (cartNumber() > 0) {
+              <span class="bg-purple-600 text-white text-xs rounded-full px-1.5 py-0.5">{{cartNumber()}}</span>
               }
             </button>
           </div>
@@ -171,10 +170,10 @@
             <span>{{'NAVBAR.CART' | translate}}</span>
           </span>
         </button>
-        @if (cartNumber > 0) {
+        @if (cartNumber() > 0) {
         <div
           class="absolute -top-1 -end-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-center rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg shadow-purple-500/30">
-          <p class="text-[10px] font-bold">{{cartNumber}}</p>
+          <p class="text-[10px] font-bold">{{cartNumber()}}</p>
         </div>
         }
       </div>

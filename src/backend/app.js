@@ -9,6 +9,9 @@ app.use(cors({
     credentials: true,
 }));
 app.use('/api', router);
-app.listen(4242, () => {
-    console.log('Server is running on port 4242');
-});
+module.exports = app;
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(4242, () => {
+      console.log('Server is running on port 4242');
+  });
+}

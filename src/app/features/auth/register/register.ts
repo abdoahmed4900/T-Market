@@ -128,6 +128,11 @@ export class RegisterComponent {
       const dialogRef = this.matDialog.open(Loader, {
         disableClose: true,
       })
+      console.log(this.getFormControl('email'));
+      console.log(this.getFormControl('name'));
+      console.log(this.getFormControl('password'));
+      console.log(this.selectedRole);
+
       this.auth.register(this.registerForm.get('email')?.value, this.registerForm.get('password')?.value, this.registerForm.get('name')?.value, this.selectedRole).pipe(takeUntil(this.destroy$)).subscribe({
         next: (value) => {
           dialogRef.close();

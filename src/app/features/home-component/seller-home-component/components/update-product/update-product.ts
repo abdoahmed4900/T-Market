@@ -57,7 +57,7 @@ export class UpdateProduct {
   productFormGroup = this.fb.group({
     name: ['', [Validators.minLength(3), Validators.required]],
     description: ['', [Validators.minLength(50), Validators.required]],
-    stock: [0, [numericLengthValidator(2), Validators.required]],
+    stock: [0, [numericLengthValidator(1), Validators.required]],
     price: [0, [numericLengthValidator(2), Validators.required]],
   })
   destroy$ = new Subject<void>();

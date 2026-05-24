@@ -149,13 +149,18 @@ export class AuthService {
     };
 
     userData = roleHandlers[userData.role as 'admin' | 'seller' | 'buyer'];
+    console.log(JSON.stringify(userData));
+
     await setDoc(doc(this.firestore, fireStoreCollections.users, value.user.uid), userData);
   }
 
   logout() {
     return from(this.firebaseAuth.signOut()).pipe(
       tap(() => {
-        localStorage.clear()
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('isLogin');
+        localStorage.removeItem('name');
         this.cartService.clearCart();
         this.userRole.set('')
         this.isLoggedIn.set(false)

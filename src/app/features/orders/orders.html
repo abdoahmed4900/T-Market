@@ -14,8 +14,6 @@
         {{'ORDERS.ORDERS_LIST' | translate}}
       </h1>
     </div>
-    <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full"></div>
-    <p class="text-gray-500 dark:text-gray-400 mt-2">{{'ORDERS.SUBTITLE' | translate}}</p>
   </header>
 
   <!-- Filters Section -->
@@ -111,8 +109,8 @@
 
   <!-- Orders List Section -->
   <section class="mt-6">
-    @if (isLoaded()) {
-    @if (orders!.length > 0) {
+    @if (isLoaded() && orders) {
+    @if (orders.length > 0) {
     <!-- Orders Grid -->
     <div class="orders-grid flex flex-col gap-4">
       @for (item of showedProducts(); track item.id; let i = $index) {
