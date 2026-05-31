@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: Generate environment.ts
+        run: |
+          mkdir -p src/environments
+          echo "export const environment =  { 
+            production: false,
+            firebase: {
+            apiKey: '${{ secrets.APIKEY }}',
+            authDomain: '${{ secrets.AUTHDOMAIN }}',
+            projectId: '${{ secrets.PROJECTID }}',
+            storageBucket: '${{ secrets.STORAGEBUCKET }}',
+            messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}',
+            appId: '${{ secrets.APPID }}',
+            measurementId: '${{ secrets.MEASUREMENTID }}'
+           }
+          };export const stripePublicKey = '${{ secrets.STRIPE_PUBLIC_KEY }}';
+          export const stripeSecretKey = '${{ secrets.STRIPE_SECRET_KEY }}';
+          export const cloudinary = {
+            cloudName: 'dghij1dey',
+            uploadPreset: 'volt_tech'
+          }
+          export const fireStoreCollections = {
+            users: 'users',
+            brands: 'brands',
+            categories: 'categories',
+            products: 'products',orders: 'orders',support: 'support'};" > src/environments/environment.ts
+      - name: Generate backend .env
+        run: |
+          mkdir -p backend
+          echo "
+          EMAIL=${{ secrets.EMAIL }}
+          PASSWORD=${{ secrets.PASSWORD }}
+          STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          " > backend/.env
+
+      - run: npm run build
