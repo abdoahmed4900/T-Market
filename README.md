@@ -22,3 +22,11 @@ cd tmarket
 npm install
 ng serve
 ```
+
+## 🎥 Preview
+
+[![Watch Demo](https://img.icons8.com/fluency/96/video.png)](https://drive.google.com/file/d/1WQlHJn2fa8uQDqtRzP-E6eHUMBmwem79/preview)
+
+## 🚀 Live Demo
+
+🔗 **Live Project:** https://t-market-flame.vercel.app/
